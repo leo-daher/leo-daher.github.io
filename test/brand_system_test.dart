@@ -1,11 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/ld_identity.dart';
+import 'package:leone_portfolio/l10n/app_localizations.dart';
 import 'package:leone_portfolio/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'support/local_file_reader.dart';
 
 void main() {
   setUp(() => SharedPreferences.setMockInitialValues({}));
@@ -157,24 +158,28 @@ void main() {
       );
     });
 
-    test('keeps the approved SVG variants on the canonical geometry', () {
-      const variants = [
-        'assets/brand/ld-mark.svg',
-        'assets/brand/ld-mark-inverse.svg',
-        'assets/brand/ld-mark-mono.svg',
-      ];
+    test(
+      'keeps the approved SVG variants on the canonical geometry',
+      () {
+        const variants = [
+          'assets/brand/ld-mark.svg',
+          'assets/brand/ld-mark-inverse.svg',
+          'assets/brand/ld-mark-mono.svg',
+        ];
 
-      for (final path in variants) {
-        final svg = File(path).readAsStringSync();
-        expect(svg, contains('viewBox="0 0 256 256"'), reason: path);
-        expect(svg, contains('stroke-width="14"'), reason: path);
-        expect(
-          svg,
-          contains('x="155" y="155" width="48" height="48" rx="17"'),
-          reason: path,
-        );
-      }
-    });
+        for (final path in variants) {
+          final svg = readLocalTextFile(path);
+          expect(svg, contains('viewBox="0 0 256 256"'), reason: path);
+          expect(svg, contains('stroke-width="14"'), reason: path);
+          expect(
+            svg,
+            contains('x="155" y="155" width="48" height="48" rx="17"'),
+            reason: path,
+          );
+        }
+      },
+      skip: !canReadLocalFiles,
+    );
 
     test('builds the app theme from the brand source of truth', () {
       final theme = LeoneBrandTheme.dark();
@@ -238,6 +243,50 @@ void main() {
     expect(tester.getSize(frame), initialSize);
   });
 
+  testWidgets('viewport autoplay begins only after it is enabled', (
+    tester,
+  ) async {
+    var autoPlay = false;
+    late StateSetter updateHost;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: LeoneBrandTheme.dark(),
+        localizationsDelegates: const [AppLocalizations.delegate],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: StatefulBuilder(
+            builder: (context, setState) {
+              updateHost = setState;
+              return SizedBox(
+                width: 800,
+                height: 600,
+                child: LdViewportStage(
+                  autoPlay: autoPlay,
+                  child: const SizedBox.expand(),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+
+    final frame = find.byKey(const Key('ld-viewport-frame'));
+    final mobileSize = tester.getSize(frame);
+    await tester.pump(
+      LeoneBrandMotion.viewportHold + const Duration(milliseconds: 100),
+    );
+    expect(tester.getSize(frame), mobileSize);
+
+    updateHost(() => autoPlay = true);
+    await tester.pump();
+    await tester.pump(LeoneBrandMotion.viewportHold);
+    await tester.pump(LeoneBrandMotion.viewportTransition);
+
+    expect(tester.getSize(frame).width, greaterThan(mobileSize.width));
+  });
+
   testWidgets('functional FAB adopts the Material 3 endpoint geometry', (
     tester,
   ) async {
@@ -247,8 +296,7 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(const LeonePortfolioApp());
-    await tester.pump(LeoneBrandMotion.openingTotal);
-    await tester.pump();
+    await _finishOpening(tester);
 
     final finder = find.byKey(const Key('portfolio-floating-action'));
     final fab = tester.widget<FloatingActionButton>(finder);
@@ -259,6 +307,11 @@ void main() {
     expect(radius, LeoneBrandGeometry.fabCollapsedRadius);
     expect(fab.backgroundColor, LeoneBrandColors.action);
   });
+}
+
+Future<void> _finishOpening(WidgetTester tester) async {
+  await tester.pump();
+  await tester.pumpAndSettle(const Duration(milliseconds: 100));
 }
 
 double _contrast(Color foreground, Color background) {

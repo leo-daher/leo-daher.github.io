@@ -41,9 +41,14 @@ class LdFloatingActionGlyph extends StatelessWidget {
 }
 
 class LdOpeningTransition extends StatefulWidget {
-  const LdOpeningTransition({super.key, required this.onCompleted});
+  const LdOpeningTransition({
+    super.key,
+    required this.onCompleted,
+    this.start = true,
+  });
 
   final VoidCallback onCompleted;
+  final bool start;
 
   @override
   State<LdOpeningTransition> createState() => _LdOpeningTransitionState();
@@ -56,12 +61,32 @@ class _LdOpeningTransitionState extends State<LdOpeningTransition>
     duration: LeoneBrandMotion.openingTotal,
   );
   Timer? _completionFallback;
+  bool _startScheduled = false;
   bool _started = false;
   bool _completed = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    if (widget.start) _scheduleStartAfterFrame();
+  }
+
+  @override
+  void didUpdateWidget(covariant LdOpeningTransition oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.start && !oldWidget.start) _start();
+  }
+
+  void _scheduleStartAfterFrame() {
+    if (_started || _startScheduled) return;
+    _startScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startScheduled = false;
+      if (mounted && widget.start) _start();
+    });
+  }
+
+  void _start() {
     if (_started) return;
     _started = true;
     _completionFallback = Timer(

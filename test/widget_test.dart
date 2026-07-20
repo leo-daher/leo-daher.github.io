@@ -2,12 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
+import 'package:leone_portfolio/features/navigation/portfolio_fab_menu.dart';
+import 'package:leone_portfolio/l10n/app_localizations.dart';
 import 'package:leone_portfolio/main.dart';
 import 'package:leone_portfolio/world_experience_map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   setUp(() => SharedPreferences.setMockInitialValues({}));
+
+  testWidgets('paints the opening mark before mounting the portfolio home', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const LeonePortfolioApp());
+
+    expect(find.byKey(const Key('ld-opening-transition')), findsOneWidget);
+    expect(find.byKey(const Key('portfolio-home-page')), findsNothing);
+
+    await tester.pump();
+
+    expect(find.byKey(const Key('portfolio-home-page')), findsOneWidget);
+    expect(find.byKey(const Key('ld-opening-transition')), findsOneWidget);
+  });
 
   testWidgets('renders centered positioning and switches career focus', (
     tester,
@@ -19,7 +35,7 @@ void main() {
 
     await tester.pumpWidget(const LeonePortfolioApp());
     expect(find.byKey(const Key('ld-opening-transition')), findsOneWidget);
-    await tester.pump(const Duration(milliseconds: 3200));
+    await _finishOpening(tester);
     expect(find.byKey(const Key('ld-opening-transition')), findsNothing);
 
     expect(find.text('Leone'), findsOneWidget);
@@ -50,9 +66,7 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(const LeonePortfolioApp());
-    await tester.pump(
-      LeoneBrandMotion.openingTotal + const Duration(milliseconds: 100),
-    );
+    await _finishOpening(tester);
 
     final frame = find.byKey(const Key('ld-viewport-frame'));
     final mobileSize = tester.getSize(frame);
@@ -85,8 +99,7 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(const LeonePortfolioApp());
-    await tester.pump(const Duration(milliseconds: 3800));
-    await tester.pump(const Duration(milliseconds: 400));
+    await _finishOpening(tester);
 
     final fab = find.byKey(const Key('portfolio-floating-action'));
     expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
@@ -140,8 +153,7 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(const LeonePortfolioApp());
-    await tester.pump(const Duration(milliseconds: 3800));
-    await tester.pump(const Duration(milliseconds: 400));
+    await _finishOpening(tester);
     await tester.tap(find.byKey(const Key('portfolio-floating-action')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
@@ -168,8 +180,7 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(const LeonePortfolioApp());
-    await tester.pump(const Duration(milliseconds: 3800));
-    await tester.pump(const Duration(milliseconds: 400));
+    await _finishOpening(tester);
 
     final fabFinder = find.byKey(const Key('portfolio-floating-action'));
     await tester.tap(fabFinder);
@@ -216,8 +227,7 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(const LeonePortfolioApp());
-    await tester.pump(const Duration(milliseconds: 3800));
-    await tester.pump(const Duration(milliseconds: 400));
+    await _finishOpening(tester);
     await tester.tap(find.byKey(const Key('portfolio-floating-action')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
@@ -243,9 +253,7 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(const LeonePortfolioApp());
-    await tester.pump(
-      LeoneBrandMotion.openingTotal + const Duration(milliseconds: 100),
-    );
+    await _finishOpening(tester);
     await tester.drag(find.byType(CustomScrollView), const Offset(0, -1450));
     await tester.pumpAndSettle();
 
@@ -288,10 +296,7 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(const LeonePortfolioApp());
-    await tester.pump();
-    await tester.pump(
-      LeoneBrandMotion.openingTotal + const Duration(milliseconds: 200),
-    );
+    await _finishOpening(tester);
 
     expect(find.text('Engenheiro de Software Mobile'), findsOneWidget);
     expect(
@@ -319,4 +324,47 @@ void main() {
     expect(preferences.getString('portfolio_locale'), 'pt');
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('opening the FAB menu does not rebuild its body', (tester) async {
+    var bodyBuilds = 0;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: LeoneBrandTheme.dark(),
+        localizationsDelegates: const [AppLocalizations.delegate],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: PortfolioFabMenuScaffold(
+          showFloatingActionButton: true,
+          floatingActionButtonEnabled: true,
+          onSelected: (_) {},
+          body: _BuildCounter(onBuild: () => bodyBuilds++),
+        ),
+      ),
+    );
+    expect(bodyBuilds, 1);
+
+    await tester.tap(find.byKey(const Key('portfolio-floating-action')));
+    await tester.pump();
+    await tester.pump(LeoneBrandMotion.fabMenuExpand);
+
+    expect(bodyBuilds, 1);
+    expect(find.bySemanticsLabel('Close navigation menu'), findsOneWidget);
+  });
+}
+
+Future<void> _finishOpening(WidgetTester tester) async {
+  await tester.pump();
+  await tester.pumpAndSettle(const Duration(milliseconds: 100));
+}
+
+class _BuildCounter extends StatelessWidget {
+  const _BuildCounter({required this.onBuild});
+
+  final VoidCallback onBuild;
+
+  @override
+  Widget build(BuildContext context) {
+    onBuild();
+    return const SizedBox.expand();
+  }
 }

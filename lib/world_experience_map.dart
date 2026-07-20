@@ -1,22 +1,17 @@
 import 'dart:math' as math;
 
-import 'package:countries_world_map/countries_world_map.dart';
-import 'package:countries_world_map/data/maps/world_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
+import 'features/experience/world_map_geometry.dart';
 import 'l10n/l10n.dart';
 
 const _mapAccent = Color(0xFF51F2C2);
 const _darkPanel = Color(0xFF0D171D);
-const _outline = Color(0xFF42606B);
-
-final MapAttributes _worldAttributes = MapAttributes(
-  SMapWorld.instructionsMercator,
+const _worldMapBaseLoader = AssetBytesLoader(
+  'assets/maps/world-map-base.svg.vec',
 );
-final List<_CountryShape> _worldShapes = _worldAttributes.drawingInstructions
-    .map(_CountryShape.fromJson)
-    .toList(growable: false);
 
 const _portfolioCountries = <PortfolioCountry>[
   PortfolioCountry(
@@ -159,38 +154,19 @@ const _portfolioCountries = <PortfolioCountry>[
   PortfolioCountry(
     isoCode: 'SG',
     mapId: 'sg',
-    name: 'Cingapura',
-    location: 'FPSO Libra',
-    role: 'Estagio Radix',
+    name: 'Singapura',
+    location: 'Jurong Shipyard, Singapura',
+    role: 'Arquitetura de modulos eletricos',
     summary:
-        'Atuacao internacional associada ao FPSO Libra durante o estagio na Radix.',
-    yearRange: 'estagio',
-    anchor: Offset(0.745, 0.61),
+        'Pela Radix, detalhamento de arquitetura dos modulos do FPSO Pioneiro de Libra, com requisicoes de material, especificacoes tecnicas e cotacoes de materiais e servicos de engenharia.',
+    yearRange: '2015 - 2016',
+    anchor: Offset(0.793, 0.706),
     projects: [
       PortfolioProject(
         logo: 'RDX',
-        name: 'FPSO Libra / Radix',
+        name: 'FPSO Pioneiro de Libra - modulos eletricos',
         description:
-            'Projeto de estagio com contexto internacional em Cingapura, conforme informado.',
-      ),
-    ],
-  ),
-  PortfolioCountry(
-    isoCode: 'CN',
-    mapId: 'cn',
-    name: 'China',
-    location: 'FPSO Libra',
-    role: 'Estagio Radix',
-    summary:
-        'Atuacao internacional associada ao FPSO Libra durante o estagio na Radix.',
-    yearRange: 'estagio',
-    anchor: Offset(0.75, 0.47),
-    projects: [
-      PortfolioProject(
-        logo: 'RDX',
-        name: 'FPSO Libra / Radix',
-        description:
-            'Projeto de estagio com contexto internacional na China, conforme informado.',
+            'Entrega para GE Oil & Gas / GE Power Conversion, Odebrecht Oil & Gas e Jurong Shipyard. CNPC e CNOOC aparecem como participantes chinesas do consorcio, nao como local de atuacao.',
       ),
     ],
   ),
@@ -342,37 +318,18 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
       isoCode: 'SG',
       mapId: 'sg',
       name: 'Singapore',
-      location: 'FPSO Libra',
-      role: 'Radix internship',
+      location: 'Jurong Shipyard, Singapore',
+      role: 'Electrical-module architecture',
       summary:
-          'International work associated with FPSO Libra during the Radix internship.',
-      yearRange: 'internship',
-      anchor: Offset(0.745, 0.61),
+          'At Radix, detailed architecture work for the FPSO Pioneiro de Libra modules, including material requisitions, technical specifications, and quotations for materials and engineering services.',
+      yearRange: '2015 - 2016',
+      anchor: Offset(0.793, 0.706),
       projects: [
         PortfolioProject(
           logo: 'RDX',
-          name: 'FPSO Libra / Radix',
+          name: 'FPSO Pioneiro de Libra - electrical modules',
           description:
-              'Internship project with international context in Singapore, as supplied.',
-        ),
-      ],
-    ),
-    PortfolioCountry(
-      isoCode: 'CN',
-      mapId: 'cn',
-      name: 'China',
-      location: 'FPSO Libra',
-      role: 'Radix internship',
-      summary:
-          'International work associated with FPSO Libra during the Radix internship.',
-      yearRange: 'internship',
-      anchor: Offset(0.75, 0.47),
-      projects: [
-        PortfolioProject(
-          logo: 'RDX',
-          name: 'FPSO Libra / Radix',
-          description:
-              'Internship project with international context in China, as supplied.',
+              'Delivery for GE Oil & Gas / GE Power Conversion, Odebrecht Oil & Gas and Jurong Shipyard. CNPC and CNOOC were Chinese consortium participants, not a work location.',
         ),
       ],
     ),
@@ -510,6 +467,9 @@ class _WorldExperienceMapState extends State<WorldExperienceMap> {
   @override
   Widget build(BuildContext context) {
     final countries = _localizedPortfolioCountries(context);
+    final singaporeCountry = countries.firstWhere(
+      (country) => country.mapId == 'sg',
+    );
     final selectedCountry = countries.firstWhere(
       (country) => country.mapId == _selectedCountryId,
     );
@@ -532,6 +492,7 @@ class _WorldExperienceMapState extends State<WorldExperienceMap> {
             activeCountry: activeCountry,
             elevatedCountry: hoveredCountry,
             selectedCountry: selectedCountry,
+            singaporeCountry: singaporeCountry,
             onCountryHover: _setHoveredCountry,
             onHoverExit: () => _setHoveredCountry(null),
             onCountryTap: _selectCountry,
@@ -604,6 +565,7 @@ class _MapStage extends StatelessWidget {
     required this.activeCountry,
     required this.elevatedCountry,
     required this.selectedCountry,
+    required this.singaporeCountry,
     required this.onCountryHover,
     required this.onHoverExit,
     required this.onCountryTap,
@@ -612,6 +574,7 @@ class _MapStage extends StatelessWidget {
   final PortfolioCountry activeCountry;
   final PortfolioCountry? elevatedCountry;
   final PortfolioCountry selectedCountry;
+  final PortfolioCountry singaporeCountry;
   final ValueChanged<PortfolioCountry?> onCountryHover;
   final VoidCallback onHoverExit;
   final ValueChanged<PortfolioCountry> onCountryTap;
@@ -631,22 +594,31 @@ class _MapStage extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final size = Size(constraints.maxWidth, constraints.maxHeight);
-            final mapRect = _mapRectFor(size);
+            final mapRect = worldMapRectFor(size);
+            final singaporeInset = _singaporeInsetGeometryFor(mapRect, size);
             final connector = _connectorGeometryFor(
               activeCountry,
               mapRect,
               size,
+              singaporeInset: singaporeInset,
             );
 
             return MouseRegion(
               cursor: SystemMouseCursors.click,
               onHover: (event) {
-                onCountryHover(_countryAt(event.localPosition, size));
+                onCountryHover(
+                  singaporeInset.lensRect.contains(event.localPosition)
+                      ? singaporeCountry
+                      : _countryAt(event.localPosition, size),
+                );
               },
               onExit: (_) => onHoverExit(),
               child: GestureDetector(
                 onTapUp: (details) {
-                  final country = _countryAt(details.localPosition, size);
+                  final country =
+                      singaporeInset.lensRect.contains(details.localPosition)
+                      ? singaporeCountry
+                      : _countryAt(details.localPosition, size);
                   if (country != null) {
                     onCountryTap(country);
                   }
@@ -654,11 +626,35 @@ class _MapStage extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
+                    Positioned.fromRect(
+                      rect: mapRect,
+                      child: const RepaintBoundary(
+                        key: Key('world-map-base-boundary'),
+                        child: VectorGraphic(
+                          key: Key('world-map-base-vector'),
+                          loader: _worldMapBaseLoader,
+                          fit: BoxFit.fill,
+                          excludeFromSemantics: true,
+                        ),
+                      ),
+                    ),
+                    RepaintBoundary(
+                      key: const Key('world-map-overlay-boundary'),
+                      child: CustomPaint(
+                        key: const Key('world-map-interactive-overlay'),
+                        isComplex: false,
+                        willChange: false,
+                        painter: _InteractiveWorldMapPainter(
+                          activeCountryId: activeCountry.mapId,
+                          elevatedCountryId: elevatedCountry?.mapId,
+                          selectedCountryId: selectedCountry.mapId,
+                        ),
+                      ),
+                    ),
                     CustomPaint(
-                      painter: _DarkWorldMapPainter(
-                        activeCountryId: activeCountry.mapId,
-                        elevatedCountryId: elevatedCountry?.mapId,
-                        selectedCountryId: selectedCountry.mapId,
+                      painter: _SingaporeInsetConnectorPainter(
+                        geometry: singaporeInset,
+                        active: activeCountry.mapId == 'sg',
                       ),
                     ),
                     CustomPaint(
@@ -668,16 +664,167 @@ class _MapStage extends StatelessWidget {
                       rect: connector.railRect,
                       child: _LogoRail(country: activeCountry),
                     ),
+                    Positioned.fromRect(
+                      rect: singaporeInset.lensRect,
+                      child: _SingaporeMapInset(
+                        key: const Key('world-map-singapore-inset'),
+                        country: singaporeCountry,
+                        active: activeCountry.mapId == 'sg',
+                        selected: selectedCountry.mapId == 'sg',
+                        onTap: () => onCountryTap(singaporeCountry),
+                      ),
+                    ),
                     Positioned(
                       left: 14,
                       top: 14,
-                      child: _MapBadge(country: activeCountry),
+                      child: _MapBadge(
+                        key: Key('world-map-badge-${activeCountry.mapId}'),
+                        country: activeCountry,
+                      ),
                     ),
                   ],
                 ),
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _SingaporeMapInset extends StatelessWidget {
+  const _SingaporeMapInset({
+    super.key,
+    required this.country,
+    required this.active,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final PortfolioCountry country;
+  final bool active;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderColor = active || selected
+        ? _mapAccent
+        : Colors.white.withValues(alpha: 0.52);
+
+    return Semantics(
+      button: true,
+      label: '${country.name}: ${country.location}',
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: RepaintBoundary(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFF061015),
+              border: Border.all(color: borderColor, width: active ? 2 : 1.2),
+              boxShadow: [
+                BoxShadow(
+                  color: _mapAccent.withValues(alpha: active ? 0.24 : 0.1),
+                  blurRadius: active ? 24 : 14,
+                  spreadRadius: active ? 2 : 0,
+                ),
+              ],
+            ),
+            child: ClipOval(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final diameter = constraints.maxWidth;
+                  final mapWidth = diameter * 7.6;
+                  final mapHeight =
+                      mapWidth /
+                      (worldMapSourceSize.width / worldMapSourceSize.height);
+                  final mapLeft =
+                      (diameter / 2) - (mapWidth * country.anchor.dx);
+                  final mapTop =
+                      (diameter / 2) - (mapHeight * country.anchor.dy);
+
+                  return Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      const ColoredBox(color: Color(0xFF07131A)),
+                      Positioned(
+                        left: mapLeft,
+                        top: mapTop,
+                        width: mapWidth,
+                        height: mapHeight,
+                        child: const SvgPicture(
+                          _worldMapBaseLoader,
+                          fit: BoxFit.fill,
+                          excludeFromSemantics: true,
+                        ),
+                      ),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: RadialGradient(
+                            colors: [
+                              Colors.transparent,
+                              const Color(0xFF02070A).withValues(alpha: 0.36),
+                            ],
+                            stops: const [0.48, 1],
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _mapAccent,
+                            border: Border.all(color: Colors.white, width: 1.4),
+                            boxShadow: [
+                              BoxShadow(
+                                color: _mapAccent.withValues(alpha: 0.7),
+                                blurRadius: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 8,
+                        top: 8,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: const Color(
+                              0xFF061015,
+                            ).withValues(alpha: 0.88),
+                            border: Border.all(
+                              color: _mapAccent.withValues(alpha: 0.65),
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            child: Text(
+                              'SG',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.7,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -753,7 +900,7 @@ class _LogoMark extends StatelessWidget {
 }
 
 class _MapBadge extends StatelessWidget {
-  const _MapBadge({required this.country});
+  const _MapBadge({super.key, required this.country});
 
   final PortfolioCountry country;
 
@@ -1017,6 +1164,7 @@ class _CountryDetailPanel extends StatelessWidget {
         const SizedBox(height: 8),
         for (final country in countries) ...[
           _CountryListRow(
+            key: Key('world-map-country-${country.mapId}'),
             country: country,
             active: country.mapId == activeCountry.mapId,
             selected: country.mapId == selectedCountry.mapId,
@@ -1035,7 +1183,10 @@ class _CountryDetailPanel extends StatelessWidget {
             children: [
               Expanded(
                 flex: 7,
-                child: _SelectedCountryCard(country: activeCountry),
+                child: _SelectedCountryCard(
+                  key: Key('selected-country-${activeCountry.mapId}'),
+                  country: activeCountry,
+                ),
               ),
               const SizedBox(width: 18),
               Expanded(flex: 5, child: countryList),
@@ -1047,7 +1198,10 @@ class _CountryDetailPanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            _SelectedCountryCard(country: activeCountry),
+            _SelectedCountryCard(
+              key: Key('selected-country-${activeCountry.mapId}'),
+              country: activeCountry,
+            ),
             const SizedBox(height: 14),
             countryList,
           ],
@@ -1058,7 +1212,7 @@ class _CountryDetailPanel extends StatelessWidget {
 }
 
 class _SelectedCountryCard extends StatelessWidget {
-  const _SelectedCountryCard({required this.country});
+  const _SelectedCountryCard({super.key, required this.country});
 
   final PortfolioCountry country;
 
@@ -1273,6 +1427,7 @@ class _MiniMetric extends StatelessWidget {
 
 class _CountryListRow extends StatelessWidget {
   const _CountryListRow({
+    super.key,
     required this.country,
     required this.active,
     required this.selected,
@@ -1359,8 +1514,8 @@ class _CountryListRow extends StatelessWidget {
   }
 }
 
-class _DarkWorldMapPainter extends CustomPainter {
-  const _DarkWorldMapPainter({
+class _InteractiveWorldMapPainter extends CustomPainter {
+  const _InteractiveWorldMapPainter({
     required this.activeCountryId,
     required this.elevatedCountryId,
     required this.selectedCountryId,
@@ -1372,14 +1527,13 @@ class _DarkWorldMapPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final mapRect = _mapRectFor(size);
-    final baseStroke = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.75
-      ..color = _outline.withValues(alpha: 0.55);
+    final mapRect = worldMapRectFor(size);
+    final scaleX = mapRect.width / worldMapSourceSize.width;
+    final scaleY = mapRect.height / worldMapSourceSize.height;
+    final logicalScale = (scaleX + scaleY) / 2;
     final projectStroke = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1
+      ..strokeWidth = 1 / logicalScale
       ..color = _mapAccent.withValues(alpha: 0.9);
     final fill = Paint()
       ..style = PaintingStyle.fill
@@ -1387,34 +1541,36 @@ class _DarkWorldMapPainter extends CustomPainter {
     final activeFill = Paint()
       ..style = PaintingStyle.fill
       ..color = _mapAccent.withValues(alpha: 0.95);
+    final geometry = PortfolioWorldMapGeometry.shared;
 
-    for (final shape in _worldShapes) {
-      final path = _pathForShape(shape, mapRect);
-      if (!_portfolioCountryById.containsKey(shape.id)) {
-        canvas.drawPath(path, baseStroke);
-        continue;
-      }
+    canvas.save();
+    canvas.translate(mapRect.left, mapRect.top);
+    canvas.scale(scaleX, scaleY);
 
-      if (shape.id == elevatedCountryId) {
-        continue;
-      }
+    for (final countryId in geometry.countryIds) {
+      if (countryId == elevatedCountryId) continue;
 
-      final isActive = shape.id == activeCountryId;
+      final path = geometry.pathFor(countryId)!;
+      final isActive = countryId == activeCountryId;
       canvas.drawPath(path, isActive ? activeFill : fill);
       canvas.drawPath(path, projectStroke);
     }
 
-    if (elevatedCountryId != null) {
-      for (final shape in _worldShapes.where(
-        (s) => s.id == elevatedCountryId,
-      )) {
-        final path = _pathForShape(shape, mapRect);
-        final raised = path.shift(const Offset(0, -5));
-        canvas.drawShadow(raised, _mapAccent.withValues(alpha: 0.85), 16, true);
-        canvas.drawPath(raised, activeFill);
-        canvas.drawPath(raised, projectStroke);
-      }
+    final elevatedPath = elevatedCountryId == null
+        ? null
+        : geometry.pathFor(elevatedCountryId!);
+    if (elevatedPath != null) {
+      final raised = elevatedPath.shift(Offset(0, -5 / scaleY));
+      canvas.drawShadow(
+        raised,
+        _mapAccent.withValues(alpha: 0.85),
+        16 / logicalScale,
+        true,
+      );
+      canvas.drawPath(raised, activeFill);
+      canvas.drawPath(raised, projectStroke);
     }
+    canvas.restore();
 
     final selectedAnchor = _anchorFor(selectedCountryId, mapRect);
     if (selectedAnchor != null) {
@@ -1435,10 +1591,68 @@ class _DarkWorldMapPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_DarkWorldMapPainter oldDelegate) {
+  bool shouldRepaint(_InteractiveWorldMapPainter oldDelegate) {
     return oldDelegate.activeCountryId != activeCountryId ||
         oldDelegate.elevatedCountryId != elevatedCountryId ||
         oldDelegate.selectedCountryId != selectedCountryId;
+  }
+}
+
+class _SingaporeInsetConnectorPainter extends CustomPainter {
+  const _SingaporeInsetConnectorPainter({
+    required this.geometry,
+    required this.active,
+  });
+
+  final _SingaporeInsetGeometry geometry;
+  final bool active;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final towardsAnchor = geometry.anchor - geometry.center;
+    final distance = towardsAnchor.distance;
+    if (distance == 0) return;
+
+    final lensEdge =
+        geometry.center +
+        (towardsAnchor / distance) * (geometry.lensRect.width / 2);
+    final path = Path()
+      ..moveTo(geometry.anchor.dx, geometry.anchor.dy)
+      ..lineTo(lensEdge.dx, lensEdge.dy);
+    final glow = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = active ? 5 : 3
+      ..strokeCap = StrokeCap.round
+      ..color = _mapAccent.withValues(alpha: active ? 0.16 : 0.07);
+    final line = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = active ? 1.8 : 1.2
+      ..strokeCap = StrokeCap.round
+      ..color = _mapAccent.withValues(alpha: active ? 0.9 : 0.48);
+
+    canvas.drawPath(path, glow);
+    canvas.drawPath(path, line);
+    canvas.drawCircle(
+      geometry.anchor,
+      active ? 4 : 3,
+      Paint()..color = _mapAccent,
+    );
+    canvas.drawCircle(
+      geometry.anchor,
+      active ? 8 : 6,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1
+        ..color = _mapAccent.withValues(alpha: active ? 0.72 : 0.36),
+    );
+  }
+
+  @override
+  bool shouldRepaint(_SingaporeInsetConnectorPainter oldDelegate) {
+    return oldDelegate.active != active ||
+        oldDelegate.geometry.anchor != geometry.anchor ||
+        oldDelegate.geometry.center != geometry.center ||
+        oldDelegate.geometry.lensRect != geometry.lensRect;
   }
 }
 
@@ -1492,87 +1706,24 @@ class _ConnectorGeometry {
   final Rect railRect;
 }
 
-class _CountryShape {
-  const _CountryShape({required this.id, required this.instructions});
+class _SingaporeInsetGeometry {
+  const _SingaporeInsetGeometry({
+    required this.anchor,
+    required this.center,
+    required this.lensRect,
+  });
 
-  factory _CountryShape.fromJson(Map<String, dynamic> json) {
-    return _CountryShape(
-      id: json['u'] as String,
-      instructions: List<String>.from(json['i'] as List),
-    );
-  }
-
-  final String id;
-  final List<String> instructions;
+  final Offset anchor;
+  final Offset center;
+  final Rect lensRect;
 }
 
 PortfolioCountry? _countryAt(Offset position, Size size) {
-  final mapRect = _mapRectFor(size);
-  if (!mapRect.contains(position)) {
-    return null;
-  }
-
-  for (final shape in _worldShapes.reversed) {
-    final country = _portfolioCountryById[shape.id];
-    if (country == null) {
-      continue;
-    }
-
-    if (_pathForShape(shape, mapRect).contains(position)) {
-      return country;
-    }
-  }
-
-  return null;
-}
-
-Rect _mapRectFor(Size size) {
-  final mapAspect = _worldAttributes.mapWidth / _worldAttributes.mapHeight;
-  final availableAspect = size.width / size.height;
-  late final Rect fittedMap;
-
-  if (availableAspect > mapAspect) {
-    final width = size.height * mapAspect;
-    fittedMap = Rect.fromLTWH((size.width - width) / 2, 0, width, size.height);
-  } else {
-    final height = size.width / mapAspect;
-    fittedMap = Rect.fromLTWH(
-      0,
-      (size.height - height) / 2,
-      size.width,
-      height,
-    );
-  }
-
-  const zoom = 1.55;
-  return Rect.fromCenter(
-    center: fittedMap.center,
-    width: fittedMap.width * zoom,
-    height: fittedMap.height * zoom,
+  final countryId = PortfolioWorldMapGeometry.shared.hitTest(
+    position,
+    worldMapRectFor(size),
   );
-}
-
-Path _pathForShape(_CountryShape shape, Rect mapRect) {
-  final path = Path();
-
-  for (final instruction in shape.instructions) {
-    if (instruction == 'c') {
-      path.close();
-      continue;
-    }
-
-    final coordinates = instruction.substring(1).split(',');
-    final x = mapRect.left + mapRect.width * double.parse(coordinates[0]);
-    final y = mapRect.top + mapRect.height * double.parse(coordinates[1]);
-
-    if (instruction[0] == 'm') {
-      path.moveTo(x, y);
-    } else if (instruction[0] == 'l') {
-      path.lineTo(x, y);
-    }
-  }
-
-  return path;
+  return countryId == null ? null : _portfolioCountryById[countryId];
 }
 
 Offset? _anchorFor(String countryId, Rect mapRect) {
@@ -1590,10 +1741,12 @@ Offset? _anchorFor(String countryId, Rect mapRect) {
 _ConnectorGeometry _connectorGeometryFor(
   PortfolioCountry country,
   Rect mapRect,
-  Size panelSize,
-) {
-  final start =
-      _anchorFor(country.mapId, mapRect) ?? Offset(panelSize.width / 2, 40);
+  Size panelSize, {
+  required _SingaporeInsetGeometry singaporeInset,
+}) {
+  final start = country.mapId == 'sg'
+      ? singaporeInset.center
+      : _anchorFor(country.mapId, mapRect) ?? Offset(panelSize.width / 2, 40);
   final railWidth = math.min(
     math.max(88.0, 60.0 + (country.projects.length * 50.0)),
     math.max(160.0, panelSize.width - 36.0),
@@ -1624,6 +1777,35 @@ _ConnectorGeometry _connectorGeometryFor(
     elbow: elbow,
     end: end,
     railRect: railRect,
+  );
+}
+
+_SingaporeInsetGeometry _singaporeInsetGeometryFor(
+  Rect mapRect,
+  Size panelSize,
+) {
+  final anchor = _anchorFor('sg', mapRect) ?? mapRect.center;
+  final preferredDiameter = panelSize.width >= 720 ? 92.0 : 76.0;
+  final diameter = math.min(
+    preferredDiameter,
+    math.max(44, math.min(panelSize.width - 28, panelSize.height - 28)),
+  );
+  final radius = diameter / 2;
+  final verticalOffsetFactor = panelSize.width < 600 ? 1.45 : 0.96;
+  final center = _clampOffset(
+    anchor + Offset(-diameter * 0.8, -diameter * verticalOffsetFactor),
+    Rect.fromLTRB(
+      radius + 14,
+      radius + 14,
+      panelSize.width - radius - 14,
+      panelSize.height - radius - 14,
+    ),
+  );
+
+  return _SingaporeInsetGeometry(
+    anchor: anchor,
+    center: center,
+    lensRect: Rect.fromCircle(center: center, radius: radius),
   );
 }
 

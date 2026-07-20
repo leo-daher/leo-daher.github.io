@@ -50,7 +50,7 @@ packages:
     source: hosted
     version: "1.19.1"
   countries_world_map:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: countries_world_map
       sha256: "7b11d2712e0a55060cb6dc43d98d2fb19319ff10b03cf35ef7220922fe9aa2b2"
@@ -403,7 +403,7 @@ packages:
     source: hosted
     version: "1.4.0"
   vector_graphics:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: vector_graphics
       sha256: "2306c03da2ba81724afeb589c351ebbc0aa7d86005925be8f8735856dbe5e42d"
@@ -419,7 +419,7 @@ packages:
     source: hosted
     version: "1.1.13"
   vector_graphics_compiler:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: vector_graphics_compiler
       sha256: "142a9146f447d15b10bdc00e21d5f4d83e5b32bb5f8f8f5a04c75311344923a3"

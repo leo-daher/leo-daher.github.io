@@ -38,12 +38,68 @@
     html,
     body {
       background: #08080D;
+      height: 100%;
       margin: 0;
-      min-height: 100%;
+    }
+
+    .flutter-splash {
+      position: fixed;
+      z-index: 2147483647;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #08080D;
+      pointer-events: none;
+    }
+
+    .flutter-splash__mark {
+      display: block;
+      width: clamp(136px, 46vmin, 204px);
+      height: auto;
     }
   </style>
 </head>
 <body>
+  <div
+    id="flutter-splash"
+    class="flutter-splash"
+    role="status"
+    aria-label="Carregando portfólio de Leone Daher"
+  >
+    <svg
+      class="flutter-splash__mark"
+      viewBox="0 0 204 204"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M0 21.3V176.1Q0 204 27.9 204H165.1"
+        fill="none"
+        stroke="#F3F6F5"
+        stroke-width="12"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M21.3 0H167.3Q204 0 204 36.7V167.3Q204 204 167.3 204H165.1"
+        fill="none"
+        stroke="#CFC7F4"
+        stroke-width="12"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <rect
+        x="142.6"
+        y="142.6"
+        width="38"
+        height="38"
+        rx="13.3"
+        fill="#FF6B55"
+      />
+    </svg>
+  </div>
+
   <!--
     You can customize the "flutter_bootstrap.js" script.
     This is useful to provide a custom configuration to the Flutter loader
