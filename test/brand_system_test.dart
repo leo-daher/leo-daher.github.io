@@ -65,6 +65,12 @@ void main() {
 
       expect(geometry.frameRect, Offset.zero & viewport);
       expect(geometry.backgroundOpacity, 1);
+      expect(geometry.radius, 0);
+      expect(
+        geometry.stroke / 2,
+        lessThan(LeoneBrandGeometry.fabEdgeInset),
+        reason: 'The settled FAB must clear the viewport stroke.',
+      );
     });
 
     test('uses accessible foregrounds on the core palette', () {

@@ -313,7 +313,11 @@ class LdOpeningFrameGeometry {
       viewportProgress,
     );
     final initialRadius = compactSide * .18;
-    final viewportRadius = (shortest * .18).clamp(54.0, 160.0);
+    // The mark starts as a rounded device frame, then becomes the actual
+    // rectangular viewport. Converging the corner radius to zero before the
+    // final FAB settles preserves its 16 dp safe inset instead of letting the
+    // rounded frame arc run underneath it.
+    const viewportRadius = 0.0;
 
     return LdOpeningFrameGeometry(
       frameRect: frameRect,
