@@ -50,6 +50,7 @@ void main() {
 
     test('makes the mark become the exact viewport before it exits', () {
       const viewport = Size(390, 844);
+      const viewPadding = EdgeInsets.only(right: 7, bottom: 23);
       const motionProgress =
           (LeoneBrandMotion.openingViewportArrival +
               LeoneBrandMotion.openingViewportExit) /
@@ -61,16 +62,56 @@ void main() {
       final geometry = LdOpeningFrameGeometry.resolve(
         viewport,
         controllerProgress,
+        viewPadding: viewPadding,
       );
-
       expect(geometry.frameRect, Offset.zero & viewport);
       expect(geometry.backgroundOpacity, 1);
-      expect(geometry.radius, 0);
+      expect(geometry.radius, greaterThan(0));
+      expect(
+        geometry.frameRect.right - geometry.bottomRightRadiusX,
+        closeTo(geometry.fabCenter.dx, .001),
+      );
+      expect(
+        geometry.frameRect.bottom - geometry.bottomRightRadiusY,
+        closeTo(geometry.fabCenter.dy, .001),
+      );
+      expect(
+        geometry.bottomRightRadiusX - ldFloatingActionSize / 2,
+        closeTo(viewPadding.right + LeoneBrandGeometry.fabEdgeInset, .001),
+      );
+      expect(
+        geometry.bottomRightRadiusY - ldFloatingActionSize / 2,
+        closeTo(viewPadding.bottom + LeoneBrandGeometry.fabEdgeInset, .001),
+      );
       expect(
         geometry.stroke / 2,
         lessThan(LeoneBrandGeometry.fabEdgeInset),
         reason: 'The settled FAB must clear the viewport stroke.',
       );
+    });
+
+    test('keeps the bottom-right curve concentric with the FAB in motion', () {
+      const viewport = Size(390, 844);
+      const viewPadding = EdgeInsets.only(right: 7, bottom: 23);
+
+      for (final progress in [0.0, .34, .48, .62, .76, .9, 1.0]) {
+        final geometry = LdOpeningFrameGeometry.resolve(
+          viewport,
+          progress,
+          viewPadding: viewPadding,
+        );
+
+        expect(
+          geometry.frameRect.right - geometry.bottomRightRadiusX,
+          closeTo(geometry.fabCenter.dx, .001),
+          reason: 'horizontal center at progress $progress',
+        );
+        expect(
+          geometry.frameRect.bottom - geometry.bottomRightRadiusY,
+          closeTo(geometry.fabCenter.dy, .001),
+          reason: 'vertical center at progress $progress',
+        );
+      }
     });
 
     test('uses accessible foregrounds on the core palette', () {

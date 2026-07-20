@@ -123,7 +123,10 @@ class _LdOpeningTransitionState extends State<LdOpeningTransition>
                     key: const Key('ld-opening-transition'),
                     children: [
                       CustomPaint(
-                        painter: _LdOpeningPainter(progress: _controller.value),
+                        painter: _LdOpeningPainter(
+                          progress: _controller.value,
+                          viewPadding: viewPadding,
+                        ),
                         size: viewport,
                       ),
                       Positioned(
@@ -243,20 +246,33 @@ class LdOpeningFrameGeometry {
     required this.frameRect,
     required this.stroke,
     required this.radius,
+    required this.bottomRightRadiusX,
+    required this.bottomRightRadiusY,
+    required this.fabCenter,
     required this.backgroundOpacity,
   });
 
   final Rect frameRect;
   final double stroke;
   final double radius;
+  final double bottomRightRadiusX;
+  final double bottomRightRadiusY;
+  final Offset fabCenter;
   final double backgroundOpacity;
 
-  static LdOpeningFrameGeometry resolve(Size size, double progress) {
+  static LdOpeningFrameGeometry resolve(
+    Size size,
+    double progress, {
+    EdgeInsets viewPadding = EdgeInsets.zero,
+  }) {
     if (size.isEmpty) {
       return const LdOpeningFrameGeometry(
         frameRect: Rect.zero,
         stroke: 0,
         radius: 0,
+        bottomRightRadiusX: 0,
+        bottomRightRadiusY: 0,
+        fabCenter: Offset.zero,
         backgroundOpacity: 0,
       );
     }
@@ -312,17 +328,23 @@ class LdOpeningFrameGeometry {
       viewportStroke,
       viewportProgress,
     );
-    final initialRadius = compactSide * .18;
-    // The mark starts as a rounded device frame, then becomes the actual
-    // rectangular viewport. Converging the corner radius to zero before the
-    // final FAB settles preserves its 16 dp safe inset instead of letting the
-    // rounded frame arc run underneath it.
-    const viewportRadius = 0.0;
+    final fab = _LdOpeningFabPlacement.resolve(size, viewPadding, progress);
+    final bottomRightRadiusX = (frameRect.right - fab.center.dx).clamp(
+      0.0,
+      frameRect.width / 2,
+    );
+    final bottomRightRadiusY = (frameRect.bottom - fab.center.dy).clamp(
+      0.0,
+      frameRect.height / 2,
+    );
 
     return LdOpeningFrameGeometry(
       frameRect: frameRect,
       stroke: stroke,
-      radius: _lerp(initialRadius, viewportRadius, viewportProgress),
+      radius: math.min(bottomRightRadiusX, bottomRightRadiusY),
+      bottomRightRadiusX: bottomRightRadiusX,
+      bottomRightRadiusY: bottomRightRadiusY,
+      fabCenter: fab.center,
       backgroundOpacity: 1 - backgroundFade,
     );
   }
@@ -338,9 +360,10 @@ class LdOpeningFrameGeometry {
 }
 
 class _LdOpeningPainter extends CustomPainter {
-  const _LdOpeningPainter({required this.progress});
+  const _LdOpeningPainter({required this.progress, required this.viewPadding});
 
   final double progress;
+  final EdgeInsets viewPadding;
 
   static const _background = LeoneBrandColors.canvas;
   static const _lColor = LeoneBrandColors.structureOnDark;
@@ -350,7 +373,11 @@ class _LdOpeningPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (size.isEmpty) return;
 
-    final geometry = LdOpeningFrameGeometry.resolve(size, progress);
+    final geometry = LdOpeningFrameGeometry.resolve(
+      size,
+      progress,
+      viewPadding: viewPadding,
+    );
     canvas.drawRect(
       Offset.zero & size,
       Paint()
@@ -360,8 +387,10 @@ class _LdOpeningPainter extends CustomPainter {
     final frameRect = geometry.frameRect;
     final stroke = geometry.stroke;
     final radius = geometry.radius;
+    final bottomRightRadiusX = geometry.bottomRightRadiusX;
+    final bottomRightRadiusY = geometry.bottomRightRadiusY;
     final opening = math.max(stroke * 1.55, radius * .58);
-    final joinX = frameRect.right - radius - stroke * .18;
+    final joinX = frameRect.right - bottomRightRadiusX - stroke * .18;
     final lRadius = radius * .76;
     const logoOpacity = 1.0;
 
@@ -384,11 +413,11 @@ class _LdOpeningPainter extends CustomPainter {
         frameRect.right,
         frameRect.top + radius,
       )
-      ..lineTo(frameRect.right, frameRect.bottom - radius)
+      ..lineTo(frameRect.right, frameRect.bottom - bottomRightRadiusY)
       ..quadraticBezierTo(
         frameRect.right,
         frameRect.bottom,
-        frameRect.right - radius,
+        frameRect.right - bottomRightRadiusX,
         frameRect.bottom,
       )
       ..lineTo(joinX, frameRect.bottom);
@@ -406,7 +435,8 @@ class _LdOpeningPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _LdOpeningPainter oldDelegate) =>
-      oldDelegate.progress != progress;
+      oldDelegate.progress != progress ||
+      oldDelegate.viewPadding != viewPadding;
 }
 
 enum LdViewportPreset { mobile, tablet, desktop }
