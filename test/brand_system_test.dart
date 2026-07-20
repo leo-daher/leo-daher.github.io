@@ -69,18 +69,18 @@ void main() {
       expect(geometry.radius, greaterThan(0));
       expect(
         geometry.frameRect.right - geometry.bottomRightRadiusX,
-        closeTo(geometry.fabCenter.dx, .001),
+        closeTo(geometry.fabBottomRightCornerCenter.dx, .001),
       );
       expect(
         geometry.frameRect.bottom - geometry.bottomRightRadiusY,
-        closeTo(geometry.fabCenter.dy, .001),
+        closeTo(geometry.fabBottomRightCornerCenter.dy, .001),
       );
       expect(
-        geometry.bottomRightRadiusX - ldFloatingActionSize / 2,
+        geometry.bottomRightRadiusX - ldFloatingActionRadius,
         closeTo(viewPadding.right + LeoneBrandGeometry.fabEdgeInset, .001),
       );
       expect(
-        geometry.bottomRightRadiusY - ldFloatingActionSize / 2,
+        geometry.bottomRightRadiusY - ldFloatingActionRadius,
         closeTo(viewPadding.bottom + LeoneBrandGeometry.fabEdgeInset, .001),
       );
       expect(
@@ -90,7 +90,7 @@ void main() {
       );
     });
 
-    test('keeps the bottom-right curve concentric with the FAB in motion', () {
+    test('anchors the frame arc to the FAB bottom-right corner in motion', () {
       const viewport = Size(390, 844);
       const viewPadding = EdgeInsets.only(right: 7, bottom: 23);
 
@@ -103,12 +103,12 @@ void main() {
 
         expect(
           geometry.frameRect.right - geometry.bottomRightRadiusX,
-          closeTo(geometry.fabCenter.dx, .001),
+          closeTo(geometry.fabBottomRightCornerCenter.dx, .001),
           reason: 'horizontal center at progress $progress',
         );
         expect(
           geometry.frameRect.bottom - geometry.bottomRightRadiusY,
-          closeTo(geometry.fabCenter.dy, .001),
+          closeTo(geometry.fabBottomRightCornerCenter.dy, .001),
           reason: 'vertical center at progress $progress',
         );
       }

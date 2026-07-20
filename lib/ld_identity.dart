@@ -248,7 +248,7 @@ class LdOpeningFrameGeometry {
     required this.radius,
     required this.bottomRightRadiusX,
     required this.bottomRightRadiusY,
-    required this.fabCenter,
+    required this.fabBottomRightCornerCenter,
     required this.backgroundOpacity,
   });
 
@@ -257,7 +257,7 @@ class LdOpeningFrameGeometry {
   final double radius;
   final double bottomRightRadiusX;
   final double bottomRightRadiusY;
-  final Offset fabCenter;
+  final Offset fabBottomRightCornerCenter;
   final double backgroundOpacity;
 
   static LdOpeningFrameGeometry resolve(
@@ -272,7 +272,7 @@ class LdOpeningFrameGeometry {
         radius: 0,
         bottomRightRadiusX: 0,
         bottomRightRadiusY: 0,
-        fabCenter: Offset.zero,
+        fabBottomRightCornerCenter: Offset.zero,
         backgroundOpacity: 0,
       );
     }
@@ -327,14 +327,18 @@ class LdOpeningFrameGeometry {
     // large screens even though their centerline geometry was correct.
     final stroke = (compactSide * .058).clamp(8.0, 12.0);
     final fab = _LdOpeningFabPlacement.resolve(size, viewPadding, progress);
-    final bottomRightRadiusX = (frameRect.right - fab.center.dx).clamp(
-      0.0,
-      frameRect.width / 2,
+    final fabCornerCenterOffset = fab.size / 2 - fab.radius;
+    final fabBottomRightCornerCenter = fab.center.translate(
+      fabCornerCenterOffset,
+      fabCornerCenterOffset,
     );
-    final bottomRightRadiusY = (frameRect.bottom - fab.center.dy).clamp(
-      0.0,
-      frameRect.height / 2,
-    );
+    final bottomRightRadiusX = (frameRect.right - fabBottomRightCornerCenter.dx)
+        .clamp(0.0, frameRect.width / 2);
+    final bottomRightRadiusY =
+        (frameRect.bottom - fabBottomRightCornerCenter.dy).clamp(
+          0.0,
+          frameRect.height / 2,
+        );
 
     return LdOpeningFrameGeometry(
       frameRect: frameRect,
@@ -342,7 +346,7 @@ class LdOpeningFrameGeometry {
       radius: math.min(bottomRightRadiusX, bottomRightRadiusY),
       bottomRightRadiusX: bottomRightRadiusX,
       bottomRightRadiusY: bottomRightRadiusY,
-      fabCenter: fab.center,
+      fabBottomRightCornerCenter: fabBottomRightCornerCenter,
       backgroundOpacity: 1 - backgroundFade,
     );
   }
