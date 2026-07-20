@@ -83,12 +83,20 @@ void main() {
 
     final fab = find.byKey(const Key('portfolio-floating-action'));
     expect(find.bySemanticsLabel('Abrir menu de navegação'), findsOneWidget);
+    expect(
+      find.descendant(of: fab, matching: find.byIcon(Icons.menu_rounded)),
+      findsOneWidget,
+    );
 
     await tester.tap(fab);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.bySemanticsLabel('Fechar menu de navegação'), findsOneWidget);
+    expect(
+      find.descendant(of: fab, matching: find.byIcon(Icons.close_rounded)),
+      findsOneWidget,
+    );
     const itemKeys = [
       Key('fab-menu-home'),
       Key('fab-menu-system'),

@@ -429,7 +429,23 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(radius),
                             ),
-                            child: const SizedBox.shrink(),
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 180),
+                              switchInCurve: Curves.easeOut,
+                              switchOutCurve: Curves.easeIn,
+                              transitionBuilder: (child, animation) =>
+                                  FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  ),
+                              child: Icon(
+                                widget.expanded
+                                    ? Icons.close_rounded
+                                    : Icons.menu_rounded,
+                                key: ValueKey(widget.expanded),
+                                size: widget.expanded ? 20 : 24,
+                              ),
+                            ),
                           ),
                         ),
                       ),
