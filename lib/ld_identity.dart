@@ -3,9 +3,11 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-const ldFloatingActionColor = Color(0xFFFF6B55);
-const ldFloatingActionSize = 56.0;
-const ldFloatingActionRadius = 19.6;
+import 'brand/leone_brand.dart';
+
+const ldFloatingActionColor = LeoneBrandColors.action;
+const ldFloatingActionSize = LeoneBrandGeometry.fabSize;
+const ldFloatingActionRadius = LeoneBrandGeometry.fabCollapsedRadius;
 
 class LdFloatingActionGlyph extends StatelessWidget {
   const LdFloatingActionGlyph({
@@ -13,7 +15,7 @@ class LdFloatingActionGlyph extends StatelessWidget {
     this.size = ldFloatingActionSize,
     this.radius = ldFloatingActionRadius,
     this.color = ldFloatingActionColor,
-    this.elevation = 6,
+    this.elevation = LeoneBrandGeometry.fabElevation,
   });
 
   final double size;
@@ -38,14 +40,9 @@ class LdFloatingActionGlyph extends StatelessWidget {
 }
 
 class LdOpeningTransition extends StatefulWidget {
-  const LdOpeningTransition({
-    super.key,
-    required this.onCompleted,
-    this.duration = const Duration(milliseconds: 3100),
-  });
+  const LdOpeningTransition({super.key, required this.onCompleted});
 
   final VoidCallback onCompleted;
-  final Duration duration;
 
   @override
   State<LdOpeningTransition> createState() => _LdOpeningTransitionState();
@@ -55,7 +52,7 @@ class _LdOpeningTransitionState extends State<LdOpeningTransition>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
-    duration: widget.duration,
+    duration: LeoneBrandMotion.openingTotal,
   );
   Timer? _completionFallback;
   bool _started = false;
@@ -67,7 +64,7 @@ class _LdOpeningTransitionState extends State<LdOpeningTransition>
     if (_started) return;
     _started = true;
     _completionFallback = Timer(
-      widget.duration + const Duration(seconds: 1),
+      LeoneBrandMotion.openingTotal + const Duration(seconds: 1),
       () {
         if (mounted) _complete();
       },
@@ -101,49 +98,53 @@ class _LdOpeningTransitionState extends State<LdOpeningTransition>
 
   @override
   Widget build(BuildContext context) {
-    final safeBottom = MediaQuery.viewPaddingOf(context).bottom;
+    final viewPadding = MediaQuery.viewPaddingOf(context);
     return Positioned.fill(
-      child: IgnorePointer(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final viewport = Size(constraints.maxWidth, constraints.maxHeight);
-            return AnimatedBuilder(
-              animation: _controller,
-              builder: (context, _) {
-                final fab = _LdOpeningFabPlacement.resolve(
-                  viewport,
-                  safeBottom,
-                  _controller.value,
-                );
-                return Stack(
-                  key: const Key('ld-opening-transition'),
-                  children: [
-                    CustomPaint(
-                      painter: _LdOpeningPainter(
-                        progress: _controller.value,
-                        viewport: viewport,
+      child: Semantics(
+        image: true,
+        label: '${LeoneBrand.name}. A marca se adapta à tela.',
+        child: AbsorbPointer(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final viewport = Size(
+                constraints.maxWidth,
+                constraints.maxHeight,
+              );
+              return AnimatedBuilder(
+                animation: _controller,
+                builder: (context, _) {
+                  final fab = _LdOpeningFabPlacement.resolve(
+                    viewport,
+                    viewPadding,
+                    _controller.value,
+                  );
+                  return Stack(
+                    key: const Key('ld-opening-transition'),
+                    children: [
+                      CustomPaint(
+                        painter: _LdOpeningPainter(progress: _controller.value),
+                        size: viewport,
                       ),
-                      size: viewport,
-                    ),
-                    Positioned(
-                      left: fab.center.dx - fab.size / 2,
-                      top: fab.center.dy - fab.size / 2,
-                      child: ExcludeSemantics(
-                        child: LdFloatingActionGlyph(
-                          key: const Key('ld-opening-floating-action'),
-                          size: fab.size,
-                          radius: fab.radius,
-                          color: ldFloatingActionColor.withValues(
-                            alpha: fab.opacity,
+                      Positioned(
+                        left: fab.center.dx - fab.size / 2,
+                        top: fab.center.dy - fab.size / 2,
+                        child: ExcludeSemantics(
+                          child: LdFloatingActionGlyph(
+                            key: const Key('ld-opening-floating-action'),
+                            size: fab.size,
+                            radius: fab.radius,
+                            color: ldFloatingActionColor.withValues(
+                              alpha: fab.opacity,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
+                    ],
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -165,7 +166,7 @@ class _LdOpeningFabPlacement {
 
   static _LdOpeningFabPlacement resolve(
     Size size,
-    double safeBottom,
+    EdgeInsets viewPadding,
     double progress,
   ) {
     if (size.isEmpty) {
@@ -177,9 +178,14 @@ class _LdOpeningFabPlacement {
       );
     }
 
-    const holdFraction = 1000 / 3100;
+    const holdFraction = LeoneBrandMotion.openingHoldFraction;
     final motionProgress = _interval(progress, holdFraction, 1, Curves.linear);
-    final travel = _interval(motionProgress, .12, .92, Curves.easeInOutCubic);
+    final travel = _interval(
+      motionProgress,
+      LeoneBrandMotion.openingFabStart,
+      LeoneBrandMotion.openingViewportArrival,
+      Curves.easeInOutCubic,
+    );
     final shortest = math.min(size.width, size.height);
     final compactSide = (shortest * .46).clamp(136.0, 204.0);
     final initialFrameRect = Rect.fromCenter(
@@ -202,8 +208,14 @@ class _LdOpeningFabPlacement {
         initialButtonTopLeft +
         Offset(initialButtonSize / 2, initialButtonSize / 2);
     final finalButtonCenter = Offset(
-      size.width - 16 - ldFloatingActionSize / 2,
-      size.height - 16 - safeBottom - ldFloatingActionSize / 2,
+      size.width -
+          viewPadding.right -
+          LeoneBrandGeometry.fabEdgeInset -
+          ldFloatingActionSize / 2,
+      size.height -
+          LeoneBrandGeometry.fabEdgeInset -
+          viewPadding.bottom -
+          ldFloatingActionSize / 2,
     );
 
     return _LdOpeningFabPlacement(
@@ -224,38 +236,49 @@ class _LdOpeningFabPlacement {
   }
 }
 
-class _LdOpeningPainter extends CustomPainter {
-  const _LdOpeningPainter({required this.progress, required this.viewport});
+@immutable
+class LdOpeningFrameGeometry {
+  const LdOpeningFrameGeometry({
+    required this.frameRect,
+    required this.stroke,
+    required this.radius,
+    required this.backgroundOpacity,
+  });
 
-  final double progress;
-  final Size viewport;
+  final Rect frameRect;
+  final double stroke;
+  final double radius;
+  final double backgroundOpacity;
 
-  static const _background = Color(0xFF08080D);
-  static const _lColor = Color(0xFFF3F6F5);
-  static const _dColor = Color(0xFFCFC7F4);
+  static LdOpeningFrameGeometry resolve(Size size, double progress) {
+    if (size.isEmpty) {
+      return const LdOpeningFrameGeometry(
+        frameRect: Rect.zero,
+        stroke: 0,
+        radius: 0,
+        backgroundOpacity: 0,
+      );
+    }
 
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (size.isEmpty) return;
-
-    const holdFraction = 1000 / 3100;
+    const holdFraction = LeoneBrandMotion.openingHoldFraction;
     final motionProgress = _interval(progress, holdFraction, 1, Curves.linear);
     final backgroundFade = _interval(
       motionProgress,
-      .62,
+      LeoneBrandMotion.openingViewportExit,
       1,
       Curves.easeInCubic,
     );
-    canvas.drawRect(
-      Offset.zero & size,
-      Paint()..color = _background.withValues(alpha: 1 - backgroundFade),
-    );
-
-    final frameProgress = _interval(
+    final viewportProgress = _interval(
       motionProgress,
-      .08,
-      .82,
+      LeoneBrandMotion.openingFrameStart,
+      LeoneBrandMotion.openingViewportArrival,
       Curves.easeInOutCubic,
+    );
+    final exitProgress = _interval(
+      motionProgress,
+      LeoneBrandMotion.openingViewportExit,
+      1,
+      Curves.easeInCubic,
     );
     final shortest = math.min(size.width, size.height);
     final compactSide = (shortest * .46).clamp(136.0, 204.0);
@@ -264,6 +287,7 @@ class _LdOpeningPainter extends CustomPainter {
       width: compactSide,
       height: compactSide,
     );
+    final viewportFrameRect = Offset.zero & size;
     final overshoot = (shortest * .1).clamp(56.0, 96.0);
     final expandedFrameRect = Rect.fromLTRB(
       -overshoot,
@@ -271,20 +295,66 @@ class _LdOpeningPainter extends CustomPainter {
       size.width + overshoot,
       size.height + overshoot,
     );
-    final frameRect = Rect.fromLTRB(
-      _lerp(initialFrameRect.left, expandedFrameRect.left, frameProgress),
-      _lerp(initialFrameRect.top, expandedFrameRect.top, frameProgress),
-      _lerp(initialFrameRect.right, expandedFrameRect.right, frameProgress),
-      _lerp(initialFrameRect.bottom, expandedFrameRect.bottom, frameProgress),
-    );
+    final fittedFrameRect = Rect.lerp(
+      initialFrameRect,
+      viewportFrameRect,
+      viewportProgress,
+    )!;
+    final frameRect = Rect.lerp(
+      fittedFrameRect,
+      expandedFrameRect,
+      exitProgress,
+    )!;
+    final viewportStroke = (shortest * .04).clamp(18.0, 34.0);
     final stroke = _lerp(
       (compactSide * .058).clamp(8, 13),
-      (shortest * .04).clamp(18, 34),
-      frameProgress,
+      viewportStroke,
+      viewportProgress,
     );
     final initialRadius = compactSide * .18;
-    final expandedRadius = (shortest * .18).clamp(54.0, 160.0);
-    final radius = _lerp(initialRadius, expandedRadius, frameProgress);
+    final viewportRadius = (shortest * .18).clamp(54.0, 160.0);
+
+    return LdOpeningFrameGeometry(
+      frameRect: frameRect,
+      stroke: stroke,
+      radius: _lerp(initialRadius, viewportRadius, viewportProgress),
+      backgroundOpacity: 1 - backgroundFade,
+    );
+  }
+
+  static double _interval(double value, double begin, double end, Curve curve) {
+    final normalized = ((value - begin) / (end - begin)).clamp(0.0, 1.0);
+    return curve.transform(normalized);
+  }
+
+  static double _lerp(double begin, double end, double t) {
+    return begin + (end - begin) * t;
+  }
+}
+
+class _LdOpeningPainter extends CustomPainter {
+  const _LdOpeningPainter({required this.progress});
+
+  final double progress;
+
+  static const _background = LeoneBrandColors.canvas;
+  static const _lColor = LeoneBrandColors.structureOnDark;
+  static const _dColor = LeoneBrandColors.surfaceOnDark;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (size.isEmpty) return;
+
+    final geometry = LdOpeningFrameGeometry.resolve(size, progress);
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()
+        ..color = _background.withValues(alpha: geometry.backgroundOpacity),
+    );
+
+    final frameRect = geometry.frameRect;
+    final stroke = geometry.stroke;
+    final radius = geometry.radius;
     final opening = math.max(stroke * 1.55, radius * .58);
     final joinX = frameRect.right - radius - stroke * .18;
     final lRadius = radius * .76;
@@ -329,16 +399,9 @@ class _LdOpeningPainter extends CustomPainter {
     ..strokeJoin = StrokeJoin.round
     ..color = color.withValues(alpha: opacity);
 
-  double _interval(double value, double begin, double end, Curve curve) {
-    final normalized = ((value - begin) / (end - begin)).clamp(0.0, 1.0);
-    return curve.transform(normalized);
-  }
-
-  double _lerp(double begin, double end, double t) => begin + (end - begin) * t;
-
   @override
   bool shouldRepaint(covariant _LdOpeningPainter oldDelegate) =>
-      oldDelegate.progress != progress || oldDelegate.viewport != viewport;
+      oldDelegate.progress != progress;
 }
 
 enum LdViewportPreset { mobile, tablet, desktop }
@@ -380,11 +443,12 @@ class LdViewportStage extends StatefulWidget {
 }
 
 class _LdViewportStageState extends State<LdViewportStage> {
-  static const _holdDuration = Duration(milliseconds: 4800);
+  static const _holdDuration = LeoneBrandMotion.viewportHold;
 
   Timer? _timer;
   late LdViewportPreset _preset;
   bool _pointerInside = false;
+  bool _focusInside = false;
   bool _motionDisabled = false;
 
   @override
@@ -410,11 +474,25 @@ class _LdViewportStageState extends State<LdViewportStage> {
 
   void _restartTimer() {
     _timer?.cancel();
-    if (!widget.autoPlay || _motionDisabled) return;
+    if (!widget.autoPlay || _motionDisabled || _pointerInside || _focusInside) {
+      return;
+    }
     _timer = Timer.periodic(_holdDuration, (_) {
-      if (!mounted || _pointerInside) return;
+      if (!mounted) return;
       _select(_nextPreset(_preset), restartTimer: false);
     });
+  }
+
+  void _setPointerInside(bool value) {
+    if (_pointerInside == value) return;
+    _pointerInside = value;
+    _restartTimer();
+  }
+
+  void _setFocusInside(bool value) {
+    if (_focusInside == value) return;
+    _focusInside = value;
+    _restartTimer();
   }
 
   LdViewportPreset _nextPreset(LdViewportPreset value) => switch (value) {
@@ -436,42 +514,46 @@ class _LdViewportStageState extends State<LdViewportStage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _ViewportSelector(selected: _preset, onSelected: _select),
-        const SizedBox(height: 16),
-        Expanded(
-          child: MouseRegion(
-            onEnter: (_) => _pointerInside = true,
-            onExit: (_) => _pointerInside = false,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final target = _fitDesignSize(
-                  _preset.designSize,
-                  Size(constraints.maxWidth, constraints.maxHeight),
-                );
-                return Center(
-                  child: Semantics(
-                    container: true,
-                    liveRegion: true,
-                    label: 'Viewport LD em ${_preset.semanticsLabel}',
-                    child: AnimatedContainer(
-                      key: const Key('ld-viewport-frame'),
-                      duration: _motionDisabled
-                          ? Duration.zero
-                          : const Duration(milliseconds: 900),
-                      curve: Curves.easeInOutCubic,
-                      width: target.width,
-                      height: target.height,
-                      child: LdFrame(child: widget.child),
+    return Focus(
+      canRequestFocus: false,
+      skipTraversal: true,
+      onFocusChange: _setFocusInside,
+      child: MouseRegion(
+        onEnter: (_) => _setPointerInside(true),
+        onExit: (_) => _setPointerInside(false),
+        child: Column(
+          children: [
+            _ViewportSelector(selected: _preset, onSelected: _select),
+            const SizedBox(height: 16),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final target = _fitDesignSize(
+                    _preset.designSize,
+                    Size(constraints.maxWidth, constraints.maxHeight),
+                  );
+                  return Center(
+                    child: Semantics(
+                      container: true,
+                      label: 'Viewport LD em ${_preset.semanticsLabel}',
+                      child: AnimatedContainer(
+                        key: const Key('ld-viewport-frame'),
+                        duration: _motionDisabled
+                            ? Duration.zero
+                            : LeoneBrandMotion.viewportTransition,
+                        curve: LeoneBrandMotion.viewportCurve,
+                        width: target.width,
+                        height: target.height,
+                        child: LdFrame(child: widget.child),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -493,6 +575,7 @@ class _ViewportSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final motionDisabled = MediaQuery.disableAnimationsOf(context);
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -512,27 +595,33 @@ class _ViewportSelector extends StatelessWidget {
                 key: Key('ld-mode-${preset.name}'),
                 onTap: () => onSelected(preset),
                 borderRadius: BorderRadius.circular(99),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 240),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 13,
-                    vertical: 8,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minWidth: 64,
+                    minHeight: 48,
                   ),
-                  decoration: BoxDecoration(
-                    color: preset == selected
-                        ? const Color(0xFFF3F6F5)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(99),
-                  ),
-                  child: Text(
-                    preset.label,
-                    style: TextStyle(
+                  child: AnimatedContainer(
+                    duration: motionDisabled
+                        ? Duration.zero
+                        : const Duration(milliseconds: 240),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 13),
+                    decoration: BoxDecoration(
                       color: preset == selected
-                          ? const Color(0xFF08080D)
-                          : const Color(0xFFA5A2B4),
-                      fontSize: 9,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: .8,
+                          ? LeoneBrandColors.ink
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                    child: Text(
+                      preset.label,
+                      style: TextStyle(
+                        color: preset == selected
+                            ? LeoneBrandColors.canvas
+                            : LeoneBrandColors.mutedInk,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: .8,
+                      ),
                     ),
                   ),
                 ),
@@ -548,9 +637,9 @@ class LdFrame extends StatelessWidget {
   const LdFrame({
     super.key,
     required this.child,
-    this.lColor = const Color(0xFFF3F6F5),
-    this.dColor = const Color(0xFFCFC7F4),
-    this.actionButtonColor = const Color(0xFFFF6B55),
+    this.lColor = LeoneBrandColors.structureOnDark,
+    this.dColor = LeoneBrandColors.surfaceOnDark,
+    this.actionButtonColor = LeoneBrandColors.action,
     this.backgroundColor = Colors.transparent,
     this.showActionButton = true,
   });

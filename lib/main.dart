@@ -3,20 +3,21 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'brand/leone_brand.dart';
 import 'ld_identity.dart';
 import 'world_experience_map.dart';
 
 void main() => runApp(const LeonePortfolioApp());
 
-const _bg = Color(0xFF08080D);
-const _panel = Color(0xFF0E0E18);
-const _panelSoft = Color(0xFF151426);
-const _ink = Color(0xFFF3F6F5);
-const _muted = Color(0xFFA5A2B4);
-const _green = Color(0xFF9A7BFF);
-const _blue = Color(0xFF55B8FF);
-const _coral = Color(0xFFFF6F91);
-const _amber = Color(0xFFFFB464);
+const _bg = LeoneBrandColors.canvas;
+const _panel = LeoneBrandColors.surface;
+const _panelSoft = LeoneBrandColors.surfaceRaised;
+const _ink = LeoneBrandColors.ink;
+const _muted = LeoneBrandColors.mutedInk;
+const _green = LeoneBrandColors.interactive;
+const _blue = LeoneBrandColors.intelligence;
+const _coral = LeoneBrandColors.editorialHighlight;
+const _amber = LeoneBrandColors.editorialWarm;
 const _radarInk = Color(0xFF07110D);
 const _radarSurface = Color(0xFF0D1915);
 const _radarRaised = Color(0xFF16241F);
@@ -31,21 +32,8 @@ class LeonePortfolioApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Leone Daher — Software Engineer',
-      theme: ThemeData(
-        useMaterial3: true,
-        scaffoldBackgroundColor: _bg,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: _green,
-          brightness: Brightness.dark,
-          surface: _panel,
-        ),
-        textTheme: ThemeData.dark().textTheme.apply(
-          bodyColor: _ink,
-          displayColor: _ink,
-          fontFamily: 'Inter',
-        ),
-      ),
+      title: '${LeoneBrand.name} — Software Engineer',
+      theme: LeoneBrandTheme.dark(),
       home: const _PortfolioEntry(),
     );
   }
@@ -65,7 +53,10 @@ class _PortfolioEntryState extends State<_PortfolioEntry> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        PortfolioHomePage(floatingActionButtonEnabled: !_showOpening),
+        ExcludeSemantics(
+          excluding: _showOpening,
+          child: PortfolioHomePage(floatingActionButtonEnabled: !_showOpening),
+        ),
         if (_showOpening)
           LdOpeningTransition(
             onCompleted: () {
@@ -280,8 +271,8 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
 
   late final AnimationController _controller = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 420),
-    reverseDuration: const Duration(milliseconds: 320),
+    duration: LeoneBrandMotion.fabMenuExpand,
+    reverseDuration: LeoneBrandMotion.fabMenuCollapse,
     value: widget.expanded ? 1 : 0,
   );
   late final FocusNode _toggleFocusNode = FocusNode(
@@ -401,7 +392,8 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
                     )!;
                     final radius =
                         ldFloatingActionRadius +
-                        (ldFloatingActionSize / 2 - ldFloatingActionRadius) *
+                        (LeoneBrandGeometry.fabExpandedRadius -
+                                ldFloatingActionRadius) *
                             progress;
                     final label = widget.expanded
                         ? 'Fechar menu de navegação'

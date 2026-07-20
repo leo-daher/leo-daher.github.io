@@ -1,6 +1,14 @@
-# Leone Portfolio
+# Leone Daher Portfolio
 
-Flutter portfolio prototype focused on a global experience map widget.
+Adaptive Flutter portfolio for Leone Daher's mobile engineering, connected
+systems and AI automation work.
+
+## Brand
+
+The canonical LD identity, including strategy, geometry, color, motion, voice
+and accessibility rules, lives in
+[`assets/brand/identity.md`](assets/brand/identity.md). Runtime design tokens
+live in [`lib/brand/leone_brand.dart`](lib/brand/leone_brand.dart).
 
 ## Run
 

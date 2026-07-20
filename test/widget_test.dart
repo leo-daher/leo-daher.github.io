@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/main.dart';
 import 'package:leone_portfolio/world_experience_map.dart';
 
@@ -46,6 +47,9 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(const LeonePortfolioApp());
+    await tester.pump(
+      LeoneBrandMotion.openingTotal + const Duration(milliseconds: 100),
+    );
 
     final frame = find.byKey(const Key('ld-viewport-frame'));
     final mobileSize = tester.getSize(frame);
@@ -236,6 +240,9 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     await tester.pumpWidget(const LeonePortfolioApp());
+    await tester.pump(
+      LeoneBrandMotion.openingTotal + const Duration(milliseconds: 100),
+    );
     await tester.drag(find.byType(CustomScrollView), const Offset(0, -1450));
     await tester.pumpAndSettle();
 
