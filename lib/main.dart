@@ -711,7 +711,7 @@ class _TopBar extends StatelessWidget {
                     )
                   else
                     const Spacer(),
-                  _LanguageSelector(onLocaleChanged: onLocaleChanged),
+                  _LanguageToggle(onLocaleChanged: onLocaleChanged),
                   SizedBox(width: compact ? 6 : 12),
                   _AvailabilityBadge(compact: compact),
                 ],
@@ -724,8 +724,8 @@ class _TopBar extends StatelessWidget {
   }
 }
 
-class _LanguageSelector extends StatelessWidget {
-  const _LanguageSelector({required this.onLocaleChanged});
+class _LanguageToggle extends StatelessWidget {
+  const _LanguageToggle({required this.onLocaleChanged});
 
   final ValueChanged<Locale> onLocaleChanged;
 
@@ -733,94 +733,56 @@ class _LanguageSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final selectedLanguage = Localizations.localeOf(context).languageCode;
-    final motionDisabled = MediaQuery.disableAnimationsOf(context);
+    final englishSelected = selectedLanguage == 'en';
+    final targetLocale = Locale(englishSelected ? 'pt' : 'en');
+    final targetLanguage = englishSelected
+        ? l10n.portugueseLanguage
+        : l10n.englishLanguage;
+
     return Semantics(
-      container: true,
-      label: l10n.languageSelectorLabel,
-      explicitChildNodes: true,
-      child: Container(
-        padding: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: .045),
-          borderRadius: BorderRadius.circular(99),
-          border: Border.all(color: Colors.white.withValues(alpha: .1)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _LanguageButton(
-              key: const Key('language-pt'),
-              shortLabel: 'PT',
-              semanticLabel: l10n.portugueseLanguage,
-              selected: selectedLanguage == 'pt',
-              motionDisabled: motionDisabled,
-              onTap: () => onLocaleChanged(const Locale('pt')),
+      button: true,
+      label: '${l10n.languageSelectorLabel}: $targetLanguage',
+      child: Tooltip(
+        message: targetLanguage,
+        excludeFromSemantics: true,
+        child: TextButton(
+          key: const Key('language-toggle'),
+          onPressed: () => onLocaleChanged(targetLocale),
+          style: TextButton.styleFrom(
+            foregroundColor: _ink,
+            fixedSize: const Size(64, 48),
+            padding: EdgeInsets.zero,
+            shape: const StadiumBorder(),
+          ),
+          child: ExcludeSemantics(
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'EN',
+                    style: TextStyle(color: englishSelected ? _ink : _muted),
+                  ),
+                  const TextSpan(
+                    text: ' / ',
+                    style: TextStyle(color: _muted),
+                  ),
+                  TextSpan(
+                    text: 'PT',
+                    style: TextStyle(color: englishSelected ? _muted : _ink),
+                  ),
+                ],
+              ),
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w800,
+                letterSpacing: .5,
+              ),
             ),
-            _LanguageButton(
-              key: const Key('language-en'),
-              shortLabel: 'EN',
-              semanticLabel: l10n.englishLanguage,
-              selected: selectedLanguage == 'en',
-              motionDisabled: motionDisabled,
-              onTap: () => onLocaleChanged(const Locale('en')),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
-}
-
-class _LanguageButton extends StatelessWidget {
-  const _LanguageButton({
-    super.key,
-    required this.shortLabel,
-    required this.semanticLabel,
-    required this.selected,
-    required this.motionDisabled,
-    required this.onTap,
-  });
-
-  final String shortLabel;
-  final String semanticLabel;
-  final bool selected;
-  final bool motionDisabled;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    selected: selected,
-    label: semanticLabel,
-    child: Tooltip(
-      message: semanticLabel,
-      excludeFromSemantics: true,
-      child: InkWell(
-        onTap: selected ? null : onTap,
-        borderRadius: BorderRadius.circular(99),
-        child: AnimatedContainer(
-          duration: motionDisabled
-              ? Duration.zero
-              : const Duration(milliseconds: 180),
-          constraints: const BoxConstraints(minWidth: 44, minHeight: 48),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: selected ? _ink : Colors.transparent,
-            borderRadius: BorderRadius.circular(99),
-          ),
-          child: Text(
-            shortLabel,
-            style: TextStyle(
-              color: selected ? _bg : _muted,
-              fontSize: 10,
-              fontWeight: FontWeight.w800,
-              letterSpacing: .5,
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
 }
 
 class _AvailabilityBadge extends StatelessWidget {

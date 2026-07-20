@@ -295,18 +295,28 @@ void main() {
 
     expect(find.text('Engenheiro de Software Mobile'), findsOneWidget);
     expect(
-      tester.getSize(find.byKey(const Key('language-pt'))).height,
+      tester.getSize(find.byKey(const Key('language-toggle'))).height,
       greaterThanOrEqualTo(48),
+    );
+    expect(
+      tester.getSize(find.byKey(const Key('language-toggle'))).width,
+      lessThanOrEqualTo(64),
     );
     expect(tester.takeException(), isNull);
 
-    await tester.tap(find.byKey(const Key('language-en')));
+    await tester.tap(find.byKey(const Key('language-toggle')));
     await tester.pump(const Duration(milliseconds: 400));
 
     expect(find.text('Mobile Software Engineer'), findsOneWidget);
     expect(find.text('OPEN TO NEW CHALLENGES'), findsNothing);
     final preferences = await SharedPreferences.getInstance();
     expect(preferences.getString('portfolio_locale'), 'en');
+
+    await tester.tap(find.byKey(const Key('language-toggle')));
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(find.text('Engenheiro de Software Mobile'), findsOneWidget);
+    expect(preferences.getString('portfolio_locale'), 'pt');
     expect(tester.takeException(), isNull);
   });
 }
