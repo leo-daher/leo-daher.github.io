@@ -114,6 +114,29 @@ void main() {
       }
     });
 
+    test('keeps the frame stroke stable and clear of the FAB', () {
+      const settledProgress =
+          LeoneBrandMotion.openingHoldFraction +
+          (1 - LeoneBrandMotion.openingHoldFraction) *
+              LeoneBrandMotion.openingViewportArrival;
+
+      for (final viewport in const [Size(390, 844), Size(1440, 1000)]) {
+        final initial = LdOpeningFrameGeometry.resolve(viewport, 0);
+        final settled = LdOpeningFrameGeometry.resolve(
+          viewport,
+          settledProgress,
+        );
+
+        expect(settled.stroke, closeTo(initial.stroke, .001));
+        expect(settled.stroke, lessThanOrEqualTo(12));
+        expect(
+          LeoneBrandGeometry.fabEdgeInset - settled.stroke / 2,
+          greaterThanOrEqualTo(10),
+          reason: 'visible FAB clearance at $viewport',
+        );
+      }
+    });
+
     test('uses accessible foregrounds on the core palette', () {
       expect(
         _contrast(LeoneBrandColors.ink, LeoneBrandColors.canvas),

@@ -322,12 +322,10 @@ class LdOpeningFrameGeometry {
       expandedFrameRect,
       exitProgress,
     )!;
-    final viewportStroke = (shortest * .04).clamp(18.0, 34.0);
-    final stroke = _lerp(
-      (compactSide * .058).clamp(8, 13),
-      viewportStroke,
-      viewportProgress,
-    );
+    // Keep the frame at the optical weight of the original mark. Scaling the
+    // stroke with the viewport made it consume the FAB's 16 dp visual gap on
+    // large screens even though their centerline geometry was correct.
+    final stroke = (compactSide * .058).clamp(8.0, 12.0);
     final fab = _LdOpeningFabPlacement.resolve(size, viewPadding, progress);
     final bottomRightRadiusX = (frameRect.right - fab.center.dx).clamp(
       0.0,
@@ -352,10 +350,6 @@ class LdOpeningFrameGeometry {
   static double _interval(double value, double begin, double end, Curve curve) {
     final normalized = ((value - begin) / (end - begin)).clamp(0.0, 1.0);
     return curve.transform(normalized);
-  }
-
-  static double _lerp(double begin, double end, double t) {
-    return begin + (end - begin) * t;
   }
 }
 
