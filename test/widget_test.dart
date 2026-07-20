@@ -4,8 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/main.dart';
 import 'package:leone_portfolio/world_experience_map.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setUp(() => SharedPreferences.setMockInitialValues({}));
+
   testWidgets('renders centered positioning and switches career focus', (
     tester,
   ) async {
@@ -86,7 +89,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 400));
 
     final fab = find.byKey(const Key('portfolio-floating-action'));
-    expect(find.bySemanticsLabel('Abrir menu de navegação'), findsOneWidget);
+    expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
     expect(
       find.descendant(of: fab, matching: find.byIcon(Icons.menu_rounded)),
       findsOneWidget,
@@ -96,7 +99,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
 
-    expect(find.bySemanticsLabel('Fechar menu de navegação'), findsOneWidget);
+    expect(find.bySemanticsLabel('Close navigation menu'), findsOneWidget);
     expect(
       find.descendant(of: fab, matching: find.byIcon(Icons.close_rounded)),
       findsOneWidget,
@@ -150,8 +153,8 @@ void main() {
       find.byKey(const Key('fab-menu-projects')).hitTestable(),
       findsNothing,
     );
-    expect(find.bySemanticsLabel('Abrir menu de navegação'), findsOneWidget);
-    final headingY = tester.getTopLeft(find.text('SOLUÇÕES EM DESTAQUE')).dy;
+    expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
+    final headingY = tester.getTopLeft(find.text('FEATURED SOLUTIONS')).dy;
     expect(headingY, inInclusiveRange(0, 180));
     expect(tester.takeException(), isNull);
   });
@@ -192,7 +195,7 @@ void main() {
     await tester.sendKeyEvent(LogicalKeyboardKey.escape);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 350));
-    expect(find.bySemanticsLabel('Abrir menu de navegação'), findsOneWidget);
+    expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
 
     await tester.tap(fabFinder);
     await tester.pump();
@@ -200,7 +203,7 @@ void main() {
     await tester.tapAt(const Offset(24, 220));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 350));
-    expect(find.bySemanticsLabel('Abrir menu de navegação'), findsOneWidget);
+    expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -269,9 +272,41 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('CLIENTES ATENDIDOS'), findsOneWidget);
-    expect(find.text('13 MARCAS'), findsOneWidget);
+    expect(find.text('CLIENTS SERVED'), findsOneWidget);
+    expect(find.text('13 BRANDS'), findsOneWidget);
     expect(find.text('LINELINKER PRO'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('switches between Portuguese and English and saves preference', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({'portfolio_locale': 'pt'});
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await tester.pump();
+    await tester.pump(
+      LeoneBrandMotion.openingTotal + const Duration(milliseconds: 200),
+    );
+
+    expect(find.text('Engenheiro de Software Mobile'), findsOneWidget);
+    expect(
+      tester.getSize(find.byKey(const Key('language-pt'))).height,
+      greaterThanOrEqualTo(48),
+    );
+    expect(tester.takeException(), isNull);
+
+    await tester.tap(find.byKey(const Key('language-en')));
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(find.text('Mobile Software Engineer'), findsOneWidget);
+    expect(find.text('OPEN TO NEW CHALLENGES'), findsNothing);
+    final preferences = await SharedPreferences.getInstance();
+    expect(preferences.getString('portfolio_locale'), 'en');
     expect(tester.takeException(), isNull);
   });
 }

@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import 'brand/leone_brand.dart';
+import 'l10n/l10n.dart';
 
 const ldFloatingActionColor = LeoneBrandColors.action;
 const ldFloatingActionSize = LeoneBrandGeometry.fabSize;
@@ -102,7 +103,7 @@ class _LdOpeningTransitionState extends State<LdOpeningTransition>
     return Positioned.fill(
       child: Semantics(
         image: true,
-        label: '${LeoneBrand.name}. A marca se adapta à tela.',
+        label: context.l10n.openingSemantics,
         child: AbsorbPointer(
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -413,10 +414,10 @@ extension on LdViewportPreset {
     LdViewportPreset.desktop => 'DESKTOP',
   };
 
-  String get semanticsLabel => switch (this) {
-    LdViewportPreset.mobile => 'formato mobile',
-    LdViewportPreset.tablet => 'formato tablet',
-    LdViewportPreset.desktop => 'formato desktop e web',
+  String semanticsLabel(BuildContext context) => switch (this) {
+    LdViewportPreset.mobile => context.l10n.mobileFormat,
+    LdViewportPreset.tablet => context.l10n.tabletFormat,
+    LdViewportPreset.desktop => context.l10n.desktopFormat,
   };
 
   Size get designSize => switch (this) {
@@ -535,7 +536,9 @@ class _LdViewportStageState extends State<LdViewportStage> {
                   return Center(
                     child: Semantics(
                       container: true,
-                      label: 'Viewport LD em ${_preset.semanticsLabel}',
+                      label: context.l10n.viewportInFormat(
+                        _preset.semanticsLabel(context),
+                      ),
                       child: AnimatedContainer(
                         key: const Key('ld-viewport-frame'),
                         duration: _motionDisabled
@@ -590,7 +593,7 @@ class _ViewportSelector extends StatelessWidget {
             Semantics(
               button: true,
               selected: preset == selected,
-              label: 'Mostrar ${preset.semanticsLabel}',
+              label: context.l10n.showFormat(preset.semanticsLabel(context)),
               child: InkWell(
                 key: Key('ld-mode-${preset.name}'),
                 onTap: () => onSelected(preset),

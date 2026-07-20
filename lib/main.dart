@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'brand/leone_brand.dart';
 import 'ld_identity.dart';
+import 'l10n/app_localizations.dart';
+import 'l10n/l10n.dart';
 import 'world_experience_map.dart';
 
 void main() => runApp(const LeonePortfolioApp());
@@ -25,22 +29,66 @@ const _radarMint = Color(0xFF22E29A);
 const _radarCoral = Color(0xFFFF6B55);
 const _radarMuted = Color(0xFF8FA39A);
 
-class LeonePortfolioApp extends StatelessWidget {
+class LeonePortfolioApp extends StatefulWidget {
   const LeonePortfolioApp({super.key});
+
+  @override
+  State<LeonePortfolioApp> createState() => _LeonePortfolioAppState();
+}
+
+class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
+  static const _localePreferenceKey = 'portfolio_locale';
+  Locale? _locale;
+  bool _localeChosenInSession = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _restoreLocale();
+  }
+
+  Future<void> _restoreLocale() async {
+    final preferences = await SharedPreferences.getInstance();
+    final languageCode = preferences.getString(_localePreferenceKey);
+    if (!mounted ||
+        _localeChosenInSession ||
+        (languageCode != 'en' && languageCode != 'pt')) {
+      return;
+    }
+    setState(() => _locale = Locale(languageCode!));
+  }
+
+  Future<void> _setLocale(Locale locale) async {
+    if (_locale?.languageCode == locale.languageCode) return;
+    _localeChosenInSession = true;
+    setState(() => _locale = locale);
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString(_localePreferenceKey, locale.languageCode);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: '${LeoneBrand.name} — Software Engineer',
+      onGenerateTitle: (context) => context.l10n.appTitle,
       theme: LeoneBrandTheme.dark(),
-      home: const _PortfolioEntry(),
+      locale: _locale,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: _PortfolioEntry(onLocaleChanged: _setLocale),
     );
   }
 }
 
 class _PortfolioEntry extends StatefulWidget {
-  const _PortfolioEntry();
+  const _PortfolioEntry({required this.onLocaleChanged});
+
+  final ValueChanged<Locale> onLocaleChanged;
 
   @override
   State<_PortfolioEntry> createState() => _PortfolioEntryState();
@@ -55,7 +103,10 @@ class _PortfolioEntryState extends State<_PortfolioEntry> {
       children: [
         ExcludeSemantics(
           excluding: _showOpening,
-          child: PortfolioHomePage(floatingActionButtonEnabled: !_showOpening),
+          child: PortfolioHomePage(
+            floatingActionButtonEnabled: !_showOpening,
+            onLocaleChanged: widget.onLocaleChanged,
+          ),
         ),
         if (_showOpening)
           LdOpeningTransition(
@@ -73,10 +124,12 @@ class PortfolioHomePage extends StatefulWidget {
     super.key,
     this.showFloatingActionButton = true,
     this.floatingActionButtonEnabled = true,
+    required this.onLocaleChanged,
   });
 
   final bool showFloatingActionButton;
   final bool floatingActionButtonEnabled;
+  final ValueChanged<Locale> onLocaleChanged;
 
   @override
   State<PortfolioHomePage> createState() => _PortfolioHomePageState();
@@ -176,7 +229,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                 child: CustomScrollView(
                   controller: _scrollController,
                   slivers: [
-                    const SliverToBoxAdapter(child: _TopBar()),
+                    SliverToBoxAdapter(
+                      child: _TopBar(onLocaleChanged: widget.onLocaleChanged),
+                    ),
                     SliverToBoxAdapter(
                       child: _SectionFrame(
                         maxWidth: 1440,
@@ -213,7 +268,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                   child: ModalBarrier(
                     color: Colors.transparent,
                     dismissible: true,
-                    semanticsLabel: 'Descartar menu de navegação',
+                    semanticsLabel: context.l10n.dismissNavigationMenu,
                     onDismiss: _closeFabMenu,
                   ),
                 ),
@@ -245,25 +300,21 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
   static const _actions = <_PortfolioFabMenuAction>[
     _PortfolioFabMenuAction(
       destination: _PortfolioDestination.home,
-      label: 'Início',
       icon: Icons.home_outlined,
       key: Key('fab-menu-home'),
     ),
     _PortfolioFabMenuAction(
       destination: _PortfolioDestination.system,
-      label: 'Sistema',
       icon: Icons.account_tree_outlined,
       key: Key('fab-menu-system'),
     ),
     _PortfolioFabMenuAction(
       destination: _PortfolioDestination.projects,
-      label: 'Projetos',
       icon: Icons.work_outline_rounded,
       key: Key('fab-menu-projects'),
     ),
     _PortfolioFabMenuAction(
       destination: _PortfolioDestination.experience,
-      label: 'Experiência',
       icon: Icons.public_rounded,
       key: Key('fab-menu-experience'),
     ),
@@ -341,6 +392,7 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return FocusTraversalGroup(
       policy: OrderedTraversalPolicy(),
       child: Semantics(
@@ -361,6 +413,13 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
                     index: index,
                     itemCount: _actions.length,
                     action: _actions[index],
+                    label: switch (_actions[index].destination) {
+                      _PortfolioDestination.home => l10n.navHome,
+                      _PortfolioDestination.system => l10n.navSystem,
+                      _PortfolioDestination.projects => l10n.navProjects,
+                      _PortfolioDestination.experience => l10n.navExperience,
+                    },
+                    closeMenuLabel: l10n.closeMenu,
                     focusNode: _itemFocusNodes[index],
                     isLast: index == _actions.length - 1,
                     onClose: widget.onToggle,
@@ -396,8 +455,8 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
                                 ldFloatingActionRadius) *
                             progress;
                     final label = widget.expanded
-                        ? 'Fechar menu de navegação'
-                        : 'Abrir menu de navegação';
+                        ? l10n.closeNavigationMenu
+                        : l10n.openNavigationMenu;
                     return Tooltip(
                       message: label,
                       excludeFromSemantics: true,
@@ -405,7 +464,7 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
                         button: true,
                         toggled: widget.expanded,
                         label: label,
-                        value: widget.expanded ? 'Expandido' : 'Recolhido',
+                        value: widget.expanded ? l10n.expanded : l10n.collapsed,
                         onTap: widget.onToggle,
                         child: ExcludeSemantics(
                           child: FloatingActionButton(
@@ -456,13 +515,11 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
 class _PortfolioFabMenuAction {
   const _PortfolioFabMenuAction({
     required this.destination,
-    required this.label,
     required this.icon,
     required this.key,
   });
 
   final _PortfolioDestination destination;
-  final String label;
   final IconData icon;
   final Key key;
 }
@@ -473,6 +530,8 @@ class _StaggeredFabMenuItem extends StatelessWidget {
     required this.index,
     required this.itemCount,
     required this.action,
+    required this.label,
+    required this.closeMenuLabel,
     required this.focusNode,
     required this.isLast,
     required this.onClose,
@@ -483,6 +542,8 @@ class _StaggeredFabMenuItem extends StatelessWidget {
   final int index;
   final int itemCount;
   final _PortfolioFabMenuAction action;
+  final String label;
+  final String closeMenuLabel;
   final FocusNode focusNode;
   final bool isLast;
   final VoidCallback onClose;
@@ -534,9 +595,9 @@ class _StaggeredFabMenuItem extends StatelessWidget {
       },
       child: Semantics(
         button: true,
-        label: action.label,
+        label: label,
         customSemanticsActions: isLast
-            ? {CustomSemanticsAction(label: 'Fechar menu'): onClose}
+            ? {CustomSemanticsAction(label: closeMenuLabel): onClose}
             : null,
         child: Material(
           key: action.key,
@@ -562,7 +623,7 @@ class _StaggeredFabMenuItem extends StatelessWidget {
                       color: scheme.onPrimaryContainer,
                     ),
                     const SizedBox(width: 8),
-                    Text(action.label, style: labelStyle),
+                    Text(label, style: labelStyle),
                   ],
                 ),
               ),
@@ -601,7 +662,9 @@ class _SectionFrame extends StatelessWidget {
 }
 
 class _TopBar extends StatelessWidget {
-  const _TopBar();
+  const _TopBar({required this.onLocaleChanged});
+
+  final ValueChanged<Locale> onLocaleChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -648,6 +711,8 @@ class _TopBar extends StatelessWidget {
                     )
                   else
                     const Spacer(),
+                  _LanguageSelector(onLocaleChanged: onLocaleChanged),
+                  SizedBox(width: compact ? 6 : 12),
                   _AvailabilityBadge(compact: compact),
                 ],
               );
@@ -657,6 +722,105 @@ class _TopBar extends StatelessWidget {
       ),
     );
   }
+}
+
+class _LanguageSelector extends StatelessWidget {
+  const _LanguageSelector({required this.onLocaleChanged});
+
+  final ValueChanged<Locale> onLocaleChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final selectedLanguage = Localizations.localeOf(context).languageCode;
+    final motionDisabled = MediaQuery.disableAnimationsOf(context);
+    return Semantics(
+      container: true,
+      label: l10n.languageSelectorLabel,
+      explicitChildNodes: true,
+      child: Container(
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: .045),
+          borderRadius: BorderRadius.circular(99),
+          border: Border.all(color: Colors.white.withValues(alpha: .1)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _LanguageButton(
+              key: const Key('language-pt'),
+              shortLabel: 'PT',
+              semanticLabel: l10n.portugueseLanguage,
+              selected: selectedLanguage == 'pt',
+              motionDisabled: motionDisabled,
+              onTap: () => onLocaleChanged(const Locale('pt')),
+            ),
+            _LanguageButton(
+              key: const Key('language-en'),
+              shortLabel: 'EN',
+              semanticLabel: l10n.englishLanguage,
+              selected: selectedLanguage == 'en',
+              motionDisabled: motionDisabled,
+              onTap: () => onLocaleChanged(const Locale('en')),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LanguageButton extends StatelessWidget {
+  const _LanguageButton({
+    super.key,
+    required this.shortLabel,
+    required this.semanticLabel,
+    required this.selected,
+    required this.motionDisabled,
+    required this.onTap,
+  });
+
+  final String shortLabel;
+  final String semanticLabel;
+  final bool selected;
+  final bool motionDisabled;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    selected: selected,
+    label: semanticLabel,
+    child: Tooltip(
+      message: semanticLabel,
+      excludeFromSemantics: true,
+      child: InkWell(
+        onTap: selected ? null : onTap,
+        borderRadius: BorderRadius.circular(99),
+        child: AnimatedContainer(
+          duration: motionDisabled
+              ? Duration.zero
+              : const Duration(milliseconds: 180),
+          constraints: const BoxConstraints(minWidth: 44, minHeight: 48),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: selected ? _ink : Colors.transparent,
+            borderRadius: BorderRadius.circular(99),
+          ),
+          child: Text(
+            shortLabel,
+            style: TextStyle(
+              color: selected ? _bg : _muted,
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: .5,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class _AvailabilityBadge extends StatelessWidget {
@@ -679,7 +843,9 @@ class _AvailabilityBadge extends StatelessWidget {
           const _PulseDot(),
           const SizedBox(width: 8),
           Text(
-            compact ? 'DISPONÍVEL' : 'DISPONÍVEL PARA NOVOS DESAFIOS',
+            compact
+                ? context.l10n.availableCompact
+                : context.l10n.availableFull,
             style: const TextStyle(
               color: _green,
               fontSize: 10,
@@ -716,6 +882,7 @@ class _HeroState extends State<_Hero> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return LayoutBuilder(
       builder: (context, constraints) {
         final compact = constraints.maxWidth < 700;
@@ -723,11 +890,11 @@ class _HeroState extends State<_Hero> {
         final roleSize = compact ? 30.0 : 48.0;
         final accent = focus == 0 ? _green : _blue;
         final role = focus == 0
-            ? 'Mobile Software Engineer'
-            : 'AI Automation Engineer';
+            ? l10n.mobileEngineer
+            : l10n.aiAutomationEngineer;
         final supportingLine = focus == 0
-            ? 'Mobile products powered by smart, connected systems.'
-            : 'Python, agents and automation built around real work.';
+            ? l10n.mobileSupporting
+            : l10n.aiSupporting;
         return Container(
           height: compact ? 900 : 880,
           clipBehavior: Clip.antiAlias,
@@ -780,7 +947,7 @@ class _HeroState extends State<_Hero> {
                     ),
                     SizedBox(height: compact ? 42 : 54),
                     Text(
-                      '7+ YEARS BUILDING SOFTWARE',
+                      l10n.yearsBuildingSoftware,
                       style: TextStyle(
                         color: accent,
                         fontSize: compact ? 10 : 12,
@@ -859,6 +1026,7 @@ class _IdentityFrameContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return LayoutBuilder(
       builder: (context, constraints) {
         final horizontal = constraints.maxHeight < 170;
@@ -872,7 +1040,7 @@ class _IdentityFrameContent extends StatelessWidget {
           ),
         );
         final detail = Text(
-          'mobile  ·  desktop  ·  web',
+          l10n.surfaceList,
           maxLines: 1,
           overflow: TextOverflow.fade,
           style: const TextStyle(
@@ -904,10 +1072,10 @@ class _IdentityFrameContent extends StatelessWidget {
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'ONE FRAME · EVERY SURFACE',
+                      Text(
+                        context.l10n.everySurface,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: _green,
                           fontSize: 7,
                           fontWeight: FontWeight.w800,
@@ -932,6 +1100,7 @@ class _SystemOverviewSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return LayoutBuilder(
       builder: (context, constraints) {
         final compact = constraints.maxWidth < 700;
@@ -953,23 +1122,23 @@ class _SystemOverviewSection extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'UM PRODUTO. O SISTEMA INTEIRO.',
-                          style: TextStyle(
+                          l10n.systemEyebrow,
+                          style: const TextStyle(
                             color: _green,
                             fontSize: 10,
                             fontWeight: FontWeight.w800,
                             letterSpacing: 1.3,
                           ),
                         ),
-                        SizedBox(height: 7),
+                        const SizedBox(height: 7),
                         Text(
-                          'Mobile, serviços e inteligência conectados.',
-                          style: TextStyle(
+                          l10n.systemTitle,
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
                           ),
@@ -978,9 +1147,9 @@ class _SystemOverviewSection extends StatelessWidget {
                     ),
                   ),
                   if (!compact)
-                    const Text(
-                      'PRODUCT → SYSTEM → RESULT',
-                      style: TextStyle(
+                    Text(
+                      l10n.systemFlow,
+                      style: const TextStyle(
                         color: _muted,
                         fontSize: 8,
                         fontWeight: FontWeight.w800,
@@ -1029,7 +1198,7 @@ class _HeroFocusSelector extends StatelessWidget {
           onTap: () => onSelected(0),
         ),
         _HeroFocusButton(
-          label: 'AI + Automation',
+          label: context.l10n.aiAutomationTab,
           compact: compact,
           selected: selected == 1,
           accent: _blue,
@@ -1092,8 +1261,9 @@ class _SystemDiagram extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final mobile = _SystemNode(
-      eyebrow: '01  /  PRODUCT',
+      eyebrow: l10n.productLabel,
       title: 'Mobile',
       detail: 'Flutter · Android · iOS',
       icon: Icons.phone_iphone_rounded,
@@ -1102,17 +1272,17 @@ class _SystemDiagram extends StatelessWidget {
       compact: compact,
     );
     final backend = _SystemNode(
-      eyebrow: '02  /  SERVICES',
+      eyebrow: l10n.servicesLabel,
       title: 'Python Backend',
-      detail: 'APIs · data · integrations',
+      detail: l10n.backendDetail,
       icon: Icons.dns_rounded,
       accent: _amber,
       compact: compact,
     );
     final ai = _SystemNode(
-      eyebrow: '03  /  INTELLIGENCE',
-      title: 'AI Systems',
-      detail: 'Agents · LLMs · automation',
+      eyebrow: l10n.intelligenceLabel,
+      title: l10n.aiSystems,
+      detail: l10n.aiDetail,
       icon: Icons.auto_awesome_rounded,
       accent: _blue,
       highlighted: focus == 1,
@@ -1126,12 +1296,9 @@ class _SystemDiagram extends StatelessWidget {
           ? Column(
               children: [
                 mobile,
-                const _SystemConnector(label: 'REQUESTS', vertical: true),
+                _SystemConnector(label: l10n.requests, vertical: true),
                 backend,
-                const _SystemConnector(
-                  label: 'CONTEXT + TOOLS',
-                  vertical: true,
-                ),
+                _SystemConnector(label: l10n.contextTools, vertical: true),
                 ai,
                 const SizedBox(height: 8),
                 const _SystemReturnLabel(compact: true),
@@ -1153,9 +1320,9 @@ class _SystemDiagram extends StatelessWidget {
                         child: _SystemConnector(label: 'REST / GRAPHQL'),
                       ),
                       Expanded(child: backend),
-                      const SizedBox(
+                      SizedBox(
                         width: 116,
-                        child: _SystemConnector(label: 'CONTEXT + TOOLS'),
+                        child: _SystemConnector(label: l10n.contextTools),
                       ),
                       Expanded(child: ai),
                     ],
@@ -1332,8 +1499,8 @@ class _SystemReturnLabel extends StatelessWidget {
       const SizedBox(width: 6),
       Text(
         compact
-            ? 'RESULTS RETURN TO MOBILE'
-            : 'DECISIONS + ACTIONS RETURN TO THE PRODUCT',
+            ? context.l10n.resultsReturnMobile
+            : context.l10n.decisionsReturnProduct,
         style: TextStyle(
           color: _muted,
           fontSize: compact ? 7 : 9,
@@ -1460,6 +1627,7 @@ class _DeviceLabState extends State<_DeviceLab> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -1478,35 +1646,35 @@ class _DeviceLabState extends State<_DeviceLab> {
         children: [
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'DEVICE LAB',
-                      style: TextStyle(
+                      l10n.deviceLab,
+                      style: const TextStyle(
                         fontSize: 11,
                         color: _muted,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 1.4,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
-                      'Uma ação. Todas as telas.',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                      l10n.oneActionEveryScreen,
+                      style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
               ),
               _ModeButton(
-                label: 'Mosaico',
+                label: l10n.mosaic,
                 selected: mode == _DeviceMode.mosaic,
                 onTap: () => setState(() => mode = _DeviceMode.mosaic),
               ),
               const SizedBox(width: 6),
               _ModeButton(
-                label: 'Metamorfo',
+                label: l10n.morph,
                 selected: mode == _DeviceMode.morph,
                 onTap: () => setState(() => mode = _DeviceMode.morph),
               ),
@@ -1531,9 +1699,9 @@ class _DeviceLabState extends State<_DeviceLab> {
             ),
           ),
           const SizedBox(height: 14),
-          const Text(
-            'Explore ofertas, compare preços e salve itens — tudo sincronizado.',
-            style: TextStyle(color: _muted, fontSize: 12),
+          Text(
+            l10n.deviceDemoCaption,
+            style: const TextStyle(color: _muted, fontSize: 12),
           ),
         ],
       ),
@@ -1557,7 +1725,7 @@ class _ModeButton extends StatelessWidget {
     return Semantics(
       button: true,
       selected: selected,
-      label: 'Visualização $label',
+      label: context.l10n.viewMode(label),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(10),
@@ -1681,7 +1849,7 @@ class _DeviceFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '$label com Radar de Ofertas interativo',
+      label: context.l10n.interactiveDealsDevice(label),
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
@@ -1816,7 +1984,7 @@ class _RadarWidePreview extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      veryCompact ? 'RADAR' : 'RADAR DE OFERTAS',
+                      veryCompact ? 'RADAR' : context.l10n.dealRadar,
                       maxLines: 2,
                       style: const TextStyle(
                         fontSize: 7,
@@ -1826,9 +1994,9 @@ class _RadarWidePreview extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      'LIVE DEALS',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.liveDeals,
+                      style: const TextStyle(
                         color: _radarMuted,
                         fontSize: 5,
                         fontWeight: FontWeight.w800,
@@ -1933,7 +2101,7 @@ class _RadarDemoHeader extends StatelessWidget {
       SizedBox(width: compact ? 5 : 8),
       Expanded(
         child: Text(
-          compact ? 'RADAR' : 'RADAR DE OFERTAS',
+          compact ? 'RADAR' : context.l10n.dealRadar,
           maxLines: 1,
           overflow: TextOverflow.fade,
           style: TextStyle(
@@ -2025,7 +2193,7 @@ class _RadarDemoSearchState extends State<_RadarDemoSearch> {
               height: 1,
             ),
             decoration: InputDecoration.collapsed(
-              hintText: 'Buscar produto',
+              hintText: context.l10n.searchProduct,
               hintStyle: TextStyle(
                 color: _radarMuted,
                 fontSize: widget.compact ? 6.5 : 8.5,
@@ -2072,7 +2240,11 @@ class _RadarDemoTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const labels = ['Ofertas', 'Comparar', 'Salvos'];
+    final labels = [
+      context.l10n.offers,
+      context.l10n.compare,
+      context.l10n.saved,
+    ];
     return Row(
       children: [
         for (var index = 0; index < labels.length; index++) ...[
@@ -2145,7 +2317,7 @@ const _radarDemoOffers = [
   _RadarDemoOffer(
     id: 'g-pro-x',
     title: 'Mouse Logitech G Pro X Superlight 2',
-    store: '3 lojas',
+    store: '3 stores',
     price: 'R\$ 649',
     oldPrice: 'R\$ 799',
     discount: '-19%',
@@ -2291,7 +2463,9 @@ class _RadarOfferCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(99),
                     ),
                     child: Text(
-                      offer.store,
+                      offer.id == 'g-pro-x'
+                          ? context.l10n.threeStores
+                          : offer.store,
                       style: TextStyle(
                         fontSize: compact ? 5.5 : 7,
                         fontWeight: FontWeight.w700,
@@ -2304,7 +2478,9 @@ class _RadarOfferCard extends StatelessWidget {
                   right: compact ? 4 : 6,
                   child: Semantics(
                     button: true,
-                    label: isSaved ? 'Remover dos salvos' : 'Salvar oferta',
+                    label: isSaved
+                        ? context.l10n.removeSaved
+                        : context.l10n.saveDeal,
                     child: InkWell(
                       key: ValueKey('save-${offer.id}'),
                       onTap: onToggleSaved,
@@ -2398,7 +2574,7 @@ class _RadarOfferCard extends StatelessWidget {
                         ),
                       const Spacer(),
                       Text(
-                        'comparar',
+                        context.l10n.compare.toLowerCase(),
                         style: TextStyle(
                           color: _radarMint,
                           fontSize: compact ? 5.5 : 7,
@@ -2441,7 +2617,7 @@ class _RadarEmptyState extends StatelessWidget {
         ),
         SizedBox(height: compact ? 5 : 8),
         Text(
-          saved ? 'Nada salvo' : 'Nenhuma oferta',
+          saved ? context.l10n.nothingSaved : context.l10n.noDeals,
           style: TextStyle(
             color: _radarMuted,
             fontSize: compact ? 7 : 10,
@@ -2506,7 +2682,7 @@ class _RadarOfferDetail extends StatelessWidget {
               SizedBox(width: compact ? 4 : 7),
               Expanded(
                 child: Text(
-                  'DETALHES DA OFERTA',
+                  context.l10n.dealDetails,
                   maxLines: 1,
                   style: TextStyle(
                     color: _radarMuted,
@@ -2588,7 +2764,9 @@ class _RadarOfferDetail extends StatelessWidget {
           if (!compact || offer.storeCount > 1) ...[
             SizedBox(height: compact ? 4 : 6),
             Text(
-              offer.storeCount > 1 ? 'PREÇOS NESTA BASE' : 'LOJA',
+              offer.storeCount > 1
+                  ? context.l10n.pricesInDatabase
+                  : context.l10n.store,
               style: TextStyle(
                 color: _radarMuted,
                 fontSize: compact ? 5 : 6.5,
@@ -2692,11 +2870,10 @@ class _ProjectProof extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const _SectionHeading(
-          eyebrow: 'SOLUÇÕES EM DESTAQUE',
-          title: 'Código com impacto visível.',
-          copy:
-              'Projetos próprios e experiência de produto transformados em demonstrações que você pode explorar.',
+        _SectionHeading(
+          eyebrow: context.l10n.featuredSolutions,
+          title: context.l10n.projectsTitle,
+          copy: context.l10n.projectsCopy,
         ),
         const SizedBox(height: 34),
         LayoutBuilder(
@@ -2715,10 +2892,9 @@ class _ProjectProof extends StatelessWidget {
               children: [
                 _ProjectCard(
                   width: width,
-                  label: '01  •  RADAR DE OFERTAS',
+                  label: '01  •  ${context.l10n.dealRadar}',
                   title: 'Mobile Systems',
-                  copy:
-                      'Produto em movimento: interfaces adaptativas, estado sincronizado e integrações nativas em uma experiência que flui.',
+                  copy: context.l10n.mobileProjectCopy,
                   accent: _green,
                   visual: _ProjectVisualType.mobile,
                 ),
@@ -2726,8 +2902,7 @@ class _ProjectProof extends StatelessWidget {
                   width: width,
                   label: '02  •  CAREER COPILOT',
                   title: 'Agentic Workflows',
-                  copy:
-                      'Inteligência que decide e executa: agentes conectam contexto, ferramentas e validação sem perder o controle humano.',
+                  copy: context.l10n.agentsProjectCopy,
                   accent: _blue,
                   visual: _ProjectVisualType.agents,
                 ),
@@ -2735,8 +2910,7 @@ class _ProjectProof extends StatelessWidget {
                   width: width,
                   label: '03  •  LOCAL LLM LAB',
                   title: 'Automation Lab',
-                  copy:
-                      'Processo mensurável: Python transforma tarefas repetitivas em pipelines observáveis, reproduzíveis e confiáveis.',
+                  copy: context.l10n.automationProjectCopy,
                   accent: _coral,
                   visual: _ProjectVisualType.automation,
                 ),
@@ -3075,13 +3249,12 @@ class _ExperienceSection extends StatelessWidget {
         Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1240),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: _SectionHeading(
-                eyebrow: 'EXPERIÊNCIA GLOBAL',
-                title: 'Produtos usados no mundo real.',
-                copy:
-                    'Mobile, backend, automação e infraestrutura em operações distribuídas por diferentes mercados.',
+                eyebrow: context.l10n.globalExperience,
+                title: context.l10n.experienceTitle,
+                copy: context.l10n.experienceCopy,
               ),
             ),
           ),
@@ -3130,9 +3303,9 @@ class _Footer extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Vamos construir algo que funcione de verdade?',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.footerInvitation,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                       ),
@@ -3144,10 +3317,10 @@ class _Footer extends StatelessWidget {
               }
               return Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Vamos construir algo que funcione de verdade?',
-                      style: TextStyle(
+                      context.l10n.footerInvitation,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                       ),

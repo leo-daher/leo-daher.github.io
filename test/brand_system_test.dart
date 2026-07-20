@@ -5,8 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/ld_identity.dart';
 import 'package:leone_portfolio/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setUp(() => SharedPreferences.setMockInitialValues({}));
+
   group('brand tokens', () {
     test('preserve the shared D and action anchor', () {
       const dAnchor =

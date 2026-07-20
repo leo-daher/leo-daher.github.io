@@ -5,6 +5,8 @@ import 'package:countries_world_map/data/maps/world_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'l10n/l10n.dart';
+
 const _mapAccent = Color(0xFF51F2C2);
 const _darkPanel = Color(0xFF0D171D);
 const _outline = Color(0xFF42606B);
@@ -194,6 +196,189 @@ const _portfolioCountries = <PortfolioCountry>[
   ),
 ];
 
+List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
+  if (Localizations.localeOf(context).languageCode != 'en') {
+    return _portfolioCountries;
+  }
+  return const [
+    PortfolioCountry(
+      isoCode: 'BR',
+      mapId: 'br',
+      name: 'Brazil',
+      location: 'Rio de Janeiro / São Paulo',
+      role: 'Mobile, full-stack and robotics',
+      summary:
+          'Projects in insurance, computer vision, robotics and public systems.',
+      yearRange: '2019 - present',
+      anchor: Offset(0.33, 0.69),
+      projects: [
+        PortfolioProject(
+          logo: 'MAG',
+          name: 'MAG / Mongeral Aegon',
+          description:
+              'Insurance sales app using Java/Kotlin, Realm, Firebase and CI/CD.',
+        ),
+        PortfolioProject(
+          logo: 'HR',
+          name: 'Human Robotics / Robios',
+          description:
+              'Face detection and mask classification using Camera2, TensorFlow and MQTT.',
+        ),
+        PortfolioProject(
+          logo: 'VIS',
+          name: 'Visagio',
+          description:
+              'Public-network allocation system using Python, Django, React and OR-Tools.',
+        ),
+      ],
+    ),
+    PortfolioCountry(
+      isoCode: 'US',
+      mapId: 'us',
+      name: 'United States',
+      location: 'Remote projects',
+      role: 'Field operations and Flutter',
+      summary:
+          'Remote projects for field operations, maps, dynamic forms and mobile products.',
+      yearRange: 'remote',
+      anchor: Offset(0.23, 0.44),
+      projects: [
+        PortfolioProject(
+          logo: '495',
+          name: 'Code 495',
+          description:
+              'Offline-first infrastructure mapping, map clustering and configurable forms.',
+        ),
+        PortfolioProject(
+          logo: 'LL',
+          name: 'Linelinker Pro',
+          description:
+              'US project included as an editable portfolio entry based on supplied context.',
+        ),
+      ],
+    ),
+    PortfolioCountry(
+      isoCode: 'PT',
+      mapId: 'pt',
+      name: 'Portugal',
+      location: 'Lisbon',
+      role: 'Logistics, government and utilities',
+      summary:
+          'Projects in logistics back offices, tracking, requirements, backend support and infrastructure.',
+      yearRange: '2022 - present',
+      anchor: Offset(0.455, 0.45),
+      projects: [
+        PortfolioProject(
+          logo: 'CTT',
+          name: 'CTT Correios de Portugal',
+          description:
+              'Android/Kotlin tracking, scanners, Zebra, Firebase and offline use by postal workers.',
+        ),
+        PortfolioProject(
+          logo: 'LYZ',
+          name: 'Lyzer',
+          description:
+              '.NET Backend for Frontend, GraphQL and logistics workflows for retail/e-commerce.',
+        ),
+        PortfolioProject(
+          logo: 'ADP',
+          name: 'Águas de Portugal',
+          description:
+              'Requirements, business rules and backend support with PHP/Laravel/Python.',
+        ),
+        PortfolioProject(
+          logo: 'ADM',
+          name: 'Águas de Monchique',
+          description:
+              'Docker infrastructure built from scratch for frontend, backend and database.',
+        ),
+      ],
+    ),
+    PortfolioCountry(
+      isoCode: 'ES',
+      mapId: 'es',
+      name: 'Spain',
+      location: 'Madrid / Iberian operations',
+      role: 'Energy and tracking',
+      summary:
+          'Experience tied to Iberian operations in renewable energy and tracking.',
+      yearRange: '2022 - 2024',
+      anchor: Offset(0.47, 0.46),
+      projects: [
+        PortfolioProject(
+          logo: 'CTT',
+          name: 'CTT',
+          description:
+              'Tracking project also associated with Spain in the supplied context.',
+        ),
+        PortfolioProject(
+          logo: 'IBD',
+          name: 'Iberdrola',
+          description:
+              'Renewable-energy sales system using Laravel, Vue, PWA and anti-fraud protection.',
+        ),
+      ],
+    ),
+    PortfolioCountry(
+      isoCode: 'NL',
+      mapId: 'nl',
+      name: 'Netherlands',
+      location: 'Van Cranenbroek',
+      role: 'Retail mobile and backend',
+      summary:
+          'Catalog and sales app using Flutter/Kotlin, SVG maps, Firebase and a Python backend.',
+      yearRange: '2023 - present',
+      anchor: Offset(0.49, 0.39),
+      projects: [
+        PortfolioProject(
+          logo: 'VCB',
+          name: 'Van Cranenbroek',
+          description:
+              'Hybrid Kotlin/Flutter app, CI/CD, Firebase, Firestore, deep links, SVG maps and Python Cloud Functions.',
+        ),
+      ],
+    ),
+    PortfolioCountry(
+      isoCode: 'SG',
+      mapId: 'sg',
+      name: 'Singapore',
+      location: 'FPSO Libra',
+      role: 'Radix internship',
+      summary:
+          'International work associated with FPSO Libra during the Radix internship.',
+      yearRange: 'internship',
+      anchor: Offset(0.745, 0.61),
+      projects: [
+        PortfolioProject(
+          logo: 'RDX',
+          name: 'FPSO Libra / Radix',
+          description:
+              'Internship project with international context in Singapore, as supplied.',
+        ),
+      ],
+    ),
+    PortfolioCountry(
+      isoCode: 'CN',
+      mapId: 'cn',
+      name: 'China',
+      location: 'FPSO Libra',
+      role: 'Radix internship',
+      summary:
+          'International work associated with FPSO Libra during the Radix internship.',
+      yearRange: 'internship',
+      anchor: Offset(0.75, 0.47),
+      projects: [
+        PortfolioProject(
+          logo: 'RDX',
+          name: 'FPSO Libra / Radix',
+          description:
+              'Internship project with international context in China, as supplied.',
+        ),
+      ],
+    ),
+  ];
+}
+
 final Map<String, PortfolioCountry> _portfolioCountryById = {
   for (final country in _portfolioCountries) country.mapId: country,
 };
@@ -319,13 +504,19 @@ class WorldExperienceMap extends StatefulWidget {
 }
 
 class _WorldExperienceMapState extends State<WorldExperienceMap> {
-  late PortfolioCountry _selectedCountry = _portfolioCountries.first;
-  PortfolioCountry? _hoveredCountry;
-
-  PortfolioCountry get _activeCountry => _hoveredCountry ?? _selectedCountry;
+  String _selectedCountryId = _portfolioCountries.first.mapId;
+  String? _hoveredCountryId;
 
   @override
   Widget build(BuildContext context) {
+    final countries = _localizedPortfolioCountries(context);
+    final selectedCountry = countries.firstWhere(
+      (country) => country.mapId == _selectedCountryId,
+    );
+    final hoveredCountry = _hoveredCountryId == null
+        ? null
+        : countries.firstWhere((country) => country.mapId == _hoveredCountryId);
+    final activeCountry = hoveredCountry ?? selectedCountry;
     return LayoutBuilder(
       builder: (context, constraints) {
         final wide = constraints.maxWidth >= 940;
@@ -338,9 +529,9 @@ class _WorldExperienceMapState extends State<WorldExperienceMap> {
         final map = SizedBox(
           height: mapHeight,
           child: _MapStage(
-            activeCountry: _activeCountry,
-            elevatedCountry: _hoveredCountry,
-            selectedCountry: _selectedCountry,
+            activeCountry: activeCountry,
+            elevatedCountry: hoveredCountry,
+            selectedCountry: selectedCountry,
             onCountryHover: _setHoveredCountry,
             onHoverExit: () => _setHoveredCountry(null),
             onCountryTap: _selectCountry,
@@ -348,9 +539,9 @@ class _WorldExperienceMapState extends State<WorldExperienceMap> {
         );
 
         final detail = _CountryDetailPanel(
-          activeCountry: _activeCountry,
-          selectedCountry: _selectedCountry,
-          countries: _portfolioCountries,
+          activeCountry: activeCountry,
+          selectedCountry: selectedCountry,
+          countries: countries,
           onSelect: _selectCountry,
         );
 
@@ -396,15 +587,15 @@ class _WorldExperienceMapState extends State<WorldExperienceMap> {
   }
 
   void _selectCountry(PortfolioCountry country) {
-    setState(() => _selectedCountry = country);
+    setState(() => _selectedCountryId = country.mapId);
   }
 
   void _setHoveredCountry(PortfolioCountry? country) {
-    if (_hoveredCountry == country) {
+    if (_hoveredCountryId == country?.mapId) {
       return;
     }
 
-    setState(() => _hoveredCountry = country);
+    setState(() => _hoveredCountryId = country?.mapId);
   }
 }
 
@@ -582,7 +773,7 @@ class _MapBadge extends StatelessWidget {
             const Icon(Icons.place_outlined, color: _mapAccent, size: 18),
             const SizedBox(width: 8),
             Text(
-              '${country.name} · ${country.projectCount} projetos',
+              '${country.name} · ${context.l10n.projectCount(country.projectCount)}',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w800,
@@ -619,9 +810,9 @@ class _ClientLogoCloud extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Text(
-                  'CLIENTES ATENDIDOS',
-                  style: TextStyle(
+                Text(
+                  context.l10n.clientsServed,
+                  style: const TextStyle(
                     color: _mapAccent,
                     fontSize: 11,
                     fontWeight: FontWeight.w900,
@@ -630,7 +821,7 @@ class _ClientLogoCloud extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  '${_clientLogos.length} MARCAS',
+                  context.l10n.brandCount(_clientLogos.length),
                   style: const TextStyle(
                     color: Color(0xFF9CB4BA),
                     fontSize: 9,
@@ -816,7 +1007,7 @@ class _CountryDetailPanel extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'Paises mapeados',
+          context.l10n.mappedCountries,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             color: const Color(0xFF9CB4BA),
             fontWeight: FontWeight.w800,
@@ -955,7 +1146,7 @@ class _SelectedCountryCard extends StatelessWidget {
                 child: _MiniMetric(
                   icon: Icons.calendar_month_outlined,
                   value: country.yearRange,
-                  label: 'contexto',
+                  label: context.l10n.context,
                 ),
               ),
               const SizedBox(width: 10),
@@ -963,14 +1154,14 @@ class _SelectedCountryCard extends StatelessWidget {
                 child: _MiniMetric(
                   icon: Icons.auto_awesome_motion_outlined,
                   value: country.projectCount.toString(),
-                  label: 'projetos',
+                  label: context.l10n.projects.toLowerCase(),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 16),
           Text(
-            'Projetos',
+            context.l10n.projects,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
               color: _mapAccent,
               fontWeight: FontWeight.w800,
