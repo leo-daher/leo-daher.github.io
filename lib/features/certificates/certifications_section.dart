@@ -179,7 +179,7 @@ class _CertificateRegisterDialog extends StatelessWidget {
     return Dialog(
       key: const Key('certificate-register-dialog'),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 760, maxHeight: 700),
+        constraints: const BoxConstraints(maxWidth: 1000, maxHeight: 760),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 22, 16, 16),
           child: Column(
@@ -218,19 +218,38 @@ class _CertificateRegisterDialog extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Expanded(
-                child: ListView.separated(
-                  itemCount: catalog.certificates.length,
-                  separatorBuilder: (_, _) => Divider(
-                    height: 1,
-                    color: Colors.white.withValues(alpha: .08),
+                child: Scrollbar(
+                  child: CustomScrollView(
+                    slivers: [
+                      for (final group in catalog.groupsByYear) ...[
+                        SliverToBoxAdapter(
+                          child: _CertificateYearHeading(year: group.year),
+                        ),
+                        SliverPadding(
+                          padding: const EdgeInsets.only(right: 8, bottom: 28),
+                          sliver: SliverGrid(
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 320,
+                                  mainAxisExtent: 230,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 12,
+                                ),
+                            delegate: SliverChildBuilderDelegate((
+                              context,
+                              index,
+                            ) {
+                              final certificate = group.certificates[index];
+                              return _CertificateGalleryCard(
+                                certificate: certificate,
+                                onTap: () => _openPreview(context, certificate),
+                              );
+                            }, childCount: group.certificates.length),
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
-                  itemBuilder: (context, index) {
-                    final certificate = catalog.certificates[index];
-                    return _CertificateListTile(
-                      certificate: certificate,
-                      onTap: () => _openPreview(context, certificate),
-                    );
-                  },
                 ),
               ),
             ],
@@ -241,8 +260,31 @@ class _CertificateRegisterDialog extends StatelessWidget {
   }
 }
 
-class _CertificateListTile extends StatelessWidget {
-  const _CertificateListTile({required this.certificate, required this.onTap});
+class _CertificateYearHeading extends StatelessWidget {
+  const _CertificateYearHeading({required this.year});
+
+  final int year;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: Text(
+      year.toString(),
+      style: const TextStyle(
+        color: LeoneBrandColors.ink,
+        fontSize: 18,
+        fontWeight: FontWeight.w800,
+        letterSpacing: .2,
+      ),
+    ),
+  );
+}
+
+class _CertificateGalleryCard extends StatelessWidget {
+  const _CertificateGalleryCard({
+    required this.certificate,
+    required this.onTap,
+  });
 
   final CertificateRecord certificate;
   final VoidCallback onTap;
@@ -250,25 +292,120 @@ class _CertificateListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return ListTile(
-      key: Key('certificate-row-${certificate.id}'),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-      onTap: onTap,
-      title: Text(
-        certificate.title,
-        style: const TextStyle(fontWeight: FontWeight.w700),
-      ),
-      subtitle: Padding(
-        padding: const EdgeInsets.only(top: 5),
-        child: Text(
-          '${l10n.issuedBy(certificate.issuer)} · '
-          '${l10n.completedIn(certificate.completedOn.year.toString())}',
-          style: const TextStyle(color: LeoneBrandColors.mutedInk),
+    return Material(
+      color: LeoneBrandColors.surface.withValues(alpha: .72),
+      borderRadius: BorderRadius.circular(20),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        key: Key('certificate-card-${certificate.id}'),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.verified_rounded,
+                    size: 17,
+                    color: LeoneBrandColors.interactive,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    l10n.verified.toUpperCase(),
+                    style: const TextStyle(
+                      color: LeoneBrandColors.interactive,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: .8,
+                    ),
+                  ),
+                  const Spacer(),
+                  const Icon(
+                    Icons.arrow_outward_rounded,
+                    size: 18,
+                    color: LeoneBrandColors.mutedInk,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Text(
+                certificate.title,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: LeoneBrandColors.ink,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  height: 1.2,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Semantics(
+                label:
+                    '${l10n.technologies}: ${certificate.technologies.join(', ')}',
+                child: ExcludeSemantics(
+                  child: Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: [
+                      for (final technology in certificate.technologies)
+                        _TechnologyTag(label: technology),
+                    ],
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Text(
+                l10n.issuedBy(certificate.issuer),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: LeoneBrandColors.mutedInk,
+                  fontSize: 12,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                l10n.completedIn(certificate.completedOn.year.toString()),
+                style: const TextStyle(
+                  color: LeoneBrandColors.mutedInk,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      trailing: const Icon(Icons.chevron_right_rounded),
     );
   }
+}
+
+class _TechnologyTag extends StatelessWidget {
+  const _TechnologyTag({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+    decoration: BoxDecoration(
+      color: LeoneBrandColors.interactive.withValues(alpha: .12),
+      borderRadius: BorderRadius.circular(999),
+      border: Border.all(
+        color: LeoneBrandColors.interactive.withValues(alpha: .24),
+      ),
+    ),
+    child: Text(
+      label,
+      style: const TextStyle(
+        color: LeoneBrandColors.ink,
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
+  );
 }
 
 class _CertificatePreviewDialog extends StatelessWidget {
@@ -309,6 +446,15 @@ class _CertificatePreviewDialog extends StatelessWidget {
                           style: const TextStyle(
                             color: LeoneBrandColors.mutedInk,
                           ),
+                        ),
+                        const SizedBox(height: 10),
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          children: [
+                            for (final technology in certificate.technologies)
+                              _TechnologyTag(label: technology),
+                          ],
                         ),
                       ],
                     ),

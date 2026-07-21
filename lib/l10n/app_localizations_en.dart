@@ -257,7 +257,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get certificateRegisterCopy =>
-      'Select an item to view the official record and verification options.';
+      'Browse credentials by year and select one to view the official record and verification options.';
+
+  @override
+  String get technologies => 'Technologies';
 
   @override
   String get verified => 'Verified';

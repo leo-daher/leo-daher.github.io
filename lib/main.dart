@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'brand/leone_brand.dart';
 import 'features/certificates/certifications_section.dart';
+import 'features/clients/client_logo_cloud.dart';
 import 'features/hero/portfolio_hero.dart';
 import 'features/navigation/portfolio_fab_menu.dart';
 import 'features/projects/portfolio_projects.dart';
@@ -215,6 +216,10 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                 key: _projectsSectionKey,
                 child: const PortfolioProjectsSection(),
               ),
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 92)),
+            SliverToBoxAdapter(
+              child: _SectionFrame(child: const ClientLogoCloud()),
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 92)),
             SliverToBoxAdapter(child: const CertificationsSection()),

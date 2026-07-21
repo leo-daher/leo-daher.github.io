@@ -256,7 +256,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get certificateRegisterCopy =>
-      'Selecione um item para ver o registro oficial e as opções de validação.';
+      'Navegue pelas credenciais por ano e selecione uma para ver o registro oficial e as opções de validação.';
+
+  @override
+  String get technologies => 'Tecnologias';
 
   @override
   String get verified => 'Verificado';

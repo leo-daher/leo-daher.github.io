@@ -12,6 +12,24 @@ class CertificateCatalog {
   int get issuerCount =>
       certificates.map((certificate) => certificate.issuer).toSet().length;
 
+  List<CertificateYearGroup> get groupsByYear {
+    final certificatesByYear = <int, List<CertificateRecord>>{};
+    for (final certificate in certificates) {
+      certificatesByYear
+          .putIfAbsent(certificate.completedOn.year, () => [])
+          .add(certificate);
+    }
+    final groups = certificatesByYear.entries.toList()
+      ..sort((a, b) => b.key.compareTo(a.key));
+    return List.unmodifiable([
+      for (final group in groups)
+        CertificateYearGroup(
+          year: group.key,
+          certificates: List.unmodifiable(group.value),
+        ),
+    ]);
+  }
+
   static Future<CertificateCatalog> load() async {
     final source = await rootBundle.loadString(_catalogAssetPath);
     return CertificateCatalog.fromJsonString(source);
@@ -45,6 +63,7 @@ class CertificateRecord {
     required this.verificationUrl,
     required this.imageAssetPath,
     required this.pdfAssetPath,
+    required this.technologies,
   });
 
   final String id;
@@ -55,6 +74,7 @@ class CertificateRecord {
   final Uri verificationUrl;
   final String imageAssetPath;
   final String pdfAssetPath;
+  final List<String> technologies;
 
   Uri get archivedPdfUrl => Uri.base.resolve('assets/$pdfAssetPath');
 
@@ -79,8 +99,16 @@ class CertificateRecord {
       verificationUrl: Uri.parse(_requiredString(source, 'verification_url')),
       imageAssetPath: _requiredString(image, 'path'),
       pdfAssetPath: _requiredString(pdf, 'path'),
+      technologies: _requiredStringList(source, 'technologies'),
     );
   }
+}
+
+class CertificateYearGroup {
+  const CertificateYearGroup({required this.year, required this.certificates});
+
+  final int year;
+  final List<CertificateRecord> certificates;
 }
 
 String _requiredString(Map<String, dynamic> source, String key) {
@@ -89,4 +117,14 @@ String _requiredString(Map<String, dynamic> source, String key) {
     throw FormatException('Missing certificate field: $key');
   }
   return value;
+}
+
+List<String> _requiredStringList(Map<String, dynamic> source, String key) {
+  final value = source[key];
+  if (value is! List ||
+      value.isEmpty ||
+      value.any((tag) => tag is! String || tag.isEmpty)) {
+    throw FormatException('Missing certificate field: $key');
+  }
+  return List.unmodifiable(value.cast<String>());
 }

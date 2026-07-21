@@ -551,8 +551,14 @@ abstract class AppLocalizations {
   /// Certificate catalog dialog supporting copy.
   ///
   /// In en, this message translates to:
-  /// **'Select an item to view the official record and verification options.'**
+  /// **'Browse credentials by year and select one to view the official record and verification options.'**
   String get certificateRegisterCopy;
+
+  /// Technology tag group label.
+  ///
+  /// In en, this message translates to:
+  /// **'Technologies'**
+  String get technologies;
 
   /// Certificate verification status.
   ///
