@@ -1,5 +1,3 @@
-import 'dart:ui' show PointerDeviceKind;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -122,11 +120,7 @@ void main() {
       find.descendant(of: fab, matching: find.byIcon(Icons.close_rounded)),
       findsOneWidget,
     );
-    const itemKeys = [
-      Key('fab-menu-home'),
-      Key('fab-menu-system'),
-      Key('fab-menu-projects'),
-    ];
+    const itemKeys = [Key('fab-menu-home'), Key('fab-menu-system')];
     final itemRects = <Rect>[];
     for (final key in itemKeys) {
       final item = find.byKey(key);
@@ -150,7 +144,9 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('FAB menu navigates to a section and closes', (tester) async {
+  testWidgets('FAB menu navigates to the system section and closes', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(1440, 1000);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -161,18 +157,18 @@ void main() {
     await tester.tap(find.byKey(const Key('portfolio-floating-action')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
-    await tester.tap(find.byKey(const Key('fab-menu-projects')));
+    await tester.tap(find.byKey(const Key('fab-menu-system')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 900));
 
     expect(
-      find.byKey(const Key('fab-menu-projects')).hitTestable(),
+      find.byKey(const Key('fab-menu-system')).hitTestable(),
       findsNothing,
     );
     expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
-    expect(find.text('FEATURED SOLUTIONS'), findsNothing);
+    expect(find.text('Code with visible impact.'), findsNothing);
     final headingY = tester
-        .getTopLeft(find.text('Code with visible impact.'))
+        .getTopLeft(find.text('Mobile, services and intelligence connected.'))
         .dy;
     expect(headingY, inInclusiveRange(0, 180));
     expect(tester.takeException(), isNull);
@@ -243,30 +239,11 @@ void main() {
       find.byKey(const Key('portfolio-floating-action')),
     );
     final widestItemRect = tester.getRect(
-      find.byKey(const Key('fab-menu-projects')),
+      find.byKey(const Key('fab-menu-system')),
     );
     expect(fabRect.right, closeTo(374, .01));
     expect(fabRect.bottom, closeTo(828, .01));
     expect(widestItemRect.left, greaterThanOrEqualTo(16));
-    expect(tester.takeException(), isNull);
-  });
-
-  testWidgets('stacks the three neon solution panels on a narrow viewport', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(390, 844);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-
-    await tester.pumpWidget(const LeonePortfolioApp());
-    await _finishOpening(tester);
-    await tester.drag(find.byType(CustomScrollView), const Offset(0, -1450));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Mobile Systems'), findsOneWidget);
-    expect(find.text('Agentic Workflows'), findsOneWidget);
-    expect(find.text('Automation Lab'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -334,136 +311,120 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets(
-    'groups Anthropic certificates, expands their stack on hover, and filters by technology',
-    (tester) async {
-      tester.view.physicalSize = const Size(1440, 1000);
-      tester.view.devicePixelRatio = 1;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+  testWidgets('shows certificates individually and animates filter changes', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
 
-      final catalog = CertificateCatalog([
-        _testCertificate(
-          id: 'demo-credential',
-          issuer: 'Anthropic Education',
-          title: 'AI Fluency: AI Capabilities & Limitations',
-          year: 2026,
-          technologies: const ['AI', 'LLMs'],
-        ),
-        _testCertificate(
-          id: 'mcp-credential',
-          issuer: 'Anthropic Education',
-          title: 'Model Context Protocol: Advanced Topics',
-          year: 2026,
-          technologies: const ['MCP', 'AI'],
-        ),
-        _testCertificate(
-          id: 'claude-code-credential',
-          issuer: 'Anthropic Education',
-          title: 'Claude Code in Action',
-          year: 2026,
-          technologies: const ['Claude Code', 'AI Agents'],
-        ),
-        _testCertificate(
-          id: 'flutter-credential',
-          issuer: 'Udemy',
-          title: 'The Complete Flutter Development Bootcamp with Dart',
-          year: 2021,
-          technologies: const ['Flutter', 'Dart'],
-        ),
-      ]);
+    final catalog = CertificateCatalog([
+      _testCertificate(
+        id: 'demo-credential',
+        issuer: 'Anthropic Education',
+        title: 'AI Fluency: AI Capabilities & Limitations',
+        year: 2026,
+        technologies: const ['AI', 'LLMs'],
+      ),
+      _testCertificate(
+        id: 'mcp-credential',
+        issuer: 'Anthropic Education',
+        title: 'Model Context Protocol: Advanced Topics',
+        year: 2026,
+        technologies: const ['MCP', 'AI'],
+      ),
+      _testCertificate(
+        id: 'claude-code-credential',
+        issuer: 'Anthropic Education',
+        title: 'Claude Code in Action',
+        year: 2026,
+        technologies: const ['Claude Code', 'AI Agents'],
+      ),
+      _testCertificate(
+        id: 'flutter-credential',
+        issuer: 'Udemy',
+        title: 'The Complete Flutter Development Bootcamp with Dart',
+        year: 2021,
+        technologies: const ['Flutter', 'Dart'],
+      ),
+    ]);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          locale: const Locale('en'),
-          theme: LeoneBrandTheme.dark(),
-          localizationsDelegates: const [AppLocalizations.delegate],
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: Scaffold(
-            body: SingleChildScrollView(
-              child: CertificationsSection(catalog: catalog),
-            ),
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        theme: LeoneBrandTheme.dark(),
+        localizationsDelegates: const [AppLocalizations.delegate],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: SingleChildScrollView(
+            child: CertificationsSection(catalog: catalog),
           ),
         ),
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('CERTIFICATIONS'), findsOneWidget);
-      expect(find.text('4 VERIFIED CREDENTIALS'), findsOneWidget);
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('CERTIFICATIONS'), findsOneWidget);
+    expect(find.text('4 VERIFIED CREDENTIALS'), findsOneWidget);
 
-      await tester.tap(find.byKey(const Key('certificates-open-register')));
-      await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('certificates-open-register')));
+    await tester.pumpAndSettle();
 
-      final collection = find.byKey(
-        const Key('certificate-group-anthropic-academy'),
-      );
-      final firstLayer = find.byKey(
-        const Key('certificate-group-stack-layer-0'),
-      );
-      final thirdLayer = find.byKey(
-        const Key('certificate-group-stack-layer-2'),
-      );
-      expect(collection, findsOneWidget);
-      expect(find.text('Anthropic Academy / Claude Code'), findsOneWidget);
-      expect(
-        find.byKey(const Key('certificate-filter-flutter')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('certificate-card-flutter-credential')),
-        findsOneWidget,
-      );
+    expect(
+      find.byKey(const Key('certificate-group-anthropic-academy')),
+      findsNothing,
+    );
+    expect(find.byKey(const Key('certificate-filter-flutter')), findsOneWidget);
+    for (final id in [
+      'demo-credential',
+      'mcp-credential',
+      'claude-code-credential',
+      'flutter-credential',
+    ]) {
+      expect(find.byKey(Key('certificate-card-$id')), findsOneWidget);
+    }
+    expect(
+      find.byKey(const Key('certificate-filter-results-all')),
+      findsOneWidget,
+    );
 
-      final collapsedDistance =
-          tester.getTopLeft(thirdLayer).dy - tester.getTopLeft(firstLayer).dy;
-      final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
-      await mouse.addPointer(location: Offset.zero);
-      await mouse.moveTo(tester.getCenter(collection));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 200));
-      final expandedDistance =
-          tester.getTopLeft(thirdLayer).dy - tester.getTopLeft(firstLayer).dy;
-      expect(expandedDistance, greaterThan(collapsedDistance));
+    await tester.tap(find.byKey(const Key('certificate-filter-flutter')));
+    await tester.pump();
+    expect(
+      find.byKey(const Key('certificate-filter-results-all')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('certificate-filter-results-flutter')),
+      findsOneWidget,
+    );
+    await tester.pump(const Duration(milliseconds: 220));
+    expect(
+      find.byKey(const Key('certificate-card-flutter-credential')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('certificate-card-demo-credential')),
+      findsNothing,
+    );
 
-      await tester.tap(find.byKey(const Key('certificate-filter-flutter')));
-      await tester.pump();
-      expect(collection, findsNothing);
-      expect(
-        find.byKey(const Key('certificate-card-flutter-credential')),
-        findsOneWidget,
-      );
+    await tester.tap(find.byKey(const Key('certificate-clear-filters')));
+    await tester.pump(const Duration(milliseconds: 220));
+    expect(
+      find.byKey(const Key('certificate-card-demo-credential')),
+      findsOneWidget,
+    );
 
-      await tester.tap(find.byKey(const Key('certificate-clear-filters')));
-      await tester.pump();
-      expect(collection, findsOneWidget);
+    await tester.tap(find.byKey(const Key('certificate-card-demo-credential')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('certificate-preview-dialog')), findsOneWidget);
+    expect(find.text('Verify credential'), findsOneWidget);
+    await _closeDialog(tester);
+    await _closeDialog(tester);
+    expect(tester.takeException(), isNull);
+  });
 
-      await tester.tap(collection);
-      await tester.pumpAndSettle();
-      expect(
-        find.byKey(const Key('certificate-collection-dialog')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('certificate-card-demo-credential')),
-        findsOneWidget,
-      );
-
-      await tester.tap(
-        find.byKey(const Key('certificate-card-demo-credential')),
-      );
-      await tester.pumpAndSettle();
-      expect(
-        find.byKey(const Key('certificate-preview-dialog')),
-        findsOneWidget,
-      );
-      expect(find.text('Verify credential'), findsOneWidget);
-      await _closeDialog(tester);
-      await _closeDialog(tester);
-      await _closeDialog(tester);
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets('keeps an Anthropic certificate collection usable on mobile', (
+  testWidgets('keeps the individual certificate gallery usable on mobile', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(390, 844);
@@ -509,29 +470,23 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
 
-    final collection = find.byKey(
-      const Key('certificate-group-anthropic-academy'),
+    await tester.drag(
+      find.descendant(
+        of: find.byKey(const Key('certificate-register-dialog')),
+        matching: find.byType(CustomScrollView),
+      ),
+      const Offset(0, -320),
     );
-    await tester.ensureVisible(collection);
-    await tester.pump();
-    expect(collection, findsOneWidget);
-    expect(
-      find.byKey(const Key('certificate-group-stack-layer-2')),
-      findsOneWidget,
-    );
-
-    await tester.tap(collection);
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    final firstCard = find.byKey(const Key('certificate-card-mobile-first'));
+    await tester.pumpAndSettle();
     final secondCard = find.byKey(const Key('certificate-card-mobile-second'));
-    expect(firstCard, findsOneWidget);
-    expect(secondCard, findsOneWidget);
-    expect(tester.getTopLeft(firstCard).dx, tester.getTopLeft(secondCard).dx);
     expect(
-      tester.getTopLeft(secondCard).dy,
-      greaterThan(tester.getBottomLeft(firstCard).dy),
+      find.byKey(const Key('certificate-group-anthropic-academy')),
+      findsNothing,
     );
+    expect(secondCard, findsOneWidget);
+    await tester.tap(secondCard);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('certificate-preview-dialog')), findsOneWidget);
     await _closeDialog(tester);
     await _closeDialog(tester);
     expect(tester.takeException(), isNull);

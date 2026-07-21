@@ -161,12 +161,6 @@ abstract class AppLocalizations {
   /// Navigation destination.
   ///
   /// In en, this message translates to:
-  /// **'Projects'**
-  String get navProjects;
-
-  /// Navigation destination.
-  ///
-  /// In en, this message translates to:
   /// **'Experience'**
   String get navExperience;
 
@@ -451,36 +445,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'3 stores'**
   String get threeStores;
-
-  /// Projects section title.
-  ///
-  /// In en, this message translates to:
-  /// **'Code with visible impact.'**
-  String get projectsTitle;
-
-  /// Projects section description.
-  ///
-  /// In en, this message translates to:
-  /// **'Independent projects and product experience turned into demonstrations you can explore.'**
-  String get projectsCopy;
-
-  /// Mobile project description.
-  ///
-  /// In en, this message translates to:
-  /// **'Product in motion: adaptive interfaces, synchronized state and native integrations in an experience that flows.'**
-  String get mobileProjectCopy;
-
-  /// Agentic workflows project description.
-  ///
-  /// In en, this message translates to:
-  /// **'Intelligence that decides and executes: agents connect context, tools and validation without losing human control.'**
-  String get agentsProjectCopy;
-
-  /// Automation project description.
-  ///
-  /// In en, this message translates to:
-  /// **'A measurable process: Python turns repetitive tasks into observable, reproducible and reliable pipelines.'**
-  String get automationProjectCopy;
 
   /// Experience section eyebrow.
   ///

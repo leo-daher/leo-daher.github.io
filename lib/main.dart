@@ -8,7 +8,6 @@ import 'features/certificates/certifications_section.dart';
 import 'features/clients/client_logo_cloud.dart';
 import 'features/hero/portfolio_hero.dart';
 import 'features/navigation/portfolio_fab_menu.dart';
-import 'features/projects/portfolio_projects.dart';
 import 'features/system/system_overview_section.dart';
 import 'ld_identity.dart';
 import 'l10n/app_localizations.dart';
@@ -147,9 +146,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   final GlobalKey _systemSectionKey = GlobalKey(
     debugLabel: 'portfolio-system-section',
   );
-  final GlobalKey _projectsSectionKey = GlobalKey(
-    debugLabel: 'portfolio-projects-section',
-  );
   @override
   void dispose() {
     _scrollController.dispose();
@@ -169,7 +165,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
     final target = switch (destination) {
       PortfolioDestination.system => _systemSectionKey.currentContext,
-      PortfolioDestination.projects => _projectsSectionKey.currentContext,
       PortfolioDestination.home => null,
     };
     if (target == null) return;
@@ -208,13 +203,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                 key: _systemSectionKey,
                 maxWidth: 1080,
                 child: const SystemOverviewSection(),
-              ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 92)),
-            SliverToBoxAdapter(
-              child: _SectionFrame(
-                key: _projectsSectionKey,
-                child: const PortfolioProjectsSection(),
               ),
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 92)),

@@ -9,7 +9,7 @@ import '../../l10n/l10n.dart';
 const _bg = LeoneBrandColors.canvas;
 const _green = LeoneBrandColors.interactive;
 
-enum PortfolioDestination { home, system, projects }
+enum PortfolioDestination { home, system }
 
 class PortfolioFabMenuScaffold extends StatefulWidget {
   const PortfolioFabMenuScaffold({
@@ -124,11 +124,6 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
       icon: Icons.account_tree_outlined,
       key: Key('fab-menu-system'),
     ),
-    _PortfolioFabMenuAction(
-      destination: PortfolioDestination.projects,
-      icon: Icons.work_outline_rounded,
-      key: Key('fab-menu-projects'),
-    ),
   ];
 
   late final AnimationController _controller = AnimationController(
@@ -227,7 +222,6 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
                     label: switch (_actions[index].destination) {
                       PortfolioDestination.home => l10n.navHome,
                       PortfolioDestination.system => l10n.navSystem,
-                      PortfolioDestination.projects => l10n.navProjects,
                     },
                     closeMenuLabel: l10n.closeMenu,
                     focusNode: _itemFocusNodes[index],

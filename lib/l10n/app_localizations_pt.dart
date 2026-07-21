@@ -39,9 +39,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get navSystem => 'Sistema';
 
   @override
-  String get navProjects => 'Projetos';
-
-  @override
   String get navExperience => 'Experiência';
 
   @override
@@ -191,25 +188,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get threeStores => '3 lojas';
-
-  @override
-  String get projectsTitle => 'Código com impacto visível.';
-
-  @override
-  String get projectsCopy =>
-      'Projetos próprios e experiência de produto transformados em demonstrações que você pode explorar.';
-
-  @override
-  String get mobileProjectCopy =>
-      'Produto em movimento: interfaces adaptativas, estado sincronizado e integrações nativas em uma experiência que flui.';
-
-  @override
-  String get agentsProjectCopy =>
-      'Inteligência que decide e executa: agentes conectam contexto, ferramentas e validação sem perder o controle humano.';
-
-  @override
-  String get automationProjectCopy =>
-      'Processo mensurável: Python transforma tarefas repetitivas em pipelines observáveis, reproduzíveis e confiáveis.';
 
   @override
   String get globalExperience => 'EXPERIÊNCIA GLOBAL';

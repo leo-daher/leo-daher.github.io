@@ -7,9 +7,6 @@ import '../../l10n/l10n.dart';
 import '../shared/portfolio_section_heading.dart';
 import 'certificate_catalog.dart';
 
-const _anthropicIssuer = 'Anthropic Education';
-const _anthropicCollectionTitle = 'Anthropic Academy / Claude Code';
-
 class CertificationsSection extends StatefulWidget {
   const CertificationsSection({super.key, this.catalog});
 
@@ -210,17 +207,11 @@ class _CertificateRegisterDialogState
     );
   }
 
-  void _openAnthropicCollection(
-    BuildContext context,
-    List<CertificateRecord> certificates,
-  ) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => _CertificateCollectionDialog(
-        title: _anthropicCollectionTitle,
-        certificates: certificates,
-      ),
-    );
+  String get _resultsKey {
+    final technologies = _selectedTechnologies.toList()..sort();
+    return technologies.isEmpty
+        ? 'all'
+        : technologies.map(_technologyKey).join('-');
   }
 
   @override
@@ -275,22 +266,34 @@ class _CertificateRegisterDialogState
               ),
               const SizedBox(height: 18),
               Expanded(
-                child: Scrollbar(
-                  child: CustomScrollView(
-                    slivers: [
-                      for (final group in _filteredGroups) ...[
-                        SliverToBoxAdapter(
-                          child: _CertificateYearHeading(year: group.year),
-                        ),
-                        _CertificateYearGrid(
-                          certificates: group.certificates,
-                          onOpenPreview: (certificate) =>
-                              _openPreview(context, certificate),
-                          onOpenAnthropicCollection: (certificates) =>
-                              _openAnthropicCollection(context, certificates),
-                        ),
-                      ],
-                    ],
+                child: AnimatedSwitcher(
+                  duration: MediaQuery.disableAnimationsOf(context)
+                      ? Duration.zero
+                      : const Duration(milliseconds: 180),
+                  reverseDuration: MediaQuery.disableAnimationsOf(context)
+                      ? Duration.zero
+                      : const Duration(milliseconds: 140),
+                  transitionBuilder: (child, animation) => FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position:
+                          Tween<Offset>(
+                            begin: const Offset(0, .025),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeOutCubic,
+                            ),
+                          ),
+                      child: child,
+                    ),
+                  ),
+                  child: _CertificateFilterResults(
+                    key: ValueKey('certificate-filter-results-$_resultsKey'),
+                    groups: _filteredGroups,
+                    onOpenPreview: (certificate) =>
+                        _openPreview(context, certificate),
                   ),
                 ),
               ),
@@ -390,237 +393,28 @@ class _CertificateYearGrid extends StatelessWidget {
   const _CertificateYearGrid({
     required this.certificates,
     required this.onOpenPreview,
-    required this.onOpenAnthropicCollection,
   });
 
   final List<CertificateRecord> certificates;
   final ValueChanged<CertificateRecord> onOpenPreview;
-  final ValueChanged<List<CertificateRecord>> onOpenAnthropicCollection;
 
   @override
-  Widget build(BuildContext context) {
-    final anthropicCertificates = [
-      for (final certificate in certificates)
-        if (certificate.issuer == _anthropicIssuer) certificate,
-    ];
-    final standaloneCertificates = [
-      for (final certificate in certificates)
-        if (certificate.issuer != _anthropicIssuer) certificate,
-    ];
-    final items = <Widget>[
-      if (anthropicCertificates.isNotEmpty)
-        _AnthropicCertificateCollectionCard(
-          certificates: anthropicCertificates,
-          onTap: () => onOpenAnthropicCollection(anthropicCertificates),
-        ),
-      for (final certificate in standaloneCertificates)
-        _CertificateGalleryCard(
+  Widget build(BuildContext context) => SliverPadding(
+    padding: const EdgeInsets.only(right: 8, bottom: 28),
+    sliver: SliverGrid(
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 320,
+        mainAxisExtent: 250,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+      ),
+      delegate: SliverChildBuilderDelegate((context, index) {
+        final certificate = certificates[index];
+        return _CertificateGalleryCard(
           certificate: certificate,
           onTap: () => onOpenPreview(certificate),
-        ),
-    ];
-
-    return SliverPadding(
-      padding: const EdgeInsets.only(right: 8, bottom: 28),
-      sliver: SliverGrid(
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 320,
-          mainAxisExtent: 250,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-        ),
-        delegate: SliverChildBuilderDelegate(
-          (context, index) => items[index],
-          childCount: items.length,
-        ),
-      ),
-    );
-  }
-}
-
-class _AnthropicCertificateCollectionCard extends StatefulWidget {
-  const _AnthropicCertificateCollectionCard({
-    required this.certificates,
-    required this.onTap,
-  });
-
-  final List<CertificateRecord> certificates;
-  final VoidCallback onTap;
-
-  @override
-  State<_AnthropicCertificateCollectionCard> createState() =>
-      _AnthropicCertificateCollectionCardState();
-}
-
-class _AnthropicCertificateCollectionCardState
-    extends State<_AnthropicCertificateCollectionCard> {
-  bool _hovered = false;
-  bool _focused = false;
-
-  bool get _expanded => _hovered || _focused;
-
-  void _setHovered(bool value) {
-    if (_hovered != value) setState(() => _hovered = value);
-  }
-
-  void _setFocused(bool value) {
-    if (_focused != value) setState(() => _focused = value);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final disableAnimations = MediaQuery.disableAnimationsOf(context);
-    final duration = disableAnimations
-        ? Duration.zero
-        : const Duration(milliseconds: 180);
-    final layerSpacing = _expanded ? 20.0 : 12.0;
-    final lateralSpacing = _expanded ? 8.0 : 5.0;
-    final layers = widget.certificates.take(3).toList(growable: false);
-
-    return FocusableActionDetector(
-      onShowFocusHighlight: _setFocused,
-      child: MouseRegion(
-        onEnter: (_) => _setHovered(true),
-        onExit: (_) => _setHovered(false),
-        child: Material(
-          color: LeoneBrandColors.surface.withValues(alpha: .72),
-          borderRadius: BorderRadius.circular(20),
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            key: const Key('certificate-group-anthropic-academy'),
-            onTap: widget.onTap,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.collections_bookmark_outlined,
-                        size: 17,
-                        color: LeoneBrandColors.interactive,
-                      ),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          l10n
-                              .verifiedCredentials(widget.certificates.length)
-                              .toUpperCase(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: LeoneBrandColors.interactive,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: .8,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Icon(
-                        Icons.arrow_outward_rounded,
-                        size: 18,
-                        color: LeoneBrandColors.mutedInk,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 96,
-                    child: Stack(
-                      children: [
-                        for (var index = 0; index < layers.length; index++)
-                          AnimatedPositioned(
-                            key: Key('certificate-group-stack-layer-$index'),
-                            duration: duration,
-                            curve: Curves.easeOutCubic,
-                            top: index * layerSpacing,
-                            left: index * lateralSpacing,
-                            right: 0,
-                            height: 56,
-                            child: _CertificateStackLayer(
-                              certificate: layers[index],
-                              depth: index,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  const Text(
-                    _anthropicCollectionTitle,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: LeoneBrandColors.ink,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    l10n.issuedBy(_anthropicIssuer),
-                    style: const TextStyle(
-                      color: LeoneBrandColors.mutedInk,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CertificateStackLayer extends StatelessWidget {
-  const _CertificateStackLayer({
-    required this.certificate,
-    required this.depth,
-  });
-
-  final CertificateRecord certificate;
-  final int depth;
-
-  @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: BoxDecoration(
-      color: LeoneBrandColors.surfaceRaised.withValues(alpha: .9 - depth * .12),
-      borderRadius: BorderRadius.circular(14),
-      border: Border.all(
-        color: LeoneBrandColors.interactive.withValues(
-          alpha: .22 + depth * .08,
-        ),
-      ),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 13),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.workspace_premium_outlined,
-            color: LeoneBrandColors.interactive,
-            size: 18,
-          ),
-          const SizedBox(width: 9),
-          Expanded(
-            child: Text(
-              certificate.title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: LeoneBrandColors.ink,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      }, childCount: certificates.length),
     ),
   );
 }
@@ -716,101 +510,30 @@ class _CertificateGalleryCard extends StatelessWidget {
   }
 }
 
-class _CertificateCollectionDialog extends StatelessWidget {
-  const _CertificateCollectionDialog({
-    required this.title,
-    required this.certificates,
+class _CertificateFilterResults extends StatelessWidget {
+  const _CertificateFilterResults({
+    super.key,
+    required this.groups,
+    required this.onOpenPreview,
   });
 
-  final String title;
-  final List<CertificateRecord> certificates;
-
-  void _openPreview(BuildContext context, CertificateRecord certificate) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => _CertificatePreviewDialog(certificate: certificate),
-    );
-  }
+  final List<CertificateYearGroup> groups;
+  final ValueChanged<CertificateRecord> onOpenPreview;
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return Dialog(
-      key: const Key('certificate-collection-dialog'),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1000, maxHeight: 760),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 22, 16, 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          l10n.verifiedCredentials(certificates.length),
-                          style: const TextStyle(
-                            color: LeoneBrandColors.mutedInk,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    tooltip: l10n.closeDialog,
-                    icon: const Icon(Icons.close_rounded),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 18),
-              Expanded(
-                child: Scrollbar(
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverPadding(
-                        padding: const EdgeInsets.only(right: 8),
-                        sliver: SliverGrid(
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 320,
-                                mainAxisExtent: 250,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
-                              ),
-                          delegate: SliverChildBuilderDelegate((
-                            context,
-                            index,
-                          ) {
-                            final certificate = certificates[index];
-                            return _CertificateGalleryCard(
-                              certificate: certificate,
-                              onTap: () => _openPreview(context, certificate),
-                            );
-                          }, childCount: certificates.length),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+  Widget build(BuildContext context) => Scrollbar(
+    child: CustomScrollView(
+      slivers: [
+        for (final group in groups) ...[
+          SliverToBoxAdapter(child: _CertificateYearHeading(year: group.year)),
+          _CertificateYearGrid(
+            certificates: group.certificates,
+            onOpenPreview: onOpenPreview,
           ),
-        ),
-      ),
-    );
-  }
+        ],
+      ],
+    ),
+  );
 }
 
 class _CertificateTechnologyTags extends StatelessWidget {
