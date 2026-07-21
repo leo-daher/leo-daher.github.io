@@ -1,0 +1,304 @@
+{
+  "schema_version": 1,
+  "certificates": [
+    {
+      "id": "skilljar-5fx3uazp9qpf",
+      "credential_id": "5fx3uazp9qpf",
+      "provider": "skilljar",
+      "issuer": "Anthropic Education",
+      "title": "AI Fluency: AI Capabilities & Limitations",
+      "verification_title": "AI Capabilities and Limitations",
+      "holder": "Leone Souza",
+      "completed_on": "2026-07-17",
+      "verification_url": "https://verify.skilljar.com/c/5fx3uazp9qpf",
+      "course_url": "https://anthropic.skilljar.com/ai-capabilities-and-limitations",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/anthropic-ai-capabilities-and-limitations.pdf",
+          "media_type": "application/pdf",
+          "bytes": 116409,
+          "sha256": "597e3ec383d211f657d8736f0818103c3402680a0a32a6b6ef1206829ec4f592"
+        },
+        "image": {
+          "path": "assets/certificates/originals/anthropic-ai-capabilities-and-limitations.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 280311,
+          "sha256": "5aa53d724739f114948d2afd08b385a6ed601258c8edfe4b529cf90b901aacb0"
+        }
+      }
+    },
+    {
+      "id": "skilljar-kezahcopgjcy",
+      "credential_id": "kezahcopgjcy",
+      "provider": "skilljar",
+      "issuer": "Anthropic Education",
+      "title": "AI Fluency: Framework & Foundations",
+      "holder": "Leone Souza",
+      "completed_on": "2026-07-17",
+      "verification_url": "https://verify.skilljar.com/c/kezahcopgjcy",
+      "course_url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/anthropic-ai-fluency-framework-and-foundations.pdf",
+          "media_type": "application/pdf",
+          "bytes": 149964,
+          "sha256": "3ce0ae9ecac85d5756fdf8a48662d735dfe19cd4db4735e7a0fff6ddbf3fc557"
+        },
+        "image": {
+          "path": "assets/certificates/originals/anthropic-ai-fluency-framework-and-foundations.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 328459,
+          "sha256": "51f94a538d8d365d09e1a4a79c4fd02fa31310abbcfa9aef9457314e6ccba1ee"
+        }
+      }
+    },
+    {
+      "id": "skilljar-s8rd6t4thg8p",
+      "credential_id": "s8rd6t4thg8p",
+      "provider": "skilljar",
+      "issuer": "Anthropic Education",
+      "title": "Model Context Protocol: Advanced Topics",
+      "holder": "Leone Souza",
+      "completed_on": "2026-07-17",
+      "verification_url": "https://verify.skilljar.com/c/s8rd6t4thg8p",
+      "course_url": "https://anthropic.skilljar.com/model-context-protocol-advanced-topics",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/anthropic-model-context-protocol-advanced-topics.pdf",
+          "media_type": "application/pdf",
+          "bytes": 118275,
+          "sha256": "747af439a8227ef8fb1b4523fb76a341dfb72b6daab508c2f8e3089a097f5e25"
+        },
+        "image": {
+          "path": "assets/certificates/originals/anthropic-model-context-protocol-advanced-topics.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 285858,
+          "sha256": "5907136f48dd3b305fd1649c119ac4b34732f62e546b6024ebd629b917182d2a"
+        }
+      }
+    },
+    {
+      "id": "skilljar-bveedbetxnv7",
+      "credential_id": "bveedbetxnv7",
+      "provider": "skilljar",
+      "issuer": "Anthropic Education",
+      "title": "Introduction to agent skills",
+      "holder": "Leone Souza",
+      "completed_on": "2026-07-14",
+      "verification_url": "https://verify.skilljar.com/c/bveedbetxnv7",
+      "course_url": "https://anthropic.skilljar.com/introduction-to-agent-skills",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/anthropic-introduction-to-agent-skills.pdf",
+          "media_type": "application/pdf",
+          "bytes": 108209,
+          "sha256": "1182ef2b39cdd5da2fa297482eb9a5242fbc012dffd5127103620f7fd97b667a"
+        },
+        "image": {
+          "path": "assets/certificates/originals/anthropic-introduction-to-agent-skills.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 312437,
+          "sha256": "c9835a41f5061fbfb695d4921825b2b8096186dd01d4958568416f4b9dacd3ea"
+        }
+      }
+    },
+    {
+      "id": "skilljar-26g2xmzeywkg",
+      "credential_id": "26g2xmzeywkg",
+      "provider": "skilljar",
+      "issuer": "Anthropic Education",
+      "title": "Introduction to subagents",
+      "holder": "Leone Souza",
+      "completed_on": "2026-07-14",
+      "verification_url": "https://verify.skilljar.com/c/26g2xmzeywkg",
+      "course_url": "https://anthropic.skilljar.com/introduction-to-subagents",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/anthropic-introduction-to-subagents.pdf",
+          "media_type": "application/pdf",
+          "bytes": 103965,
+          "sha256": "0e1de06d6d9feb10fd2e5c7e89b036e3ea35b56a599051d807c359168dcbc490"
+        },
+        "image": {
+          "path": "assets/certificates/originals/anthropic-introduction-to-subagents.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 256149,
+          "sha256": "9c6f58178944a16ecc316d29c2a7351a294a1edd8d4f4fdb88620846df1bf97a"
+        }
+      }
+    },
+    {
+      "id": "skilljar-d2xnzgugngpc",
+      "credential_id": "d2xnzgugngpc",
+      "provider": "skilljar",
+      "issuer": "Anthropic Education",
+      "title": "Introduction to Model Context Protocol",
+      "holder": "Leone Souza",
+      "completed_on": "2026-07-13",
+      "verification_url": "https://verify.skilljar.com/c/d2xnzgugngpc",
+      "course_url": "https://anthropic.skilljar.com/introduction-to-model-context-protocol",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/anthropic-introduction-to-model-context-protocol.pdf",
+          "media_type": "application/pdf",
+          "bytes": 115976,
+          "sha256": "5004a7d13d002a92541bcf82720a90f5e38164793345f1d7dbb171f0427da86b"
+        },
+        "image": {
+          "path": "assets/certificates/originals/anthropic-introduction-to-model-context-protocol.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 277153,
+          "sha256": "7d14cfa0b86632beb7a3583a4799960aa6943d69ffe0b8c7ef1e5248963ad088"
+        }
+      }
+    },
+    {
+      "id": "skilljar-9zf6f7vtsx9j",
+      "credential_id": "9zf6f7vtsx9j",
+      "provider": "skilljar",
+      "issuer": "Anthropic Education",
+      "title": "Claude 101",
+      "holder": "Leone Souza",
+      "completed_on": "2026-07-10",
+      "verification_url": "https://verify.skilljar.com/c/9zf6f7vtsx9j",
+      "course_url": "https://anthropic.skilljar.com/claude-101",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/anthropic-claude-101.pdf",
+          "media_type": "application/pdf",
+          "bytes": 88131,
+          "sha256": "4fe9558ac5128784f26ca75eabb9dbbc2c0a2fa108d324a976aa61938d7a6501"
+        },
+        "image": {
+          "path": "assets/certificates/originals/anthropic-claude-101.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 238859,
+          "sha256": "03c87b4c27b07dad7858cde256267c0815456f07013b3c4d689c0c9a33199f92"
+        }
+      }
+    },
+    {
+      "id": "skilljar-tb2qahncsuan",
+      "credential_id": "tb2qahncsuan",
+      "provider": "skilljar",
+      "issuer": "Anthropic Education",
+      "title": "Claude Code 101",
+      "holder": "Leone Souza",
+      "completed_on": "2026-07-10",
+      "verification_url": "https://verify.skilljar.com/c/tb2qahncsuan",
+      "course_url": "https://anthropic.skilljar.com/claude-code-101",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/anthropic-claude-code-101.pdf",
+          "media_type": "application/pdf",
+          "bytes": 98027,
+          "sha256": "ef3afa69857475c19dc6889a347629df4ca2ce1ef5028a7b6e0fc738d375a041"
+        },
+        "image": {
+          "path": "assets/certificates/originals/anthropic-claude-code-101.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 249718,
+          "sha256": "3cdc88645721e4ac7e79b1510c7ed940d47444434a256f14accf80e326b7d775"
+        }
+      }
+    },
+    {
+      "id": "skilljar-vm5rupmsy2pq",
+      "credential_id": "vm5rupmsy2pq",
+      "provider": "skilljar",
+      "issuer": "Anthropic Education",
+      "title": "Claude Code in Action",
+      "holder": "Leone Souza",
+      "completed_on": "2026-07-10",
+      "verification_url": "https://verify.skilljar.com/c/vm5rupmsy2pq",
+      "course_url": "https://anthropic.skilljar.com/claude-code-in-action",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/anthropic-claude-code-in-action.pdf",
+          "media_type": "application/pdf",
+          "bytes": 110700,
+          "sha256": "92387813ef639c287f60fefa8d598e283f2638713195a93f32a43034af3fcfe4"
+        },
+        "image": {
+          "path": "assets/certificates/originals/anthropic-claude-code-in-action.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 256283,
+          "sha256": "aa6d2608dcbfc7ad8eae7ace8eba3b9147fdfc4b19a5f52bd2ccb6e0efe2ebfc"
+        }
+      }
+    },
+    {
+      "id": "skilljar-qsjkyuvascj5",
+      "credential_id": "qsjkyuvascj5",
+      "provider": "skilljar",
+      "issuer": "Anthropic Education",
+      "title": "Claude Platform 101",
+      "holder": "Leone Souza",
+      "completed_on": "2026-07-10",
+      "verification_url": "https://verify.skilljar.com/c/qsjkyuvascj5",
+      "course_url": "https://anthropic.skilljar.com/claude-platform-101",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/anthropic-claude-platform-101.pdf",
+          "media_type": "application/pdf",
+          "bytes": 102392,
+          "sha256": "f1ed82e68645c75059339d95698df8ed523bb38bcb8abe96f50967817a2348a9"
+        },
+        "image": {
+          "path": "assets/certificates/originals/anthropic-claude-platform-101.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 283524,
+          "sha256": "1d3db9e11e8412d27ce490e6fb151a693304f85d4c76f58c1729e01cc04e3d7c"
+        }
+      }
+    },
+    {
+      "id": "udemy-uc-2ac4d6a7-6027-434f-a726-61c068daabc2",
+      "credential_id": "UC-2ac4d6a7-6027-434f-a726-61c068daabc2",
+      "provider": "udemy",
+      "issuer": "Udemy",
+      "title": "The Complete 2021 Flutter Development Bootcamp with Dart",
+      "verification_title": "The Complete Flutter Development Bootcamp with Dart",
+      "holder": "Leone Crespo Daher de Souza",
+      "completed_on": "2021-08-16",
+      "verification_url": "https://www.udemy.com/certificate/UC-2ac4d6a7-6027-434f-a726-61c068daabc2/",
+      "course_url": "https://www.udemy.com/course/flutter-bootcamp-with-dart/",
+      "verified_on": "2026-07-20",
+      "verification_status": "verified",
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/udemy-complete-flutter-development-bootcamp-with-dart.pdf",
+          "media_type": "application/pdf",
+          "bytes": 239608,
+          "sha256": "eeb458ac261990cb6e1d6bf8fbfbd4c3046757981d8a3cccfa7ba60d2b51d0d6"
+        },
+        "image": {
+          "path": "assets/certificates/originals/udemy-complete-flutter-development-bootcamp-with-dart.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 238751,
+          "sha256": "a066eaee7e0c349c46c3a5e6de80ce20b7574e40d684efeacebd1384358bddf8"
+        }
+      }
+    }
+  ]
+}

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
+import 'package:leone_portfolio/features/certificates/certificate_catalog.dart';
+import 'package:leone_portfolio/features/certificates/certifications_section.dart';
 import 'package:leone_portfolio/features/navigation/portfolio_fab_menu.dart';
 import 'package:leone_portfolio/l10n/app_localizations.dart';
 import 'package:leone_portfolio/main.dart';
@@ -121,7 +123,6 @@ void main() {
       Key('fab-menu-home'),
       Key('fab-menu-system'),
       Key('fab-menu-projects'),
-      Key('fab-menu-experience'),
     ];
     final itemRects = <Rect>[];
     for (final key in itemKeys) {
@@ -236,7 +237,7 @@ void main() {
       find.byKey(const Key('portfolio-floating-action')),
     );
     final widestItemRect = tester.getRect(
-      find.byKey(const Key('fab-menu-experience')),
+      find.byKey(const Key('fab-menu-projects')),
     );
     expect(fabRect.right, closeTo(374, .01));
     expect(fabRect.bottom, closeTo(828, .01));
@@ -283,6 +284,74 @@ void main() {
     expect(find.text('CLIENTS SERVED'), findsOneWidget);
     expect(find.text('13 BRANDS'), findsOneWidget);
     expect(find.text('LINELINKER PRO'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('does not mount the world map on the home page', (tester) async {
+    tester.view.physicalSize = const Size(1440, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await _finishOpening(tester);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(WorldExperienceMap), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('shows the certificate register and its official preview on demand', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final catalog = CertificateCatalog([
+      CertificateRecord(
+        id: 'demo-credential',
+        issuer: 'Anthropic Education',
+        title: 'AI Fluency: AI Capabilities & Limitations',
+        holder: 'Leone Souza',
+        completedOn: DateTime(2026, 7, 17),
+        verificationUrl: Uri.parse('https://verify.skilljar.com/c/demo'),
+        imageAssetPath:
+            'assets/certificates/originals/anthropic-ai-capabilities-and-limitations.jpg',
+        pdfAssetPath:
+            'assets/certificates/originals/anthropic-ai-capabilities-and-limitations.pdf',
+      ),
+    ]);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        theme: LeoneBrandTheme.dark(),
+        localizationsDelegates: const [AppLocalizations.delegate],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: SingleChildScrollView(
+            child: CertificationsSection(catalog: catalog),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('CERTIFICATIONS'), findsOneWidget);
+    expect(find.text('1 VERIFIED CREDENTIAL'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('certificates-open-register')));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('certificate-register-dialog')),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byKey(const Key('certificate-row-demo-credential')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('certificate-preview-dialog')), findsOneWidget);
+    expect(find.text('Verify credential'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

@@ -226,6 +226,67 @@ class AppLocalizationsEn extends AppLocalizations {
       'Mobile, backend, automation and infrastructure across operations distributed in different markets.';
 
   @override
+  String get certificationsEyebrow => 'CERTIFICATIONS';
+
+  @override
+  String get certificationsTitle => 'Continuous learning, backed by proof.';
+
+  @override
+  String get certificationsCopy =>
+      'Official course records available for consultation, with source verification and archived certificates.';
+
+  @override
+  String verifiedCredentials(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count verified credentials',
+      one: '1 verified credential',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get issuers => 'issuers';
+
+  @override
+  String get viewCredentials => 'View credentials';
+
+  @override
+  String get certificateRegister => 'Certificate register';
+
+  @override
+  String get certificateRegisterCopy =>
+      'Select an item to view the official record and verification options.';
+
+  @override
+  String get verified => 'Verified';
+
+  @override
+  String issuedBy(String issuer) {
+    return 'Issued by $issuer';
+  }
+
+  @override
+  String completedIn(String year) {
+    return 'Completed in $year';
+  }
+
+  @override
+  String get verifyCredential => 'Verify credential';
+
+  @override
+  String get openArchivedPdf => 'Open archived PDF';
+
+  @override
+  String certificateFor(String holder) {
+    return 'Certificate issued to $holder';
+  }
+
+  @override
+  String get closeDialog => 'Close dialog';
+
+  @override
   String get mappedCountries => 'Mapped countries';
 
   @override

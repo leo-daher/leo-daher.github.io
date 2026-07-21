@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^2.3.0
   intl: any
   shared_preferences: ^2.5.4
+  url_launcher: ^6.3.2
   vector_graphics: ^1.2.2
 
 dev_dependencies:
@@ -69,7 +70,8 @@ flutter:
   assets:
     - assets/client_logos/
     - assets/brand/
-    - assets/maps/world-map-base.svg.vec
+    - assets/certificates/catalog.json
+    - assets/certificates/originals/
 
   fonts:
     - family: Inter

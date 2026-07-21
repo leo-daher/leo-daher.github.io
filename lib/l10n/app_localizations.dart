@@ -506,6 +506,96 @@ abstract class AppLocalizations {
   /// **'Mobile, backend, automation and infrastructure across operations distributed in different markets.'**
   String get experienceCopy;
 
+  /// Certifications section eyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'CERTIFICATIONS'**
+  String get certificationsEyebrow;
+
+  /// Certifications section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Continuous learning, backed by proof.'**
+  String get certificationsTitle;
+
+  /// Certifications section description.
+  ///
+  /// In en, this message translates to:
+  /// **'Official course records available for consultation, with source verification and archived certificates.'**
+  String get certificationsCopy;
+
+  /// Verified certificate count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 verified credential} other{{count} verified credentials}}'**
+  String verifiedCredentials(int count);
+
+  /// Certificate issuer count label.
+  ///
+  /// In en, this message translates to:
+  /// **'issuers'**
+  String get issuers;
+
+  /// Opens the certificate register.
+  ///
+  /// In en, this message translates to:
+  /// **'View credentials'**
+  String get viewCredentials;
+
+  /// Certificate catalog dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate register'**
+  String get certificateRegister;
+
+  /// Certificate catalog dialog supporting copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an item to view the official record and verification options.'**
+  String get certificateRegisterCopy;
+
+  /// Certificate verification status.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get verified;
+
+  /// Certificate issuer label.
+  ///
+  /// In en, this message translates to:
+  /// **'Issued by {issuer}'**
+  String issuedBy(String issuer);
+
+  /// Certificate completion year.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed in {year}'**
+  String completedIn(String year);
+
+  /// Opens the issuer verification page.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify credential'**
+  String get verifyCredential;
+
+  /// Opens the archived certificate PDF.
+  ///
+  /// In en, this message translates to:
+  /// **'Open archived PDF'**
+  String get openArchivedPdf;
+
+  /// Certificate holder label.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate issued to {holder}'**
+  String certificateFor(String holder);
+
+  /// Dismisses a dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Close dialog'**
+  String get closeDialog;
+
   /// Country list title.
   ///
   /// In en, this message translates to:

@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'brand/leone_brand.dart';
-import 'features/experience/experience_section.dart';
+import 'features/certificates/certifications_section.dart';
 import 'features/hero/portfolio_hero.dart';
 import 'features/navigation/portfolio_fab_menu.dart';
 import 'features/projects/portfolio_projects.dart';
@@ -149,10 +149,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   final GlobalKey _projectsSectionKey = GlobalKey(
     debugLabel: 'portfolio-projects-section',
   );
-  final GlobalKey _experienceSectionKey = GlobalKey(
-    debugLabel: 'portfolio-experience-section',
-  );
-
   @override
   void dispose() {
     _scrollController.dispose();
@@ -173,7 +169,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
     final target = switch (destination) {
       PortfolioDestination.system => _systemSectionKey.currentContext,
       PortfolioDestination.projects => _projectsSectionKey.currentContext,
-      PortfolioDestination.experience => _experienceSectionKey.currentContext,
       PortfolioDestination.home => null,
     };
     if (target == null) return;
@@ -193,6 +188,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       onSelected: _navigateTo,
       body: SelectionArea(
         child: CustomScrollView(
+          key: const Key('portfolio-scroll-view'),
           controller: _scrollController,
           slivers: [
             SliverToBoxAdapter(
@@ -221,9 +217,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               ),
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 92)),
-            SliverToBoxAdapter(
-              child: ExperienceSection(key: _experienceSectionKey),
-            ),
+            SliverToBoxAdapter(child: const CertificationsSection()),
             const SliverToBoxAdapter(child: SizedBox(height: 72)),
             const SliverToBoxAdapter(child: _Footer()),
           ],

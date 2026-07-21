@@ -225,6 +225,67 @@ class AppLocalizationsPt extends AppLocalizations {
       'Mobile, backend, automação e infraestrutura em operações distribuídas por diferentes mercados.';
 
   @override
+  String get certificationsEyebrow => 'CERTIFICAÇÕES';
+
+  @override
+  String get certificationsTitle => 'Aprendizado contínuo, com comprovação.';
+
+  @override
+  String get certificationsCopy =>
+      'Registros oficiais de cursos disponíveis para consulta, com validação na fonte e certificados arquivados.';
+
+  @override
+  String verifiedCredentials(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count credenciais verificadas',
+      one: '1 credencial verificada',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get issuers => 'emissores';
+
+  @override
+  String get viewCredentials => 'Ver credenciais';
+
+  @override
+  String get certificateRegister => 'Registro de certificações';
+
+  @override
+  String get certificateRegisterCopy =>
+      'Selecione um item para ver o registro oficial e as opções de validação.';
+
+  @override
+  String get verified => 'Verificado';
+
+  @override
+  String issuedBy(String issuer) {
+    return 'Emitido por $issuer';
+  }
+
+  @override
+  String completedIn(String year) {
+    return 'Concluído em $year';
+  }
+
+  @override
+  String get verifyCredential => 'Validar credencial';
+
+  @override
+  String get openArchivedPdf => 'Abrir PDF arquivado';
+
+  @override
+  String certificateFor(String holder) {
+    return 'Certificado emitido para $holder';
+  }
+
+  @override
+  String get closeDialog => 'Fechar diálogo';
+
+  @override
   String get mappedCountries => 'Países mapeados';
 
   @override

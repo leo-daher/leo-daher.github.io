@@ -25,8 +25,14 @@ fvm flutter test
 fvm flutter build web
 ```
 
-## Edit Countries
+## Experience map
 
-The current mapped countries live in `lib/world_experience_map.dart` as
-`_portfolioCountries`. Update that list with the real countries, project
-counts, roles, and copy before publishing the portfolio.
+The world-experience map remains available in `lib/world_experience_map.dart`,
+but is intentionally not mounted on the home page at the moment. This keeps
+the portfolio focused and preserves the map source for a later iteration.
+
+## Certificates
+
+Verified certificate metadata and original artifacts live in
+`assets/certificates/`. The website loads the compact catalog first and only
+loads the official certificate image when a visitor opens a record.
