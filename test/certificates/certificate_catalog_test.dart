@@ -18,6 +18,10 @@ void main() {
       expect(catalog.groupsByYear[0].certificates, hasLength(10));
       expect(catalog.groupsByYear[1].certificates, hasLength(1));
       expect(
+        catalog.technologyTags,
+        containsAll(const ['AI', 'Claude Code', 'Flutter', 'MCP']),
+      );
+      expect(
         catalog.certificates.map((certificate) => certificate.technologies),
         everyElement(isNotEmpty),
       );

@@ -194,9 +194,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get threeStores => '3 stores';
 
   @override
-  String get featuredSolutions => 'FEATURED SOLUTIONS';
-
-  @override
   String get projectsTitle => 'Code with visible impact.';
 
   @override
@@ -258,6 +255,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get certificateRegisterCopy =>
       'Browse credentials by year and select one to view the official record and verification options.';
+
+  @override
+  String get filterTechnologies => 'Filter by technology';
+
+  @override
+  String get clearFilters => 'Clear filters';
 
   @override
   String get technologies => 'Technologies';

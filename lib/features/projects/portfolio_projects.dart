@@ -20,7 +20,6 @@ class PortfolioProjectsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         PortfolioSectionHeading(
-          eyebrow: context.l10n.featuredSolutions,
           title: context.l10n.projectsTitle,
           copy: context.l10n.projectsCopy,
         ),

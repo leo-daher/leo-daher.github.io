@@ -5,12 +5,12 @@ import '../../brand/leone_brand.dart';
 class PortfolioSectionHeading extends StatelessWidget {
   const PortfolioSectionHeading({
     super.key,
-    required this.eyebrow,
+    this.eyebrow,
     required this.title,
     required this.copy,
   });
 
-  final String eyebrow;
+  final String? eyebrow;
   final String title;
   final String copy;
 
@@ -27,16 +27,18 @@ class PortfolioSectionHeading extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                eyebrow,
-                style: const TextStyle(
-                  color: LeoneBrandColors.interactive,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 1.5,
+              if (eyebrow case final eyebrow?) ...[
+                Text(
+                  eyebrow,
+                  style: const TextStyle(
+                    color: LeoneBrandColors.interactive,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.5,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
+                const SizedBox(height: 12),
+              ],
               Text(
                 title,
                 style: const TextStyle(

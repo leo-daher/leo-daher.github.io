@@ -12,6 +12,13 @@ class CertificateCatalog {
   int get issuerCount =>
       certificates.map((certificate) => certificate.issuer).toSet().length;
 
+  List<String> get technologyTags {
+    final tags = <String>{
+      for (final certificate in certificates) ...certificate.technologies,
+    }.toList()..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+    return List.unmodifiable(tags);
+  }
+
   List<CertificateYearGroup> get groupsByYear {
     final certificatesByYear = <int, List<CertificateRecord>>{};
     for (final certificate in certificates) {

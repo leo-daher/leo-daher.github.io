@@ -452,12 +452,6 @@ abstract class AppLocalizations {
   /// **'3 stores'**
   String get threeStores;
 
-  /// Projects section eyebrow.
-  ///
-  /// In en, this message translates to:
-  /// **'FEATURED SOLUTIONS'**
-  String get featuredSolutions;
-
   /// Projects section title.
   ///
   /// In en, this message translates to:
@@ -553,6 +547,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Browse credentials by year and select one to view the official record and verification options.'**
   String get certificateRegisterCopy;
+
+  /// Certificate technology filter label.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by technology'**
+  String get filterTechnologies;
+
+  /// Clears selected certificate technology filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get clearFilters;
 
   /// Technology tag group label.
   ///

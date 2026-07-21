@@ -1,3 +1,5 @@
+import 'dart:ui' show PointerDeviceKind;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -168,7 +170,10 @@ void main() {
       findsNothing,
     );
     expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
-    final headingY = tester.getTopLeft(find.text('FEATURED SOLUTIONS')).dy;
+    expect(find.text('FEATURED SOLUTIONS'), findsNothing);
+    final headingY = tester
+        .getTopLeft(find.text('Code with visible impact.'))
+        .dy;
     expect(headingY, inInclusiveRange(0, 180));
     expect(tester.takeException(), isNull);
   });
@@ -330,7 +335,7 @@ void main() {
   });
 
   testWidgets(
-    'shows a year-grouped certificate gallery and official preview on demand',
+    'groups Anthropic certificates, expands their stack on hover, and filters by technology',
     (tester) async {
       tester.view.physicalSize = const Size(1440, 1000);
       tester.view.devicePixelRatio = 1;
@@ -338,30 +343,32 @@ void main() {
       addTearDown(tester.view.resetDevicePixelRatio);
 
       final catalog = CertificateCatalog([
-        CertificateRecord(
+        _testCertificate(
           id: 'demo-credential',
           issuer: 'Anthropic Education',
           title: 'AI Fluency: AI Capabilities & Limitations',
-          holder: 'Leone Souza',
-          completedOn: DateTime(2026, 7, 17),
-          verificationUrl: Uri.parse('https://verify.skilljar.com/c/demo'),
-          imageAssetPath:
-              'assets/certificates/originals/anthropic-ai-capabilities-and-limitations.jpg',
-          pdfAssetPath:
-              'assets/certificates/originals/anthropic-ai-capabilities-and-limitations.pdf',
+          year: 2026,
           technologies: const ['AI', 'LLMs'],
         ),
-        CertificateRecord(
+        _testCertificate(
+          id: 'mcp-credential',
+          issuer: 'Anthropic Education',
+          title: 'Model Context Protocol: Advanced Topics',
+          year: 2026,
+          technologies: const ['MCP', 'AI'],
+        ),
+        _testCertificate(
+          id: 'claude-code-credential',
+          issuer: 'Anthropic Education',
+          title: 'Claude Code in Action',
+          year: 2026,
+          technologies: const ['Claude Code', 'AI Agents'],
+        ),
+        _testCertificate(
           id: 'flutter-credential',
           issuer: 'Udemy',
           title: 'The Complete Flutter Development Bootcamp with Dart',
-          holder: 'Leone Souza',
-          completedOn: DateTime(2021, 8, 16),
-          verificationUrl: Uri.parse('https://www.udemy.com/certificate/demo'),
-          imageAssetPath:
-              'assets/certificates/originals/udemy-complete-flutter-development-bootcamp-with-dart.jpg',
-          pdfAssetPath:
-              'assets/certificates/originals/udemy-complete-flutter-development-bootcamp-with-dart.pdf',
+          year: 2021,
           technologies: const ['Flutter', 'Dart'],
         ),
       ]);
@@ -381,24 +388,62 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.text('CERTIFICATIONS'), findsOneWidget);
-      expect(find.text('2 VERIFIED CREDENTIALS'), findsOneWidget);
+      expect(find.text('4 VERIFIED CREDENTIALS'), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('certificates-open-register')));
       await tester.pumpAndSettle();
-      expect(
-        find.byKey(const Key('certificate-register-dialog')),
-        findsOneWidget,
+
+      final collection = find.byKey(
+        const Key('certificate-group-anthropic-academy'),
       );
-      expect(find.text('2026'), findsOneWidget);
-      expect(find.text('2021'), findsOneWidget);
-      expect(find.text('AI'), findsOneWidget);
-      expect(find.text('Flutter'), findsOneWidget);
+      final firstLayer = find.byKey(
+        const Key('certificate-group-stack-layer-0'),
+      );
+      final thirdLayer = find.byKey(
+        const Key('certificate-group-stack-layer-2'),
+      );
+      expect(collection, findsOneWidget);
+      expect(find.text('Anthropic Academy / Claude Code'), findsOneWidget);
       expect(
-        find.byKey(const Key('certificate-card-demo-credential')),
+        find.byKey(const Key('certificate-filter-flutter')),
         findsOneWidget,
       );
       expect(
         find.byKey(const Key('certificate-card-flutter-credential')),
+        findsOneWidget,
+      );
+
+      final collapsedDistance =
+          tester.getTopLeft(thirdLayer).dy - tester.getTopLeft(firstLayer).dy;
+      final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
+      await mouse.addPointer(location: Offset.zero);
+      await mouse.moveTo(tester.getCenter(collection));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+      final expandedDistance =
+          tester.getTopLeft(thirdLayer).dy - tester.getTopLeft(firstLayer).dy;
+      expect(expandedDistance, greaterThan(collapsedDistance));
+
+      await tester.tap(find.byKey(const Key('certificate-filter-flutter')));
+      await tester.pump();
+      expect(collection, findsNothing);
+      expect(
+        find.byKey(const Key('certificate-card-flutter-credential')),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(const Key('certificate-clear-filters')));
+      await tester.pump();
+      expect(collection, findsOneWidget);
+
+      await tester.tap(collection);
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('certificate-collection-dialog')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('certificate-card-demo-credential')),
         findsOneWidget,
       );
 
@@ -411,17 +456,14 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Verify credential'), findsOneWidget);
-      await tester.tap(find.byTooltip('Close dialog').last);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 300));
-      await tester.tap(find.byTooltip('Close dialog').last);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 300));
+      await _closeDialog(tester);
+      await _closeDialog(tester);
+      await _closeDialog(tester);
       expect(tester.takeException(), isNull);
     },
   );
 
-  testWidgets('keeps certificate gallery cards in a single mobile column', (
+  testWidgets('keeps an Anthropic certificate collection usable on mobile', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(390, 844);
@@ -430,35 +472,26 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     final catalog = CertificateCatalog([
-      CertificateRecord(
+      _testCertificate(
         id: 'mobile-first',
         issuer: 'Anthropic Education',
         title: 'Model Context Protocol: Advanced Topics',
-        holder: 'Leone Souza',
-        completedOn: DateTime(2026, 7, 17),
-        verificationUrl: Uri.parse(
-          'https://verify.skilljar.com/c/mobile-first',
-        ),
-        imageAssetPath:
-            'assets/certificates/originals/anthropic-model-context-protocol-advanced-topics.jpg',
-        pdfAssetPath:
-            'assets/certificates/originals/anthropic-model-context-protocol-advanced-topics.pdf',
+        year: 2026,
         technologies: const ['MCP', 'AI'],
       ),
-      CertificateRecord(
+      _testCertificate(
         id: 'mobile-second',
         issuer: 'Anthropic Education',
         title: 'Claude Code in Action',
-        holder: 'Leone Souza',
-        completedOn: DateTime(2026, 7, 10),
-        verificationUrl: Uri.parse(
-          'https://verify.skilljar.com/c/mobile-second',
-        ),
-        imageAssetPath:
-            'assets/certificates/originals/anthropic-claude-code-in-action.jpg',
-        pdfAssetPath:
-            'assets/certificates/originals/anthropic-claude-code-in-action.pdf',
+        year: 2026,
         technologies: const ['Claude Code', 'AI Agents'],
+      ),
+      _testCertificate(
+        id: 'mobile-third',
+        issuer: 'Anthropic Education',
+        title: 'Introduction to agent skills',
+        year: 2026,
+        technologies: const ['Agent Skills', 'Claude'],
       ),
     ]);
     await tester.pumpWidget(
@@ -476,6 +509,20 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
 
+    final collection = find.byKey(
+      const Key('certificate-group-anthropic-academy'),
+    );
+    await tester.ensureVisible(collection);
+    await tester.pump();
+    expect(collection, findsOneWidget);
+    expect(
+      find.byKey(const Key('certificate-group-stack-layer-2')),
+      findsOneWidget,
+    );
+
+    await tester.tap(collection);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
     final firstCard = find.byKey(const Key('certificate-card-mobile-first'));
     final secondCard = find.byKey(const Key('certificate-card-mobile-second'));
     expect(firstCard, findsOneWidget);
@@ -485,6 +532,8 @@ void main() {
       tester.getTopLeft(secondCard).dy,
       greaterThan(tester.getBottomLeft(firstCard).dy),
     );
+    await _closeDialog(tester);
+    await _closeDialog(tester);
     expect(tester.takeException(), isNull);
   });
 
@@ -558,6 +607,32 @@ Future<void> _finishOpening(WidgetTester tester) async {
   await tester.pump();
   await tester.pumpAndSettle(const Duration(milliseconds: 100));
 }
+
+Future<void> _closeDialog(WidgetTester tester) async {
+  await tester.tap(find.byTooltip('Close dialog').last);
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 300));
+}
+
+CertificateRecord _testCertificate({
+  required String id,
+  required String issuer,
+  required String title,
+  required int year,
+  required List<String> technologies,
+}) => CertificateRecord(
+  id: id,
+  issuer: issuer,
+  title: title,
+  holder: 'Leone Souza',
+  completedOn: DateTime(year, 7, 17),
+  verificationUrl: Uri.parse('https://verify.skilljar.com/c/$id'),
+  imageAssetPath:
+      'assets/certificates/originals/anthropic-ai-capabilities-and-limitations.jpg',
+  pdfAssetPath:
+      'assets/certificates/originals/anthropic-ai-capabilities-and-limitations.pdf',
+  technologies: technologies,
+);
 
 class _BuildCounter extends StatelessWidget {
   const _BuildCounter({required this.onBuild});
