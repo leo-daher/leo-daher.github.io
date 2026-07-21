@@ -128,6 +128,18 @@ abstract class AppLocalizations {
   /// **'English'**
   String get englishLanguage;
 
+  /// Theme switch action.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to light theme'**
+  String get switchToLightTheme;
+
+  /// Theme switch action.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to dark theme'**
+  String get switchToDarkTheme;
+
   /// Compact availability badge.
   ///
   /// In en, this message translates to:
@@ -553,12 +565,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Verify credential'**
   String get verifyCredential;
-
-  /// Opens the archived certificate PDF.
-  ///
-  /// In en, this message translates to:
-  /// **'Open archived PDF'**
-  String get openArchivedPdf;
 
   /// Certificate holder label.
   ///

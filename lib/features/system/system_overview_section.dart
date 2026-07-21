@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../../brand/leone_brand.dart';
 import '../../l10n/l10n.dart';
 
-const _panel = LeoneBrandColors.surface;
-const _muted = LeoneBrandColors.mutedInk;
 const _green = LeoneBrandColors.interactive;
 const _blue = LeoneBrandColors.intelligence;
 const _amber = LeoneBrandColors.editorialWarm;
@@ -15,6 +13,7 @@ class SystemOverviewSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final palette = context.leonePalette;
     return LayoutBuilder(
       builder: (context, constraints) {
         final compact = constraints.maxWidth < 700;
@@ -26,9 +25,9 @@ class SystemOverviewSection extends StatelessWidget {
             compact ? 18 : 22,
           ),
           decoration: BoxDecoration(
-            color: _panel.withValues(alpha: .78),
+            color: palette.surface.withValues(alpha: .78),
             borderRadius: BorderRadius.circular(compact ? 24 : 30),
-            border: Border.all(color: Colors.white.withValues(alpha: .075)),
+            border: Border.all(color: palette.outline),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,8 +62,8 @@ class SystemOverviewSection extends StatelessWidget {
                   if (!compact)
                     Text(
                       l10n.systemFlow,
-                      style: const TextStyle(
-                        color: _muted,
+                      style: TextStyle(
+                        color: palette.mutedInk,
                         fontSize: 8,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 1,
@@ -187,77 +186,83 @@ class _SystemNode extends StatelessWidget {
   final bool highlighted;
 
   @override
-  Widget build(BuildContext context) => AnimatedContainer(
-    duration: const Duration(milliseconds: 360),
-    height: compact ? 58 : 126,
-    padding: EdgeInsets.symmetric(
-      horizontal: compact ? 12 : 16,
-      vertical: compact ? 8 : 14,
-    ),
-    decoration: BoxDecoration(
-      color: highlighted
-          ? accent.withValues(alpha: .12)
-          : _panel.withValues(alpha: .84),
-      borderRadius: BorderRadius.circular(compact ? 14 : 20),
-      border: Border.all(
-        color: accent.withValues(alpha: highlighted ? .62 : .2),
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 360),
+      height: compact ? 58 : 126,
+      padding: EdgeInsets.symmetric(
+        horizontal: compact ? 12 : 16,
+        vertical: compact ? 8 : 14,
       ),
-      boxShadow: highlighted
-          ? [BoxShadow(color: accent.withValues(alpha: .16), blurRadius: 28)]
-          : null,
-    ),
-    child: Row(
-      children: [
-        Container(
-          width: compact ? 34 : 44,
-          height: compact ? 34 : 44,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: accent.withValues(alpha: .12),
-            borderRadius: BorderRadius.circular(compact ? 10 : 13),
-          ),
-          child: Icon(icon, color: accent, size: compact ? 18 : 23),
+      decoration: BoxDecoration(
+        color: highlighted
+            ? accent.withValues(alpha: .12)
+            : palette.surface.withValues(alpha: .84),
+        borderRadius: BorderRadius.circular(compact ? 14 : 20),
+        border: Border.all(
+          color: accent.withValues(alpha: highlighted ? .62 : .2),
         ),
-        SizedBox(width: compact ? 10 : 13),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (!compact)
+        boxShadow: highlighted
+            ? [BoxShadow(color: accent.withValues(alpha: .16), blurRadius: 28)]
+            : null,
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: compact ? 34 : 44,
+            height: compact ? 34 : 44,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: .12),
+              borderRadius: BorderRadius.circular(compact ? 10 : 13),
+            ),
+            child: Icon(icon, color: accent, size: compact ? 18 : 23),
+          ),
+          SizedBox(width: compact ? 10 : 13),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (!compact)
+                  Text(
+                    eyebrow,
+                    maxLines: 1,
+                    style: TextStyle(
+                      color: accent,
+                      fontSize: 8,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                if (!compact) const SizedBox(height: 8),
                 Text(
-                  eyebrow,
+                  title,
                   maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: accent,
-                    fontSize: 8,
+                    fontSize: compact ? 13 : 17,
                     fontWeight: FontWeight.w800,
-                    letterSpacing: 1,
                   ),
                 ),
-              if (!compact) const SizedBox(height: 8),
-              Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: compact ? 13 : 17,
-                  fontWeight: FontWeight.w800,
+                SizedBox(height: compact ? 2 : 5),
+                Text(
+                  detail,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: palette.mutedInk,
+                    fontSize: compact ? 8 : 10,
+                  ),
                 ),
-              ),
-              SizedBox(height: compact ? 2 : 5),
-              Text(
-                detail,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: _muted, fontSize: compact ? 8 : 10),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
 
 class _SystemConnector extends StatelessWidget {
@@ -267,48 +272,59 @@ class _SystemConnector extends StatelessWidget {
   final bool vertical;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    height: vertical ? 22 : 126,
-    child: vertical
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.arrow_downward_rounded, size: 12, color: _muted),
-              const SizedBox(width: 5),
-              Text(
-                label,
-                style: const TextStyle(
-                  color: _muted,
-                  fontSize: 7,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: .8,
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return SizedBox(
+      height: vertical ? 22 : 126,
+      child: vertical
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.arrow_downward_rounded,
+                  size: 12,
+                  color: palette.mutedInk,
                 ),
-              ),
-            ],
-          )
-        : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                label,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: _muted,
-                  fontSize: 8,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: .7,
+                const SizedBox(width: 5),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: palette.mutedInk,
+                    fontSize: 7,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: .8,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              const Row(
-                children: [
-                  Expanded(child: Divider(color: Colors.white12, height: 1)),
-                  Icon(Icons.arrow_forward_rounded, size: 14, color: _muted),
-                ],
-              ),
-            ],
-          ),
-  );
+              ],
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: palette.mutedInk,
+                    fontSize: 8,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: .7,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(child: Divider(color: palette.outline, height: 1)),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      size: 14,
+                      color: palette.mutedInk,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+    );
+  }
 }
 
 class _SystemReturnLabel extends StatelessWidget {
@@ -317,28 +333,31 @@ class _SystemReturnLabel extends StatelessWidget {
   final bool compact;
 
   @override
-  Widget build(BuildContext context) => Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Icon(
-        Icons.subdirectory_arrow_left_rounded,
-        size: compact ? 12 : 15,
-        color: _green,
-      ),
-      const SizedBox(width: 6),
-      Text(
-        compact
-            ? context.l10n.resultsReturnMobile
-            : context.l10n.decisionsReturnProduct,
-        style: TextStyle(
-          color: _muted,
-          fontSize: compact ? 7 : 9,
-          fontWeight: FontWeight.w800,
-          letterSpacing: compact ? .55 : .9,
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.subdirectory_arrow_left_rounded,
+          size: compact ? 12 : 15,
+          color: _green,
         ),
-      ),
-    ],
-  );
+        const SizedBox(width: 6),
+        Text(
+          compact
+              ? context.l10n.resultsReturnMobile
+              : context.l10n.decisionsReturnProduct,
+          style: TextStyle(
+            color: palette.mutedInk,
+            fontSize: compact ? 7 : 9,
+            fontWeight: FontWeight.w800,
+            letterSpacing: compact ? .55 : .9,
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class _SystemFlowPainter extends CustomPainter {

@@ -16,6 +16,7 @@ class PortfolioSectionHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.leonePalette;
     return Wrap(
       spacing: 36,
       runSpacing: 16,
@@ -55,10 +56,7 @@ class PortfolioSectionHeading extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 420),
           child: Text(
             copy,
-            style: const TextStyle(
-              color: LeoneBrandColors.mutedInk,
-              height: 1.55,
-            ),
+            style: TextStyle(color: palette.mutedInk, height: 1.55),
           ),
         ),
       ],

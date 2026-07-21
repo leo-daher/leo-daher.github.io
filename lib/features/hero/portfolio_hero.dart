@@ -4,9 +4,6 @@ import '../../brand/leone_brand.dart';
 import '../../ld_identity.dart';
 import '../../l10n/l10n.dart';
 
-const _bg = LeoneBrandColors.canvas;
-const _ink = LeoneBrandColors.ink;
-const _muted = LeoneBrandColors.mutedInk;
 const _green = LeoneBrandColors.interactive;
 const _blue = LeoneBrandColors.intelligence;
 const _coral = LeoneBrandColors.editorialHighlight;
@@ -26,6 +23,7 @@ class _HeroState extends State<PortfolioHero> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final palette = context.leonePalette;
     return LayoutBuilder(
       builder: (context, constraints) {
         final compact = constraints.maxWidth < 700;
@@ -42,9 +40,9 @@ class _HeroState extends State<PortfolioHero> {
           height: compact ? 900 : 880,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            color: _bg,
+            color: palette.canvas,
             borderRadius: BorderRadius.circular(compact ? 28 : 40),
-            border: Border.all(color: Colors.white.withValues(alpha: .055)),
+            border: Border.all(color: palette.outline),
           ),
           child: Stack(
             alignment: Alignment.topCenter,
@@ -132,7 +130,7 @@ class _HeroState extends State<PortfolioHero> {
                         key: ValueKey(supportingLine),
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: _muted,
+                          color: palette.mutedInk,
                           fontSize: compact ? 14 : 17,
                           fontWeight: FontWeight.w500,
                         ),
@@ -184,6 +182,7 @@ class _IdentityFrameContent extends StatelessWidget {
           'Flutter',
           maxLines: 1,
           style: TextStyle(
+            color: LeoneBrandColors.ink,
             fontSize: horizontal ? 18 : 24,
             fontWeight: FontWeight.w800,
             letterSpacing: -.7,
@@ -194,7 +193,7 @@ class _IdentityFrameContent extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.fade,
           style: const TextStyle(
-            color: _muted,
+            color: LeoneBrandColors.mutedInk,
             fontSize: 9,
             fontWeight: FontWeight.w700,
             letterSpacing: .35,
@@ -257,33 +256,36 @@ class _HeroFocusSelector extends StatelessWidget {
   final ValueChanged<int> onSelected;
 
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(4),
-    decoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: .045),
-      borderRadius: BorderRadius.circular(99),
-      border: Border.all(color: Colors.white.withValues(alpha: .1)),
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _HeroFocusButton(
-          label: 'Mobile',
-          compact: compact,
-          selected: selected == 0,
-          accent: _green,
-          onTap: () => onSelected(0),
-        ),
-        _HeroFocusButton(
-          label: context.l10n.aiAutomationTab,
-          compact: compact,
-          selected: selected == 1,
-          accent: _blue,
-          onTap: () => onSelected(1),
-        ),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: palette.surfaceRaised.withValues(alpha: .72),
+        borderRadius: BorderRadius.circular(99),
+        border: Border.all(color: palette.outline),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _HeroFocusButton(
+            label: 'Mobile',
+            compact: compact,
+            selected: selected == 0,
+            accent: _green,
+            onTap: () => onSelected(0),
+          ),
+          _HeroFocusButton(
+            label: context.l10n.aiAutomationTab,
+            compact: compact,
+            selected: selected == 1,
+            accent: _blue,
+            onTap: () => onSelected(1),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _HeroFocusButton extends StatelessWidget {
@@ -302,32 +304,40 @@ class _HeroFocusButton extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: onTap,
-    borderRadius: BorderRadius.circular(99),
-    child: AnimatedContainer(
-      duration: const Duration(milliseconds: 240),
-      padding: EdgeInsets.symmetric(
-        horizontal: compact ? 12 : 18,
-        vertical: compact ? 9 : 10,
-      ),
-      decoration: BoxDecoration(
-        color: selected ? _ink : Colors.transparent,
-        borderRadius: BorderRadius.circular(99),
-        boxShadow: selected
-            ? [BoxShadow(color: accent.withValues(alpha: .22), blurRadius: 18)]
-            : null,
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: selected ? _bg : _muted,
-          fontSize: compact ? 10 : 12,
-          fontWeight: FontWeight.w700,
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(99),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 240),
+        padding: EdgeInsets.symmetric(
+          horizontal: compact ? 12 : 18,
+          vertical: compact ? 9 : 10,
+        ),
+        decoration: BoxDecoration(
+          color: selected ? palette.ink : Colors.transparent,
+          borderRadius: BorderRadius.circular(99),
+          boxShadow: selected
+              ? [
+                  BoxShadow(
+                    color: accent.withValues(alpha: .22),
+                    blurRadius: 18,
+                  ),
+                ]
+              : null,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: selected ? palette.canvas : palette.mutedInk,
+            fontSize: compact ? 10 : 12,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class _HeroStagePainter extends CustomPainter {

@@ -15,9 +15,6 @@ import 'l10n/l10n.dart';
 
 void main() => runApp(const LeonePortfolioApp());
 
-const _bg = LeoneBrandColors.canvas;
-const _ink = LeoneBrandColors.ink;
-const _muted = LeoneBrandColors.mutedInk;
 const _green = LeoneBrandColors.interactive;
 
 class LeonePortfolioApp extends StatefulWidget {
@@ -29,24 +26,33 @@ class LeonePortfolioApp extends StatefulWidget {
 
 class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
   static const _localePreferenceKey = 'portfolio_locale';
+  static const _themePreferenceKey = 'portfolio_theme';
   Locale? _locale;
+  ThemeMode _themeMode = ThemeMode.dark;
   bool _localeChosenInSession = false;
+  bool _themeChosenInSession = false;
 
   @override
   void initState() {
     super.initState();
-    _restoreLocale();
+    _restorePreferences();
   }
 
-  Future<void> _restoreLocale() async {
+  Future<void> _restorePreferences() async {
     final preferences = await SharedPreferences.getInstance();
     final languageCode = preferences.getString(_localePreferenceKey);
-    if (!mounted ||
-        _localeChosenInSession ||
-        (languageCode != 'en' && languageCode != 'pt')) {
-      return;
-    }
-    setState(() => _locale = Locale(languageCode!));
+    final savedTheme = preferences.getString(_themePreferenceKey);
+    if (!mounted) return;
+    setState(() {
+      if (!_localeChosenInSession &&
+          (languageCode == 'en' || languageCode == 'pt')) {
+        _locale = Locale(languageCode!);
+      }
+      if (!_themeChosenInSession &&
+          (savedTheme == 'light' || savedTheme == 'dark')) {
+        _themeMode = ThemeMode.values.byName(savedTheme!);
+      }
+    });
   }
 
   Future<void> _setLocale(Locale locale) async {
@@ -57,12 +63,22 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
     await preferences.setString(_localePreferenceKey, locale.languageCode);
   }
 
+  Future<void> _setThemeMode(ThemeMode themeMode) async {
+    if (_themeMode == themeMode) return;
+    _themeChosenInSession = true;
+    setState(() => _themeMode = themeMode);
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString(_themePreferenceKey, themeMode.name);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) => context.l10n.appTitle,
-      theme: LeoneBrandTheme.dark(),
+      theme: LeoneBrandTheme.light(),
+      darkTheme: LeoneBrandTheme.dark(),
+      themeMode: _themeMode,
       locale: _locale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -71,15 +87,22 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: _PortfolioEntry(onLocaleChanged: _setLocale),
+      home: _PortfolioEntry(
+        onLocaleChanged: _setLocale,
+        onThemeModeChanged: _setThemeMode,
+      ),
     );
   }
 }
 
 class _PortfolioEntry extends StatefulWidget {
-  const _PortfolioEntry({required this.onLocaleChanged});
+  const _PortfolioEntry({
+    required this.onLocaleChanged,
+    required this.onThemeModeChanged,
+  });
 
   final ValueChanged<Locale> onLocaleChanged;
+  final ValueChanged<ThemeMode> onThemeModeChanged;
 
   @override
   State<_PortfolioEntry> createState() => _PortfolioEntryState();
@@ -109,6 +132,7 @@ class _PortfolioEntryState extends State<_PortfolioEntry> {
               floatingActionButtonEnabled: !_showOpening,
               heroAutoPlay: !_showOpening,
               onLocaleChanged: widget.onLocaleChanged,
+              onThemeModeChanged: widget.onThemeModeChanged,
             ),
           ),
         if (_showOpening)
@@ -130,12 +154,14 @@ class PortfolioHomePage extends StatefulWidget {
     this.floatingActionButtonEnabled = true,
     this.heroAutoPlay = true,
     required this.onLocaleChanged,
+    required this.onThemeModeChanged,
   });
 
   final bool showFloatingActionButton;
   final bool floatingActionButtonEnabled;
   final bool heroAutoPlay;
   final ValueChanged<Locale> onLocaleChanged;
+  final ValueChanged<ThemeMode> onThemeModeChanged;
 
   @override
   State<PortfolioHomePage> createState() => _PortfolioHomePageState();
@@ -188,7 +214,10 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
           controller: _scrollController,
           slivers: [
             SliverToBoxAdapter(
-              child: _TopBar(onLocaleChanged: widget.onLocaleChanged),
+              child: _TopBar(
+                onLocaleChanged: widget.onLocaleChanged,
+                onThemeModeChanged: widget.onThemeModeChanged,
+              ),
             ),
             SliverToBoxAdapter(
               child: _SectionFrame(
@@ -247,20 +276,24 @@ class _SectionFrame extends StatelessWidget {
 }
 
 class _TopBar extends StatelessWidget {
-  const _TopBar({required this.onLocaleChanged});
+  const _TopBar({
+    required this.onLocaleChanged,
+    required this.onThemeModeChanged,
+  });
 
   final ValueChanged<Locale> onLocaleChanged;
+  final ValueChanged<ThemeMode> onThemeModeChanged;
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    final lightMode = Theme.of(context).brightness == Brightness.light;
     return Container(
       height: 76,
       padding: const EdgeInsets.symmetric(horizontal: 24),
       decoration: BoxDecoration(
-        color: _bg.withValues(alpha: .9),
-        border: Border(
-          bottom: BorderSide(color: Colors.white.withValues(alpha: .07)),
-        ),
+        color: palette.canvas.withValues(alpha: .9),
+        border: Border(bottom: BorderSide(color: palette.outline)),
       ),
       child: Center(
         child: ConstrainedBox(
@@ -278,7 +311,9 @@ class _TopBar extends StatelessWidget {
                       width: 34,
                       height: 34,
                       child: SvgPicture.asset(
-                        'assets/brand/ld-mark-inverse.svg',
+                        lightMode
+                            ? 'assets/brand/ld-mark.svg'
+                            : 'assets/brand/ld-mark-inverse.svg',
                       ),
                     ),
                   ),
@@ -297,6 +332,8 @@ class _TopBar extends StatelessWidget {
                   else
                     const Spacer(),
                   _LanguageToggle(onLocaleChanged: onLocaleChanged),
+                  SizedBox(width: compact ? 6 : 12),
+                  _ThemeToggle(onThemeModeChanged: onThemeModeChanged),
                   SizedBox(width: compact ? 6 : 12),
                   _AvailabilityBadge(compact: compact),
                 ],
@@ -317,6 +354,7 @@ class _LanguageToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final palette = context.leonePalette;
     final selectedLanguage = Localizations.localeOf(context).languageCode;
     final englishSelected = selectedLanguage == 'en';
     final targetLocale = Locale(englishSelected ? 'pt' : 'en');
@@ -334,7 +372,7 @@ class _LanguageToggle extends StatelessWidget {
           key: const Key('language-toggle'),
           onPressed: () => onLocaleChanged(targetLocale),
           style: TextButton.styleFrom(
-            foregroundColor: _ink,
+            foregroundColor: palette.ink,
             fixedSize: const Size(64, 48),
             padding: EdgeInsets.zero,
             shape: const StadiumBorder(),
@@ -345,15 +383,19 @@ class _LanguageToggle extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: 'EN',
-                    style: TextStyle(color: englishSelected ? _ink : _muted),
+                    style: TextStyle(
+                      color: englishSelected ? palette.ink : palette.mutedInk,
+                    ),
                   ),
-                  const TextSpan(
+                  TextSpan(
                     text: ' / ',
-                    style: TextStyle(color: _muted),
+                    style: TextStyle(color: palette.mutedInk),
                   ),
                   TextSpan(
                     text: 'PT',
-                    style: TextStyle(color: englishSelected ? _muted : _ink),
+                    style: TextStyle(
+                      color: englishSelected ? palette.mutedInk : palette.ink,
+                    ),
                   ),
                 ],
               ),
@@ -363,6 +405,36 @@ class _LanguageToggle extends StatelessWidget {
                 letterSpacing: .5,
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ThemeToggle extends StatelessWidget {
+  const _ThemeToggle({required this.onThemeModeChanged});
+
+  final ValueChanged<ThemeMode> onThemeModeChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final lightMode = Theme.of(context).brightness == Brightness.light;
+    final targetMode = lightMode ? ThemeMode.dark : ThemeMode.light;
+    final label = lightMode
+        ? context.l10n.switchToDarkTheme
+        : context.l10n.switchToLightTheme;
+    return Semantics(
+      button: true,
+      label: label,
+      child: Tooltip(
+        message: label,
+        excludeFromSemantics: true,
+        child: IconButton(
+          key: const Key('theme-toggle'),
+          onPressed: () => onThemeModeChanged(targetMode),
+          icon: Icon(
+            lightMode ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
           ),
         ),
       ),
@@ -422,12 +494,12 @@ class _Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    final lightMode = Theme.of(context).brightness == Brightness.light;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 42),
       decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Colors.white.withValues(alpha: .07)),
-        ),
+        border: Border(top: BorderSide(color: palette.outline)),
       ),
       child: Center(
         child: ConstrainedBox(
@@ -441,12 +513,16 @@ class _Footer extends StatelessWidget {
                   SizedBox(
                     width: 28,
                     height: 28,
-                    child: SvgPicture.asset('assets/brand/ld-mark-inverse.svg'),
+                    child: SvgPicture.asset(
+                      lightMode
+                          ? 'assets/brand/ld-mark.svg'
+                          : 'assets/brand/ld-mark-inverse.svg',
+                    ),
                   ),
                   const SizedBox(width: 10),
-                  const Text(
+                  Text(
                     'LEONE DAHER  •  2026',
-                    style: TextStyle(color: _muted, fontSize: 11),
+                    style: TextStyle(color: palette.mutedInk, fontSize: 11),
                   ),
                 ],
               );

@@ -24,6 +24,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get englishLanguage => 'English';
 
   @override
+  String get switchToLightTheme => 'Switch to light theme';
+
+  @override
+  String get switchToDarkTheme => 'Switch to dark theme';
+
+  @override
   String get availableCompact => 'AVAILABLE';
 
   @override
@@ -258,9 +264,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get verifyCredential => 'Verify credential';
-
-  @override
-  String get openArchivedPdf => 'Open archived PDF';
 
   @override
   String certificateFor(String holder) {

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
 
@@ -48,6 +47,7 @@ class _CertificationsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final palette = context.leonePalette;
     return Center(
       key: const Key('certifications-section'),
       child: ConstrainedBox(
@@ -69,11 +69,9 @@ class _CertificationsContent extends StatelessWidget {
                   return Container(
                     padding: EdgeInsets.all(compact ? 20 : 24),
                     decoration: BoxDecoration(
-                      color: LeoneBrandColors.surface.withValues(alpha: .78),
+                      color: palette.surface.withValues(alpha: .78),
                       borderRadius: BorderRadius.circular(compact ? 24 : 30),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: .075),
-                      ),
+                      border: Border.all(color: palette.outline),
                     ),
                     child: Wrap(
                       spacing: 28,
@@ -139,26 +137,29 @@ class _CertificateMetrics extends StatelessWidget {
   final String issuersLabel;
 
   @override
-  Widget build(BuildContext context) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        credentials.toUpperCase(),
-        style: const TextStyle(
-          color: LeoneBrandColors.ink,
-          fontSize: 12,
-          fontWeight: FontWeight.w800,
-          letterSpacing: 1.1,
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          credentials.toUpperCase(),
+          style: TextStyle(
+            color: palette.ink,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 1.1,
+          ),
         ),
-      ),
-      const SizedBox(height: 6),
-      Text(
-        '$issuerCount $issuersLabel',
-        style: const TextStyle(color: LeoneBrandColors.mutedInk, height: 1.4),
-      ),
-    ],
-  );
+        const SizedBox(height: 6),
+        Text(
+          '$issuerCount $issuersLabel',
+          style: TextStyle(color: palette.mutedInk, height: 1.4),
+        ),
+      ],
+    );
+  }
 }
 
 class _CertificateRegisterDialog extends StatefulWidget {
@@ -217,6 +218,7 @@ class _CertificateRegisterDialogState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final palette = context.leonePalette;
     return Dialog(
       key: const Key('certificate-register-dialog'),
       child: ConstrainedBox(
@@ -242,8 +244,8 @@ class _CertificateRegisterDialogState
                         const SizedBox(height: 6),
                         Text(
                           l10n.certificateRegisterCopy,
-                          style: const TextStyle(
-                            color: LeoneBrandColors.mutedInk,
+                          style: TextStyle(
+                            color: palette.mutedInk,
                             height: 1.45,
                           ),
                         ),
@@ -321,6 +323,7 @@ class _CertificateTechnologyFilters extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final palette = context.leonePalette;
     return Semantics(
       container: true,
       label: l10n.filterTechnologies,
@@ -331,8 +334,8 @@ class _CertificateTechnologyFilters extends StatelessWidget {
             children: [
               Text(
                 l10n.filterTechnologies,
-                style: const TextStyle(
-                  color: LeoneBrandColors.mutedInk,
+                style: TextStyle(
+                  color: palette.mutedInk,
                   fontSize: 11,
                   fontWeight: FontWeight.w800,
                   letterSpacing: .8,
@@ -379,8 +382,8 @@ class _CertificateYearHeading extends StatelessWidget {
     padding: const EdgeInsets.only(bottom: 12),
     child: Text(
       year.toString(),
-      style: const TextStyle(
-        color: LeoneBrandColors.ink,
+      style: TextStyle(
+        color: context.leonePalette.ink,
         fontSize: 18,
         fontWeight: FontWeight.w800,
         letterSpacing: .2,
@@ -431,8 +434,9 @@ class _CertificateGalleryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final palette = context.leonePalette;
     return Material(
-      color: LeoneBrandColors.surface.withValues(alpha: .72),
+      color: palette.surface.withValues(alpha: .72),
       borderRadius: BorderRadius.circular(20),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -461,10 +465,10 @@ class _CertificateGalleryCard extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  const Icon(
+                  Icon(
                     Icons.arrow_outward_rounded,
                     size: 18,
-                    color: LeoneBrandColors.mutedInk,
+                    color: palette.mutedInk,
                   ),
                 ],
               ),
@@ -473,8 +477,8 @@ class _CertificateGalleryCard extends StatelessWidget {
                 certificate.title,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: LeoneBrandColors.ink,
+                style: TextStyle(
+                  color: palette.ink,
                   fontSize: 16,
                   fontWeight: FontWeight.w800,
                   height: 1.2,
@@ -489,18 +493,12 @@ class _CertificateGalleryCard extends StatelessWidget {
                 l10n.issuedBy(certificate.issuer),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: LeoneBrandColors.mutedInk,
-                  fontSize: 12,
-                ),
+                style: TextStyle(color: palette.mutedInk, fontSize: 12),
               ),
               const SizedBox(height: 4),
               Text(
                 l10n.completedIn(certificate.completedOn.year.toString()),
-                style: const TextStyle(
-                  color: LeoneBrandColors.mutedInk,
-                  fontSize: 12,
-                ),
+                style: TextStyle(color: palette.mutedInk, fontSize: 12),
               ),
             ],
           ),
@@ -574,8 +572,8 @@ class _TechnologyTag extends StatelessWidget {
     ),
     child: Text(
       label,
-      style: const TextStyle(
-        color: LeoneBrandColors.ink,
+      style: TextStyle(
+        color: context.leonePalette.ink,
         fontSize: 11,
         fontWeight: FontWeight.w700,
       ),
@@ -591,6 +589,7 @@ class _CertificatePreviewDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final palette = context.leonePalette;
     return Dialog(
       key: const Key('certificate-preview-dialog'),
       child: ConstrainedBox(
@@ -618,9 +617,7 @@ class _CertificatePreviewDialog extends StatelessWidget {
                         const SizedBox(height: 6),
                         Text(
                           l10n.certificateFor(certificate.holder),
-                          style: const TextStyle(
-                            color: LeoneBrandColors.mutedInk,
-                          ),
+                          style: TextStyle(color: palette.mutedInk),
                         ),
                         const SizedBox(height: 10),
                         _CertificateTechnologyTags(
@@ -663,19 +660,6 @@ class _CertificatePreviewDialog extends StatelessWidget {
                       label: Text(l10n.verifyCredential),
                     ),
                   ),
-                  if (kIsWeb)
-                    Link(
-                      uri: certificate.archivedPdfUrl,
-                      target: LinkTarget.blank,
-                      builder: (context, followLink) => OutlinedButton.icon(
-                        onPressed: followLink,
-                        icon: const Icon(
-                          Icons.picture_as_pdf_outlined,
-                          size: 18,
-                        ),
-                        label: Text(l10n.openArchivedPdf),
-                      ),
-                    ),
                 ],
               ),
             ],

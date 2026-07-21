@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../brand/leone_brand.dart';
 import '../../l10n/l10n.dart';
 
 const _clientAccent = Color(0xFF51F2C2);
@@ -65,6 +66,7 @@ class ClientLogoCloud extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.leonePalette;
     return LayoutBuilder(
       builder: (context, constraints) {
         final columns = constraints.maxWidth >= 1100
@@ -96,8 +98,8 @@ class ClientLogoCloud extends StatelessWidget {
                 const Spacer(),
                 Text(
                   context.l10n.brandCount(_clientLogos.length),
-                  style: const TextStyle(
-                    color: Color(0xFF9CB4BA),
+                  style: TextStyle(
+                    color: palette.mutedInk,
                     fontSize: 9,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1,
@@ -149,11 +151,12 @@ class _ClientLogoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.leonePalette;
     final visual = logo.contrastOutline
         ? _OutlinedClientLogo(logo: logo)
         : _ClientLogoAsset(
             logo: logo,
-            tint: logo.lightMonochrome ? Colors.white : null,
+            tint: logo.lightMonochrome ? palette.ink : null,
           );
 
     return Semantics(
@@ -165,7 +168,7 @@ class _ClientLogoTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withValues(alpha: .07)),
+          border: Border.all(color: palette.outline),
         ),
         child: logo.showName
             ? Row(
@@ -175,8 +178,8 @@ class _ClientLogoTile extends StatelessWidget {
                   const SizedBox(width: 10),
                   Text(
                     logo.name,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: palette.ink,
                       fontSize: 11,
                       fontWeight: FontWeight.w800,
                     ),
@@ -210,6 +213,7 @@ class _OutlinedClientLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.leonePalette;
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -218,7 +222,7 @@ class _OutlinedClientLogo extends StatelessWidget {
             offset: offset,
             child: _ClientLogoAsset(
               logo: logo,
-              tint: Colors.white.withValues(alpha: .3),
+              tint: palette.ink.withValues(alpha: .3),
             ),
           ),
         _ClientLogoAsset(logo: logo),
@@ -235,6 +239,7 @@ class _ClientLogoAsset extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.leonePalette;
     final asset = logo.asset;
     if (asset == null) {
       return Center(
@@ -242,7 +247,7 @@ class _ClientLogoAsset extends StatelessWidget {
           logo.name.toUpperCase(),
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: tint ?? Colors.white,
+            color: tint ?? palette.ink,
             fontSize: 12,
             fontWeight: FontWeight.w900,
             letterSpacing: .6,
@@ -272,7 +277,7 @@ class _ClientLogoAsset extends StatelessWidget {
           logo.name,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: tint ?? Colors.white,
+            color: tint ?? palette.ink,
             fontWeight: FontWeight.w800,
           ),
         ),

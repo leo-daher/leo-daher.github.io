@@ -183,11 +183,19 @@ void main() {
 
     test('builds the app theme from the brand source of truth', () {
       final theme = LeoneBrandTheme.dark();
+      final lightTheme = LeoneBrandTheme.light();
 
       expect(theme.useMaterial3, isTrue);
       expect(theme.scaffoldBackgroundColor, LeoneBrandColors.canvas);
       expect(theme.colorScheme.surface, LeoneBrandColors.surface);
       expect(theme.textTheme.bodyMedium?.fontFamily, LeoneBrand.fontFamily);
+      expect(lightTheme.brightness, Brightness.light);
+      expect(lightTheme.scaffoldBackgroundColor, LeonePalette.light.canvas);
+      expect(lightTheme.extension<LeonePalette>(), LeonePalette.light);
+      expect(
+        _contrast(LeonePalette.light.ink, LeonePalette.light.canvas),
+        greaterThanOrEqualTo(7),
+      );
     });
   });
 

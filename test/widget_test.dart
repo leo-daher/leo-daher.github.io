@@ -60,6 +60,25 @@ void main() {
     expect(find.text('AI Automation Engineer'), findsOneWidget);
   });
 
+  testWidgets('starts in dark mode and persists the theme choice', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await _finishOpening(tester);
+
+    final home = find.byKey(const Key('portfolio-home-page'));
+    expect(Theme.of(tester.element(home)).brightness, Brightness.dark);
+    expect(find.bySemanticsLabel('Switch to light theme'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('theme-toggle')));
+    await tester.pumpAndSettle();
+    expect(Theme.of(tester.element(home)).brightness, Brightness.light);
+    expect(find.bySemanticsLabel('Switch to dark theme'), findsOneWidget);
+
+    final preferences = await SharedPreferences.getInstance();
+    expect(preferences.getString('portfolio_theme'), 'light');
+  });
+
   testWidgets('morphs the branded viewport without leaving its stage', (
     tester,
   ) async {
