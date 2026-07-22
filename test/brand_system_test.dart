@@ -235,17 +235,22 @@ void main() {
             width: 800,
             height: 600,
             child: LdViewportStage(
-              builder: (context, morph) {
-                latestMorph = morph;
-                return const SizedBox.expand();
-              },
+              frames: [
+                LdViewportFrameSpec(
+                  id: 'test',
+                  builder: (context, morph) {
+                    latestMorph = morph;
+                    return const SizedBox.expand();
+                  },
+                ),
+              ],
             ),
           ),
         ),
       ),
     );
 
-    final frame = find.byKey(const Key('ld-viewport-frame'));
+    final frame = find.byKey(const Key('ld-viewport-frame-test'));
     final desktopSize = tester.getSize(frame);
     expect(desktopSize.width / desktopSize.height, closeTo(620 / 260, .01));
     expect(latestMorph?.from, LdViewportPreset.desktop);

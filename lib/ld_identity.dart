@@ -488,17 +488,32 @@ class LdViewportMorph {
 typedef LdViewportBuilder =
     Widget Function(BuildContext context, LdViewportMorph morph);
 
+@immutable
+class LdViewportFrameSpec {
+  const LdViewportFrameSpec({
+    required this.id,
+    required this.builder,
+    this.showActionButton = true,
+  });
+
+  final String id;
+  final LdViewportBuilder builder;
+  final bool showActionButton;
+}
+
 class LdViewportStage extends StatefulWidget {
   const LdViewportStage({
     super.key,
-    required this.builder,
+    required this.frames,
     this.autoPlay = true,
     this.initialPreset = LdViewportPreset.desktop,
-  });
+    this.spacing = 18,
+  }) : assert(frames.length > 0);
 
-  final LdViewportBuilder builder;
+  final List<LdViewportFrameSpec> frames;
   final bool autoPlay;
   final LdViewportPreset initialPreset;
+  final double spacing;
 
   @override
   State<LdViewportStage> createState() => _LdViewportStageState();
@@ -572,14 +587,19 @@ class _LdViewportStageState extends State<LdViewportStage>
     return LayoutBuilder(
       builder: (context, constraints) {
         final bounds = Size(constraints.maxWidth, constraints.maxHeight);
+        final totalSpacing = widget.spacing * (widget.frames.length - 1);
+        final frameBounds = Size(
+          bounds.width,
+          math.max(0, (bounds.height - totalSpacing) / widget.frames.length),
+        );
         return AnimatedBuilder(
           animation: _controller,
           builder: (context, _) {
             final progress = _motionDisabled
                 ? 1.0
                 : LeoneBrandMotion.viewportCurve.transform(_controller.value);
-            final fromSize = _fitDesignSize(_from.designSize, bounds);
-            final toSize = _fitDesignSize(_to.designSize, bounds);
+            final fromSize = _fitDesignSize(_from.designSize, frameBounds);
+            final toSize = _fitDesignSize(_to.designSize, frameBounds);
             final frameSize = Size.lerp(fromSize, toSize, progress)!;
             final morph = LdViewportMorph(
               from: _from,
@@ -587,17 +607,37 @@ class _LdViewportStageState extends State<LdViewportStage>
               progress: progress,
             );
             return Center(
-              child: Semantics(
-                key: const Key('ld-viewport-semantics'),
-                container: true,
-                label: context.l10n.everySurface,
-                value: _to.name,
-                child: SizedBox(
-                  key: const Key('ld-viewport-frame'),
-                  width: frameSize.width,
-                  height: frameSize.height,
-                  child: LdFrame(child: widget.builder(context, morph)),
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (
+                    var index = 0;
+                    index < widget.frames.length;
+                    index++
+                  ) ...[
+                    if (index > 0) SizedBox(height: widget.spacing),
+                    Semantics(
+                      key: Key(
+                        'ld-viewport-semantics-${widget.frames[index].id}',
+                      ),
+                      container: true,
+                      label: context.l10n.everySurface,
+                      value: _to.name,
+                      child: SizedBox(
+                        key: Key(
+                          'ld-viewport-frame-${widget.frames[index].id}',
+                        ),
+                        width: frameSize.width,
+                        height: frameSize.height,
+                        child: LdFrame(
+                          showActionButton:
+                              widget.frames[index].showActionButton,
+                          child: widget.frames[index].builder(context, morph),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ),
             );
           },

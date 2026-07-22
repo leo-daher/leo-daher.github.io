@@ -185,9 +185,10 @@ não pressupõe que largura e altura cresçam na mesma medida.
 
 O hero alterna automaticamente entre proporções mobile (`178 × 308`), tablet
 (`316 × 240`) e desktop/web (`620 × 260`), sempre ajustadas ao espaço real com
-`LayoutBuilder`. Não há seletor de dispositivo: um único frame muda de forma e
-os mesmos elementos abstratos de interface reorganizam sua hierarquia para cada
-composição.
+`LayoutBuilder`. Não há seletor de dispositivo. Duas versões sincronizadas ficam
+empilhadas: a primeira demonstra o ponto de ação com um bloco a menos e reserva
+o canto do FAB; a segunda apresenta a composição completa sem o FAB. Os mesmos
+elementos abstratos de interface reorganizam sua hierarquia em cada formato.
 
 ### Redução de movimento
 
