@@ -125,6 +125,7 @@ class _LdOpeningTransitionState extends State<LdOpeningTransition>
   @override
   Widget build(BuildContext context) {
     final viewPadding = MediaQuery.viewPaddingOf(context);
+    final brightness = Theme.of(context).brightness;
     return Positioned.fill(
       child: Semantics(
         image: true,
@@ -151,6 +152,7 @@ class _LdOpeningTransitionState extends State<LdOpeningTransition>
                         painter: _LdOpeningPainter(
                           progress: _controller.value,
                           viewPadding: viewPadding,
+                          brightness: brightness,
                         ),
                         size: viewport,
                       ),
@@ -383,14 +385,15 @@ class LdOpeningFrameGeometry {
 }
 
 class _LdOpeningPainter extends CustomPainter {
-  const _LdOpeningPainter({required this.progress, required this.viewPadding});
+  const _LdOpeningPainter({
+    required this.progress,
+    required this.viewPadding,
+    required this.brightness,
+  });
 
   final double progress;
   final EdgeInsets viewPadding;
-
-  static const _background = LeoneBrandColors.canvas;
-  static const _lColor = LeoneBrandColors.structureOnDark;
-  static const _dColor = LeoneBrandColors.surfaceOnDark;
+  final Brightness brightness;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -401,65 +404,34 @@ class _LdOpeningPainter extends CustomPainter {
       progress,
       viewPadding: viewPadding,
     );
+    final palette = brightness == Brightness.light
+        ? LeonePalette.light
+        : LeonePalette.dark;
+    final brandColors = LdFrame.brandColorsFor(brightness);
     canvas.drawRect(
       Offset.zero & size,
       Paint()
-        ..color = _background.withValues(alpha: geometry.backgroundOpacity),
+        ..color = palette.canvas.withValues(alpha: geometry.backgroundOpacity),
     );
 
-    final frameRect = geometry.frameRect;
-    final stroke = geometry.stroke;
-    final radius = geometry.radius;
-    final bottomRightRadiusX = geometry.bottomRightRadiusX;
-    final bottomRightRadiusY = geometry.bottomRightRadiusY;
-    final opening = math.max(stroke * 1.55, radius * .58);
-    final joinX = frameRect.right - bottomRightRadiusX - stroke * .18;
-    final lRadius = radius * .76;
-    const logoOpacity = 1.0;
-
-    final lPath = Path()
-      ..moveTo(frameRect.left, frameRect.top + opening)
-      ..lineTo(frameRect.left, frameRect.bottom - lRadius)
-      ..quadraticBezierTo(
-        frameRect.left,
-        frameRect.bottom,
-        frameRect.left + lRadius,
-        frameRect.bottom,
-      )
-      ..lineTo(joinX, frameRect.bottom);
-    final dPath = Path()
-      ..moveTo(frameRect.left + opening, frameRect.top)
-      ..lineTo(frameRect.right - radius, frameRect.top)
-      ..quadraticBezierTo(
-        frameRect.right,
-        frameRect.top,
-        frameRect.right,
-        frameRect.top + radius,
-      )
-      ..lineTo(frameRect.right, frameRect.bottom - bottomRightRadiusY)
-      ..quadraticBezierTo(
-        frameRect.right,
-        frameRect.bottom,
-        frameRect.right - bottomRightRadiusX,
-        frameRect.bottom,
-      )
-      ..lineTo(joinX, frameRect.bottom);
-
-    canvas.drawPath(lPath, _strokePaint(_lColor, stroke, logoOpacity));
-    canvas.drawPath(dPath, _strokePaint(_dColor, stroke, logoOpacity));
+    _paintLdFrameOutline(
+      canvas,
+      layerBounds: Offset.zero & size,
+      frameRect: geometry.frameRect,
+      stroke: geometry.stroke,
+      topRightRadius: geometry.radius,
+      bottomRightRadiusX: geometry.bottomRightRadiusX,
+      bottomRightRadiusY: geometry.bottomRightRadiusY,
+      lColor: brandColors.l,
+      dColor: brandColors.d,
+    );
   }
-
-  Paint _strokePaint(Color color, double width, double opacity) => Paint()
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = width
-    ..strokeCap = StrokeCap.round
-    ..strokeJoin = StrokeJoin.round
-    ..color = color.withValues(alpha: opacity);
 
   @override
   bool shouldRepaint(covariant _LdOpeningPainter oldDelegate) =>
       oldDelegate.progress != progress ||
-      oldDelegate.viewPadding != viewPadding;
+      oldDelegate.viewPadding != viewPadding ||
+      oldDelegate.brightness != brightness;
 }
 
 enum LdViewportPreset { mobile, tablet, desktop }
@@ -812,55 +784,20 @@ class _LdFramePainter extends CustomPainter {
     if (size.isEmpty) return;
 
     final halfStroke = stroke / 2;
-    final left = halfStroke;
-    final top = halfStroke;
     final right = size.width - halfStroke;
     final bottom = size.height - halfStroke;
     final r = math.min(radius, math.min(size.width, size.height) * .24);
-    final lRadius = r * .76;
-    final opening = math.max(stroke * 1.55, r * .58);
-    final joinX = math.max(left + lRadius + stroke, right - r - stroke * .18);
-
-    final lPath = Path()
-      ..moveTo(left, top + opening)
-      ..lineTo(left, bottom - lRadius)
-      ..arcToPoint(
-        Offset(left + lRadius, bottom),
-        radius: Radius.circular(lRadius),
-        clockwise: false,
-      )
-      ..lineTo(joinX, bottom);
-
-    final dPath = Path()
-      ..moveTo(left + opening, top)
-      ..lineTo(right - r, top)
-      ..arcToPoint(Offset(right, top + r), radius: Radius.circular(r))
-      ..lineTo(right, bottom - r)
-      ..arcToPoint(Offset(right - r, bottom), radius: Radius.circular(r))
-      ..lineTo(joinX, bottom);
-
-    canvas.saveLayer(Offset.zero & size, Paint());
-    canvas.drawPath(lPath, _strokePaint(lColor));
-    canvas.drawPath(dPath, _strokePaint(dColor));
-    canvas.drawCircle(
-      Offset(left, top + opening),
-      stroke / 2,
-      Paint()..color = lColor,
+    _paintLdFrameOutline(
+      canvas,
+      layerBounds: Offset.zero & size,
+      frameRect: Rect.fromLTRB(halfStroke, halfStroke, right, bottom),
+      stroke: stroke,
+      topRightRadius: r,
+      bottomRightRadiusX: r,
+      bottomRightRadiusY: r,
+      lColor: lColor,
+      dColor: dColor,
     );
-    canvas.drawCircle(
-      Offset(left + opening, top),
-      stroke / 2,
-      Paint()..color = dColor,
-    );
-    canvas.drawLine(
-      Offset(joinX - stroke * .29, bottom + stroke * .57),
-      Offset(joinX + stroke * .57, bottom - stroke * .57),
-      Paint()
-        ..blendMode = BlendMode.clear
-        ..strokeWidth = stroke * (4 / 14)
-        ..strokeCap = StrokeCap.round,
-    );
-    canvas.restore();
 
     if (showActionButton) {
       _paintActionButton(canvas, size, right, bottom);
@@ -903,13 +840,6 @@ class _LdFramePainter extends CustomPainter {
     canvas.drawRRect(button, Paint()..color = actionButtonColor);
   }
 
-  Paint _strokePaint(Color color) => Paint()
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = stroke
-    ..strokeCap = StrokeCap.butt
-    ..strokeJoin = StrokeJoin.round
-    ..color = color;
-
   @override
   bool shouldRepaint(covariant _LdFramePainter oldDelegate) =>
       oldDelegate.stroke != stroke ||
@@ -918,4 +848,83 @@ class _LdFramePainter extends CustomPainter {
       oldDelegate.dColor != dColor ||
       oldDelegate.actionButtonColor != actionButtonColor ||
       oldDelegate.showActionButton != showActionButton;
+}
+
+void _paintLdFrameOutline(
+  Canvas canvas, {
+  required Rect layerBounds,
+  required Rect frameRect,
+  required double stroke,
+  required double topRightRadius,
+  required double bottomRightRadiusX,
+  required double bottomRightRadiusY,
+  required Color lColor,
+  required Color dColor,
+}) {
+  if (frameRect.isEmpty || stroke <= 0) return;
+
+  final left = frameRect.left;
+  final top = frameRect.top;
+  final right = frameRect.right;
+  final bottom = frameRect.bottom;
+  final lRadius = topRightRadius * .76;
+  final opening = math.max(stroke * 1.55, topRightRadius * .58);
+  final joinX = math.max(
+    left + lRadius + stroke,
+    right - bottomRightRadiusX - stroke * .18,
+  );
+
+  final lPath = Path()
+    ..moveTo(left, top + opening)
+    ..lineTo(left, bottom - lRadius)
+    ..arcToPoint(
+      Offset(left + lRadius, bottom),
+      radius: Radius.circular(lRadius),
+      clockwise: false,
+    )
+    ..lineTo(joinX, bottom);
+
+  final dPath = Path()
+    ..moveTo(left + opening, top)
+    ..lineTo(right - topRightRadius, top)
+    ..arcToPoint(
+      Offset(right, top + topRightRadius),
+      radius: Radius.circular(topRightRadius),
+    )
+    ..lineTo(right, bottom - bottomRightRadiusY)
+    ..arcToPoint(
+      Offset(right - bottomRightRadiusX, bottom),
+      radius: Radius.elliptical(bottomRightRadiusX, bottomRightRadiusY),
+    )
+    ..lineTo(joinX, bottom);
+
+  Paint strokePaint(Color color) => Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = stroke
+    ..strokeCap = StrokeCap.butt
+    ..strokeJoin = StrokeJoin.round
+    ..color = color;
+
+  canvas.saveLayer(layerBounds, Paint());
+  canvas.drawPath(lPath, strokePaint(lColor));
+  canvas.drawPath(dPath, strokePaint(dColor));
+  canvas.drawCircle(
+    Offset(left, top + opening),
+    stroke / 2,
+    Paint()..color = lColor,
+  );
+  canvas.drawCircle(
+    Offset(left + opening, top),
+    stroke / 2,
+    Paint()..color = dColor,
+  );
+  canvas.drawLine(
+    Offset(joinX - stroke * .29, bottom + stroke * .57),
+    Offset(joinX + stroke * .57, bottom - stroke * .57),
+    Paint()
+      ..blendMode = BlendMode.clear
+      ..strokeWidth = stroke * (4 / 14)
+      ..strokeCap = StrokeCap.round,
+  );
+  canvas.restore();
 }

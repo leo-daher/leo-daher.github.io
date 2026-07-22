@@ -505,13 +505,23 @@ class _Footer extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(top: BorderSide(color: palette.outline)),
       ),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1240),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final stacked = constraints.maxWidth < 1100;
-              final signature = Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                key: const Key('footer-invitation'),
+                context.l10n.footerInvitation,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 18),
+              Row(
                 key: const Key('footer-signature'),
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -530,40 +540,8 @@ class _Footer extends StatelessWidget {
                     style: TextStyle(color: palette.mutedInk, fontSize: 11),
                   ),
                 ],
-              );
-              if (stacked) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      key: const Key('footer-invitation'),
-                      context.l10n.footerInvitation,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 18),
-                    signature,
-                  ],
-                );
-              }
-              return Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      key: const Key('footer-invitation'),
-                      context.l10n.footerInvitation,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  signature,
-                ],
-              );
-            },
+              ),
+            ],
           ),
         ),
       ),

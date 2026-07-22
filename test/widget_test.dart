@@ -334,9 +334,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('stacks the iPad portrait footer clear of the FAB', (
-    tester,
-  ) async {
+  testWidgets('keeps the left-aligned footer clear of the FAB', (tester) async {
     tester.view.physicalSize = const Size(1024, 1366);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -359,7 +357,35 @@ void main() {
 
     expect(signatureRect.top, greaterThan(invitationRect.bottom));
     expect(signatureRect.left, closeTo(invitationRect.left, .01));
+    expect(invitationRect.left, closeTo(24, .01));
     expect(signatureRect.overlaps(tester.getRect(fab)), isFalse);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('anchors the wide footer to the left edge', (tester) async {
+    tester.view.physicalSize = const Size(1440, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await _finishOpening(tester);
+    await tester.drag(
+      find.byKey(const Key('portfolio-scroll-view')),
+      const Offset(0, -10000),
+    );
+    await tester.pumpAndSettle();
+
+    final invitationRect = tester.getRect(
+      find.byKey(const Key('footer-invitation')),
+    );
+    final signatureRect = tester.getRect(
+      find.byKey(const Key('footer-signature')),
+    );
+
+    expect(invitationRect.left, closeTo(24, .01));
+    expect(signatureRect.left, closeTo(invitationRect.left, .01));
+    expect(signatureRect.top, greaterThan(invitationRect.bottom));
     expect(tester.takeException(), isNull);
   });
 

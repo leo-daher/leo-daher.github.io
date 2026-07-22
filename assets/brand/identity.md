@@ -198,7 +198,9 @@ a abertura superior esquerda e o microcorte inferior. As curvas do conteúdo e
 do contorno compartilham os mesmos centros geométricos e são construídas com
 arcos circulares, mantendo distância constante entre as bordas. No encontro
 inferior, os segmentos terminam sem sobreposição antes da máscara diagonal, para
-que as cores de L e D não vazem através do microcorte.
+que as cores de L e D não vazem através do microcorte. O monograma da abertura e
+o frame de apresentação usam a mesma construção de paths, caps, arcos e máscara;
+a animação muda apenas as dimensões e a âncora do canto inferior direito.
 
 ### Redução de movimento
 
