@@ -7,58 +7,83 @@ import '../shared/portfolio_section_heading.dart';
 
 const _clientAccent = Color(0xFF51F2C2);
 
-const _clientLogos = <_ClientLogo>[
+const _directClientLogos = <_ClientLogo>[
   _ClientLogo(
+    id: 'mag-seguros',
     name: 'MAG Seguros',
     asset: 'assets/client_logos/mag-official.svg',
   ),
   _ClientLogo(
+    id: 'human-robotics',
     name: 'Human Robotics',
     asset: 'assets/client_logos/human_robotics.png',
     contrastOutline: true,
   ),
-  _ClientLogo(name: 'Visagio', asset: 'assets/client_logos/visagio.svg'),
   _ClientLogo(
-    name: 'Code 495',
-    asset: 'assets/client_logos/code-495-symbol.svg',
-    showName: true,
+    id: 'visagio',
+    name: 'Visagio',
+    asset: 'assets/client_logos/visagio.svg',
   ),
-  _ClientLogo(name: 'CTT', asset: 'assets/client_logos/ctt-official.svg'),
   _ClientLogo(
+    id: 'radix',
+    name: 'Radix',
+    asset: 'assets/client_logos/radix.png',
+  ),
+];
+
+const _latituddeClientLogos = <_ClientLogo>[
+  _ClientLogo(
+    id: 'van-cranenbroek',
+    name: 'Van Cranenbroek',
+    asset: 'assets/client_logos/van-cranenbroek-full.svg',
+  ),
+  _ClientLogo(
+    id: 'lyzer',
     name: 'Lyzer',
     asset: 'assets/client_logos/lyzer-official.svg',
     contrastOutline: true,
   ),
   _ClientLogo(
-    name: 'Águas de Portugal',
-    asset: 'assets/client_logos/adp-official.svg',
-    contrastOutline: true,
+    id: 'ctt',
+    name: 'CTT',
+    asset: 'assets/client_logos/ctt-official.svg',
   ),
   _ClientLogo(
-    name: 'Água Monchique',
-    asset: 'assets/client_logos/agua-monchique-official.svg',
-    contrastOutline: true,
-  ),
-  _ClientLogo(
-    name: 'Iberdrola',
-    asset: 'assets/client_logos/iberdrola-official.svg',
-  ),
-  _ClientLogo(
-    name: 'Van Cranenbroek',
-    asset: 'assets/client_logos/van-cranenbroek-full.svg',
-  ),
-  _ClientLogo(name: 'Radix', asset: 'assets/client_logos/radix.png'),
-  _ClientLogo(
+    id: 'ey',
     name: 'EY',
     asset: 'assets/client_logos/ey-official.svg',
     contrastOutline: true,
   ),
   _ClientLogo(
+    id: 'iberdrola',
+    name: 'Iberdrola',
+    asset: 'assets/client_logos/iberdrola-official.svg',
+  ),
+  _ClientLogo(
+    id: 'aguas-de-portugal',
+    name: 'Águas de Portugal',
+    asset: 'assets/client_logos/adp-official.svg',
+    contrastOutline: true,
+  ),
+  _ClientLogo(
+    id: 'agua-monchique',
+    name: 'Água Monchique',
+    asset: 'assets/client_logos/agua-monchique-official.svg',
+    contrastOutline: true,
+  ),
+  _ClientLogo(
+    id: 'fullsix',
     name: 'Fullsix',
     asset: 'assets/client_logos/fullsix-black.png',
     scale: 3,
     offset: Offset(0, 7),
     lightMonochrome: true,
+  ),
+  _ClientLogo(
+    id: 'code-495',
+    name: 'Code 495',
+    asset: 'assets/client_logos/code-495-symbol.svg',
+    showName: true,
   ),
 ];
 
@@ -79,7 +104,6 @@ class ClientLogoCloud extends StatelessWidget {
         const gap = 10.0;
         final tileWidth =
             (constraints.maxWidth - gap * (columns - 1)) / columns;
-
         return Column(
           key: const Key('client-logo-cloud'),
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,27 +113,21 @@ class ClientLogoCloud extends StatelessWidget {
               title: context.l10n.clientsTitle,
               copy: context.l10n.clientsCopy,
             ),
-            const SizedBox(height: 24),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                context.l10n.brandCount(_clientLogos.length),
-                style: const TextStyle(
-                  color: _clientAccent,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 1,
-                ),
-              ),
+            const SizedBox(height: 26),
+            _ClientLogoGroup(
+              key: const Key('client-logo-group-direct'),
+              title: context.l10n.directRoles,
+              logos: _directClientLogos,
+              tileWidth: tileWidth,
+              gap: gap,
             ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: gap,
-              runSpacing: gap,
-              children: [
-                for (final logo in _clientLogos)
-                  _ClientLogoTile(logo: logo, width: tileWidth),
-              ],
+            const SizedBox(height: 30),
+            _ClientLogoGroup(
+              key: const Key('client-logo-group-latitudde'),
+              title: context.l10n.viaLatituddeConsulting,
+              logos: _latituddeClientLogos,
+              tileWidth: tileWidth,
+              gap: gap,
             ),
           ],
         );
@@ -120,6 +138,7 @@ class ClientLogoCloud extends StatelessWidget {
 
 class _ClientLogo {
   const _ClientLogo({
+    required this.id,
     required this.name,
     this.asset,
     this.showName = false,
@@ -129,6 +148,7 @@ class _ClientLogo {
     this.contrastOutline = false,
   });
 
+  final String id;
   final String name;
   final String? asset;
   final bool showName;
@@ -136,6 +156,65 @@ class _ClientLogo {
   final Offset offset;
   final bool lightMonochrome;
   final bool contrastOutline;
+}
+
+class _ClientLogoGroup extends StatelessWidget {
+  const _ClientLogoGroup({
+    super.key,
+    required this.title,
+    required this.logos,
+    required this.tileWidth,
+    required this.gap,
+  });
+
+  final String title;
+  final List<_ClientLogo> logos;
+  final double tileWidth;
+  final double gap;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  color: _clientAccent,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1,
+                ),
+              ),
+            ),
+            Text(
+              context.l10n.brandCount(logos.length),
+              style: TextStyle(
+                color: palette.mutedInk,
+                fontSize: 9.5,
+                fontWeight: FontWeight.w700,
+                letterSpacing: .7,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: gap,
+          runSpacing: gap,
+          children: [
+            for (final logo in logos)
+              _ClientLogoTile(logo: logo, width: tileWidth),
+          ],
+        ),
+      ],
+    );
+  }
 }
 
 class _ClientLogoTile extends StatelessWidget {
@@ -155,6 +234,7 @@ class _ClientLogoTile extends StatelessWidget {
           );
 
     return Semantics(
+      key: Key('client-logo-${logo.id}'),
       label: logo.name,
       image: true,
       child: Container(

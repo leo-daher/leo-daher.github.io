@@ -447,7 +447,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get clientsCopy =>
-      'Projetos realizados por meio de empregadores, consultorias e equipes parceiras. Os cases acima detalham as contribuições que podem ser verificadas publicamente.';
+      'Vínculos diretos e projetos para clientes realizados por meio da Latitudde.';
+
+  @override
+  String get directRoles => 'VÍNCULOS DIRETOS';
+
+  @override
+  String get viaLatituddeConsulting => 'PROJETOS VIA LATITUDDE';
 
   @override
   String brandCount(int count) {

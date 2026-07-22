@@ -425,7 +425,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('CLIENTS SERVED'), findsOneWidget);
-    expect(find.text('13 BRANDS'), findsOneWidget);
+    expect(find.text('4 BRANDS'), findsOneWidget);
+    expect(find.text('9 BRANDS'), findsOneWidget);
+    expect(find.text('CLIENT WORK VIA LATITUDDE'), findsOneWidget);
     expect(find.text('LINELINKER PRO'), findsNothing);
     expect(tester.takeException(), isNull);
   });
@@ -466,8 +468,48 @@ void main() {
 
     expect(find.byKey(const Key('client-logo-cloud')), findsOneWidget);
     expect(find.text('CLIENTS SERVED'), findsOneWidget);
-    expect(find.text('13 BRANDS'), findsOneWidget);
+    expect(find.text('13 BRANDS'), findsNothing);
+    expect(find.text('DIRECT ROLES'), findsOneWidget);
+    expect(find.text('CLIENT WORK VIA LATITUDDE'), findsOneWidget);
+    expect(find.text('4 BRANDS'), findsOneWidget);
+    expect(find.text('9 BRANDS'), findsOneWidget);
     expect(find.textContaining('A brand indicates'), findsNothing);
+
+    final directGroup = find.byKey(const Key('client-logo-group-direct'));
+    final latituddeGroup = find.byKey(const Key('client-logo-group-latitudde'));
+    for (final id in const [
+      'mag-seguros',
+      'human-robotics',
+      'visagio',
+      'radix',
+    ]) {
+      expect(
+        find.descendant(
+          of: directGroup,
+          matching: find.byKey(Key('client-logo-$id')),
+        ),
+        findsOneWidget,
+      );
+    }
+    for (final id in const [
+      'van-cranenbroek',
+      'lyzer',
+      'ctt',
+      'ey',
+      'iberdrola',
+      'aguas-de-portugal',
+      'agua-monchique',
+      'fullsix',
+      'code-495',
+    ]) {
+      expect(
+        find.descendant(
+          of: latituddeGroup,
+          matching: find.byKey(Key('client-logo-$id')),
+        ),
+        findsOneWidget,
+      );
+    }
     expect(find.byType(WorldExperienceMap), findsNothing);
     expect(tester.takeException(), isNull);
   });

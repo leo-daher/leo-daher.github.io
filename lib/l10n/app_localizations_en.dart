@@ -447,7 +447,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clientsCopy =>
-      'Projects delivered through employers, consultancies, and partner teams. The cases above detail the contributions that can be verified publicly.';
+      'Direct roles and client work delivered through Latitudde.';
+
+  @override
+  String get directRoles => 'DIRECT ROLES';
+
+  @override
+  String get viaLatituddeConsulting => 'CLIENT WORK VIA LATITUDDE';
 
   @override
   String brandCount(int count) {

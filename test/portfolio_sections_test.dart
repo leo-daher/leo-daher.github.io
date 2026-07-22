@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
+import 'package:leone_portfolio/features/clients/client_logo_cloud.dart';
 import 'package:leone_portfolio/features/contact/contact_section.dart';
 import 'package:leone_portfolio/features/proof/portfolio_proof_strip.dart';
 import 'package:leone_portfolio/features/system/system_overview_section.dart';
@@ -8,6 +9,49 @@ import 'package:leone_portfolio/l10n/app_localizations.dart';
 import 'package:url_launcher/link.dart';
 
 void main() {
+  testWidgets('client relationship groups keep a two-column mobile grid', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      _localizedScaffold(
+        const SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: ClientLogoCloud(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final mag = tester.getRect(
+      find.byKey(const Key('client-logo-mag-seguros')),
+    );
+    final human = tester.getRect(
+      find.byKey(const Key('client-logo-human-robotics')),
+    );
+    final visagio = tester.getRect(
+      find.byKey(const Key('client-logo-visagio')),
+    );
+    final directGroup = tester.getRect(
+      find.byKey(const Key('client-logo-group-direct')),
+    );
+    final latituddeGroup = tester.getRect(
+      find.byKey(const Key('client-logo-group-latitudde')),
+    );
+
+    expect(mag.top, closeTo(human.top, .01));
+    expect(mag.right, lessThan(human.left));
+    expect(visagio.top, greaterThan(mag.bottom));
+    expect(directGroup.bottom, lessThan(latituddeGroup.top));
+    expect(find.text('DIRECT ROLES'), findsOneWidget);
+    expect(find.text('CLIENT WORK VIA LATITUDDE'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('proof strip reflows into two columns on mobile', (tester) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1;

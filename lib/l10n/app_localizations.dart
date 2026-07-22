@@ -875,8 +875,20 @@ abstract class AppLocalizations {
   /// Client section supporting copy.
   ///
   /// In en, this message translates to:
-  /// **'Projects delivered through employers, consultancies, and partner teams. The cases above detail the contributions that can be verified publicly.'**
+  /// **'Direct roles and client work delivered through Latitudde.'**
   String get clientsCopy;
+
+  /// Heading for organizations where Leone held a direct role.
+  ///
+  /// In en, this message translates to:
+  /// **'DIRECT ROLES'**
+  String get directRoles;
+
+  /// Heading for client work delivered through Latitudde.
+  ///
+  /// In en, this message translates to:
+  /// **'CLIENT WORK VIA LATITUDDE'**
+  String get viaLatituddeConsulting;
 
   /// Number of client brands.
   ///
