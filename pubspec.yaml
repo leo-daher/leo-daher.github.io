@@ -70,8 +70,19 @@ flutter:
   assets:
     - assets/client_logos/
     - assets/brand/
+    - assets/apps/
     - assets/certificates/catalog.json
-    - assets/certificates/originals/
+    - assets/certificates/originals/anthropic-ai-capabilities-and-limitations.jpg
+    - assets/certificates/originals/anthropic-ai-fluency-framework-and-foundations.jpg
+    - assets/certificates/originals/anthropic-claude-101.jpg
+    - assets/certificates/originals/anthropic-claude-code-101.jpg
+    - assets/certificates/originals/anthropic-claude-code-in-action.jpg
+    - assets/certificates/originals/anthropic-claude-platform-101.jpg
+    - assets/certificates/originals/anthropic-introduction-to-agent-skills.jpg
+    - assets/certificates/originals/anthropic-introduction-to-model-context-protocol.jpg
+    - assets/certificates/originals/anthropic-introduction-to-subagents.jpg
+    - assets/certificates/originals/anthropic-model-context-protocol-advanced-topics.jpg
+    - assets/certificates/originals/udemy-complete-flutter-development-bootcamp-with-dart.jpg
 
   fonts:
     - family: Inter

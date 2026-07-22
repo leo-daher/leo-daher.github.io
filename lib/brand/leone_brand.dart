@@ -132,10 +132,10 @@ abstract final class LeoneBrandGeometry {
 }
 
 abstract final class LeoneBrandMotion {
-  static const openingHold = Duration(milliseconds: 1000);
-  static const openingTransform = Duration(milliseconds: 2100);
-  static const openingTotal = Duration(milliseconds: 3100);
-  static const openingHoldFraction = 1000 / 3100;
+  static const openingHold = Duration(milliseconds: 250);
+  static const openingTransform = Duration(milliseconds: 950);
+  static const openingTotal = Duration(milliseconds: 1200);
+  static const openingHoldFraction = 250 / 1200;
   static const openingFrameStart = 0.08;
   static const openingFabStart = 0.12;
   static const openingViewportArrival = 0.70;

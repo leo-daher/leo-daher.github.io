@@ -64,7 +64,7 @@ class SystemOverviewSection extends StatelessWidget {
                       l10n.systemFlow,
                       style: TextStyle(
                         color: palette.mutedInk,
-                        fontSize: 8,
+                        fontSize: 10,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 1,
                       ),
@@ -231,7 +231,7 @@ class _SystemNode extends StatelessWidget {
                     maxLines: 1,
                     style: TextStyle(
                       color: accent,
-                      fontSize: 8,
+                      fontSize: 10,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1,
                     ),
@@ -253,7 +253,7 @@ class _SystemNode extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: palette.mutedInk,
-                    fontSize: compact ? 8 : 10,
+                    fontSize: compact ? 10 : 11,
                   ),
                 ),
               ],
@@ -290,7 +290,7 @@ class _SystemConnector extends StatelessWidget {
                   label,
                   style: TextStyle(
                     color: palette.mutedInk,
-                    fontSize: 7,
+                    fontSize: 10,
                     fontWeight: FontWeight.w800,
                     letterSpacing: .8,
                   ),
@@ -305,7 +305,7 @@ class _SystemConnector extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: palette.mutedInk,
-                    fontSize: 8,
+                    fontSize: 10,
                     fontWeight: FontWeight.w800,
                     letterSpacing: .7,
                   ),
@@ -350,7 +350,7 @@ class _SystemReturnLabel extends StatelessWidget {
               : context.l10n.decisionsReturnProduct,
           style: TextStyle(
             color: palette.mutedInk,
-            fontSize: compact ? 7 : 9,
+            fontSize: compact ? 10 : 11,
             fontWeight: FontWeight.w800,
             letterSpacing: compact ? .55 : .9,
           ),

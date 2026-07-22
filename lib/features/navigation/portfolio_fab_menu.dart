@@ -9,7 +9,7 @@ import '../../l10n/l10n.dart';
 const _bg = LeoneBrandColors.canvas;
 const _green = LeoneBrandColors.interactive;
 
-enum PortfolioDestination { home, system }
+enum PortfolioDestination { home, apps, system, clients, contact }
 
 class PortfolioFabMenuScaffold extends StatefulWidget {
   const PortfolioFabMenuScaffold({
@@ -120,9 +120,24 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
       key: Key('fab-menu-home'),
     ),
     _PortfolioFabMenuAction(
+      destination: PortfolioDestination.apps,
+      icon: Icons.apps_outlined,
+      key: Key('fab-menu-apps'),
+    ),
+    _PortfolioFabMenuAction(
       destination: PortfolioDestination.system,
       icon: Icons.account_tree_outlined,
       key: Key('fab-menu-system'),
+    ),
+    _PortfolioFabMenuAction(
+      destination: PortfolioDestination.clients,
+      icon: Icons.domain_outlined,
+      key: Key('fab-menu-clients'),
+    ),
+    _PortfolioFabMenuAction(
+      destination: PortfolioDestination.contact,
+      icon: Icons.alternate_email_rounded,
+      key: Key('fab-menu-contact'),
     ),
   ];
 
@@ -221,7 +236,10 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu>
                     action: _actions[index],
                     label: switch (_actions[index].destination) {
                       PortfolioDestination.home => l10n.navHome,
+                      PortfolioDestination.apps => l10n.navApps,
                       PortfolioDestination.system => l10n.navSystem,
+                      PortfolioDestination.clients => l10n.navClients,
+                      PortfolioDestination.contact => l10n.navContact,
                     },
                     closeMenuLabel: l10n.closeMenu,
                     focusNode: _itemFocusNodes[index],

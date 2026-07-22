@@ -80,19 +80,38 @@ void main() {
     expect(preferences.getString('portfolio_theme'), 'light');
   });
 
-  testWidgets('links the direct hiring CTA to the 30 minute Calendly slot', (
+  testWidgets('routes the top CTA to apps and keeps Calendly in contact', (
     tester,
   ) async {
     await tester.pumpWidget(const LeonePortfolioApp());
     await _finishOpening(tester);
 
-    final hireMeLink = tester.widget<Link>(
-      find.byKey(const Key('hire-me-link')),
+    final viewApps = find.byKey(const Key('view-apps-button'));
+    expect(viewApps, findsOneWidget);
+    expect(find.bySemanticsLabel('View apps'), findsOneWidget);
+    expect(tester.getSize(viewApps).height, 48);
+
+    await tester.tap(viewApps);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 900));
+    final appsHeadingY = tester
+        .getTopLeft(find.text('Production apps I contributed to.'))
+        .dy;
+    expect(appsHeadingY, inInclusiveRange(0, 180));
+
+    await tester.drag(
+      find.byKey(const Key('portfolio-scroll-view')),
+      const Offset(0, -10000),
     );
-    expect(hireMeLink.uri, Uri.parse('https://calendly.com/leonedaher/30min'));
-    expect(hireMeLink.target, LinkTarget.blank);
-    expect(find.bySemanticsLabel('Hire me here'), findsOneWidget);
-    expect(tester.getSize(find.byKey(const Key('hire-me-button'))).height, 48);
+    await tester.pumpAndSettle();
+    final calendlyLink = tester.widget<Link>(
+      find.byKey(const Key('contact-link-schedule')),
+    );
+    expect(
+      calendlyLink.uri,
+      Uri.parse('https://calendly.com/leonedaher/30min'),
+    );
+    expect(calendlyLink.target, LinkTarget.blank);
   });
 
   testWidgets('morphs the FAB-free frame and reflows its complete interface', (
@@ -207,7 +226,13 @@ void main() {
       find.descendant(of: fab, matching: find.byIcon(Icons.close_rounded)),
       findsOneWidget,
     );
-    const itemKeys = [Key('fab-menu-home'), Key('fab-menu-system')];
+    const itemKeys = [
+      Key('fab-menu-home'),
+      Key('fab-menu-apps'),
+      Key('fab-menu-system'),
+      Key('fab-menu-clients'),
+      Key('fab-menu-contact'),
+    ];
     final itemRects = <Rect>[];
     for (final key in itemKeys) {
       final item = find.byKey(key);
@@ -255,7 +280,11 @@ void main() {
     expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
     expect(find.text('Code with visible impact.'), findsNothing);
     final headingY = tester
-        .getTopLeft(find.text('Mobile, services and intelligence connected.'))
+        .getTopLeft(
+          find.text(
+            'What powers the apps: mobile, services, and intelligence connected.',
+          ),
+        )
         .dy;
     expect(headingY, inInclusiveRange(0, 180));
     expect(tester.takeException(), isNull);

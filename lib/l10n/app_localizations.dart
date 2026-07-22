@@ -152,6 +152,18 @@ abstract class AppLocalizations {
   /// **'Hire me'**
   String get hireMeCompact;
 
+  /// Primary action that scrolls to production apps.
+  ///
+  /// In en, this message translates to:
+  /// **'View apps'**
+  String get viewApps;
+
+  /// Compact action that scrolls to production apps.
+  ///
+  /// In en, this message translates to:
+  /// **'Apps'**
+  String get viewAppsCompact;
+
   /// Accessible label for the navigation menu barrier.
   ///
   /// In en, this message translates to:
@@ -167,8 +179,26 @@ abstract class AppLocalizations {
   /// Navigation destination.
   ///
   /// In en, this message translates to:
+  /// **'Apps'**
+  String get navApps;
+
+  /// Navigation destination.
+  ///
+  /// In en, this message translates to:
   /// **'System'**
   String get navSystem;
+
+  /// Navigation destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Clients'**
+  String get navClients;
+
+  /// Navigation destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get navContact;
 
   /// Navigation destination.
   ///
@@ -254,6 +284,234 @@ abstract class AppLocalizations {
   /// **'mobile  ·  desktop  ·  web'**
   String get surfaceList;
 
+  /// Number of highlighted production apps.
+  ///
+  /// In en, this message translates to:
+  /// **'4'**
+  String get proofAppsValue;
+
+  /// Production app proof label.
+  ///
+  /// In en, this message translates to:
+  /// **'production apps highlighted'**
+  String get proofAppsLabel;
+
+  /// Published mobile platforms.
+  ///
+  /// In en, this message translates to:
+  /// **'Android + iOS'**
+  String get proofPlatformsValue;
+
+  /// Store publication proof label.
+  ///
+  /// In en, this message translates to:
+  /// **'published in official stores'**
+  String get proofPlatformsLabel;
+
+  /// Markets represented by highlighted apps.
+  ///
+  /// In en, this message translates to:
+  /// **'Brazil + Europe'**
+  String get proofMarketsValue;
+
+  /// Market proof label.
+  ///
+  /// In en, this message translates to:
+  /// **'products for real markets'**
+  String get proofMarketsLabel;
+
+  /// Store data consultation month.
+  ///
+  /// In en, this message translates to:
+  /// **'JUL 2026'**
+  String get proofCheckedValue;
+
+  /// Store data recency label.
+  ///
+  /// In en, this message translates to:
+  /// **'store data checked'**
+  String get proofCheckedLabel;
+
+  /// Accessible production apps section label.
+  ///
+  /// In en, this message translates to:
+  /// **'Published apps Leone Daher contributed to'**
+  String get productionAppsSemanticLabel;
+
+  /// Production apps section eyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'PRODUCTION PROOF'**
+  String get productionAppsEyebrow;
+
+  /// Production apps section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Production apps I contributed to.'**
+  String get productionAppsTitle;
+
+  /// Production apps section supporting copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Public store screens and data, with my contribution scoped for each product. Metrics checked in July 2026.'**
+  String get productionAppsCopy;
+
+  /// Production app role label.
+  ///
+  /// In en, this message translates to:
+  /// **'My role'**
+  String get appRoleLabel;
+
+  /// Production app contribution label.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution'**
+  String get appContributionLabel;
+
+  /// Production app technology label.
+  ///
+  /// In en, this message translates to:
+  /// **'Stack'**
+  String get appStackLabel;
+
+  /// Production app public store proof label.
+  ///
+  /// In en, this message translates to:
+  /// **'Public proof'**
+  String get appStoreProofLabel;
+
+  /// Production app screenshot group label.
+  ///
+  /// In en, this message translates to:
+  /// **'Screens published in the store'**
+  String get appScreenshotsLabel;
+
+  /// Fallback for a missing app screenshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Image unavailable'**
+  String get appImageUnavailableLabel;
+
+  /// Google Play link label.
+  ///
+  /// In en, this message translates to:
+  /// **'View on Google Play'**
+  String get viewGooglePlay;
+
+  /// Apple App Store link label.
+  ///
+  /// In en, this message translates to:
+  /// **'View on the App Store'**
+  String get viewAppStore;
+
+  /// Store metric consultation date.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked in July 2026.'**
+  String get storeCheckedJuly2026;
+
+  /// Van Cranenbroek case context.
+  ///
+  /// In en, this message translates to:
+  /// **'Retail · Netherlands · Android and iOS'**
+  String get vanCranenbroekContext;
+
+  /// Van Cranenbroek case summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers, catalogues, stores, and customer communication in a multiplatform product.'**
+  String get vanCranenbroekSummary;
+
+  /// Van Cranenbroek role.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile engineering in collaboration with the Latitudde team.'**
+  String get vanCranenbroekRole;
+
+  /// Van Cranenbroek contribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Work across Flutter and Kotlin, Firebase/Firestore, deep links, interactive maps and SVGs, CI/CD, and Python Cloud Functions.'**
+  String get vanCranenbroekContribution;
+
+  /// Google Play proof checked in July 2026.
+  ///
+  /// In en, this message translates to:
+  /// **'4.6 ★ · 179 ratings · 5K+ downloads'**
+  String get vanCranenbroekPlayProof;
+
+  /// App Store proof checked in July 2026.
+  ///
+  /// In en, this message translates to:
+  /// **'4.7 ★ · 143 ratings'**
+  String get vanCranenbroekAppStoreProof;
+
+  /// Lyzer case context.
+  ///
+  /// In en, this message translates to:
+  /// **'Logistics · Portugal · 2 Android apps'**
+  String get lyzerContext;
+
+  /// Lyzer case summary.
+  ///
+  /// In en, this message translates to:
+  /// **'An operational suite connecting collection, order preparation, routes, and delivery.'**
+  String get lyzerSummary;
+
+  /// Lyzer role.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile engineering across the Lyzer suite\'s operational flows.'**
+  String get lyzerRole;
+
+  /// Lyzer contribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Picking and delivery flows, barcode scanning, offline synchronization, and integrations designed for field operations.'**
+  String get lyzerContribution;
+
+  /// Lyzer Collect Google Play proof.
+  ///
+  /// In en, this message translates to:
+  /// **'1K+ downloads · updated Jul 6, 2026'**
+  String get lyzerCollectProof;
+
+  /// Lyzer Deliver Google Play proof.
+  ///
+  /// In en, this message translates to:
+  /// **'100+ downloads · updated Jul 14, 2026'**
+  String get lyzerDeliverProof;
+
+  /// MAG Venda Digital case context.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance · Brazil · Android'**
+  String get magContext;
+
+  /// MAG Venda Digital case summary.
+  ///
+  /// In en, this message translates to:
+  /// **'A digital sales tool for brokers to follow products and proposals.'**
+  String get magSummary;
+
+  /// MAG Venda Digital role.
+  ///
+  /// In en, this message translates to:
+  /// **'Android engineering on the digital sales product.'**
+  String get magRole;
+
+  /// MAG Venda Digital contribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Product evolution in Java/Kotlin, offline data with Realm, Gradle flavors, Firebase/Crashlytics, and an Azure pipeline.'**
+  String get magContribution;
+
+  /// MAG Venda Digital Google Play proof.
+  ///
+  /// In en, this message translates to:
+  /// **'Active app · 1K+ downloads · updated Jul 16, 2026'**
+  String get magPlayProof;
+
   /// System section eyebrow.
   ///
   /// In en, this message translates to:
@@ -263,7 +521,7 @@ abstract class AppLocalizations {
   /// System section title.
   ///
   /// In en, this message translates to:
-  /// **'Mobile, services and intelligence connected.'**
+  /// **'What powers the apps: mobile, services, and intelligence connected.'**
   String get systemTitle;
 
   /// System flow summary.
@@ -305,7 +563,7 @@ abstract class AppLocalizations {
   /// AI capabilities.
   ///
   /// In en, this message translates to:
-  /// **'Agents · LLMs · automation'**
+  /// **'Agents · workflows'**
   String get aiDetail;
 
   /// System connector label.
@@ -608,11 +866,83 @@ abstract class AppLocalizations {
   /// **'CLIENTS SERVED'**
   String get clientsServed;
 
+  /// Client section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Brands and operations in real contexts.'**
+  String get clientsTitle;
+
+  /// Client section supporting copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects delivered through employers, consultancies, and partner teams. The cases above detail the contributions that can be verified publicly.'**
+  String get clientsCopy;
+
+  /// Transparent client relationship note.
+  ///
+  /// In en, this message translates to:
+  /// **'A brand indicates project participation — not exclusive authorship or necessarily a direct engagement.'**
+  String get clientsAttribution;
+
   /// Number of client brands.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 BRAND} other{{count} BRANDS}}'**
   String brandCount(int count);
+
+  /// Contact section eyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'CONTACT'**
+  String get contactEyebrow;
+
+  /// Contact section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s talk about product and engineering.'**
+  String get contactTitle;
+
+  /// Contact section supporting copy.
+  ///
+  /// In en, this message translates to:
+  /// **'For opportunities, projects, or a technical conversation, choose the most convenient channel.'**
+  String get contactCopy;
+
+  /// LinkedIn contact label.
+  ///
+  /// In en, this message translates to:
+  /// **'LinkedIn'**
+  String get contactLinkedIn;
+
+  /// LinkedIn contact supporting copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience, career history, and professional contact.'**
+  String get contactLinkedInCopy;
+
+  /// GitHub contact label.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub'**
+  String get contactGitHub;
+
+  /// GitHub contact supporting copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Public code and technical studies.'**
+  String get contactGitHubCopy;
+
+  /// Calendly contact label.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule a conversation'**
+  String get contactSchedule;
+
+  /// Calendly contact supporting copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendly · 30 minutes'**
+  String get contactScheduleCopy;
 
   /// Footer invitation.
   ///

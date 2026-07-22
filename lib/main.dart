@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/link.dart';
 
 import 'brand/leone_brand.dart';
+import 'features/apps/production_apps.dart';
 import 'features/certificates/certifications_section.dart';
 import 'features/clients/client_logo_cloud.dart';
+import 'features/contact/contact_section.dart';
 import 'features/hero/portfolio_hero.dart';
 import 'features/navigation/portfolio_fab_menu.dart';
+import 'features/proof/portfolio_proof_strip.dart';
 import 'features/system/system_overview_section.dart';
 import 'ld_identity.dart';
 import 'l10n/app_localizations.dart';
@@ -170,8 +172,17 @@ class PortfolioHomePage extends StatefulWidget {
 
 class _PortfolioHomePageState extends State<PortfolioHomePage> {
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey _appsSectionKey = GlobalKey(
+    debugLabel: 'portfolio-apps-section',
+  );
   final GlobalKey _systemSectionKey = GlobalKey(
     debugLabel: 'portfolio-system-section',
+  );
+  final GlobalKey _clientsSectionKey = GlobalKey(
+    debugLabel: 'portfolio-clients-section',
+  );
+  final GlobalKey _contactSectionKey = GlobalKey(
+    debugLabel: 'portfolio-contact-section',
   );
   @override
   void dispose() {
@@ -191,7 +202,10 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
     }
 
     final target = switch (destination) {
+      PortfolioDestination.apps => _appsSectionKey.currentContext,
       PortfolioDestination.system => _systemSectionKey.currentContext,
+      PortfolioDestination.clients => _clientsSectionKey.currentContext,
+      PortfolioDestination.contact => _contactSectionKey.currentContext,
       PortfolioDestination.home => null,
     };
     if (target == null) return;
@@ -205,6 +219,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appsPresentation = ProductionAppsPresentation.localized(context.l10n);
     return PortfolioFabMenuScaffold(
       showFloatingActionButton: widget.showFloatingActionButton,
       floatingActionButtonEnabled: widget.floatingActionButtonEnabled,
@@ -218,6 +233,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               child: _TopBar(
                 onLocaleChanged: widget.onLocaleChanged,
                 onThemeModeChanged: widget.onThemeModeChanged,
+                onViewApps: () => _navigateTo(PortfolioDestination.apps),
               ),
             ),
             SliverToBoxAdapter(
@@ -227,7 +243,21 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                 child: PortfolioHero(autoPlay: widget.heroAutoPlay),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 42)),
+            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+            const SliverToBoxAdapter(
+              child: _SectionFrame(child: PortfolioProofStrip()),
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 92)),
+            SliverToBoxAdapter(
+              child: SizedBox(key: _appsSectionKey, height: 1),
+            ),
+            SliverToBoxAdapter(
+              child: ProductionAppsSection(
+                content: appsPresentation.content,
+                apps: appsPresentation.apps,
+              ),
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 92)),
             SliverToBoxAdapter(
               child: _SectionFrame(
                 key: _systemSectionKey,
@@ -237,10 +267,20 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 92)),
             SliverToBoxAdapter(
-              child: _SectionFrame(child: const ClientLogoCloud()),
+              child: _SectionFrame(
+                key: _clientsSectionKey,
+                child: const ClientLogoCloud(),
+              ),
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 92)),
             SliverToBoxAdapter(child: const CertificationsSection()),
+            const SliverToBoxAdapter(child: SizedBox(height: 92)),
+            SliverToBoxAdapter(
+              child: _SectionFrame(
+                key: _contactSectionKey,
+                child: const ContactSection(),
+              ),
+            ),
             const SliverToBoxAdapter(child: SizedBox(height: 72)),
             const SliverToBoxAdapter(child: _Footer()),
           ],
@@ -280,10 +320,12 @@ class _TopBar extends StatelessWidget {
   const _TopBar({
     required this.onLocaleChanged,
     required this.onThemeModeChanged,
+    required this.onViewApps,
   });
 
   final ValueChanged<Locale> onLocaleChanged;
   final ValueChanged<ThemeMode> onThemeModeChanged;
+  final VoidCallback onViewApps;
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +378,7 @@ class _TopBar extends StatelessWidget {
                   SizedBox(width: compact ? 6 : 12),
                   _ThemeToggle(onThemeModeChanged: onThemeModeChanged),
                   SizedBox(width: compact ? 6 : 12),
-                  _HireMeLink(compact: compact),
+                  _ViewAppsButton(compact: compact, onPressed: onViewApps),
                 ],
               );
             },
@@ -443,48 +485,41 @@ class _ThemeToggle extends StatelessWidget {
   }
 }
 
-class _HireMeLink extends StatelessWidget {
-  const _HireMeLink({required this.compact});
-
-  static final _calendlyUri = Uri.parse(
-    'https://calendly.com/leonedaher/30min',
-  );
+class _ViewAppsButton extends StatelessWidget {
+  const _ViewAppsButton({required this.compact, required this.onPressed});
 
   final bool compact;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    final label = compact ? context.l10n.hireMeCompact : context.l10n.hireMe;
-    return Link(
-      key: const Key('hire-me-link'),
-      uri: _calendlyUri,
-      target: LinkTarget.blank,
-      builder: (context, followLink) => Semantics(
-        button: true,
-        link: true,
-        label: label,
-        child: Tooltip(
-          message: label,
-          excludeFromSemantics: true,
-          child: TextButton.icon(
-            key: const Key('hire-me-button'),
-            onPressed: followLink,
-            style: TextButton.styleFrom(
-              foregroundColor: _green,
-              minimumSize: const Size(0, 48),
-              padding: EdgeInsets.symmetric(horizontal: compact ? 12 : 16),
-              backgroundColor: _green.withValues(alpha: .10),
-              side: BorderSide(color: _green.withValues(alpha: .34)),
-              shape: const StadiumBorder(),
-            ),
-            icon: const Icon(Icons.arrow_outward_rounded, size: 15),
-            label: Text(
-              label.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w800,
-                letterSpacing: .8,
-              ),
+    final label = compact
+        ? context.l10n.viewAppsCompact
+        : context.l10n.viewApps;
+    return Semantics(
+      button: true,
+      label: label,
+      child: Tooltip(
+        message: label,
+        excludeFromSemantics: true,
+        child: TextButton.icon(
+          key: const Key('view-apps-button'),
+          onPressed: onPressed,
+          style: TextButton.styleFrom(
+            foregroundColor: _green,
+            minimumSize: const Size(0, 48),
+            padding: EdgeInsets.symmetric(horizontal: compact ? 12 : 16),
+            backgroundColor: _green.withValues(alpha: .10),
+            side: BorderSide(color: _green.withValues(alpha: .34)),
+            shape: const StadiumBorder(),
+          ),
+          icon: const Icon(Icons.keyboard_arrow_down_rounded, size: 17),
+          label: Text(
+            label.toUpperCase(),
+            style: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: .8,
             ),
           ),
         ),

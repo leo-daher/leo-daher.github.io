@@ -36,13 +36,28 @@ class AppLocalizationsPt extends AppLocalizations {
   String get hireMeCompact => 'Conversar';
 
   @override
+  String get viewApps => 'Ver apps';
+
+  @override
+  String get viewAppsCompact => 'Apps';
+
+  @override
   String get dismissNavigationMenu => 'Descartar menu de navegação';
 
   @override
   String get navHome => 'Início';
 
   @override
+  String get navApps => 'Apps';
+
+  @override
   String get navSystem => 'Sistema';
+
+  @override
+  String get navClients => 'Clientes';
+
+  @override
+  String get navContact => 'Contato';
 
   @override
   String get navExperience => 'Experiência';
@@ -89,10 +104,138 @@ class AppLocalizationsPt extends AppLocalizations {
   String get surfaceList => 'mobile  ·  desktop  ·  web';
 
   @override
+  String get proofAppsValue => '4';
+
+  @override
+  String get proofAppsLabel => 'apps em produção em destaque';
+
+  @override
+  String get proofPlatformsValue => 'Android + iOS';
+
+  @override
+  String get proofPlatformsLabel => 'publicação em lojas oficiais';
+
+  @override
+  String get proofMarketsValue => 'Brasil + Europa';
+
+  @override
+  String get proofMarketsLabel => 'produtos para mercados reais';
+
+  @override
+  String get proofCheckedValue => 'JUL 2026';
+
+  @override
+  String get proofCheckedLabel => 'dados das lojas consultados';
+
+  @override
+  String get productionAppsSemanticLabel =>
+      'Apps publicados em que Leone Daher atuou';
+
+  @override
+  String get productionAppsEyebrow => 'PROVA DE PRODUÇÃO';
+
+  @override
+  String get productionAppsTitle => 'Apps em produção em que atuei.';
+
+  @override
+  String get productionAppsCopy =>
+      'Telas e dados públicos das lojas, com minha contribuição delimitada em cada produto. Métricas consultadas em julho de 2026.';
+
+  @override
+  String get appRoleLabel => 'Minha atuação';
+
+  @override
+  String get appContributionLabel => 'Contribuição';
+
+  @override
+  String get appStackLabel => 'Stack';
+
+  @override
+  String get appStoreProofLabel => 'Prova pública';
+
+  @override
+  String get appScreenshotsLabel => 'Telas publicadas na loja';
+
+  @override
+  String get appImageUnavailableLabel => 'Imagem indisponível';
+
+  @override
+  String get viewGooglePlay => 'Ver no Google Play';
+
+  @override
+  String get viewAppStore => 'Ver na App Store';
+
+  @override
+  String get storeCheckedJuly2026 => 'Consultado em julho de 2026.';
+
+  @override
+  String get vanCranenbroekContext => 'Varejo · Países Baixos · Android e iOS';
+
+  @override
+  String get vanCranenbroekSummary =>
+      'Ofertas, folhetos, lojas e comunicação com clientes em um produto multiplataforma.';
+
+  @override
+  String get vanCranenbroekRole =>
+      'Engenharia mobile em colaboração com a equipe da Latitudde.';
+
+  @override
+  String get vanCranenbroekContribution =>
+      'Atuação em Flutter e Kotlin, Firebase/Firestore, deep links, mapas e SVGs interativos, CI/CD e Cloud Functions em Python.';
+
+  @override
+  String get vanCranenbroekPlayProof =>
+      '4,6 ★ · 179 avaliações · 5 mil+ downloads';
+
+  @override
+  String get vanCranenbroekAppStoreProof => '4,7 ★ · 143 avaliações';
+
+  @override
+  String get lyzerContext => 'Logística · Portugal · 2 apps Android';
+
+  @override
+  String get lyzerSummary =>
+      'Suite operacional que conecta coleta, preparação de pedidos, rotas e entrega.';
+
+  @override
+  String get lyzerRole =>
+      'Engenharia mobile nos fluxos operacionais da suite Lyzer.';
+
+  @override
+  String get lyzerContribution =>
+      'Fluxos de picking e entrega, leitura de códigos de barras, sincronização offline e integrações voltadas ao trabalho de campo.';
+
+  @override
+  String get lyzerCollectProof =>
+      '1 mil+ downloads · atualizado em 6 jul. 2026';
+
+  @override
+  String get lyzerDeliverProof => '100+ downloads · atualizado em 14 jul. 2026';
+
+  @override
+  String get magContext => 'Seguros · Brasil · Android';
+
+  @override
+  String get magSummary =>
+      'Ferramenta de venda digital para corretores acompanharem produtos e propostas.';
+
+  @override
+  String get magRole => 'Engenharia Android no produto de venda digital.';
+
+  @override
+  String get magContribution =>
+      'Evolução em Java/Kotlin, dados offline com Realm, flavors Gradle, Firebase/Crashlytics e pipeline no Azure.';
+
+  @override
+  String get magPlayProof =>
+      'App ativo · 1 mil+ downloads · atualizado em 16 jul. 2026';
+
+  @override
   String get systemEyebrow => 'UM PRODUTO. O SISTEMA INTEIRO.';
 
   @override
-  String get systemTitle => 'Mobile, serviços e inteligência conectados.';
+  String get systemTitle =>
+      'O que sustenta os apps: mobile, serviços e inteligência conectados.';
 
   @override
   String get systemFlow => 'PRODUTO → SISTEMA → RESULTADO';
@@ -113,7 +256,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get aiSystems => 'Sistemas de IA';
 
   @override
-  String get aiDetail => 'Agentes · LLMs · automação';
+  String get aiDetail => 'Agentes · fluxos';
 
   @override
   String get requests => 'REQUISIÇÕES';
@@ -296,6 +439,17 @@ class AppLocalizationsPt extends AppLocalizations {
   String get clientsServed => 'CLIENTES ATENDIDOS';
 
   @override
+  String get clientsTitle => 'Marcas e operações em contextos reais.';
+
+  @override
+  String get clientsCopy =>
+      'Projetos realizados por meio de empregadores, consultorias e equipes parceiras. Os cases acima detalham as contribuições que podem ser verificadas publicamente.';
+
+  @override
+  String get clientsAttribution =>
+      'Uma marca indica participação em projeto — não autoria exclusiva nem, necessariamente, vínculo direto.';
+
+  @override
   String brandCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -305,6 +459,35 @@ class AppLocalizationsPt extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get contactEyebrow => 'CONTATO';
+
+  @override
+  String get contactTitle => 'Vamos falar sobre produto e engenharia.';
+
+  @override
+  String get contactCopy =>
+      'Para oportunidades, projetos ou uma troca técnica, escolha o canal mais conveniente.';
+
+  @override
+  String get contactLinkedIn => 'LinkedIn';
+
+  @override
+  String get contactLinkedInCopy =>
+      'Experiência, trajetória e contato profissional.';
+
+  @override
+  String get contactGitHub => 'GitHub';
+
+  @override
+  String get contactGitHubCopy => 'Código público e estudos técnicos.';
+
+  @override
+  String get contactSchedule => 'Agendar conversa';
+
+  @override
+  String get contactScheduleCopy => 'Calendly · 30 minutos';
 
   @override
   String get footerInvitation =>

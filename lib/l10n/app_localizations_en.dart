@@ -36,13 +36,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hireMeCompact => 'Hire me';
 
   @override
+  String get viewApps => 'View apps';
+
+  @override
+  String get viewAppsCompact => 'Apps';
+
+  @override
   String get dismissNavigationMenu => 'Dismiss navigation menu';
 
   @override
   String get navHome => 'Home';
 
   @override
+  String get navApps => 'Apps';
+
+  @override
   String get navSystem => 'System';
+
+  @override
+  String get navClients => 'Clients';
+
+  @override
+  String get navContact => 'Contact';
 
   @override
   String get navExperience => 'Experience';
@@ -89,10 +104,136 @@ class AppLocalizationsEn extends AppLocalizations {
   String get surfaceList => 'mobile  ·  desktop  ·  web';
 
   @override
+  String get proofAppsValue => '4';
+
+  @override
+  String get proofAppsLabel => 'production apps highlighted';
+
+  @override
+  String get proofPlatformsValue => 'Android + iOS';
+
+  @override
+  String get proofPlatformsLabel => 'published in official stores';
+
+  @override
+  String get proofMarketsValue => 'Brazil + Europe';
+
+  @override
+  String get proofMarketsLabel => 'products for real markets';
+
+  @override
+  String get proofCheckedValue => 'JUL 2026';
+
+  @override
+  String get proofCheckedLabel => 'store data checked';
+
+  @override
+  String get productionAppsSemanticLabel =>
+      'Published apps Leone Daher contributed to';
+
+  @override
+  String get productionAppsEyebrow => 'PRODUCTION PROOF';
+
+  @override
+  String get productionAppsTitle => 'Production apps I contributed to.';
+
+  @override
+  String get productionAppsCopy =>
+      'Public store screens and data, with my contribution scoped for each product. Metrics checked in July 2026.';
+
+  @override
+  String get appRoleLabel => 'My role';
+
+  @override
+  String get appContributionLabel => 'Contribution';
+
+  @override
+  String get appStackLabel => 'Stack';
+
+  @override
+  String get appStoreProofLabel => 'Public proof';
+
+  @override
+  String get appScreenshotsLabel => 'Screens published in the store';
+
+  @override
+  String get appImageUnavailableLabel => 'Image unavailable';
+
+  @override
+  String get viewGooglePlay => 'View on Google Play';
+
+  @override
+  String get viewAppStore => 'View on the App Store';
+
+  @override
+  String get storeCheckedJuly2026 => 'Checked in July 2026.';
+
+  @override
+  String get vanCranenbroekContext => 'Retail · Netherlands · Android and iOS';
+
+  @override
+  String get vanCranenbroekSummary =>
+      'Offers, catalogues, stores, and customer communication in a multiplatform product.';
+
+  @override
+  String get vanCranenbroekRole =>
+      'Mobile engineering in collaboration with the Latitudde team.';
+
+  @override
+  String get vanCranenbroekContribution =>
+      'Work across Flutter and Kotlin, Firebase/Firestore, deep links, interactive maps and SVGs, CI/CD, and Python Cloud Functions.';
+
+  @override
+  String get vanCranenbroekPlayProof => '4.6 ★ · 179 ratings · 5K+ downloads';
+
+  @override
+  String get vanCranenbroekAppStoreProof => '4.7 ★ · 143 ratings';
+
+  @override
+  String get lyzerContext => 'Logistics · Portugal · 2 Android apps';
+
+  @override
+  String get lyzerSummary =>
+      'An operational suite connecting collection, order preparation, routes, and delivery.';
+
+  @override
+  String get lyzerRole =>
+      'Mobile engineering across the Lyzer suite\'s operational flows.';
+
+  @override
+  String get lyzerContribution =>
+      'Picking and delivery flows, barcode scanning, offline synchronization, and integrations designed for field operations.';
+
+  @override
+  String get lyzerCollectProof => '1K+ downloads · updated Jul 6, 2026';
+
+  @override
+  String get lyzerDeliverProof => '100+ downloads · updated Jul 14, 2026';
+
+  @override
+  String get magContext => 'Insurance · Brazil · Android';
+
+  @override
+  String get magSummary =>
+      'A digital sales tool for brokers to follow products and proposals.';
+
+  @override
+  String get magRole => 'Android engineering on the digital sales product.';
+
+  @override
+  String get magContribution =>
+      'Product evolution in Java/Kotlin, offline data with Realm, Gradle flavors, Firebase/Crashlytics, and an Azure pipeline.';
+
+  @override
+  String get magPlayProof =>
+      'Active app · 1K+ downloads · updated Jul 16, 2026';
+
+  @override
   String get systemEyebrow => 'ONE PRODUCT. THE WHOLE SYSTEM.';
 
   @override
-  String get systemTitle => 'Mobile, services and intelligence connected.';
+  String get systemTitle =>
+      'What powers the apps: mobile, services, and intelligence connected.';
 
   @override
   String get systemFlow => 'PRODUCT → SYSTEM → RESULT';
@@ -113,7 +254,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aiSystems => 'AI Systems';
 
   @override
-  String get aiDetail => 'Agents · LLMs · automation';
+  String get aiDetail => 'Agents · workflows';
 
   @override
   String get requests => 'REQUESTS';
@@ -297,6 +438,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clientsServed => 'CLIENTS SERVED';
 
   @override
+  String get clientsTitle => 'Brands and operations in real contexts.';
+
+  @override
+  String get clientsCopy =>
+      'Projects delivered through employers, consultancies, and partner teams. The cases above detail the contributions that can be verified publicly.';
+
+  @override
+  String get clientsAttribution =>
+      'A brand indicates project participation — not exclusive authorship or necessarily a direct engagement.';
+
+  @override
   String brandCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -306,6 +458,35 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get contactEyebrow => 'CONTACT';
+
+  @override
+  String get contactTitle => 'Let\'s talk about product and engineering.';
+
+  @override
+  String get contactCopy =>
+      'For opportunities, projects, or a technical conversation, choose the most convenient channel.';
+
+  @override
+  String get contactLinkedIn => 'LinkedIn';
+
+  @override
+  String get contactLinkedInCopy =>
+      'Experience, career history, and professional contact.';
+
+  @override
+  String get contactGitHub => 'GitHub';
+
+  @override
+  String get contactGitHubCopy => 'Public code and technical studies.';
+
+  @override
+  String get contactSchedule => 'Schedule a conversation';
+
+  @override
+  String get contactScheduleCopy => 'Calendly · 30 minutes';
 
   @override
   String get footerInvitation => 'Shall we build something that truly works?';
