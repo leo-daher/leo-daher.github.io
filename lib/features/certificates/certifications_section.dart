@@ -334,49 +334,217 @@ class _CertificateTechnologyFilters extends StatelessWidget {
     return Semantics(
       container: true,
       label: l10n.filterTechnologies,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 600) {
+            return _CompactCertificateTechnologyFilters(
+              technologies: technologies,
+              selectedTechnologies: selectedTechnologies,
+              onTechnologySelected: onTechnologySelected,
+              onClear: onClear,
+            );
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                l10n.filterTechnologies,
-                style: TextStyle(
-                  color: palette.mutedInk,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: .8,
-                ),
+              Row(
+                children: [
+                  Text(
+                    l10n.filterTechnologies,
+                    style: TextStyle(
+                      color: palette.mutedInk,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: .8,
+                    ),
+                  ),
+                  const Spacer(),
+                  if (onClear != null)
+                    TextButton(
+                      key: const Key('certificate-clear-filters'),
+                      onPressed: onClear,
+                      child: Text(l10n.clearFilters),
+                    ),
+                ],
               ),
-              const Spacer(),
-              if (onClear != null)
-                TextButton(
-                  key: const Key('certificate-clear-filters'),
-                  onPressed: onClear,
-                  child: Text(l10n.clearFilters),
-                ),
+              const SizedBox(height: 8),
+              _CertificateTechnologyChips(
+                technologies: technologies,
+                selectedTechnologies: selectedTechnologies,
+                onTechnologySelected: onTechnologySelected,
+              ),
             ],
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final technology in technologies)
-                FilterChip(
-                  key: Key('certificate-filter-${_technologyKey(technology)}'),
-                  label: Text(technology),
-                  selected: selectedTechnologies.contains(technology),
-                  onSelected: (_) => onTechnologySelected(technology),
-                  showCheckmark: false,
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                ),
-            ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
+}
+
+class _CompactCertificateTechnologyFilters extends StatefulWidget {
+  const _CompactCertificateTechnologyFilters({
+    required this.technologies,
+    required this.selectedTechnologies,
+    required this.onTechnologySelected,
+    required this.onClear,
+  });
+
+  final List<String> technologies;
+  final Set<String> selectedTechnologies;
+  final ValueChanged<String> onTechnologySelected;
+  final VoidCallback? onClear;
+
+  @override
+  State<_CompactCertificateTechnologyFilters> createState() =>
+      _CompactCertificateTechnologyFiltersState();
+}
+
+class _CompactCertificateTechnologyFiltersState
+    extends State<_CompactCertificateTechnologyFilters> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final palette = context.leonePalette;
+    final primary = Theme.of(context).colorScheme.primary;
+    final animationDuration = MediaQuery.disableAnimationsOf(context)
+        ? Duration.zero
+        : const Duration(milliseconds: 180);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Material(
+          color: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: palette.outline),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            key: const Key('certificate-filter-toggle'),
+            onTap: () => setState(() => _expanded = !_expanded),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.filter_list_rounded,
+                    size: 18,
+                    color: palette.mutedInk,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      l10n.filterTechnologies,
+                      style: TextStyle(
+                        color: palette.ink,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  if (widget.selectedTechnologies.isNotEmpty) ...[
+                    Container(
+                      key: const Key('certificate-filter-count'),
+                      constraints: const BoxConstraints(minWidth: 24),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 7,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: primary.withValues(alpha: .16),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Text(
+                        widget.selectedTechnologies.length.toString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: primary,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                  AnimatedRotation(
+                    turns: _expanded ? .5 : 0,
+                    duration: animationDuration,
+                    curve: Curves.easeOutCubic,
+                    child: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      color: palette.mutedInk,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        AnimatedSize(
+          duration: animationDuration,
+          curve: Curves.easeOutCubic,
+          alignment: Alignment.topCenter,
+          child: _expanded
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (widget.onClear != null)
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            key: const Key('certificate-clear-filters'),
+                            onPressed: widget.onClear,
+                            child: Text(l10n.clearFilters),
+                          ),
+                        ),
+                      _CertificateTechnologyChips(
+                        technologies: widget.technologies,
+                        selectedTechnologies: widget.selectedTechnologies,
+                        onTechnologySelected: widget.onTechnologySelected,
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
+        ),
+      ],
+    );
+  }
+}
+
+class _CertificateTechnologyChips extends StatelessWidget {
+  const _CertificateTechnologyChips({
+    required this.technologies,
+    required this.selectedTechnologies,
+    required this.onTechnologySelected,
+  });
+
+  final List<String> technologies;
+  final Set<String> selectedTechnologies;
+  final ValueChanged<String> onTechnologySelected;
+
+  @override
+  Widget build(BuildContext context) => Wrap(
+    spacing: 8,
+    runSpacing: 8,
+    children: [
+      for (final technology in technologies)
+        FilterChip(
+          key: Key('certificate-filter-${_technologyKey(technology)}'),
+          label: Text(technology),
+          selected: selectedTechnologies.contains(technology),
+          onSelected: (_) => onTechnologySelected(technology),
+          showCheckmark: false,
+          materialTapTargetSize: MaterialTapTargetSize.padded,
+        ),
+    ],
+  );
 }
 
 class _CertificateYearHeading extends StatelessWidget {

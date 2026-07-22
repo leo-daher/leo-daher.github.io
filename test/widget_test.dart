@@ -729,6 +729,16 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
 
+    final compactFilter = find.byKey(const Key('certificate-filter-toggle'));
+    expect(compactFilter, findsOneWidget);
+    expect(find.byKey(const Key('certificate-filter-mcp')), findsNothing);
+    await tester.tap(compactFilter);
+    await tester.pump(const Duration(milliseconds: 220));
+    expect(find.byKey(const Key('certificate-filter-mcp')), findsOneWidget);
+    await tester.tap(compactFilter);
+    await tester.pump(const Duration(milliseconds: 220));
+    expect(find.byKey(const Key('certificate-filter-mcp')), findsNothing);
+
     await tester.drag(
       find.descendant(
         of: find.byKey(const Key('certificate-register-dialog')),
