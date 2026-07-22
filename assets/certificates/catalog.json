@@ -283,6 +283,35 @@
       }
     },
     {
+      "id": "udemy-uc-736004e1-63bd-4360-a1ed-9ee75a55bbad",
+      "credential_id": "UC-736004e1-63bd-4360-a1ed-9ee75a55bbad",
+      "provider": "udemy",
+      "issuer": "Udemy",
+      "title": "Build ASP.NET Core Web API - Scratch To Finish (.NET8 API)",
+      "holder": "Leone Crespo Daher de Souza",
+      "verification_holder": "Anonymized User",
+      "completed_on": "2024-04-18",
+      "verification_url": "https://www.udemy.com/certificate/UC-736004e1-63bd-4360-a1ed-9ee75a55bbad/",
+      "course_url": "https://www.udemy.com/course/build-rest-apis-with-aspnet-core-web-api-entity-framework/",
+      "verified_on": "2026-07-22",
+      "verification_status": "verified",
+      "technologies": ["ASP.NET Core", ".NET 8", "C#", "REST APIs"],
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/udemy-build-asp-net-core-web-api-scratch-to-finish-net8-api.pdf",
+          "media_type": "application/pdf",
+          "bytes": 239402,
+          "sha256": "0a6dc1678a7188f491b0a79f3d2a806f6b26acf79ebe5387c1654ede9590a11f"
+        },
+        "image": {
+          "path": "assets/certificates/originals/udemy-build-asp-net-core-web-api-scratch-to-finish-net8-api.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 238521,
+          "sha256": "d4651d13450c3ea73969eabc647f034d0bcf4cbcf495683d6e5665d7127f110b"
+        }
+      }
+    },
+    {
       "id": "udemy-uc-2ac4d6a7-6027-434f-a726-61c068daabc2",
       "credential_id": "UC-2ac4d6a7-6027-434f-a726-61c068daabc2",
       "provider": "udemy",

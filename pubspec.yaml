@@ -83,6 +83,7 @@ flutter:
     - assets/certificates/originals/anthropic-introduction-to-model-context-protocol.jpg
     - assets/certificates/originals/anthropic-introduction-to-subagents.jpg
     - assets/certificates/originals/anthropic-model-context-protocol-advanced-topics.jpg
+    - assets/certificates/originals/udemy-build-asp-net-core-web-api-scratch-to-finish-net8-api.jpg
     - assets/certificates/originals/udemy-complete-flutter-development-bootcamp-with-dart.jpg
 
   fonts:
