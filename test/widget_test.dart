@@ -131,7 +131,7 @@ void main() {
     final actionMessageText = tester.widget<Text>(
       find.descendant(
         of: find.byKey(const Key('hero-interface-action-message')),
-        matching: find.text('YOUR IDEAS. EVERYWHERE.'),
+        matching: find.text('YOUR IDEAS.\nEVERYWHERE.'),
       ),
     );
     expect(actionMessageText.maxLines, 2);
@@ -168,6 +168,7 @@ void main() {
     final actionFrameRect = tester.getRect(frame);
     expect(mobileSize.height, greaterThan(mobileSize.width));
     expect(mobileNavigation.dy, greaterThan(mobileMessage.dy));
+    expect(find.text('YOUR IDEAS.\nEVERYWHERE.'), findsNWidgets(2));
     expect(
       actionIdentifiers.right,
       lessThan(actionFrameRect.left + actionFrameRect.width * .65),

@@ -443,6 +443,9 @@ class _InterfaceMessage extends StatelessWidget {
       builder: (context, constraints) {
         final compact = constraints.maxHeight < 48;
         final fontSize = (constraints.maxHeight * .30).clamp(7.5, 14.0);
+        final displayLabel = constraints.maxWidth < 280
+            ? label.replaceFirst('. ', '.\n')
+            : label;
         return Padding(
           padding: EdgeInsets.symmetric(vertical: compact ? 0 : 2),
           child: Column(
@@ -450,7 +453,7 @@ class _InterfaceMessage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                label,
+                displayLabel,
                 maxLines: 2,
                 overflow: TextOverflow.clip,
                 softWrap: true,
