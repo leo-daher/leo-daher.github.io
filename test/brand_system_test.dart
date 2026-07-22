@@ -258,10 +258,6 @@ void main() {
       expect(theme.scaffoldBackgroundColor, LeoneBrandColors.canvas);
       expect(theme.colorScheme.surface, LeoneBrandColors.surface);
       expect(theme.textTheme.bodyMedium?.fontFamily, LeoneBrand.fontFamily);
-      expect(
-        theme.textTheme.bodyMedium?.fontFamilyFallback,
-        LeoneBrand.fontFamilyFallback,
-      );
       expect(lightTheme.brightness, Brightness.light);
       expect(lightTheme.scaffoldBackgroundColor, LeonePalette.light.canvas);
       expect(lightTheme.extension<LeonePalette>(), LeonePalette.light);
@@ -272,18 +268,15 @@ void main() {
     });
 
     test(
-      'uses static Inter faces with system fallbacks for embedded webviews',
+      'pins the web build before the Android WebView renderer regression',
       () {
-        final pubspec = readLocalTextFile('pubspec.yaml');
-
-        expect(pubspec, isNot(contains('InterVariable.ttf')));
-        for (final weight in const [400, 500, 600, 700, 800, 900]) {
-          expect(pubspec, contains('weight: $weight'));
-        }
-        expect(
-          LeoneBrand.fontFamilyFallback,
-          containsAll(const ['Roboto', 'Arial', 'sans-serif']),
+        final fvmConfig = readLocalTextFile('.fvmrc');
+        final pagesWorkflow = readLocalTextFile(
+          '.github/workflows/deploy-pages.yml',
         );
+
+        expect(fvmConfig, contains('"flutter": "3.38.5"'));
+        expect(pagesWorkflow, contains('flutter-version: 3.38.5'));
       },
       skip: !canReadLocalFiles,
     );

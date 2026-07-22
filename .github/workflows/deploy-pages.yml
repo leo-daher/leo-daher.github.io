@@ -27,7 +27,9 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.44.4
+          # 3.41+ regresses CanvasKit/SkWasm rendering in some Android social
+          # WebViews: https://github.com/flutter/flutter/issues/188164
+          flutter-version: 3.38.5
           channel: stable
           cache: true
 
