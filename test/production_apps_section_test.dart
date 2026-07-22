@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/features/apps/production_apps.dart';
+import 'package:leone_portfolio/l10n/app_localizations_en.dart';
 import 'package:url_launcher/link.dart';
 
 const _content = ProductionAppsSectionContent(
@@ -19,6 +20,28 @@ const _content = ProductionAppsSectionContent(
 );
 
 void main() {
+  test('keeps platform and state-management metadata explicit', () {
+    final apps = ProductionAppsPresentation.localized(
+      AppLocalizationsEn(),
+    ).apps;
+    final van = apps.singleWhere((app) => app.id == 'van-cranenbroek');
+    final lyzer = apps.singleWhere((app) => app.id == 'lyzer-collect-deliver');
+
+    expect(van.stack, contains('Riverpod'));
+    expect(van.contribution, contains('Flutter with Riverpod'));
+    expect(lyzer.contextLabel, contains('Android and iOS'));
+    expect(
+      lyzer.stack,
+      containsAll(<String>[
+        'Flutter',
+        'Android',
+        'iOS',
+        'Proprietary GetX engine',
+      ]),
+    );
+    expect(lyzer.contribution, contains('proprietary GetX-based engine'));
+  });
+
   testWidgets(
     'renders the three supplied production cases and their evidence',
     (tester) async {
@@ -29,6 +52,8 @@ void main() {
       expect(find.text('MAG Venda Digital'), findsOneWidget);
       expect(find.textContaining('4,6 ★ · 120 avaliações'), findsOneWidget);
       expect(find.textContaining('Flutter'), findsWidgets);
+      expect(find.textContaining('Riverpod'), findsOneWidget);
+      expect(find.textContaining('Proprietary GetX engine'), findsOneWidget);
       expect(find.text('Stack'), findsNothing);
       expect(find.text('Prova da loja'), findsNothing);
 
@@ -177,7 +202,7 @@ List<ProductionAppCase> _apps() => [
     role: 'Contribuição em engenharia mobile e integração de produto.',
     contribution:
         'Atuação em fluxos híbridos, mapas SVG, dados sincronizados e entrega contínua.',
-    stack: const ['Flutter', 'Kotlin', 'Firebase', 'Python'],
+    stack: const ['Flutter', 'Riverpod', 'Kotlin', 'Firebase', 'Python'],
     screenshots: const [
       ProductionAppScreenshot(
         assetPath: 'assets/client_logos/human_robotics.png',
@@ -205,8 +230,16 @@ List<ProductionAppCase> _apps() => [
         'Fluxos operacionais de coleta e entrega conectados ao backoffice.',
     role: 'Contribuição em produto mobile e integração de serviços.',
     contribution:
-        'Atuação em workflows logísticos e contratos entre aplicativo, BFF e GraphQL.',
-    stack: const ['Flutter', '.NET', 'GraphQL'],
+        'Atuação em uma engine proprietária baseada em GetX, workflows logísticos e contratos entre aplicativo, BFF e GraphQL.',
+    stack: const [
+      'Flutter',
+      'Android',
+      'iOS',
+      'Proprietary GetX engine',
+      'Offline-first',
+      '.NET BFF',
+      'GraphQL',
+    ],
     screenshots: const [
       ProductionAppScreenshot(
         assetPath: 'assets/client_logos/human_robotics.png',

@@ -175,7 +175,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vanCranenbroekContribution =>
-      'Work across Flutter and Kotlin, Firebase/Firestore, deep links, interactive maps and SVGs, CI/CD, and Python Cloud Functions.';
+      'Work across Flutter with Riverpod and Kotlin, Firebase/Firestore, deep links, interactive maps and SVGs, CI/CD, and Python Cloud Functions.';
 
   @override
   String get vanCranenbroekPlayProof => '4.6 ★ · 179 ratings · 5K+ downloads';
@@ -184,7 +184,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vanCranenbroekAppStoreProof => '4.7 ★ · 143 ratings';
 
   @override
-  String get lyzerContext => 'Logistics · Portugal · 2 Android apps';
+  String get lyzerContext => 'Logistics · Portugal · Flutter · Android and iOS';
 
   @override
   String get lyzerSummary =>
@@ -192,11 +192,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lyzerRole =>
-      'Mobile engineering across the Lyzer suite\'s operational flows.';
+      'Flutter engineering across the Lyzer suite\'s Android and iOS operational flows.';
 
   @override
   String get lyzerContribution =>
-      'Picking and delivery flows, barcode scanning, offline synchronization, and integrations designed for field operations.';
+      'Picking and delivery flows built on a proprietary GetX-based engine, with barcode scanning, offline synchronization, and integrations designed for field operations.';
 
   @override
   String get lyzerCollectProof => '1K+ downloads · updated Jul 6, 2026';

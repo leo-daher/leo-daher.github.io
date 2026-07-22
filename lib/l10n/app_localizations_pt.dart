@@ -175,7 +175,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get vanCranenbroekContribution =>
-      'Atuação em Flutter e Kotlin, Firebase/Firestore, deep links, mapas e SVGs interativos, CI/CD e Cloud Functions em Python.';
+      'Atuação em Flutter com Riverpod e Kotlin, Firebase/Firestore, deep links, mapas e SVGs interativos, CI/CD e Cloud Functions em Python.';
 
   @override
   String get vanCranenbroekPlayProof =>
@@ -185,7 +185,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vanCranenbroekAppStoreProof => '4,7 ★ · 143 avaliações';
 
   @override
-  String get lyzerContext => 'Logística · Portugal · 2 apps Android';
+  String get lyzerContext => 'Logística · Portugal · Flutter · Android e iOS';
 
   @override
   String get lyzerSummary =>
@@ -193,11 +193,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get lyzerRole =>
-      'Engenharia mobile nos fluxos operacionais da suite Lyzer.';
+      'Engenharia Flutter nos fluxos operacionais Android e iOS da suite Lyzer.';
 
   @override
   String get lyzerContribution =>
-      'Fluxos de picking e entrega, leitura de códigos de barras, sincronização offline e integrações voltadas ao trabalho de campo.';
+      'Fluxos de picking e entrega construídos sobre uma engine proprietária baseada em GetX, com leitura de códigos de barras, sincronização offline e integrações para operação em campo.';
 
   @override
   String get lyzerCollectProof =>

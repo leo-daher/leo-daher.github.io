@@ -74,6 +74,7 @@ class ProductionAppsPresentation {
           contribution: l10n.vanCranenbroekContribution,
           stack: const [
             'Flutter',
+            'Riverpod',
             'Kotlin',
             'Firebase',
             'Firestore',
@@ -111,7 +112,10 @@ class ProductionAppsPresentation {
           role: l10n.lyzerRole,
           contribution: l10n.lyzerContribution,
           stack: const [
-            'Mobile',
+            'Flutter',
+            'Android',
+            'iOS',
+            'Proprietary GetX engine',
             'Offline-first',
             'Barcode',
             '.NET BFF',

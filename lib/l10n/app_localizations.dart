@@ -419,7 +419,7 @@ abstract class AppLocalizations {
   /// Van Cranenbroek contribution.
   ///
   /// In en, this message translates to:
-  /// **'Work across Flutter and Kotlin, Firebase/Firestore, deep links, interactive maps and SVGs, CI/CD, and Python Cloud Functions.'**
+  /// **'Work across Flutter with Riverpod and Kotlin, Firebase/Firestore, deep links, interactive maps and SVGs, CI/CD, and Python Cloud Functions.'**
   String get vanCranenbroekContribution;
 
   /// Google Play proof checked in July 2026.
@@ -437,7 +437,7 @@ abstract class AppLocalizations {
   /// Lyzer case context.
   ///
   /// In en, this message translates to:
-  /// **'Logistics · Portugal · 2 Android apps'**
+  /// **'Logistics · Portugal · Flutter · Android and iOS'**
   String get lyzerContext;
 
   /// Lyzer case summary.
@@ -449,13 +449,13 @@ abstract class AppLocalizations {
   /// Lyzer role.
   ///
   /// In en, this message translates to:
-  /// **'Mobile engineering across the Lyzer suite\'s operational flows.'**
+  /// **'Flutter engineering across the Lyzer suite\'s Android and iOS operational flows.'**
   String get lyzerRole;
 
   /// Lyzer contribution.
   ///
   /// In en, this message translates to:
-  /// **'Picking and delivery flows, barcode scanning, offline synchronization, and integrations designed for field operations.'**
+  /// **'Picking and delivery flows built on a proprietary GetX-based engine, with barcode scanning, offline synchronization, and integrations designed for field operations.'**
   String get lyzerContribution;
 
   /// Lyzer Collect Google Play proof.
