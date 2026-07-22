@@ -508,12 +508,14 @@ class LdViewportStage extends StatefulWidget {
     this.autoPlay = true,
     this.initialPreset = LdViewportPreset.desktop,
     this.spacing = 18,
+    this.alignment = Alignment.center,
   }) : assert(frames.length > 0);
 
   final List<LdViewportFrameSpec> frames;
   final bool autoPlay;
   final LdViewportPreset initialPreset;
   final double spacing;
+  final Alignment alignment;
 
   @override
   State<LdViewportStage> createState() => _LdViewportStageState();
@@ -606,7 +608,8 @@ class _LdViewportStageState extends State<LdViewportStage>
               to: _to,
               progress: progress,
             );
-            return Center(
+            return Align(
+              alignment: widget.alignment,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

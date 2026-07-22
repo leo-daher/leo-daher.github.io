@@ -109,6 +109,7 @@ void main() {
     await _finishOpening(tester);
 
     final frame = find.byKey(const Key('ld-viewport-frame-content'));
+    final stage = find.byKey(const Key('hero-viewport-stage'));
     final navigation = find.byKey(const Key('hero-interface-navigation'));
     final message = find.byKey(const Key('hero-interface-message'));
 
@@ -132,6 +133,14 @@ void main() {
     final desktopMessage = tester.getTopLeft(message) - desktopFrameOrigin;
     expect(desktopSize.width, greaterThan(desktopSize.height));
     expect(desktopNavigation.dx, lessThan(desktopMessage.dx));
+    expect(
+      tester.getTopLeft(frame).dy,
+      closeTo(tester.getTopLeft(stage).dy, .01),
+    );
+    expect(
+      tester.getBottomRight(frame).dy,
+      lessThanOrEqualTo(tester.view.physicalSize.height),
+    );
 
     await tester.pump(LeoneBrandMotion.viewportHold);
     await tester.pump(LeoneBrandMotion.viewportTransition);
@@ -143,6 +152,10 @@ void main() {
     expect(mobileSize.height, greaterThan(mobileSize.width));
     expect(mobileNavigation.dy, greaterThan(mobileMessage.dy));
     expect(find.text('YOUR IDEAS.\nEVERYWHERE.'), findsOneWidget);
+    expect(
+      tester.getBottomRight(frame).dy,
+      greaterThan(tester.view.physicalSize.height),
+    );
 
     await tester.pump(LeoneBrandMotion.viewportHold);
     await tester.pump(LeoneBrandMotion.viewportTransition);
@@ -150,6 +163,10 @@ void main() {
     final tabletSize = tester.getSize(frame);
     expect(tabletSize.width, greaterThan(tabletSize.height));
     expect(tabletSize.width / tabletSize.height, closeTo(316 / 240, .01));
+    expect(
+      tester.getBottomRight(frame).dy,
+      lessThanOrEqualTo(tester.view.physicalSize.height),
+    );
     expect(find.byKey(const Key('ld-mode-mobile')), findsNothing);
     expect(find.byKey(const Key('ld-mode-tablet')), findsNothing);
     expect(find.byKey(const Key('ld-mode-desktop')), findsNothing);

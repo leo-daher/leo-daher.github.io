@@ -138,7 +138,12 @@ class _HeroState extends State<PortfolioHero> {
                     ),
                     SizedBox(height: compact ? 24 : 30),
                     Expanded(
-                      child: _BrandedViewportFrame(autoPlay: widget.autoPlay),
+                      child: _BrandedViewportFrame(
+                        autoPlay: widget.autoPlay,
+                        alignment: compact
+                            ? Alignment.topCenter
+                            : Alignment.center,
+                      ),
                     ),
                   ],
                 ),
@@ -152,16 +157,22 @@ class _HeroState extends State<PortfolioHero> {
 }
 
 class _BrandedViewportFrame extends StatelessWidget {
-  const _BrandedViewportFrame({required this.autoPlay});
+  const _BrandedViewportFrame({
+    required this.autoPlay,
+    required this.alignment,
+  });
 
   final bool autoPlay;
+  final Alignment alignment;
 
   @override
   Widget build(BuildContext context) {
     return SelectionContainer.disabled(
       child: RepaintBoundary(
         child: LdViewportStage(
+          key: const Key('hero-viewport-stage'),
           autoPlay: autoPlay,
+          alignment: alignment,
           frames: [
             LdViewportFrameSpec(
               id: 'content',
