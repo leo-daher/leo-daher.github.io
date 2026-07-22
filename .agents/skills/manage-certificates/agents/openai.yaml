@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Certificates"
+  short_description: "Store, verify, and prepare certificates"
+  default_prompt: "Use $manage-certificates to add and validate certificate records without publishing them yet."
