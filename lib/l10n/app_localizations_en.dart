@@ -30,10 +30,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get switchToDarkTheme => 'Switch to dark theme';
 
   @override
-  String get availableCompact => 'AVAILABLE';
+  String get hireMe => 'Hire me here';
 
   @override
-  String get availableFull => 'OPEN TO NEW CHALLENGES';
+  String get hireMeCompact => 'Hire me';
 
   @override
   String get dismissNavigationMenu => 'Dismiss navigation menu';

@@ -10,6 +10,7 @@ import 'package:leone_portfolio/l10n/app_localizations.dart';
 import 'package:leone_portfolio/main.dart';
 import 'package:leone_portfolio/world_experience_map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/link.dart';
 
 void main() {
   setUp(() => SharedPreferences.setMockInitialValues({}));
@@ -77,6 +78,21 @@ void main() {
 
     final preferences = await SharedPreferences.getInstance();
     expect(preferences.getString('portfolio_theme'), 'light');
+  });
+
+  testWidgets('links the direct hiring CTA to the 30 minute Calendly slot', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await _finishOpening(tester);
+
+    final hireMeLink = tester.widget<Link>(
+      find.byKey(const Key('hire-me-link')),
+    );
+    expect(hireMeLink.uri, Uri.parse('https://calendly.com/leonedaher/30min'));
+    expect(hireMeLink.target, LinkTarget.blank);
+    expect(find.bySemanticsLabel('Hire me here'), findsOneWidget);
+    expect(tester.getSize(find.byKey(const Key('hire-me-button'))).height, 48);
   });
 
   testWidgets('morphs the branded viewport without leaving its stage', (

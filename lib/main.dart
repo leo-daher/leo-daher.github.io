@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/link.dart';
 
 import 'brand/leone_brand.dart';
 import 'features/certificates/certifications_section.dart';
@@ -335,7 +336,7 @@ class _TopBar extends StatelessWidget {
                   SizedBox(width: compact ? 6 : 12),
                   _ThemeToggle(onThemeModeChanged: onThemeModeChanged),
                   SizedBox(width: compact ? 6 : 12),
-                  _AvailabilityBadge(compact: compact),
+                  _HireMeLink(compact: compact),
                 ],
               );
             },
@@ -442,51 +443,54 @@ class _ThemeToggle extends StatelessWidget {
   }
 }
 
-class _AvailabilityBadge extends StatelessWidget {
-  const _AvailabilityBadge({required this.compact});
+class _HireMeLink extends StatelessWidget {
+  const _HireMeLink({required this.compact});
+
+  static final _calendlyUri = Uri.parse(
+    'https://calendly.com/leonedaher/30min',
+  );
 
   final bool compact;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: _green.withValues(alpha: .08),
-        borderRadius: BorderRadius.circular(99),
-        border: Border.all(color: _green.withValues(alpha: .22)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const _PulseDot(),
-          const SizedBox(width: 8),
-          Text(
-            compact
-                ? context.l10n.availableCompact
-                : context.l10n.availableFull,
-            style: const TextStyle(
-              color: _green,
-              fontSize: 10,
-              fontWeight: FontWeight.w700,
-              letterSpacing: .8,
+    final label = compact ? context.l10n.hireMeCompact : context.l10n.hireMe;
+    return Link(
+      key: const Key('hire-me-link'),
+      uri: _calendlyUri,
+      target: LinkTarget.blank,
+      builder: (context, followLink) => Semantics(
+        button: true,
+        link: true,
+        label: label,
+        child: Tooltip(
+          message: label,
+          excludeFromSemantics: true,
+          child: TextButton.icon(
+            key: const Key('hire-me-button'),
+            onPressed: followLink,
+            style: TextButton.styleFrom(
+              foregroundColor: _green,
+              minimumSize: const Size(0, 48),
+              padding: EdgeInsets.symmetric(horizontal: compact ? 12 : 16),
+              backgroundColor: _green.withValues(alpha: .10),
+              side: BorderSide(color: _green.withValues(alpha: .34)),
+              shape: const StadiumBorder(),
+            ),
+            icon: const Icon(Icons.arrow_outward_rounded, size: 15),
+            label: Text(
+              label.toUpperCase(),
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w800,
+                letterSpacing: .8,
+              ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
-}
-
-class _PulseDot extends StatelessWidget {
-  const _PulseDot();
-
-  @override
-  Widget build(BuildContext context) => Container(
-    width: 7,
-    height: 7,
-    decoration: const BoxDecoration(color: _green, shape: BoxShape.circle),
-  );
 }
 
 class _Footer extends StatelessWidget {

@@ -140,17 +140,17 @@ abstract class AppLocalizations {
   /// **'Switch to dark theme'**
   String get switchToDarkTheme;
 
-  /// Compact availability badge.
+  /// Direct CTA that opens the scheduling page.
   ///
   /// In en, this message translates to:
-  /// **'AVAILABLE'**
-  String get availableCompact;
+  /// **'Hire me here'**
+  String get hireMe;
 
-  /// Full availability badge.
+  /// Compact direct CTA that opens the scheduling page.
   ///
   /// In en, this message translates to:
-  /// **'OPEN TO NEW CHALLENGES'**
-  String get availableFull;
+  /// **'Hire me'**
+  String get hireMeCompact;
 
   /// Accessible label for the navigation menu barrier.
   ///

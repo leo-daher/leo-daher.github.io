@@ -30,10 +30,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get switchToDarkTheme => 'Mudar para tema escuro';
 
   @override
-  String get availableCompact => 'DISPONÍVEL';
+  String get hireMe => 'Vamos conversar';
 
   @override
-  String get availableFull => 'DISPONÍVEL PARA NOVOS DESAFIOS';
+  String get hireMeCompact => 'Conversar';
 
   @override
   String get dismissNavigationMenu => 'Descartar menu de navegação';
