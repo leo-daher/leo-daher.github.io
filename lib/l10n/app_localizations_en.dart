@@ -426,20 +426,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get context => 'context';
 
   @override
-  String get clientsServed => 'CLIENTS SERVED';
+  String get clientsTitle => 'Clients';
 
   @override
-  String get clientsTitle => 'Brands and operations in real contexts.';
+  String get directRoles => 'DIRECT';
 
   @override
-  String get clientsCopy =>
-      'Direct roles and client work delivered through Latitudde.';
-
-  @override
-  String get directRoles => 'DIRECT ROLES';
-
-  @override
-  String get viaLatituddeConsulting => 'CLIENT WORK VIA LATITUDDE';
+  String get viaLatituddeConsulting => 'VIA LATITUDDE';
 
   @override
   String brandCount(int count) {

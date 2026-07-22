@@ -108,10 +108,7 @@ class ClientLogoCloud extends StatelessWidget {
           key: const Key('client-logo-cloud'),
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PortfolioSectionHeading(
-              eyebrow: context.l10n.clientsServed,
-              title: context.l10n.clientsTitle,
-            ),
+            PortfolioSectionHeading(title: context.l10n.clientsTitle),
             const SizedBox(height: 26),
             _ClientLogoGroup(
               key: const Key('client-logo-group-direct'),

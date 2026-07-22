@@ -47,8 +47,10 @@ void main() {
     expect(mag.right, lessThan(human.left));
     expect(visagio.top, greaterThan(mag.bottom));
     expect(directGroup.bottom, lessThan(latituddeGroup.top));
-    expect(find.text('DIRECT ROLES'), findsOneWidget);
-    expect(find.text('CLIENT WORK VIA LATITUDDE'), findsOneWidget);
+    expect(find.text('Clients'), findsOneWidget);
+    expect(find.text('DIRECT'), findsOneWidget);
+    expect(find.text('VIA LATITUDDE'), findsOneWidget);
+    expect(find.text('CLIENTS SERVED'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 

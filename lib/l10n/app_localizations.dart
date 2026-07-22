@@ -836,34 +836,22 @@ abstract class AppLocalizations {
   /// **'context'**
   String get context;
 
-  /// Client logo section title.
-  ///
-  /// In en, this message translates to:
-  /// **'CLIENTS SERVED'**
-  String get clientsServed;
-
   /// Client section title.
   ///
   /// In en, this message translates to:
-  /// **'Brands and operations in real contexts.'**
+  /// **'Clients'**
   String get clientsTitle;
-
-  /// Client section supporting copy.
-  ///
-  /// In en, this message translates to:
-  /// **'Direct roles and client work delivered through Latitudde.'**
-  String get clientsCopy;
 
   /// Heading for organizations where Leone held a direct role.
   ///
   /// In en, this message translates to:
-  /// **'DIRECT ROLES'**
+  /// **'DIRECT'**
   String get directRoles;
 
   /// Heading for client work delivered through Latitudde.
   ///
   /// In en, this message translates to:
-  /// **'CLIENT WORK VIA LATITUDDE'**
+  /// **'VIA LATITUDDE'**
   String get viaLatituddeConsulting;
 
   /// Number of client brands.

@@ -426,20 +426,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get context => 'contexto';
 
   @override
-  String get clientsServed => 'CLIENTES ATENDIDOS';
+  String get clientsTitle => 'Clientes';
 
   @override
-  String get clientsTitle => 'Marcas e operações em contextos reais.';
+  String get directRoles => 'DIRETOS';
 
   @override
-  String get clientsCopy =>
-      'Vínculos diretos e projetos para clientes realizados por meio da Latitudde.';
-
-  @override
-  String get directRoles => 'VÍNCULOS DIRETOS';
-
-  @override
-  String get viaLatituddeConsulting => 'PROJETOS VIA LATITUDDE';
+  String get viaLatituddeConsulting => 'VIA LATITUDDE';
 
   @override
   String brandCount(int count) {

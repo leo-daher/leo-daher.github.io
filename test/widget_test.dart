@@ -460,10 +460,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('CLIENTS SERVED'), findsOneWidget);
+    expect(find.text('Clients'), findsOneWidget);
     expect(find.text('4 BRANDS'), findsOneWidget);
     expect(find.text('9 BRANDS'), findsOneWidget);
-    expect(find.text('CLIENT WORK VIA LATITUDDE'), findsOneWidget);
+    expect(find.text('VIA LATITUDDE'), findsOneWidget);
     expect(find.text('LINELINKER PRO'), findsNothing);
     expect(tester.takeException(), isNull);
   });
@@ -503,14 +503,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('client-logo-cloud')), findsOneWidget);
-    expect(find.text('CLIENTS SERVED'), findsOneWidget);
+    expect(find.text('Clients'), findsOneWidget);
     expect(find.text('13 BRANDS'), findsNothing);
-    expect(find.text('DIRECT ROLES'), findsOneWidget);
-    expect(find.text('CLIENT WORK VIA LATITUDDE'), findsOneWidget);
-    expect(
-      find.text('Direct roles and client work delivered through Latitudde.'),
-      findsNothing,
-    );
+    expect(find.text('DIRECT'), findsOneWidget);
+    expect(find.text('VIA LATITUDDE'), findsOneWidget);
+    expect(find.text('CLIENTS SERVED'), findsNothing);
     expect(find.text('4 BRANDS'), findsOneWidget);
     expect(find.text('9 BRANDS'), findsOneWidget);
     expect(find.textContaining('A brand indicates'), findsNothing);
