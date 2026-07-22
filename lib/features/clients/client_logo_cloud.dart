@@ -6,6 +6,8 @@ import '../../l10n/l10n.dart';
 import '../shared/portfolio_section_heading.dart';
 
 const _clientAccent = Color(0xFF51F2C2);
+const _visagioOriginalInk = Color(0xFFD6D5C9);
+const _visagioLightInk = Color(0xFF00363D);
 
 const _directClientLogos = <_ClientLogo>[
   _ClientLogo(
@@ -23,11 +25,17 @@ const _directClientLogos = <_ClientLogo>[
     id: 'visagio',
     name: 'Visagio',
     asset: 'assets/client_logos/visagio.svg',
+    lightColorMapper: _VisagioLightColorMapper(),
   ),
   _ClientLogo(
     id: 'radix',
     name: 'Radix',
     asset: 'assets/client_logos/radix.png',
+  ),
+  _ClientLogo(
+    id: 'conkord',
+    name: 'Conkord',
+    asset: 'assets/client_logos/conkord-official.svg',
   ),
 ];
 
@@ -84,6 +92,12 @@ const _latituddeClientLogos = <_ClientLogo>[
     name: 'Code 495',
     asset: 'assets/client_logos/code-495-symbol.svg',
     showName: true,
+  ),
+  _ClientLogo(
+    id: 'ascendi',
+    name: 'Ascendi',
+    asset: 'assets/client_logos/ascendi-official.svg',
+    contrastOutline: true,
   ),
 ];
 
@@ -142,6 +156,7 @@ class _ClientLogo {
     this.offset = Offset.zero,
     this.lightMonochrome = false,
     this.contrastOutline = false,
+    this.lightColorMapper,
   });
 
   final String id;
@@ -152,6 +167,19 @@ class _ClientLogo {
   final Offset offset;
   final bool lightMonochrome;
   final bool contrastOutline;
+  final ColorMapper? lightColorMapper;
+}
+
+class _VisagioLightColorMapper extends ColorMapper {
+  const _VisagioLightColorMapper();
+
+  @override
+  Color substitute(
+    String? id,
+    String elementName,
+    String attributeName,
+    Color color,
+  ) => color == _visagioOriginalInk ? _visagioLightInk : color;
 }
 
 class _ClientLogoGroup extends StatelessWidget {
@@ -328,10 +356,13 @@ class _ClientLogoAsset extends StatelessWidget {
     }
 
     if (asset.endsWith('.svg')) {
+      final useLightMapper =
+          tint == null && Theme.of(context).brightness == Brightness.light;
       return SvgPicture.asset(
         asset,
         fit: BoxFit.contain,
         semanticsLabel: logo.name,
+        colorMapper: useLightMapper ? logo.lightColorMapper : null,
         colorFilter: tint == null
             ? null
             : ColorFilter.mode(tint!, BlendMode.srcIn),

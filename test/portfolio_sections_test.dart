@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/features/clients/client_logo_cloud.dart';
 import 'package:leone_portfolio/features/contact/contact_section.dart';
@@ -49,8 +50,59 @@ void main() {
     expect(directGroup.bottom, lessThan(latituddeGroup.top));
     expect(find.text('Clients'), findsOneWidget);
     expect(find.text('DIRECT'), findsOneWidget);
-    expect(find.text('VIA LATITUDDE'), findsOneWidget);
+    expect(find.text('VIA LATITUDDE / CONKORD'), findsOneWidget);
+    expect(find.byKey(const Key('client-logo-conkord')), findsOneWidget);
+    expect(find.byKey(const Key('client-logo-ascendi')), findsOneWidget);
     expect(find.text('CLIENTS SERVED'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('strengthens the Visagio wordmark only on the light theme', (
+    tester,
+  ) async {
+    Widget app(ThemeData theme) => MaterialApp(
+      locale: const Locale('en'),
+      theme: theme,
+      localizationsDelegates: const [AppLocalizations.delegate],
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: const Scaffold(body: ClientLogoCloud()),
+    );
+
+    await tester.pumpWidget(app(LeoneBrandTheme.light()));
+    await tester.pumpAndSettle();
+
+    final visagio = find.descendant(
+      of: find.byKey(const Key('client-logo-visagio')),
+      matching: find.byType(SvgPicture),
+    );
+    final lightPicture = tester.widget<SvgPicture>(visagio);
+    final lightLoader = lightPicture.bytesLoader as SvgAssetLoader;
+    expect(lightLoader.colorMapper, isNotNull);
+    expect(
+      lightLoader.colorMapper!.substitute(
+        null,
+        'path',
+        'fill',
+        const Color(0xFFD6D5C9),
+      ),
+      const Color(0xFF00363D),
+    );
+    expect(
+      lightLoader.colorMapper!.substitute(
+        null,
+        'path',
+        'fill',
+        const Color(0xFFA9FDAC),
+      ),
+      const Color(0xFFA9FDAC),
+    );
+
+    await tester.pumpWidget(app(LeoneBrandTheme.dark()));
+    await tester.pumpAndSettle();
+
+    final darkPicture = tester.widget<SvgPicture>(visagio);
+    final darkLoader = darkPicture.bytesLoader as SvgAssetLoader;
+    expect(darkLoader.colorMapper, isNull);
     expect(tester.takeException(), isNull);
   });
 

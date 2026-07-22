@@ -461,9 +461,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Clients'), findsOneWidget);
-    expect(find.text('4 BRANDS'), findsOneWidget);
-    expect(find.text('9 BRANDS'), findsOneWidget);
-    expect(find.text('VIA LATITUDDE'), findsOneWidget);
+    expect(find.text('5 BRANDS'), findsOneWidget);
+    expect(find.text('10 BRANDS'), findsOneWidget);
+    expect(find.text('VIA LATITUDDE / CONKORD'), findsOneWidget);
     expect(find.text('LINELINKER PRO'), findsNothing);
     expect(tester.takeException(), isNull);
   });
@@ -506,10 +506,10 @@ void main() {
     expect(find.text('Clients'), findsOneWidget);
     expect(find.text('13 BRANDS'), findsNothing);
     expect(find.text('DIRECT'), findsOneWidget);
-    expect(find.text('VIA LATITUDDE'), findsOneWidget);
+    expect(find.text('VIA LATITUDDE / CONKORD'), findsOneWidget);
     expect(find.text('CLIENTS SERVED'), findsNothing);
-    expect(find.text('4 BRANDS'), findsOneWidget);
-    expect(find.text('9 BRANDS'), findsOneWidget);
+    expect(find.text('5 BRANDS'), findsOneWidget);
+    expect(find.text('10 BRANDS'), findsOneWidget);
     expect(find.textContaining('A brand indicates'), findsNothing);
 
     final directGroup = find.byKey(const Key('client-logo-group-direct'));
@@ -519,6 +519,7 @@ void main() {
       'human-robotics',
       'visagio',
       'radix',
+      'conkord',
     ]) {
       expect(
         find.descendant(
@@ -538,6 +539,7 @@ void main() {
       'agua-monchique',
       'fullsix',
       'code-495',
+      'ascendi',
     ]) {
       expect(
         find.descendant(

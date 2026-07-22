@@ -432,7 +432,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get directRoles => 'DIRETOS';
 
   @override
-  String get viaLatituddeConsulting => 'VIA LATITUDDE';
+  String get viaLatituddeConsulting => 'VIA LATITUDDE / CONKORD';
 
   @override
   String brandCount(int count) {

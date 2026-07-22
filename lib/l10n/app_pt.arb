@@ -125,7 +125,7 @@
   "context": "contexto",
   "clientsTitle": "Clientes",
   "directRoles": "DIRETOS",
-  "viaLatituddeConsulting": "VIA LATITUDDE",
+  "viaLatituddeConsulting": "VIA LATITUDDE / CONKORD",
   "brandCount": "{count, plural, =1{1 MARCA} other{{count} MARCAS}}",
   "contactEyebrow": "CONTATO",
   "contactTitle": "Vamos construir algo incrível juntos.",

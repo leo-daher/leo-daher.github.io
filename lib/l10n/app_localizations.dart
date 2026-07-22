@@ -848,10 +848,10 @@ abstract class AppLocalizations {
   /// **'DIRECT'**
   String get directRoles;
 
-  /// Heading for client work delivered through Latitudde.
+  /// Heading for client work delivered through Latitudde and Conkord.
   ///
   /// In en, this message translates to:
-  /// **'VIA LATITUDDE'**
+  /// **'VIA LATITUDDE / CONKORD'**
   String get viaLatituddeConsulting;
 
   /// Number of client brands.
