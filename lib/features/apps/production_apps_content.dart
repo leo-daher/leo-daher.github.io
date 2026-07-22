@@ -39,18 +39,6 @@ class ProductionAppsPresentation {
       uri: uri,
     );
 
-    ProductionAppLink link({
-      required String appName,
-      required String label,
-      required Uri uri,
-      bool emphasized = false,
-    }) => ProductionAppLink(
-      label: label,
-      semanticLabel: '$label · $appName',
-      uri: uri,
-      emphasized: emphasized,
-    );
-
     const vanName = 'Van Cranenbroek';
     const lyzerName = 'Lyzer Collect + Deliver';
     const magName = 'MAG Venda Digital';
@@ -111,15 +99,6 @@ class ProductionAppsPresentation {
               evidence: l10n.vanCranenbroekAppStoreProof,
               uri: vanAppStore,
             ),
-          ],
-          links: [
-            link(
-              appName: vanName,
-              label: l10n.viewGooglePlay,
-              uri: vanPlay,
-              emphasized: true,
-            ),
-            link(appName: vanName, label: l10n.viewAppStore, uri: vanAppStore),
           ],
           accent: LeoneBrandColors.interactive,
         ),
@@ -182,19 +161,6 @@ class ProductionAppsPresentation {
               uri: deliverPlay,
             ),
           ],
-          links: [
-            link(
-              appName: 'Lyzer Collect',
-              label: 'Collect · ${l10n.viewGooglePlay}',
-              uri: collectPlay,
-              emphasized: true,
-            ),
-            link(
-              appName: 'Lyzer Deliver',
-              label: 'Deliver · ${l10n.viewGooglePlay}',
-              uri: deliverPlay,
-            ),
-          ],
           accent: LeoneBrandColors.intelligence,
         ),
         ProductionAppCase(
@@ -225,14 +191,6 @@ class ProductionAppsPresentation {
               storeName: 'Google Play',
               evidence: l10n.magPlayProof,
               uri: magPlay,
-            ),
-          ],
-          links: [
-            link(
-              appName: magName,
-              label: l10n.viewGooglePlay,
-              uri: magPlay,
-              emphasized: true,
             ),
           ],
           accent: LeoneBrandColors.editorialWarm,

@@ -27,8 +27,10 @@ void main() {
       expect(find.text('Van Cranenbroek'), findsOneWidget);
       expect(find.text('Lyzer Collect+Deliver'), findsOneWidget);
       expect(find.text('MAG Venda Digital'), findsOneWidget);
-      expect(find.text('4,6 ★ · 120 avaliações'), findsOneWidget);
-      expect(find.text('Flutter'), findsWidgets);
+      expect(find.textContaining('4,6 ★ · 120 avaliações'), findsOneWidget);
+      expect(find.textContaining('Flutter'), findsWidgets);
+      expect(find.text('Stack'), findsNothing);
+      expect(find.text('Prova da loja'), findsNothing);
 
       expect(
         find.bySemanticsLabel('Apps em produção em que atuei'),
@@ -47,7 +49,7 @@ void main() {
   );
 
   testWidgets(
-    'features the first case, then uses two columns on wide layouts',
+    'uses horizontal case rows on desktop and stacked rows on mobile',
     (tester) async {
       await _pumpSection(tester, size: const Size(1440, 2200));
 
@@ -60,10 +62,18 @@ void main() {
       final magWide = tester.getRect(
         find.byKey(const Key('production-app-card-mag-venda-digital')),
       );
-      expect(lyzerWide.top, closeTo(magWide.top, .01));
       expect(lyzerWide.top, greaterThan(vanWide.bottom));
-      expect(vanWide.width, greaterThan(lyzerWide.width * 1.9));
-      expect(lyzerWide.right, lessThan(magWide.left));
+      expect(magWide.top, greaterThan(lyzerWide.bottom));
+      expect(vanWide.width, closeTo(lyzerWide.width, .01));
+      expect(lyzerWide.width, closeTo(magWide.width, .01));
+
+      final galleryWide = tester.getRect(
+        find.byKey(const Key('production-app-screenshots-van-cranenbroek')),
+      );
+      final contentWide = tester.getRect(
+        find.byKey(const Key('production-app-content-van-cranenbroek')),
+      );
+      expect(galleryWide.right, lessThan(contentWide.left));
 
       await _pumpSection(tester, size: const Size(390, 3600));
 
@@ -79,11 +89,18 @@ void main() {
       expect(vanNarrow.width, closeTo(342, .01));
       expect(lyzerNarrow.top, greaterThan(vanNarrow.bottom));
       expect(magNarrow.top, greaterThan(lyzerNarrow.bottom));
+      final galleryNarrow = tester.getRect(
+        find.byKey(const Key('production-app-screenshots-van-cranenbroek')),
+      );
+      final contentNarrow = tester.getRect(
+        find.byKey(const Key('production-app-content-van-cranenbroek')),
+      );
+      expect(galleryNarrow.bottom, lessThan(contentNarrow.top));
       expect(tester.takeException(), isNull);
     },
   );
 
-  testWidgets('exposes store and case destinations as native link controls', (
+  testWidgets('exposes compact store proof as a native link control', (
     tester,
   ) async {
     await _pumpSection(tester, size: const Size(1440, 2200));
@@ -96,23 +113,9 @@ void main() {
     );
     expect(storeLink.uri, Uri.parse('https://example.com/van/store'));
     expect(storeLink.target, LinkTarget.blank);
-
-    final caseLink = tester.widget<Link>(
-      find.byKey(const Key('production-app-link-van-cranenbroek-0')),
-    );
-    expect(caseLink.uri, Uri.parse('https://example.com/van/case'));
-    expect(caseLink.target, LinkTarget.blank);
-
-    final caseButton = find.descendant(
-      of: find.byKey(const Key('production-app-link-van-cranenbroek-0')),
-      matching: find.byType(FilledButton),
-    );
-    expect(caseButton, findsOneWidget);
-    expect(tester.widget<FilledButton>(caseButton).onPressed, isNotNull);
-    expect(
-      find.bySemanticsLabel('Abrir case do Van Cranenbroek'),
-      findsOneWidget,
-    );
+    expect(find.byType(ListTile), findsNothing);
+    expect(find.byType(Chip), findsNothing);
+    expect(tester.getSize(storeProof).height, greaterThanOrEqualTo(48));
     expect(tester.takeException(), isNull);
   });
 
@@ -192,14 +195,6 @@ List<ProductionAppCase> _apps() => [
         uri: Uri.parse('https://example.com/van/store'),
       ),
     ],
-    links: [
-      ProductionAppLink(
-        label: 'Ver case',
-        semanticLabel: 'Abrir case do Van Cranenbroek',
-        uri: Uri.parse('https://example.com/van/case'),
-        emphasized: true,
-      ),
-    ],
   ),
   ProductionAppCase(
     id: 'lyzer-collect-deliver',
@@ -218,13 +213,6 @@ List<ProductionAppCase> _apps() => [
         semanticLabel: 'Tela de coleta do Lyzer Collect+Deliver',
       ),
     ],
-    links: [
-      ProductionAppLink(
-        label: 'Conhecer produto',
-        semanticLabel: 'Abrir página do Lyzer Collect+Deliver',
-        uri: Uri.parse('https://example.com/lyzer'),
-      ),
-    ],
   ),
   ProductionAppCase(
     id: 'mag-venda-digital',
@@ -240,13 +228,6 @@ List<ProductionAppCase> _apps() => [
       ProductionAppScreenshot(
         assetPath: 'assets/client_logos/human_robotics.png',
         semanticLabel: 'Tela da jornada de venda MAG',
-      ),
-    ],
-    links: [
-      ProductionAppLink(
-        label: 'Ver projeto',
-        semanticLabel: 'Abrir informações do MAG Venda Digital',
-        uri: Uri.parse('https://example.com/mag'),
       ),
     ],
   ),
@@ -267,7 +248,6 @@ extension on ProductionAppCase {
     iconAssetPaths: iconAssetPaths,
     screenshots: screenshots,
     storeProof: storeProof,
-    links: links,
     accent: accent,
   );
 }

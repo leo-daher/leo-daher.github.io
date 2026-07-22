@@ -185,7 +185,7 @@ abstract class AppLocalizations {
   /// Navigation destination.
   ///
   /// In en, this message translates to:
-  /// **'System'**
+  /// **'Architecture'**
   String get navSystem;
 
   /// Navigation destination.
@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// Production apps section supporting copy.
   ///
   /// In en, this message translates to:
-  /// **'Public store screens and data, with my contribution scoped for each product. Metrics checked in July 2026.'**
+  /// **'Store screens, public metrics, and the work I delivered in each product. Checked in July 2026.'**
   String get productionAppsCopy;
 
   /// Production app role label.
@@ -391,18 +391,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Image unavailable'**
   String get appImageUnavailableLabel;
-
-  /// Google Play link label.
-  ///
-  /// In en, this message translates to:
-  /// **'View on Google Play'**
-  String get viewGooglePlay;
-
-  /// Apple App Store link label.
-  ///
-  /// In en, this message translates to:
-  /// **'View on the App Store'**
-  String get viewAppStore;
 
   /// Store metric consultation date.
   ///
@@ -515,80 +503,68 @@ abstract class AppLocalizations {
   /// System section eyebrow.
   ///
   /// In en, this message translates to:
-  /// **'ONE PRODUCT. THE WHOLE SYSTEM.'**
+  /// **'END-TO-END ARCHITECTURE'**
   String get systemEyebrow;
 
   /// System section title.
   ///
   /// In en, this message translates to:
-  /// **'What powers the apps: mobile, services, and intelligence connected.'**
+  /// **'I architect and deliver products end to end.'**
   String get systemTitle;
 
-  /// System flow summary.
+  /// End-to-end architecture supporting copy.
   ///
   /// In en, this message translates to:
-  /// **'PRODUCT → SYSTEM → RESULT'**
-  String get systemFlow;
+  /// **'From product flows and offline state to APIs, data, CI/CD, and production operations. AI and automation enter where they add practical leverage.'**
+  String get systemCopy;
 
-  /// Product system node label.
+  /// Product architecture scope title.
   ///
   /// In en, this message translates to:
-  /// **'01  /  PRODUCT'**
-  String get productLabel;
+  /// **'Product and mobile'**
+  String get architectureProductTitle;
 
-  /// Services system node label.
+  /// Product architecture scope detail.
   ///
   /// In en, this message translates to:
-  /// **'02  /  SERVICES'**
-  String get servicesLabel;
+  /// **'Flutter · Android · iOS · user flows · offline state'**
+  String get architectureProductDetail;
 
-  /// Intelligence system node label.
+  /// Services architecture scope title.
   ///
   /// In en, this message translates to:
-  /// **'03  /  INTELLIGENCE'**
-  String get intelligenceLabel;
+  /// **'Services and data'**
+  String get architectureServicesTitle;
 
-  /// Backend capabilities.
+  /// Services architecture scope detail.
   ///
   /// In en, this message translates to:
-  /// **'APIs · data · integrations'**
-  String get backendDetail;
+  /// **'Python · .NET · APIs · GraphQL · Firebase · sync'**
+  String get architectureServicesDetail;
 
-  /// AI system node title.
+  /// Delivery architecture scope title.
   ///
   /// In en, this message translates to:
-  /// **'AI Systems'**
-  String get aiSystems;
+  /// **'Delivery and reliability'**
+  String get architectureDeliveryTitle;
 
-  /// AI capabilities.
+  /// Delivery architecture scope detail.
   ///
   /// In en, this message translates to:
-  /// **'Agents · workflows'**
-  String get aiDetail;
+  /// **'CI/CD · Azure · store releases · Crashlytics · performance'**
+  String get architectureDeliveryDetail;
 
-  /// System connector label.
+  /// Automation architecture scope title.
   ///
   /// In en, this message translates to:
-  /// **'REQUESTS'**
-  String get requests;
+  /// **'AI and automation'**
+  String get architectureAutomationTitle;
 
-  /// System connector label.
+  /// Automation architecture scope detail.
   ///
   /// In en, this message translates to:
-  /// **'CONTEXT + TOOLS'**
-  String get contextTools;
-
-  /// Compact system return label.
-  ///
-  /// In en, this message translates to:
-  /// **'RESULTS RETURN TO MOBILE'**
-  String get resultsReturnMobile;
-
-  /// System return label.
-  ///
-  /// In en, this message translates to:
-  /// **'DECISIONS + ACTIONS RETURN TO THE PRODUCT'**
-  String get decisionsReturnProduct;
+  /// **'Agents · LLM tooling · background workflows'**
+  String get architectureAutomationDetail;
 
   /// Device demonstration label.
   ///
@@ -878,12 +854,6 @@ abstract class AppLocalizations {
   /// **'Projects delivered through employers, consultancies, and partner teams. The cases above detail the contributions that can be verified publicly.'**
   String get clientsCopy;
 
-  /// Transparent client relationship note.
-  ///
-  /// In en, this message translates to:
-  /// **'A brand indicates project participation — not exclusive authorship or necessarily a direct engagement.'**
-  String get clientsAttribution;
-
   /// Number of client brands.
   ///
   /// In en, this message translates to:
@@ -899,7 +869,7 @@ abstract class AppLocalizations {
   /// Contact section title.
   ///
   /// In en, this message translates to:
-  /// **'Let\'s talk about product and engineering.'**
+  /// **'Let\'s build something great together.'**
   String get contactTitle;
 
   /// Contact section supporting copy.
@@ -919,6 +889,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Experience, career history, and professional contact.'**
   String get contactLinkedInCopy;
+
+  /// WhatsApp contact label.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get contactWhatsApp;
+
+  /// WhatsApp contact supporting copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct message for projects and opportunities.'**
+  String get contactWhatsAppCopy;
 
   /// GitHub contact label.
   ///
@@ -943,12 +925,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Calendly · 30 minutes'**
   String get contactScheduleCopy;
-
-  /// Footer invitation.
-  ///
-  /// In en, this message translates to:
-  /// **'Shall we build something that truly works?'**
-  String get footerInvitation;
 }
 
 class _AppLocalizationsDelegate

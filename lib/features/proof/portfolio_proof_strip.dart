@@ -24,7 +24,6 @@ class PortfolioProofStrip extends StatelessWidget {
       builder: (context, constraints) {
         final columns = constraints.maxWidth >= 860 ? 4 : 2;
         const gap = 10.0;
-        final width = (constraints.maxWidth - gap * (columns - 1)) / columns;
 
         return Semantics(
           container: true,
@@ -32,22 +31,30 @@ class PortfolioProofStrip extends StatelessWidget {
           child: ExcludeSemantics(
             child: Container(
               key: const Key('portfolio-proof-strip'),
+              width: double.infinity,
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: palette.surface.withValues(alpha: .62),
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(color: palette.outline),
               ),
-              child: Wrap(
-                spacing: gap,
-                runSpacing: gap,
-                children: [
-                  for (final item in items)
-                    SizedBox(
-                      width: width - 10,
-                      child: _ProofTile(item: item),
-                    ),
-                ],
+              child: LayoutBuilder(
+                builder: (context, innerConstraints) {
+                  final tileWidth =
+                      (innerConstraints.maxWidth - gap * (columns - 1)) /
+                      columns;
+                  return Wrap(
+                    spacing: gap,
+                    runSpacing: gap,
+                    children: [
+                      for (final item in items)
+                        SizedBox(
+                          width: tileWidth,
+                          child: _ProofTile(item: item),
+                        ),
+                    ],
+                  );
+                },
               ),
             ),
           ),
@@ -83,15 +90,18 @@ class _ProofTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            item.value,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: LeoneBrandColors.interactive,
-              fontSize: 17,
-              fontWeight: FontWeight.w900,
-              letterSpacing: -.2,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              item.value,
+              maxLines: 1,
+              style: const TextStyle(
+                color: LeoneBrandColors.interactive,
+                fontSize: 17,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -.2,
+              ),
             ),
           ),
           const SizedBox(height: 6),

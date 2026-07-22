@@ -46,7 +46,6 @@ class ProductionAppCase {
     this.iconAssetPaths = const [],
     this.screenshots = const [],
     this.storeProof = const [],
-    this.links = const [],
     this.accent,
   }) : assert(id.length > 0),
        assert(name.length > 0),
@@ -67,7 +66,6 @@ class ProductionAppCase {
   final List<String> iconAssetPaths;
   final List<ProductionAppScreenshot> screenshots;
   final List<ProductionAppStoreProof> storeProof;
-  final List<ProductionAppLink> links;
 
   /// Optional project color. It is contained inside the case and never changes
   /// the portfolio's primary brand mark.
@@ -110,22 +108,4 @@ class ProductionAppStoreProof {
   final String semanticLabel;
   final String? supportingText;
   final Uri? uri;
-}
-
-/// External destination associated with a production app.
-@immutable
-class ProductionAppLink {
-  const ProductionAppLink({
-    required this.label,
-    required this.semanticLabel,
-    required this.uri,
-    this.icon = Icons.arrow_outward_rounded,
-    this.emphasized = false,
-  });
-
-  final String label;
-  final String semanticLabel;
-  final Uri uri;
-  final IconData icon;
-  final bool emphasized;
 }

@@ -15,6 +15,7 @@ class ContactSection extends StatelessWidget {
   static final _calendlyUri = Uri.parse(
     'https://calendly.com/leonedaher/30min',
   );
+  static final _whatsAppUri = Uri.parse('https://wa.me/5521999997667');
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,14 @@ class ContactSection extends StatelessWidget {
         supportingText: l10n.contactLinkedInCopy,
         uri: _linkedinUri,
         icon: Icons.work_outline_rounded,
+      ),
+      _ContactDestination(
+        key: const Key('contact-link-whatsapp'),
+        label: l10n.contactWhatsApp,
+        supportingText: l10n.contactWhatsAppCopy,
+        uri: _whatsAppUri,
+        icon: Icons.chat_bubble_outline_rounded,
+        emphasized: true,
       ),
       _ContactDestination(
         key: const Key('contact-link-github'),
@@ -40,7 +49,6 @@ class ContactSection extends StatelessWidget {
         supportingText: l10n.contactScheduleCopy,
         uri: _calendlyUri,
         icon: Icons.calendar_month_outlined,
-        emphasized: true,
       ),
     ];
 
@@ -59,7 +67,11 @@ class ContactSection extends StatelessWidget {
           const SizedBox(height: 30),
           LayoutBuilder(
             builder: (context, constraints) {
-              final columns = constraints.maxWidth >= 860 ? 3 : 1;
+              final columns = constraints.maxWidth >= 1080
+                  ? 4
+                  : constraints.maxWidth >= 640
+                  ? 2
+                  : 1;
               const gap = 12.0;
               final width =
                   (constraints.maxWidth - gap * (columns - 1)) / columns;
@@ -136,7 +148,7 @@ class _ContactCard extends StatelessWidget {
           child: InkWell(
             onTap: followLink,
             child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 144),
+              constraints: const BoxConstraints(minHeight: 132),
               child: Padding(
                 padding: const EdgeInsets.all(22),
                 child: Row(

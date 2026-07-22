@@ -52,52 +52,58 @@ class _CertificationsContent extends StatelessWidget {
       key: const Key('certifications-section'),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 1240),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PortfolioSectionHeading(
-                eyebrow: l10n.certificationsEyebrow,
-                title: l10n.certificationsTitle,
-                copy: l10n.certificationsCopy,
-              ),
-              const SizedBox(height: 30),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final compact = constraints.maxWidth < 620;
-                  return Container(
-                    padding: EdgeInsets.all(compact ? 20 : 24),
-                    decoration: BoxDecoration(
-                      color: palette.surface.withValues(alpha: .78),
-                      borderRadius: BorderRadius.circular(compact ? 24 : 30),
-                      border: Border.all(color: palette.outline),
-                    ),
-                    child: Wrap(
-                      spacing: 28,
-                      runSpacing: 20,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        const _CertificateSeal(),
-                        _CertificateMetrics(
-                          credentials: l10n.verifiedCredentials(
-                            catalog.certificates.length,
+        child: SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PortfolioSectionHeading(
+                  eyebrow: l10n.certificationsEyebrow,
+                  title: l10n.certificationsTitle,
+                  copy: l10n.certificationsCopy,
+                ),
+                const SizedBox(height: 30),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final compact = constraints.maxWidth < 620;
+                    return Container(
+                      padding: EdgeInsets.all(compact ? 20 : 24),
+                      decoration: BoxDecoration(
+                        color: palette.surface.withValues(alpha: .78),
+                        borderRadius: BorderRadius.circular(compact ? 24 : 30),
+                        border: Border.all(color: palette.outline),
+                      ),
+                      child: Wrap(
+                        spacing: 28,
+                        runSpacing: 20,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          const _CertificateSeal(),
+                          _CertificateMetrics(
+                            credentials: l10n.verifiedCredentials(
+                              catalog.certificates.length,
+                            ),
+                            issuerCount: catalog.issuerCount,
+                            issuersLabel: l10n.issuers,
                           ),
-                          issuerCount: catalog.issuerCount,
-                          issuersLabel: l10n.issuers,
-                        ),
-                        OutlinedButton.icon(
-                          key: const Key('certificates-open-register'),
-                          onPressed: () => _openRegister(context),
-                          icon: const Icon(Icons.open_in_new_rounded, size: 18),
-                          label: Text(l10n.viewCredentials),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
+                          OutlinedButton.icon(
+                            key: const Key('certificates-open-register'),
+                            onPressed: () => _openRegister(context),
+                            icon: const Icon(
+                              Icons.open_in_new_rounded,
+                              size: 18,
+                            ),
+                            label: Text(l10n.viewCredentials),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
 
@@ -5,8 +7,9 @@ import '../../brand/leone_brand.dart';
 import '../shared/portfolio_section_heading.dart';
 import 'production_app_models.dart';
 
-const _mediumLayoutMinWidth = 700.0;
-const _cardGap = 16.0;
+const _wideCaseMinWidth = 960.0;
+const _caseGap = 48.0;
+const _screenshotGap = 12.0;
 const _caseAccents = <Color>[
   LeoneBrandColors.interactive,
   LeoneBrandColors.intelligence,
@@ -22,7 +25,7 @@ class ProductionAppsSection extends StatelessWidget {
     super.key,
     required this.content,
     required this.apps,
-    this.maxWidth = 1240,
+    this.maxWidth = 1440,
     this.horizontalPadding = 24,
   }) : assert(apps.length > 0);
 
@@ -33,6 +36,7 @@ class ProductionAppsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.leonePalette;
     return Semantics(
       container: true,
       explicitChildNodes: true,
@@ -41,85 +45,48 @@ class ProductionAppsSection extends StatelessWidget {
         key: const Key('production-apps-section'),
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: maxWidth),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Semantics(
-                  header: true,
-                  child: PortfolioSectionHeading(
-                    eyebrow: content.eyebrow,
-                    title: content.title,
-                    copy: content.description,
+          child: SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1192),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Semantics(
+                          header: true,
+                          child: PortfolioSectionHeading(
+                            eyebrow: content.eyebrow,
+                            title: content.title,
+                            copy: content.description,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 30),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    final splitLayout =
-                        constraints.maxWidth >= _mediumLayoutMinWidth &&
-                        apps.length > 1;
-                    if (splitLayout) {
-                      final secondaryWidth =
-                          (constraints.maxWidth - _cardGap) / 2;
-                      return Column(
-                        key: const Key('production-apps-grid'),
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ProductionAppCaseCard(
-                            app: apps.first,
-                            content: content,
-                            featured: true,
-                            accent: apps.first.accent ?? _caseAccents.first,
-                          ),
-                          const SizedBox(height: _cardGap),
-                          Wrap(
-                            spacing: _cardGap,
-                            runSpacing: _cardGap,
-                            children: [
-                              for (var index = 1; index < apps.length; index++)
-                                SizedBox(
-                                  width: secondaryWidth,
-                                  child: ProductionAppCaseCard(
-                                    app: apps[index],
-                                    content: content,
-                                    accent:
-                                        apps[index].accent ??
-                                        _caseAccents[index %
-                                            _caseAccents.length],
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ],
-                      );
-                    }
-
-                    return Column(
-                      key: const Key('production-apps-grid'),
-                      children: [
-                        for (var index = 0; index < apps.length; index++)
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: index == apps.length - 1 ? 0 : _cardGap,
-                            ),
-                            child: SizedBox(
-                              width: constraints.maxWidth,
-                              child: ProductionAppCaseCard(
-                                app: apps[index],
-                                content: content,
-                                accent:
-                                    apps[index].accent ??
-                                    _caseAccents[index % _caseAccents.length],
-                              ),
-                            ),
-                          ),
+                  const SizedBox(height: 36),
+                  Column(
+                    key: const Key('production-apps-grid'),
+                    children: [
+                      for (var index = 0; index < apps.length; index++) ...[
+                        Divider(height: 1, color: palette.outline),
+                        ProductionAppCaseCard(
+                          app: apps[index],
+                          content: content,
+                          accent:
+                              apps[index].accent ??
+                              _caseAccents[index % _caseAccents.length],
+                        ),
                       ],
-                    );
-                  },
-                ),
-              ],
+                      Divider(height: 1, color: palette.outline),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -128,88 +95,130 @@ class ProductionAppsSection extends StatelessWidget {
   }
 }
 
-/// Material 3 case card used by [ProductionAppsSection].
+/// Editorial case row used by [ProductionAppsSection].
 class ProductionAppCaseCard extends StatelessWidget {
   const ProductionAppCaseCard({
     super.key,
     required this.app,
     required this.content,
     this.accent = LeoneBrandColors.interactive,
-    this.featured = false,
   });
 
   final ProductionAppCase app;
   final ProductionAppsSectionContent content;
   final Color accent;
-  final bool featured;
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.leonePalette;
     return Semantics(
       container: true,
       explicitChildNodes: true,
       label: app.semanticLabel,
-      child: Card(
+      child: Container(
         key: Key('production-app-card-${app.id}'),
-        margin: EdgeInsets.zero,
-        color: palette.surface.withValues(alpha: .88),
-        surfaceTintColor: Colors.transparent,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(28),
-          side: BorderSide(color: palette.outline),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (app.screenshots.isNotEmpty)
-              _ScreenshotGallery(
-                appId: app.id,
-                screenshots: app.screenshots,
-                label: content.screenshotsLabel,
-                imageUnavailableLabel: content.imageUnavailableLabel,
-                accent: accent,
-                featured: featured,
-              ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(22, 22, 22, 24),
-              child: Column(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 38),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final wide = constraints.maxWidth >= _wideCaseMinWidth;
+            final gallery = _ScreenshotGallery(
+              appId: app.id,
+              screenshots: app.screenshots,
+              label: content.screenshotsLabel,
+              imageUnavailableLabel: content.imageUnavailableLabel,
+              accent: accent,
+              compact: !wide,
+            );
+            final caseCopy = _CaseCopy(
+              app: app,
+              content: content,
+              accent: accent,
+            );
+
+            if (!wide) {
+              return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _CaseHeading(app: app, accent: accent),
-                  const SizedBox(height: 18),
-                  _CaseFact(label: content.roleLabel, value: app.role),
-                  const SizedBox(height: 16),
-                  _CaseFact(
-                    label: content.contributionLabel,
-                    value: app.contribution,
-                  ),
-                  const SizedBox(height: 18),
-                  _StackTags(
-                    label: content.stackLabel,
-                    technologies: app.stack,
-                    accent: accent,
-                  ),
-                  if (app.storeProof.isNotEmpty) ...[
-                    const SizedBox(height: 22),
-                    _StoreProofList(
-                      appId: app.id,
-                      label: content.storeProofLabel,
-                      proof: app.storeProof,
-                      accent: accent,
-                    ),
-                  ],
-                  if (app.links.isNotEmpty) ...[
-                    const SizedBox(height: 22),
-                    _CaseLinks(appId: app.id, links: app.links),
-                  ],
+                  if (app.screenshots.isNotEmpty) gallery,
+                  if (app.screenshots.isNotEmpty) const SizedBox(height: 26),
+                  caseCopy,
                 ],
-              ),
-            ),
-          ],
+              );
+            }
+
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (app.screenshots.isNotEmpty) ...[
+                  Expanded(flex: 7, child: gallery),
+                  const SizedBox(width: _caseGap),
+                ],
+                Expanded(flex: 5, child: caseCopy),
+              ],
+            );
+          },
         ),
       ),
+    );
+  }
+}
+
+class _CaseCopy extends StatelessWidget {
+  const _CaseCopy({
+    required this.app,
+    required this.content,
+    required this.accent,
+  });
+
+  final ProductionAppCase app;
+  final ProductionAppsSectionContent content;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return Column(
+      key: Key('production-app-content-${app.id}'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _CaseHeading(app: app, accent: accent),
+        const SizedBox(height: 18),
+        Semantics(
+          label: '${content.roleLabel}: ${app.role}',
+          child: ExcludeSemantics(
+            child: Text(
+              app.role,
+              style: TextStyle(
+                color: accent,
+                fontSize: 13,
+                height: 1.4,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 9),
+        Semantics(
+          label: '${content.contributionLabel}: ${app.contribution}',
+          child: ExcludeSemantics(
+            child: Text(
+              app.contribution,
+              style: TextStyle(color: palette.ink, height: 1.5),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        _StackLine(label: content.stackLabel, technologies: app.stack),
+        if (app.storeProof.isNotEmpty) ...[
+          const SizedBox(height: 18),
+          _StoreProofWrap(
+            appId: app.id,
+            label: content.storeProofLabel,
+            proof: app.storeProof,
+            accent: accent,
+          ),
+        ],
+      ],
     );
   }
 }
@@ -238,29 +247,29 @@ class _CaseHeading extends StatelessWidget {
                 app.contextLabel.toUpperCase(),
                 style: TextStyle(
                   color: accent,
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: FontWeight.w800,
-                  letterSpacing: 1.1,
+                  letterSpacing: 1.05,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 7),
               Semantics(
                 header: true,
                 child: Text(
                   app.name,
                   style: TextStyle(
                     color: palette.ink,
-                    fontSize: 24,
+                    fontSize: 25,
                     height: 1.08,
                     fontWeight: FontWeight.w800,
-                    letterSpacing: -.5,
+                    letterSpacing: -.55,
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               Text(
                 app.summary,
-                style: TextStyle(color: palette.mutedInk, height: 1.5),
+                style: TextStyle(color: palette.mutedInk, height: 1.45),
               ),
             ],
           ),
@@ -280,21 +289,26 @@ class _AppIcons extends StatelessWidget {
   Widget build(BuildContext context) {
     final paths = assetPaths.take(2).toList(growable: false);
     return SizedBox(
-      width: paths.length == 1 ? 50 : 66,
-      height: 50,
+      width: paths.length == 1 ? 48 : 64,
+      height: 48,
       child: Stack(
         children: [
           for (var index = 0; index < paths.length; index++)
             Positioned(
               left: index * 16,
               child: Container(
-                width: 50,
-                height: 50,
+                width: 48,
+                height: 48,
                 padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
                   color: context.leonePalette.canvas,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: accent.withValues(alpha: .36)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: accent.withValues(alpha: .16),
+                      blurRadius: 18,
+                    ),
+                  ],
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(11),
@@ -308,44 +322,11 @@ class _AppIcons extends StatelessWidget {
   }
 }
 
-class _CaseFact extends StatelessWidget {
-  const _CaseFact({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.leonePalette;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label.toUpperCase(),
-          style: TextStyle(
-            color: palette.mutedInk,
-            fontSize: 11,
-            fontWeight: FontWeight.w800,
-            letterSpacing: .9,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(value, style: TextStyle(color: palette.ink, height: 1.45)),
-      ],
-    );
-  }
-}
-
-class _StackTags extends StatelessWidget {
-  const _StackTags({
-    required this.label,
-    required this.technologies,
-    required this.accent,
-  });
+class _StackLine extends StatelessWidget {
+  const _StackLine({required this.label, required this.technologies});
 
   final String label;
   final List<String> technologies;
-  final Color accent;
 
   @override
   Widget build(BuildContext context) {
@@ -353,38 +334,14 @@ class _StackTags extends StatelessWidget {
     return Semantics(
       label: '$label: ${technologies.join(', ')}',
       child: ExcludeSemantics(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label.toUpperCase(),
-              style: TextStyle(
-                color: palette.mutedInk,
-                fontSize: 11,
-                fontWeight: FontWeight.w800,
-                letterSpacing: .9,
-              ),
-            ),
-            const SizedBox(height: 9),
-            Wrap(
-              spacing: 7,
-              runSpacing: 7,
-              children: [
-                for (final technology in technologies)
-                  Chip(
-                    label: Text(technology),
-                    visualDensity: VisualDensity.compact,
-                    side: BorderSide(color: accent.withValues(alpha: .26)),
-                    backgroundColor: accent.withValues(alpha: .1),
-                    labelStyle: TextStyle(
-                      color: palette.ink,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-              ],
-            ),
-          ],
+        child: Text(
+          technologies.join('  ·  '),
+          style: TextStyle(
+            color: palette.mutedInk,
+            fontSize: 12,
+            height: 1.55,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
@@ -398,7 +355,7 @@ class _ScreenshotGallery extends StatelessWidget {
     required this.label,
     required this.imageUnavailableLabel,
     required this.accent,
-    required this.featured,
+    required this.compact,
   });
 
   final String appId;
@@ -406,58 +363,63 @@ class _ScreenshotGallery extends StatelessWidget {
   final String label;
   final String imageUnavailableLabel;
   final Color accent;
-  final bool featured;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.leonePalette;
+    final height = compact ? 258.0 : 360.0;
+    final hasCaptions = screenshots.any(
+      (screenshot) => screenshot.caption != null,
+    );
     return Semantics(
       container: true,
       explicitChildNodes: true,
       label: label,
       child: Container(
         key: Key('production-app-screenshots-$appId'),
-        height: featured ? 378 : 248,
+        height: height,
         decoration: BoxDecoration(
-          color: accent.withValues(alpha: .055),
-          border: Border(bottom: BorderSide(color: palette.outline)),
+          color: accent.withValues(alpha: .045),
+          borderRadius: BorderRadius.circular(compact ? 22 : 28),
         ),
-        child: featured
-            ? Padding(
-                padding: const EdgeInsets.all(16),
-                child: Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      for (
-                        var index = 0;
-                        index < screenshots.length;
-                        index++
-                      ) ...[
-                        if (index > 0) const SizedBox(width: 12),
-                        _ScreenshotFrame(
-                          screenshot: screenshots[index],
-                          imageUnavailableLabel: imageUnavailableLabel,
-                          accent: accent,
-                          featured: true,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              )
-            : ListView.separated(
-                padding: const EdgeInsets.all(16),
-                scrollDirection: Axis.horizontal,
-                itemCount: screenshots.length,
-                separatorBuilder: (_, _) => const SizedBox(width: 12),
-                itemBuilder: (context, index) => _ScreenshotFrame(
-                  screenshot: screenshots[index],
-                  imageUnavailableLabel: imageUnavailableLabel,
-                  accent: accent,
-                  featured: false,
-                ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final captionSpace = hasCaptions ? 28.0 : 0.0;
+            final maxByHeight = (height - 32 - captionSpace) * (9 / 16);
+            final availableWidth =
+                constraints.maxWidth -
+                32 -
+                _screenshotGap * (screenshots.length - 1);
+            final fitWidth = availableWidth / screenshots.length;
+            final frameWidth = math.max(
+              compact ? 108.0 : 116.0,
+              math.min(maxByHeight, fitWidth),
+            );
+            final contentWidth =
+                frameWidth * screenshots.length +
+                _screenshotGap * (screenshots.length - 1);
+            final horizontalPadding = math.max(
+              16.0,
+              (constraints.maxWidth - contentWidth) / 2,
+            );
+
+            return ListView.separated(
+              padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding,
+                vertical: 16,
               ),
+              scrollDirection: Axis.horizontal,
+              itemCount: screenshots.length,
+              separatorBuilder: (_, _) => const SizedBox(width: _screenshotGap),
+              itemBuilder: (context, index) => _ScreenshotFrame(
+                screenshot: screenshots[index],
+                imageUnavailableLabel: imageUnavailableLabel,
+                accent: accent,
+                width: frameWidth,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -468,23 +430,24 @@ class _ScreenshotFrame extends StatelessWidget {
     required this.screenshot,
     required this.imageUnavailableLabel,
     required this.accent,
-    required this.featured,
+    required this.width,
   });
 
   final ProductionAppScreenshot screenshot;
   final String imageUnavailableLabel;
   final Color accent;
-  final bool featured;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.leonePalette;
     return SizedBox(
-      width: featured ? 188 : 112,
+      width: width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
+          AspectRatio(
+            aspectRatio: 9 / 16,
             child: Semantics(
               image: true,
               label: screenshot.semanticLabel,
@@ -494,7 +457,7 @@ class _ScreenshotFrame extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: palette.canvas,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: accent.withValues(alpha: .42)),
+                    border: Border.all(color: accent.withValues(alpha: .34)),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
@@ -538,7 +501,7 @@ class _ScreenshotFrame extends StatelessWidget {
             ),
           ),
           if (screenshot.caption case final caption?) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: 7),
             Text(
               caption,
               maxLines: 1,
@@ -552,8 +515,8 @@ class _ScreenshotFrame extends StatelessWidget {
   }
 }
 
-class _StoreProofList extends StatelessWidget {
-  const _StoreProofList({
+class _StoreProofWrap extends StatelessWidget {
+  const _StoreProofWrap({
     required this.appId,
     required this.label,
     required this.proof,
@@ -567,35 +530,28 @@ class _StoreProofList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.leonePalette;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label.toUpperCase(),
-          style: TextStyle(
-            color: palette.mutedInk,
-            fontSize: 11,
-            fontWeight: FontWeight.w800,
-            letterSpacing: .9,
-          ),
-        ),
-        const SizedBox(height: 9),
-        for (var index = 0; index < proof.length; index++) ...[
-          _StoreProofTile(
-            key: Key('production-app-store-proof-$appId-$index'),
-            proof: proof[index],
-            accent: accent,
-          ),
-          if (index < proof.length - 1) const SizedBox(height: 8),
+    return Semantics(
+      container: true,
+      explicitChildNodes: true,
+      label: label,
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          for (var index = 0; index < proof.length; index++)
+            _StoreProofChip(
+              key: Key('production-app-store-proof-$appId-$index'),
+              proof: proof[index],
+              accent: accent,
+            ),
         ],
-      ],
+      ),
     );
   }
 }
 
-class _StoreProofTile extends StatelessWidget {
-  const _StoreProofTile({super.key, required this.proof, required this.accent});
+class _StoreProofChip extends StatelessWidget {
+  const _StoreProofChip({super.key, required this.proof, required this.accent});
 
   final ProductionAppStoreProof proof;
   final Color accent;
@@ -617,83 +573,53 @@ class _StoreProofTile extends StatelessWidget {
       button: onTap != null,
       link: onTap != null,
       label: proof.semanticLabel,
-      child: ExcludeSemantics(
+      child: Tooltip(
+        message: proof.supportingText ?? proof.semanticLabel,
+        excludeFromSemantics: true,
         child: Material(
-          color: accent.withValues(alpha: .08),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: BorderSide(color: accent.withValues(alpha: .22)),
-          ),
+          color: accent.withValues(alpha: .09),
+          shape: const StadiumBorder(),
           clipBehavior: Clip.antiAlias,
-          child: ListTile(
+          child: InkWell(
             onTap: onTap,
-            minTileHeight: 64,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 4,
-            ),
-            leading: Icon(Icons.verified_outlined, color: accent),
-            title: Text(
-              proof.evidence,
-              style: TextStyle(color: palette.ink, fontWeight: FontWeight.w800),
-            ),
-            subtitle: Text(
-              [proof.storeName, ?proof.supportingText].join(' · '),
-              style: TextStyle(color: palette.mutedInk),
-            ),
-            trailing: onTap == null
-                ? null
-                : Icon(
-                    Icons.arrow_outward_rounded,
-                    size: 18,
-                    color: palette.mutedInk,
-                  ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CaseLinks extends StatelessWidget {
-  const _CaseLinks({required this.appId, required this.links});
-
-  final String appId;
-  final List<ProductionAppLink> links;
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        for (var index = 0; index < links.length; index++)
-          Link(
-            key: Key('production-app-link-$appId-$index'),
-            uri: links[index].uri,
-            target: LinkTarget.blank,
-            builder: (context, followLink) => Semantics(
-              button: true,
-              link: true,
-              label: links[index].semanticLabel,
-              child: Tooltip(
-                message: links[index].semanticLabel,
-                excludeFromSemantics: true,
-                child: links[index].emphasized
-                    ? FilledButton.tonalIcon(
-                        onPressed: followLink,
-                        icon: Icon(links[index].icon, size: 18),
-                        label: Text(links[index].label),
-                      )
-                    : OutlinedButton.icon(
-                        onPressed: followLink,
-                        icon: Icon(links[index].icon, size: 18),
-                        label: Text(links[index].label),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 48),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 9,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.verified_outlined, color: accent, size: 16),
+                    const SizedBox(width: 7),
+                    Flexible(
+                      child: Text(
+                        '${proof.storeName} · ${proof.evidence}',
+                        style: TextStyle(
+                          color: palette.ink,
+                          fontSize: 11,
+                          height: 1.25,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
+                    ),
+                    if (onTap != null) ...[
+                      const SizedBox(width: 7),
+                      Icon(
+                        Icons.arrow_outward_rounded,
+                        color: palette.mutedInk,
+                        size: 14,
+                      ),
+                    ],
+                  ],
+                ),
               ),
             ),
           ),
-      ],
+        ),
+      ),
     );
   }
 }

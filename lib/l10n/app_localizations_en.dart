@@ -51,7 +51,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navApps => 'Apps';
 
   @override
-  String get navSystem => 'System';
+  String get navSystem => 'Architecture';
 
   @override
   String get navClients => 'Clients';
@@ -139,7 +139,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get productionAppsCopy =>
-      'Public store screens and data, with my contribution scoped for each product. Metrics checked in July 2026.';
+      'Store screens, public metrics, and the work I delivered in each product. Checked in July 2026.';
 
   @override
   String get appRoleLabel => 'My role';
@@ -158,12 +158,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appImageUnavailableLabel => 'Image unavailable';
-
-  @override
-  String get viewGooglePlay => 'View on Google Play';
-
-  @override
-  String get viewAppStore => 'View on the App Store';
 
   @override
   String get storeCheckedJuly2026 => 'Checked in July 2026.';
@@ -229,45 +223,42 @@ class AppLocalizationsEn extends AppLocalizations {
       'Active app · 1K+ downloads · updated Jul 16, 2026';
 
   @override
-  String get systemEyebrow => 'ONE PRODUCT. THE WHOLE SYSTEM.';
+  String get systemEyebrow => 'END-TO-END ARCHITECTURE';
 
   @override
-  String get systemTitle =>
-      'What powers the apps: mobile, services, and intelligence connected.';
+  String get systemTitle => 'I architect and deliver products end to end.';
 
   @override
-  String get systemFlow => 'PRODUCT → SYSTEM → RESULT';
+  String get systemCopy =>
+      'From product flows and offline state to APIs, data, CI/CD, and production operations. AI and automation enter where they add practical leverage.';
 
   @override
-  String get productLabel => '01  /  PRODUCT';
+  String get architectureProductTitle => 'Product and mobile';
 
   @override
-  String get servicesLabel => '02  /  SERVICES';
+  String get architectureProductDetail =>
+      'Flutter · Android · iOS · user flows · offline state';
 
   @override
-  String get intelligenceLabel => '03  /  INTELLIGENCE';
+  String get architectureServicesTitle => 'Services and data';
 
   @override
-  String get backendDetail => 'APIs · data · integrations';
+  String get architectureServicesDetail =>
+      'Python · .NET · APIs · GraphQL · Firebase · sync';
 
   @override
-  String get aiSystems => 'AI Systems';
+  String get architectureDeliveryTitle => 'Delivery and reliability';
 
   @override
-  String get aiDetail => 'Agents · workflows';
+  String get architectureDeliveryDetail =>
+      'CI/CD · Azure · store releases · Crashlytics · performance';
 
   @override
-  String get requests => 'REQUESTS';
+  String get architectureAutomationTitle => 'AI and automation';
 
   @override
-  String get contextTools => 'CONTEXT + TOOLS';
-
-  @override
-  String get resultsReturnMobile => 'RESULTS RETURN TO MOBILE';
-
-  @override
-  String get decisionsReturnProduct =>
-      'DECISIONS + ACTIONS RETURN TO THE PRODUCT';
+  String get architectureAutomationDetail =>
+      'Agents · LLM tooling · background workflows';
 
   @override
   String get deviceLab => 'DEVICE LAB';
@@ -445,10 +436,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Projects delivered through employers, consultancies, and partner teams. The cases above detail the contributions that can be verified publicly.';
 
   @override
-  String get clientsAttribution =>
-      'A brand indicates project participation — not exclusive authorship or necessarily a direct engagement.';
-
-  @override
   String brandCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -463,7 +450,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contactEyebrow => 'CONTACT';
 
   @override
-  String get contactTitle => 'Let\'s talk about product and engineering.';
+  String get contactTitle => 'Let\'s build something great together.';
 
   @override
   String get contactCopy =>
@@ -477,6 +464,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Experience, career history, and professional contact.';
 
   @override
+  String get contactWhatsApp => 'WhatsApp';
+
+  @override
+  String get contactWhatsAppCopy =>
+      'Direct message for projects and opportunities.';
+
+  @override
   String get contactGitHub => 'GitHub';
 
   @override
@@ -487,7 +481,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contactScheduleCopy => 'Calendly · 30 minutes';
-
-  @override
-  String get footerInvitation => 'Shall we build something that truly works?';
 }

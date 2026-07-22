@@ -67,7 +67,6 @@ class ClientLogoCloud extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.leonePalette;
     return LayoutBuilder(
       builder: (context, constraints) {
         final columns = constraints.maxWidth >= 1100
@@ -91,44 +90,19 @@ class ClientLogoCloud extends StatelessWidget {
               copy: context.l10n.clientsCopy,
             ),
             const SizedBox(height: 24),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-              decoration: BoxDecoration(
-                color: _clientAccent.withValues(alpha: .07),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: _clientAccent.withValues(alpha: .18)),
-              ),
-              child: Wrap(
-                spacing: 18,
-                runSpacing: 8,
-                alignment: WrapAlignment.spaceBetween,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 820),
-                    child: Text(
-                      context.l10n.clientsAttribution,
-                      style: TextStyle(
-                        color: palette.mutedInk,
-                        fontSize: 12,
-                        height: 1.4,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    context.l10n.brandCount(_clientLogos.length),
-                    style: const TextStyle(
-                      color: _clientAccent,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ],
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                context.l10n.brandCount(_clientLogos.length),
+                style: const TextStyle(
+                  color: _clientAccent,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1,
+                ),
               ),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
             Wrap(
               spacing: gap,
               runSpacing: gap,

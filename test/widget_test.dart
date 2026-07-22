@@ -280,11 +280,7 @@ void main() {
     expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
     expect(find.text('Code with visible impact.'), findsNothing);
     final headingY = tester
-        .getTopLeft(
-          find.text(
-            'What powers the apps: mobile, services, and intelligence connected.',
-          ),
-        )
+        .getTopLeft(find.text('I architect and deliver products end to end.'))
         .dy;
     expect(headingY, inInclusiveRange(0, 180));
     expect(tester.takeException(), isNull);
@@ -378,15 +374,12 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final invitation = find.byKey(const Key('footer-invitation'));
     final signature = find.byKey(const Key('footer-signature'));
     final fab = find.byKey(const Key('portfolio-floating-action'));
-    final invitationRect = tester.getRect(invitation);
     final signatureRect = tester.getRect(signature);
 
-    expect(signatureRect.top, greaterThan(invitationRect.bottom));
-    expect(signatureRect.left, closeTo(invitationRect.left, .01));
-    expect(invitationRect.left, closeTo(24, .01));
+    expect(find.byKey(const Key('footer-invitation')), findsNothing);
+    expect(signatureRect.left, closeTo(24, .01));
     expect(signatureRect.overlaps(tester.getRect(fab)), isFalse);
     expect(tester.takeException(), isNull);
   });
@@ -405,16 +398,12 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final invitationRect = tester.getRect(
-      find.byKey(const Key('footer-invitation')),
-    );
     final signatureRect = tester.getRect(
       find.byKey(const Key('footer-signature')),
     );
 
-    expect(invitationRect.left, closeTo(24, .01));
-    expect(signatureRect.left, closeTo(invitationRect.left, .01));
-    expect(signatureRect.top, greaterThan(invitationRect.bottom));
+    expect(find.byKey(const Key('footer-invitation')), findsNothing);
+    expect(signatureRect.left, closeTo(24, .01));
     expect(tester.takeException(), isNull);
   });
 
@@ -478,6 +467,7 @@ void main() {
     expect(find.byKey(const Key('client-logo-cloud')), findsOneWidget);
     expect(find.text('CLIENTS SERVED'), findsOneWidget);
     expect(find.text('13 BRANDS'), findsOneWidget);
+    expect(find.textContaining('A brand indicates'), findsNothing);
     expect(find.byType(WorldExperienceMap), findsNothing);
     expect(tester.takeException(), isNull);
   });
@@ -537,6 +527,10 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('CERTIFICATIONS'), findsOneWidget);
     expect(find.text('4 VERIFIED CREDENTIALS'), findsOneWidget);
+    expect(
+      tester.getTopLeft(find.text('CERTIFICATIONS')).dx,
+      closeTo(124, .01),
+    );
 
     await tester.tap(find.byKey(const Key('certificates-open-register')));
     await tester.pumpAndSettle();

@@ -261,7 +261,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
             SliverToBoxAdapter(
               child: _SectionFrame(
                 key: _systemSectionKey,
-                maxWidth: 1080,
                 child: const SystemOverviewSection(),
               ),
             ),
@@ -544,37 +543,23 @@ class _Footer extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1240),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            key: const Key('footer-signature'),
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                key: const Key('footer-invitation'),
-                context.l10n.footerInvitation,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
+              SizedBox(
+                width: 28,
+                height: 28,
+                child: SvgPicture.asset(
+                  lightMode
+                      ? 'assets/brand/ld-mark.svg'
+                      : 'assets/brand/ld-mark-inverse.svg',
                 ),
               ),
-              const SizedBox(height: 18),
-              Row(
-                key: const Key('footer-signature'),
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    width: 28,
-                    height: 28,
-                    child: SvgPicture.asset(
-                      lightMode
-                          ? 'assets/brand/ld-mark.svg'
-                          : 'assets/brand/ld-mark-inverse.svg',
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    'LEONE DAHER  •  2026',
-                    style: TextStyle(color: palette.mutedInk, fontSize: 11),
-                  ),
-                ],
+              const SizedBox(width: 10),
+              Text(
+                'LEONE DAHER  •  2026',
+                style: TextStyle(color: palette.mutedInk, fontSize: 11),
               ),
             ],
           ),
