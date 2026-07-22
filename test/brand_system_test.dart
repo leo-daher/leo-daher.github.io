@@ -258,6 +258,10 @@ void main() {
       expect(theme.scaffoldBackgroundColor, LeoneBrandColors.canvas);
       expect(theme.colorScheme.surface, LeoneBrandColors.surface);
       expect(theme.textTheme.bodyMedium?.fontFamily, LeoneBrand.fontFamily);
+      expect(
+        theme.textTheme.bodyMedium?.fontFamilyFallback,
+        LeoneBrand.fontFamilyFallback,
+      );
       expect(lightTheme.brightness, Brightness.light);
       expect(lightTheme.scaffoldBackgroundColor, LeonePalette.light.canvas);
       expect(lightTheme.extension<LeonePalette>(), LeonePalette.light);
@@ -266,6 +270,23 @@ void main() {
         greaterThanOrEqualTo(7),
       );
     });
+
+    test(
+      'uses static Inter faces with system fallbacks for embedded webviews',
+      () {
+        final pubspec = readLocalTextFile('pubspec.yaml');
+
+        expect(pubspec, isNot(contains('InterVariable.ttf')));
+        for (final weight in const [400, 500, 600, 700, 800, 900]) {
+          expect(pubspec, contains('weight: $weight'));
+        }
+        expect(
+          LeoneBrand.fontFamilyFallback,
+          containsAll(const ['Roboto', 'Arial', 'sans-serif']),
+        );
+      },
+      skip: !canReadLocalFiles,
+    );
   });
 
   testWidgets('opening resolves immediately when motion is reduced', (

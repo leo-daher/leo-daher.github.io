@@ -12,6 +12,7 @@ abstract final class LeoneBrand {
   static const signaturePtBr = 'Suas ideias. Em todo lugar.';
   static const signatureEn = 'Your ideas. Everywhere.';
   static const fontFamily = 'Inter';
+  static const fontFamilyFallback = ['Roboto', 'Arial', 'sans-serif'];
 }
 
 abstract final class LeoneBrandColors {
@@ -175,6 +176,7 @@ abstract final class LeoneBrandTheme {
       bodyColor: palette.ink,
       displayColor: palette.ink,
       fontFamily: LeoneBrand.fontFamily,
+      fontFamilyFallback: LeoneBrand.fontFamilyFallback,
     ),
   );
 }
