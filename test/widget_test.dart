@@ -256,6 +256,44 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('FAB menu animates a light blur behind its controls', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await _finishOpening(tester);
+
+    const backdropKey = Key('portfolio-menu-backdrop');
+    final fab = find.byKey(const Key('portfolio-floating-action'));
+    expect(find.byKey(backdropKey), findsNothing);
+
+    await tester.tap(fab);
+    await tester.pump();
+    await tester.pump(LeoneBrandMotion.fabMenuExpand ~/ 2);
+
+    final backdrop = find.byKey(backdropKey);
+    expect(backdrop, findsOneWidget);
+    expect(tester.getSize(backdrop), const Size(1440, 1000));
+    expect(find.descendant(of: backdrop, matching: fab), findsNothing);
+    expect(
+      find.descendant(of: backdrop, matching: find.byType(ModalBarrier)),
+      findsOneWidget,
+    );
+
+    await tester.tapAt(const Offset(24, 220));
+    await tester.pump();
+    expect(find.byKey(backdropKey), findsOneWidget);
+    await tester.pump(LeoneBrandMotion.fabMenuCollapse);
+
+    expect(find.byKey(backdropKey), findsNothing);
+    expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('FAB menu navigates to the system section and closes', (
     tester,
   ) async {

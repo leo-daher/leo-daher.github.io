@@ -129,6 +129,7 @@ abstract final class LeoneBrandGeometry {
   static const fabExpandedRadius = fabSize / 2;
   static const fabEdgeInset = 16.0;
   static const fabElevation = 6.0;
+  static const fabMenuBackdropSigma = 3.0;
 }
 
 abstract final class LeoneBrandMotion {

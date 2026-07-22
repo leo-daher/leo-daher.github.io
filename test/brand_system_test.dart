@@ -28,6 +28,10 @@ void main() {
         LeoneBrandGeometry.markClearSpace,
         LeoneBrandGeometry.markStroke * 2,
       );
+      expect(
+        LeoneBrandGeometry.fabMenuBackdropSigma,
+        inInclusiveRange(2.0, 4.0),
+      );
     });
 
     test('keeps the opening timeline internally consistent', () {
