@@ -29,7 +29,7 @@ void main() {
     expect(find.byKey(const Key('ld-opening-transition')), findsOneWidget);
   });
 
-  testWidgets('renders centered positioning and switches career focus', (
+  testWidgets('renders a simplified hero and switches career focus', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(1440, 1000);
@@ -47,9 +47,10 @@ void main() {
     expect(find.byKey(const Key('ld-topbar-mark')), findsOneWidget);
     expect(find.byKey(const Key('ld-viewport-frame')), findsOneWidget);
     expect(find.byKey(const Key('portfolio-floating-action')), findsOneWidget);
-    expect(find.text('MOBILE'), findsOneWidget);
-    expect(find.text('TABLET'), findsOneWidget);
-    expect(find.text('DESKTOP'), findsOneWidget);
+    expect(find.text('MOBILE'), findsNothing);
+    expect(find.text('TABLET'), findsNothing);
+    expect(find.text('DESKTOP'), findsNothing);
+    expect(find.text('YOUR IDEAS. EVERYWHERE.'), findsOneWidget);
     expect(
       find.text('Mobile products powered by smart, connected systems.'),
       findsOneWidget,
@@ -95,7 +96,7 @@ void main() {
     expect(tester.getSize(find.byKey(const Key('hire-me-button'))).height, 48);
   });
 
-  testWidgets('morphs the branded viewport without leaving its stage', (
+  testWidgets('morphs one frame and reflows its interface for each format', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(390, 844);
@@ -107,24 +108,45 @@ void main() {
     await _finishOpening(tester);
 
     final frame = find.byKey(const Key('ld-viewport-frame'));
-    final mobileSize = tester.getSize(frame);
-    expect(mobileSize.width, lessThan(390));
-    expect(mobileSize.height, greaterThan(mobileSize.width));
+    final navigation = find.byKey(const Key('hero-interface-navigation'));
+    final message = find.byKey(const Key('hero-interface-message'));
 
-    await tester.tap(find.byKey(const Key('ld-mode-tablet')));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 1000));
-    final tabletSize = tester.getSize(frame);
-    expect(tabletSize.width, greaterThan(mobileSize.width));
-    expect(tabletSize.height, lessThan(mobileSize.height));
-
-    await tester.tap(find.byKey(const Key('ld-mode-desktop')));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 1000));
     final desktopSize = tester.getSize(frame);
-    expect(desktopSize.width, greaterThanOrEqualTo(tabletSize.width));
-    expect(desktopSize.height, lessThan(tabletSize.height));
-    expect(desktopSize.width, lessThanOrEqualTo(354));
+    final desktopFrameOrigin = tester.getTopLeft(frame);
+    final desktopNavigation =
+        tester.getTopLeft(navigation) - desktopFrameOrigin;
+    final desktopMessage = tester.getTopLeft(message) - desktopFrameOrigin;
+    expect(desktopSize.width, greaterThan(desktopSize.height));
+    expect(desktopNavigation.dx, lessThan(desktopMessage.dx));
+
+    await tester.pump(LeoneBrandMotion.viewportHold);
+    await tester.pump(LeoneBrandMotion.viewportTransition);
+
+    final mobileSize = tester.getSize(frame);
+    final mobileFrameOrigin = tester.getTopLeft(frame);
+    final mobileNavigation = tester.getTopLeft(navigation) - mobileFrameOrigin;
+    final mobileMessage = tester.getTopLeft(message) - mobileFrameOrigin;
+    expect(mobileSize.height, greaterThan(mobileSize.width));
+    expect(mobileNavigation.dy, greaterThan(mobileMessage.dy));
+
+    await tester.pump(LeoneBrandMotion.viewportHold);
+    await tester.pump(LeoneBrandMotion.viewportTransition);
+
+    final tabletSize = tester.getSize(frame);
+    expect(tabletSize.width, greaterThan(tabletSize.height));
+    expect(tabletSize.width / tabletSize.height, closeTo(316 / 240, .01));
+    expect(find.byKey(const Key('ld-mode-mobile')), findsNothing);
+    expect(find.byKey(const Key('ld-mode-tablet')), findsNothing);
+    expect(find.byKey(const Key('ld-mode-desktop')), findsNothing);
+    expect(
+      find.byKey(const Key('hero-interface-primary-card')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('hero-interface-secondary-card')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('hero-interface-identifiers')), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

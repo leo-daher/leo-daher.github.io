@@ -48,8 +48,8 @@
   "@aiSupporting": {"description": "Hero supporting copy."},
   "aiAutomationTab": "AI + Automation",
   "@aiAutomationTab": {"description": "Hero focus selector label."},
-  "everySurface": "ONE FRAME · EVERY SURFACE",
-  "@everySurface": {"description": "Adaptive identity statement."},
+  "everySurface": "YOUR IDEAS. EVERYWHERE.",
+  "@everySurface": {"description": "Creative product statement."},
   "surfaceList": "mobile  ·  desktop  ·  web",
   "@surfaceList": {"description": "Supported device surfaces."},
   "systemEyebrow": "ONE PRODUCT. THE WHOLE SYSTEM.",
@@ -173,15 +173,5 @@
   "brandCount": "{count, plural, =1{1 BRAND} other{{count} BRANDS}}",
   "@brandCount": {"description": "Number of client brands.", "placeholders": {"count": {"type": "int"}}},
   "footerInvitation": "Shall we build something that truly works?",
-  "@footerInvitation": {"description": "Footer invitation."},
-  "mobileFormat": "mobile format",
-  "@mobileFormat": {"description": "Accessible viewport format."},
-  "tabletFormat": "tablet format",
-  "@tabletFormat": {"description": "Accessible viewport format."},
-  "desktopFormat": "desktop and web format",
-  "@desktopFormat": {"description": "Accessible viewport format."},
-  "viewportInFormat": "LD viewport in {format}",
-  "@viewportInFormat": {"description": "Accessible adaptive viewport label.", "placeholders": {"format": {"type": "String"}}},
-  "showFormat": "Show {format}",
-  "@showFormat": {"description": "Accessible viewport selector action.", "placeholders": {"format": {"type": "String"}}}
+  "@footerInvitation": {"description": "Footer invitation."}
 }

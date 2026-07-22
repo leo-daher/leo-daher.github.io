@@ -9,8 +9,8 @@ abstract final class LeoneBrand {
   static const technicalReading = 'Leone Developer';
   static const idea = 'A marca se torna a interface.';
   static const essence = 'Adaptação com intenção.';
-  static const signaturePtBr = 'Um frame. Toda tela.';
-  static const signatureEn = 'One frame. Every surface.';
+  static const signaturePtBr = 'Suas ideias. Em todo lugar.';
+  static const signatureEn = 'Your ideas. Everywhere.';
   static const fontFamily = 'Inter';
 }
 

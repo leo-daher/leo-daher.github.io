@@ -49,8 +49,8 @@ proporção, preserva sua estrutura e termina em uma ação real.
 
 ### Assinaturas
 
-- **Português:** `UM FRAME. TODA TELA.`
-- **Inglês:** `ONE FRAME. EVERY SURFACE.`
+- **Português:** `SUAS IDEIAS. EM TODO LUGAR.`
+- **Inglês:** `YOUR IDEAS. EVERYWHERE.`
 - **Frase de apoio:** `A forma muda. A intenção permanece.`
 
 As versões são localizadas e não devem aparecer juntas na mesma peça.
@@ -181,30 +181,19 @@ detecta categorias de hardware; ela responde às constraints disponíveis.
 Cada eixo percorre a distância necessária para a proporção atual; a identidade
 não pressupõe que largura e altura cresçam na mesma medida.
 
-### Demonstração de formatos
+### Frame de apresentação
 
-Os estados mobile, tablet e desktop são **presets demonstrativos**, não
-breakpoints de hardware:
-
-| Preset | Matriz de proporção |
-| --- | --- |
-| Mobile | `178 × 308` |
-| Tablet | `316 × 240` |
-| Desktop/web | `620 × 260` |
-
-- O frame é ajustado ao espaço real com `LayoutBuilder`.
-- A transição dura `900 ms` com `easeInOutCubic`.
-- Cada formato permanece por aproximadamente `4,8 s` antes da próxima troca.
-- Hover ou foco pausa o autoplay e reinicia o tempo de permanência ao sair.
-- Seleção manual sempre reinicia o ciclo.
+O hero alterna automaticamente entre proporções mobile (`178 × 308`), tablet
+(`316 × 240`) e desktop/web (`620 × 260`), sempre ajustadas ao espaço real com
+`LayoutBuilder`. Não há seletor de dispositivo: um único frame muda de forma e
+os mesmos elementos abstratos de interface reorganizam sua hierarquia para cada
+composição.
 
 ### Redução de movimento
 
 - A abertura é pulada e a interface final, com o FAB em seu destino, aparece
   imediatamente.
-- A demonstração permanece no preset mobile por padrão e só muda por ação
-  explícita.
-- Transições de seleção resolvem diretamente para o estado final.
+- O frame permanece no formato atual e não inicia o ciclo automático.
 
 ## 6. FAB e Material Design 3
 

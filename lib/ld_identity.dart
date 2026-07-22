@@ -465,18 +465,6 @@ class _LdOpeningPainter extends CustomPainter {
 enum LdViewportPreset { mobile, tablet, desktop }
 
 extension on LdViewportPreset {
-  String get label => switch (this) {
-    LdViewportPreset.mobile => 'MOBILE',
-    LdViewportPreset.tablet => 'TABLET',
-    LdViewportPreset.desktop => 'DESKTOP',
-  };
-
-  String semanticsLabel(BuildContext context) => switch (this) {
-    LdViewportPreset.mobile => context.l10n.mobileFormat,
-    LdViewportPreset.tablet => context.l10n.tabletFormat,
-    LdViewportPreset.desktop => context.l10n.desktopFormat,
-  };
-
   Size get designSize => switch (this) {
     LdViewportPreset.mobile => const Size(178, 308),
     LdViewportPreset.tablet => const Size(316, 240),
@@ -484,15 +472,31 @@ extension on LdViewportPreset {
   };
 }
 
+@immutable
+class LdViewportMorph {
+  const LdViewportMorph({
+    required this.from,
+    required this.to,
+    required this.progress,
+  });
+
+  final LdViewportPreset from;
+  final LdViewportPreset to;
+  final double progress;
+}
+
+typedef LdViewportBuilder =
+    Widget Function(BuildContext context, LdViewportMorph morph);
+
 class LdViewportStage extends StatefulWidget {
   const LdViewportStage({
     super.key,
-    required this.child,
+    required this.builder,
     this.autoPlay = true,
-    this.initialPreset = LdViewportPreset.mobile,
+    this.initialPreset = LdViewportPreset.desktop,
   });
 
-  final Widget child;
+  final LdViewportBuilder builder;
   final bool autoPlay;
   final LdViewportPreset initialPreset;
 
@@ -500,27 +504,33 @@ class LdViewportStage extends StatefulWidget {
   State<LdViewportStage> createState() => _LdViewportStageState();
 }
 
-class _LdViewportStageState extends State<LdViewportStage> {
-  static const _holdDuration = LeoneBrandMotion.viewportHold;
-
+class _LdViewportStageState extends State<LdViewportStage>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: LeoneBrandMotion.viewportTransition,
+    value: 1,
+  );
   Timer? _timer;
-  late LdViewportPreset _preset;
-  bool _pointerInside = false;
-  bool _focusInside = false;
+  late LdViewportPreset _from;
+  late LdViewportPreset _to;
   bool _motionDisabled = false;
 
   @override
   void initState() {
     super.initState();
-    _preset = widget.initialPreset;
+    _from = widget.initialPreset;
+    _to = widget.initialPreset;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final disabled = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
-    if (_motionDisabled == disabled && _timer != null) return;
-    _motionDisabled = disabled;
+    if (_motionDisabled != disabled) {
+      _motionDisabled = disabled;
+      if (disabled) _controller.value = 1;
+    }
     _restartTimer();
   }
 
@@ -532,88 +542,67 @@ class _LdViewportStageState extends State<LdViewportStage> {
 
   void _restartTimer() {
     _timer?.cancel();
-    if (!widget.autoPlay || _motionDisabled || _pointerInside || _focusInside) {
-      return;
-    }
-    _timer = Timer.periodic(_holdDuration, (_) {
-      if (!mounted) return;
-      _select(_nextPreset(_preset), restartTimer: false);
+    if (!widget.autoPlay || _motionDisabled) return;
+    _timer = Timer.periodic(LeoneBrandMotion.viewportHold, (_) => _advance());
+  }
+
+  void _advance() {
+    final next = switch (_to) {
+      LdViewportPreset.desktop => LdViewportPreset.mobile,
+      LdViewportPreset.mobile => LdViewportPreset.tablet,
+      LdViewportPreset.tablet => LdViewportPreset.desktop,
+    };
+    setState(() {
+      _from = _to;
+      _to = next;
+      _controller.value = 0;
     });
-  }
-
-  void _setPointerInside(bool value) {
-    if (_pointerInside == value) return;
-    _pointerInside = value;
-    _restartTimer();
-  }
-
-  void _setFocusInside(bool value) {
-    if (_focusInside == value) return;
-    _focusInside = value;
-    _restartTimer();
-  }
-
-  LdViewportPreset _nextPreset(LdViewportPreset value) => switch (value) {
-    LdViewportPreset.mobile => LdViewportPreset.tablet,
-    LdViewportPreset.tablet => LdViewportPreset.desktop,
-    LdViewportPreset.desktop => LdViewportPreset.mobile,
-  };
-
-  void _select(LdViewportPreset value, {bool restartTimer = true}) {
-    if (_preset != value) setState(() => _preset = value);
-    if (restartTimer) _restartTimer();
+    _controller.forward();
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Focus(
-      canRequestFocus: false,
-      skipTraversal: true,
-      onFocusChange: _setFocusInside,
-      child: MouseRegion(
-        onEnter: (_) => _setPointerInside(true),
-        onExit: (_) => _setPointerInside(false),
-        child: Column(
-          children: [
-            _ViewportSelector(selected: _preset, onSelected: _select),
-            const SizedBox(height: 16),
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final target = _fitDesignSize(
-                    _preset.designSize,
-                    Size(constraints.maxWidth, constraints.maxHeight),
-                  );
-                  return Center(
-                    child: Semantics(
-                      container: true,
-                      label: context.l10n.viewportInFormat(
-                        _preset.semanticsLabel(context),
-                      ),
-                      child: AnimatedContainer(
-                        key: const Key('ld-viewport-frame'),
-                        duration: _motionDisabled
-                            ? Duration.zero
-                            : LeoneBrandMotion.viewportTransition,
-                        curve: LeoneBrandMotion.viewportCurve,
-                        width: target.width,
-                        height: target.height,
-                        child: LdFrame(child: widget.child),
-                      ),
-                    ),
-                  );
-                },
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bounds = Size(constraints.maxWidth, constraints.maxHeight);
+        return AnimatedBuilder(
+          animation: _controller,
+          builder: (context, _) {
+            final progress = _motionDisabled
+                ? 1.0
+                : LeoneBrandMotion.viewportCurve.transform(_controller.value);
+            final fromSize = _fitDesignSize(_from.designSize, bounds);
+            final toSize = _fitDesignSize(_to.designSize, bounds);
+            final frameSize = Size.lerp(fromSize, toSize, progress)!;
+            final morph = LdViewportMorph(
+              from: _from,
+              to: _to,
+              progress: progress,
+            );
+            return Center(
+              child: Semantics(
+                key: const Key('ld-viewport-semantics'),
+                container: true,
+                label: context.l10n.everySurface,
+                value: _to.name,
+                child: SizedBox(
+                  key: const Key('ld-viewport-frame'),
+                  width: frameSize.width,
+                  height: frameSize.height,
+                  child: LdFrame(child: widget.builder(context, morph)),
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -624,72 +613,6 @@ class _LdViewportStageState extends State<LdViewportStage> {
       bounds.height / design.height,
     );
     return Size(design.width * scale, design.height * scale);
-  }
-}
-
-class _ViewportSelector extends StatelessWidget {
-  const _ViewportSelector({required this.selected, required this.onSelected});
-
-  final LdViewportPreset selected;
-  final ValueChanged<LdViewportPreset> onSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final motionDisabled = MediaQuery.disableAnimationsOf(context);
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: .045),
-        borderRadius: BorderRadius.circular(99),
-        border: Border.all(color: Colors.white.withValues(alpha: .09)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (final preset in LdViewportPreset.values)
-            Semantics(
-              button: true,
-              selected: preset == selected,
-              label: context.l10n.showFormat(preset.semanticsLabel(context)),
-              child: InkWell(
-                key: Key('ld-mode-${preset.name}'),
-                onTap: () => onSelected(preset),
-                borderRadius: BorderRadius.circular(99),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    minWidth: 64,
-                    minHeight: 48,
-                  ),
-                  child: AnimatedContainer(
-                    duration: motionDisabled
-                        ? Duration.zero
-                        : const Duration(milliseconds: 240),
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(horizontal: 13),
-                    decoration: BoxDecoration(
-                      color: preset == selected
-                          ? LeoneBrandColors.ink
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(99),
-                    ),
-                    child: Text(
-                      preset.label,
-                      style: TextStyle(
-                        color: preset == selected
-                            ? LeoneBrandColors.canvas
-                            : LeoneBrandColors.mutedInk,
-                        fontSize: 9,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: .8,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
   }
 }
 

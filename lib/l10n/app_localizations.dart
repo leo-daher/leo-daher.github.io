@@ -242,10 +242,10 @@ abstract class AppLocalizations {
   /// **'AI + Automation'**
   String get aiAutomationTab;
 
-  /// Adaptive identity statement.
+  /// Creative product statement.
   ///
   /// In en, this message translates to:
-  /// **'ONE FRAME · EVERY SURFACE'**
+  /// **'YOUR IDEAS. EVERYWHERE.'**
   String get everySurface;
 
   /// Supported device surfaces.
@@ -619,36 +619,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shall we build something that truly works?'**
   String get footerInvitation;
-
-  /// Accessible viewport format.
-  ///
-  /// In en, this message translates to:
-  /// **'mobile format'**
-  String get mobileFormat;
-
-  /// Accessible viewport format.
-  ///
-  /// In en, this message translates to:
-  /// **'tablet format'**
-  String get tabletFormat;
-
-  /// Accessible viewport format.
-  ///
-  /// In en, this message translates to:
-  /// **'desktop and web format'**
-  String get desktopFormat;
-
-  /// Accessible adaptive viewport label.
-  ///
-  /// In en, this message translates to:
-  /// **'LD viewport in {format}'**
-  String viewportInFormat(String format);
-
-  /// Accessible viewport selector action.
-  ///
-  /// In en, this message translates to:
-  /// **'Show {format}'**
-  String showFormat(String format);
 }
 
 class _AppLocalizationsDelegate

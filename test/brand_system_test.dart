@@ -221,19 +221,24 @@ void main() {
     expect(completed, isTrue);
   });
 
-  testWidgets('viewport controls meet the minimum target and stop autoplay', (
+  testWidgets('viewport morph and content share the same transition progress', (
     tester,
   ) async {
+    LdViewportMorph? latestMorph;
     await tester.pumpWidget(
       MaterialApp(
         theme: LeoneBrandTheme.dark(),
-        home: const MediaQuery(
-          data: MediaQueryData(disableAnimations: true),
-          child: Scaffold(
-            body: SizedBox(
-              width: 800,
-              height: 600,
-              child: LdViewportStage(child: SizedBox.expand()),
+        localizationsDelegates: const [AppLocalizations.delegate],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: SizedBox(
+            width: 800,
+            height: 600,
+            child: LdViewportStage(
+              builder: (context, morph) {
+                latestMorph = morph;
+                return const SizedBox.expand();
+              },
             ),
           ),
         ),
@@ -241,58 +246,26 @@ void main() {
     );
 
     final frame = find.byKey(const Key('ld-viewport-frame'));
-    final initialSize = tester.getSize(frame);
-    for (final preset in ['mobile', 'tablet', 'desktop']) {
-      final target = find.byKey(Key('ld-mode-$preset'));
-      expect(tester.getSize(target).height, greaterThanOrEqualTo(48));
-    }
+    final desktopSize = tester.getSize(frame);
+    expect(desktopSize.width / desktopSize.height, closeTo(620 / 260, .01));
+    expect(latestMorph?.from, LdViewportPreset.desktop);
+    expect(latestMorph?.to, LdViewportPreset.desktop);
+    expect(latestMorph?.progress, 1);
 
-    await tester.pump(LeoneBrandMotion.viewportHold * 2);
-    expect(tester.getSize(frame), initialSize);
-  });
-
-  testWidgets('viewport autoplay begins only after it is enabled', (
-    tester,
-  ) async {
-    var autoPlay = false;
-    late StateSetter updateHost;
-
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: LeoneBrandTheme.dark(),
-        localizationsDelegates: const [AppLocalizations.delegate],
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: Scaffold(
-          body: StatefulBuilder(
-            builder: (context, setState) {
-              updateHost = setState;
-              return SizedBox(
-                width: 800,
-                height: 600,
-                child: LdViewportStage(
-                  autoPlay: autoPlay,
-                  child: const SizedBox.expand(),
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-
-    final frame = find.byKey(const Key('ld-viewport-frame'));
-    final mobileSize = tester.getSize(frame);
-    await tester.pump(
-      LeoneBrandMotion.viewportHold + const Duration(milliseconds: 100),
-    );
-    expect(tester.getSize(frame), mobileSize);
-
-    updateHost(() => autoPlay = true);
-    await tester.pump();
     await tester.pump(LeoneBrandMotion.viewportHold);
-    await tester.pump(LeoneBrandMotion.viewportTransition);
+    await tester.pump(LeoneBrandMotion.viewportTransition ~/ 2);
 
-    expect(tester.getSize(frame).width, greaterThan(mobileSize.width));
+    final middleSize = tester.getSize(frame);
+    expect(middleSize.width, lessThan(desktopSize.width));
+    expect(latestMorph?.from, LdViewportPreset.desktop);
+    expect(latestMorph?.to, LdViewportPreset.mobile);
+    expect(latestMorph!.progress, greaterThan(0));
+    expect(latestMorph!.progress, lessThan(1));
+
+    await tester.pump(LeoneBrandMotion.viewportTransition ~/ 2);
+    final mobileSize = tester.getSize(frame);
+    expect(mobileSize.height, greaterThan(mobileSize.width));
+    expect(latestMorph?.progress, 1);
   });
 
   testWidgets('functional FAB adopts the Material 3 endpoint geometry', (

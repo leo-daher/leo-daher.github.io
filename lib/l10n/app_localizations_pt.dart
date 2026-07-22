@@ -83,7 +83,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get aiAutomationTab => 'IA + Automação';
 
   @override
-  String get everySurface => 'UM FRAME · TODA TELA';
+  String get everySurface => 'SUAS IDEIAS. EM TODO LUGAR.';
 
   @override
   String get surfaceList => 'mobile  ·  desktop  ·  web';
@@ -309,23 +309,4 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get footerInvitation =>
       'Vamos construir algo que funcione de verdade?';
-
-  @override
-  String get mobileFormat => 'formato mobile';
-
-  @override
-  String get tabletFormat => 'formato tablet';
-
-  @override
-  String get desktopFormat => 'formato desktop e web';
-
-  @override
-  String viewportInFormat(String format) {
-    return 'Viewport LD em $format';
-  }
-
-  @override
-  String showFormat(String format) {
-    return 'Mostrar $format';
-  }
 }

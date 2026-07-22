@@ -162,7 +162,7 @@ class _BrandedViewportFrame extends StatelessWidget {
       child: RepaintBoundary(
         child: LdViewportStage(
           autoPlay: autoPlay,
-          child: const _IdentityFrameContent(),
+          builder: (context, morph) => _IdentityFrameContent(morph: morph),
         ),
       ),
     );
@@ -170,35 +170,18 @@ class _BrandedViewportFrame extends StatelessWidget {
 }
 
 class _IdentityFrameContent extends StatelessWidget {
-  const _IdentityFrameContent();
+  const _IdentityFrameContent({required this.morph});
+
+  final LdViewportMorph morph;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     return LayoutBuilder(
       builder: (context, constraints) {
-        final horizontal = constraints.maxHeight < 170;
-        final title = Text(
-          'Flutter',
-          maxLines: 1,
-          style: TextStyle(
-            color: LeoneBrandColors.ink,
-            fontSize: horizontal ? 18 : 24,
-            fontWeight: FontWeight.w800,
-            letterSpacing: -.7,
-          ),
-        );
-        final detail = Text(
-          l10n.surfaceList,
-          maxLines: 1,
-          overflow: TextOverflow.fade,
-          style: const TextStyle(
-            color: LeoneBrandColors.mutedInk,
-            fontSize: 9,
-            fontWeight: FontWeight.w700,
-            letterSpacing: .35,
-          ),
-        );
+        final size = Size(constraints.maxWidth, constraints.maxHeight);
+        final from = _InterfaceLayout.resolve(morph.from, size);
+        final to = _InterfaceLayout.resolve(morph.to, size);
+        Rect position(Rect a, Rect b) => Rect.lerp(a, b, morph.progress)!;
         return DecoratedBox(
           decoration: const BoxDecoration(
             gradient: RadialGradient(
@@ -207,39 +190,368 @@ class _IdentityFrameContent extends StatelessWidget {
               colors: [Color(0xFF171329), Color(0xFF0B0A12)],
             ),
           ),
+          child: Stack(
+            children: [
+              Positioned.fromRect(
+                rect: position(from.topBar, to.topBar),
+                child: const _InterfaceTopBar(
+                  key: Key('hero-interface-topbar'),
+                ),
+              ),
+              Positioned.fromRect(
+                rect: position(from.navigation, to.navigation),
+                child: const _InterfaceNavigation(
+                  key: Key('hero-interface-navigation'),
+                ),
+              ),
+              Positioned.fromRect(
+                rect: position(from.message, to.message),
+                child: _InterfaceMessage(
+                  key: const Key('hero-interface-message'),
+                  label: context.l10n.everySurface,
+                ),
+              ),
+              Positioned.fromRect(
+                rect: position(from.primaryCard, to.primaryCard),
+                child: const _InterfaceCard(
+                  key: Key('hero-interface-primary-card'),
+                  identifier: _green,
+                  emphasis: true,
+                ),
+              ),
+              Positioned.fromRect(
+                rect: position(from.secondaryCard, to.secondaryCard),
+                child: const _InterfaceCard(
+                  key: Key('hero-interface-secondary-card'),
+                  identifier: _blue,
+                ),
+              ),
+              Positioned.fromRect(
+                rect: position(from.identifiers, to.identifiers),
+                child: const _InterfaceIdentifiers(
+                  key: Key('hero-interface-identifiers'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _InterfaceLayout {
+  const _InterfaceLayout({
+    required this.topBar,
+    required this.navigation,
+    required this.message,
+    required this.primaryCard,
+    required this.secondaryCard,
+    required this.identifiers,
+  });
+
+  final Rect topBar;
+  final Rect navigation;
+  final Rect message;
+  final Rect primaryCard;
+  final Rect secondaryCard;
+  final Rect identifiers;
+
+  static _InterfaceLayout resolve(LdViewportPreset preset, Size size) {
+    Rect area(double left, double top, double width, double height) =>
+        Rect.fromLTWH(
+          size.width * left,
+          size.height * top,
+          size.width * width,
+          size.height * height,
+        );
+    return switch (preset) {
+      LdViewportPreset.desktop => _InterfaceLayout(
+        topBar: area(.05, .06, .90, .11),
+        navigation: area(.05, .23, .14, .67),
+        message: area(.24, .23, .41, .23),
+        primaryCard: area(.24, .53, .41, .37),
+        secondaryCard: area(.69, .23, .26, .32),
+        identifiers: area(.69, .63, .26, .15),
+      ),
+      LdViewportPreset.tablet => _InterfaceLayout(
+        topBar: area(.06, .06, .88, .12),
+        navigation: area(.06, .24, .88, .12),
+        message: area(.06, .42, .54, .19),
+        primaryCard: area(.06, .67, .54, .27),
+        secondaryCard: area(.65, .42, .29, .31),
+        identifiers: area(.65, .80, .29, .14),
+      ),
+      LdViewportPreset.mobile => _InterfaceLayout(
+        topBar: area(.08, .05, .84, .09),
+        navigation: area(.53, .86, .39, .08),
+        message: area(.08, .20, .84, .15),
+        primaryCard: area(.08, .41, .84, .23),
+        secondaryCard: area(.08, .70, .84, .12),
+        identifiers: area(.08, .86, .39, .08),
+      ),
+    };
+  }
+}
+
+class _InterfaceTopBar extends StatelessWidget {
+  const _InterfaceTopBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: .05),
+        borderRadius: BorderRadius.circular(99),
+        border: Border.all(color: Colors.white.withValues(alpha: .07)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Row(
+          children: [
+            const _Identifier(color: _green),
+            const SizedBox(width: 7),
+            const Expanded(child: _SkeletonLine(widthFactor: .55)),
+            const Spacer(flex: 2),
+            const SizedBox(width: 24, child: _SkeletonLine(widthFactor: .75)),
+            const SizedBox(width: 7),
+            Container(
+              width: 7,
+              height: 7,
+              decoration: const BoxDecoration(
+                color: LeoneBrandColors.action,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InterfaceNavigation extends StatelessWidget {
+  const _InterfaceNavigation({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final vertical = constraints.maxHeight > constraints.maxWidth;
+        final items = <Widget>[
+          const _NavigationItem(color: _green),
+          const _NavigationItem(color: _blue),
+          const _NavigationItem(color: _coral),
+        ];
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: .04),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.white.withValues(alpha: .06)),
+          ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: horizontal
+            padding: const EdgeInsets.all(6),
+            child: Flex(
+              direction: vertical ? Axis.vertical : Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: items,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _NavigationItem extends StatelessWidget {
+  const _NavigationItem({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _Identifier(color: color),
+          const SizedBox(width: 5),
+          const Flexible(child: _SkeletonLine(widthFactor: .65)),
+        ],
+      ),
+    );
+  }
+}
+
+class _InterfaceMessage extends StatelessWidget {
+  const _InterfaceMessage({super.key, required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxHeight < 36;
+        final fontSize = (constraints.maxHeight * .18).clamp(4.5, 8.0);
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: compact ? 0 : 2),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.fade,
+                style: TextStyle(
+                  color: _green,
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: .8,
+                ),
+              ),
+              const _SkeletonLine(widthFactor: .94, strong: true),
+              if (!compact) ...[
+                const _SkeletonLine(widthFactor: .72, strong: true),
+                const _SkeletonLine(widthFactor: .48),
+              ],
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _InterfaceCard extends StatelessWidget {
+  const _InterfaceCard({
+    super.key,
+    required this.identifier,
+    this.emphasis = false,
+  });
+
+  final Color identifier;
+  final bool emphasis;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxHeight < 48;
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: emphasis
+                ? _green.withValues(alpha: .10)
+                : Colors.white.withValues(alpha: .045),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: emphasis
+                  ? _green.withValues(alpha: .20)
+                  : Colors.white.withValues(alpha: .07),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(compact ? 6 : 8),
+            child: compact
                 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      title,
-                      const SizedBox(width: 14),
-                      Flexible(child: detail),
+                      _Identifier(color: identifier),
+                      const SizedBox(width: 6),
+                      const Expanded(
+                        child: _SkeletonLine(widthFactor: .82, strong: true),
+                      ),
+                      const SizedBox(width: 6),
+                      const Expanded(child: _SkeletonLine(widthFactor: .54)),
                     ],
                   )
                 : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        context.l10n.everySurface,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: _green,
-                          fontSize: 7,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1,
-                        ),
+                      Row(
+                        children: [
+                          _Identifier(color: identifier),
+                          const SizedBox(width: 6),
+                          const Expanded(
+                            child: _SkeletonLine(widthFactor: .42),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 8),
-                      title,
-                      const SizedBox(height: 6),
-                      detail,
+                      const _SkeletonLine(widthFactor: .88, strong: true),
+                      const _SkeletonLine(widthFactor: .64),
+                      const _SkeletonLine(widthFactor: .38),
                     ],
                   ),
           ),
         );
       },
+    );
+  }
+}
+
+class _InterfaceIdentifiers extends StatelessWidget {
+  const _InterfaceIdentifiers({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        for (final color in const [_green, _blue, _coral]) ...[
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: .18),
+                borderRadius: BorderRadius.circular(99),
+                border: Border.all(color: color.withValues(alpha: .28)),
+              ),
+            ),
+          ),
+          const SizedBox(width: 4),
+        ],
+      ],
+    );
+  }
+}
+
+class _Identifier extends StatelessWidget {
+  const _Identifier({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 7,
+      height: 7,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(2.5),
+      ),
+    );
+  }
+}
+
+class _SkeletonLine extends StatelessWidget {
+  const _SkeletonLine({required this.widthFactor, this.strong = false});
+
+  final double widthFactor;
+  final bool strong;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: FractionallySizedBox(
+        widthFactor: widthFactor,
+        child: Container(
+          height: strong ? 5 : 3,
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: strong ? .34 : .16),
+            borderRadius: BorderRadius.circular(99),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -24,7 +24,7 @@
   "mobileSupporting": "Produtos mobile movidos por sistemas inteligentes e conectados.",
   "aiSupporting": "Python, agentes e automação construídos para o trabalho real.",
   "aiAutomationTab": "IA + Automação",
-  "everySurface": "UM FRAME · TODA TELA",
+  "everySurface": "SUAS IDEIAS. EM TODO LUGAR.",
   "surfaceList": "mobile  ·  desktop  ·  web",
   "systemEyebrow": "UM PRODUTO. O SISTEMA INTEIRO.",
   "systemTitle": "Mobile, serviços e inteligência conectados.",
@@ -86,10 +86,5 @@
   "context": "contexto",
   "clientsServed": "CLIENTES ATENDIDOS",
   "brandCount": "{count, plural, =1{1 MARCA} other{{count} MARCAS}}",
-  "footerInvitation": "Vamos construir algo que funcione de verdade?",
-  "mobileFormat": "formato mobile",
-  "tabletFormat": "formato tablet",
-  "desktopFormat": "formato desktop e web",
-  "viewportInFormat": "Viewport LD em {format}",
-  "showFormat": "Mostrar {format}"
+  "footerInvitation": "Vamos construir algo que funcione de verdade?"
 }
