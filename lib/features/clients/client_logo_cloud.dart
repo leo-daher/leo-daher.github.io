@@ -111,7 +111,6 @@ class ClientLogoCloud extends StatelessWidget {
             PortfolioSectionHeading(
               eyebrow: context.l10n.clientsServed,
               title: context.l10n.clientsTitle,
-              copy: context.l10n.clientsCopy,
             ),
             const SizedBox(height: 26),
             _ClientLogoGroup(

@@ -509,6 +509,10 @@ void main() {
     expect(find.text('13 BRANDS'), findsNothing);
     expect(find.text('DIRECT ROLES'), findsOneWidget);
     expect(find.text('CLIENT WORK VIA LATITUDDE'), findsOneWidget);
+    expect(
+      find.text('Direct roles and client work delivered through Latitudde.'),
+      findsNothing,
+    );
     expect(find.text('4 BRANDS'), findsOneWidget);
     expect(find.text('9 BRANDS'), findsOneWidget);
     expect(find.textContaining('A brand indicates'), findsNothing);
@@ -607,6 +611,19 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('CERTIFICATIONS'), findsOneWidget);
     expect(find.text('4 VERIFIED CREDENTIALS'), findsOneWidget);
+    final title = find.text('Continuous learning, backed by proof.');
+    final copy = find.text(
+      'Official course records available for consultation, with source '
+      'verification and archived certificates.',
+    );
+    expect(
+      tester.getTopLeft(copy).dx,
+      closeTo(tester.getTopLeft(title).dx, .01),
+    );
+    expect(
+      tester.getTopLeft(copy).dy,
+      greaterThan(tester.getBottomLeft(title).dy),
+    );
     expect(
       tester.getTopLeft(find.text('CERTIFICATIONS')).dx,
       closeTo(124, .01),

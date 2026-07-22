@@ -63,6 +63,7 @@ class _CertificationsContent extends StatelessWidget {
                   eyebrow: l10n.certificationsEyebrow,
                   title: l10n.certificationsTitle,
                   copy: l10n.certificationsCopy,
+                  copyBelowTitle: true,
                 ),
                 const SizedBox(height: 30),
                 LayoutBuilder(
