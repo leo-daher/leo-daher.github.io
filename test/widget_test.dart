@@ -134,8 +134,16 @@ void main() {
     final desktopNavigation =
         tester.getTopLeft(navigation) - desktopFrameOrigin;
     final desktopMessage = tester.getTopLeft(message) - desktopFrameOrigin;
+    final desktopIdentifiers = tester.getRect(
+      find.byKey(const Key('hero-interface-action-identifiers')),
+    );
+    final desktopFrameRect = tester.getRect(frame);
     expect(desktopSize.width, greaterThan(desktopSize.height));
     expect(desktopNavigation.dx, lessThan(desktopMessage.dx));
+    expect(
+      desktopIdentifiers.right,
+      lessThan(desktopFrameRect.left + desktopFrameRect.width * .84),
+    );
 
     await tester.pump(LeoneBrandMotion.viewportHold);
     await tester.pump(LeoneBrandMotion.viewportTransition);

@@ -294,7 +294,7 @@ class _InterfaceLayout {
           message: area(.24, .23, .55, .24),
           primaryCard: area(.24, .54, .46, .36),
           secondaryCard: Rect.zero,
-          identifiers: area(.74, .54, .17, .12),
+          identifiers: area(.66, .55, .16, .11),
         ),
         LdViewportPreset.tablet => _InterfaceLayout(
           topBar: area(.06, .06, .88, .12),
@@ -302,7 +302,7 @@ class _InterfaceLayout {
           message: area(.06, .42, .59, .20),
           primaryCard: area(.06, .68, .58, .26),
           secondaryCard: Rect.zero,
-          identifiers: area(.70, .47, .19, .12),
+          identifiers: area(.66, .48, .16, .11),
         ),
         LdViewportPreset.mobile => _InterfaceLayout(
           topBar: area(.08, .05, .84, .09),
