@@ -29,7 +29,7 @@ void main() {
     expect(find.byKey(const Key('ld-opening-transition')), findsOneWidget);
   });
 
-  testWidgets('renders a simplified hero and switches career focus', (
+  testWidgets('renders a simplified hero fixed on the mobile focus', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(1440, 1000);
@@ -56,11 +56,9 @@ void main() {
       find.text('Mobile products powered by smart, connected systems.'),
       findsOneWidget,
     );
-
-    await tester.tap(find.text('AI + Automation'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('AI Automation Engineer'), findsOneWidget);
+    expect(find.text('Mobile'), findsNothing);
+    expect(find.text('AI + Automation'), findsNothing);
+    expect(find.text('AI Automation Engineer'), findsNothing);
   });
 
   testWidgets('starts in dark mode and persists the theme choice', (

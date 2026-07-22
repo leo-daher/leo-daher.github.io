@@ -15,6 +15,9 @@
 - **Descritor principal:** Mobile Software Engineer.
 - **Competências adjacentes:** sistemas conectados, backend e automação com IA.
 
+O hero mantém o descritor principal permanentemente em foco e não apresenta um
+seletor entre Mobile e IA.
+
 `Leone Developer` amplia o significado das iniciais, mas não substitui o nome
 Leone Daher nem deve aparecer como uma segunda assinatura concorrente.
 

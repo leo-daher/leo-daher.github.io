@@ -8,17 +8,10 @@ const _green = LeoneBrandColors.interactive;
 const _blue = LeoneBrandColors.intelligence;
 const _coral = LeoneBrandColors.editorialHighlight;
 
-class PortfolioHero extends StatefulWidget {
+class PortfolioHero extends StatelessWidget {
   const PortfolioHero({super.key, required this.autoPlay});
 
   final bool autoPlay;
-
-  @override
-  State<PortfolioHero> createState() => _HeroState();
-}
-
-class _HeroState extends State<PortfolioHero> {
-  int focus = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +22,7 @@ class _HeroState extends State<PortfolioHero> {
         final compact = constraints.maxWidth < 700;
         final nameSize = compact ? 68.0 : 108.0;
         final roleSize = compact ? 30.0 : 48.0;
-        final accent = focus == 0 ? _green : _blue;
-        final role = focus == 0
-            ? l10n.mobileEngineer
-            : l10n.aiAutomationEngineer;
-        final supportingLine = focus == 0
-            ? l10n.mobileSupporting
-            : l10n.aiSupporting;
+        const accent = _green;
         return Container(
           height: compact ? 900 : 880,
           clipBehavior: Clip.antiAlias,
@@ -81,12 +68,6 @@ class _HeroState extends State<PortfolioHero> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    _HeroFocusSelector(
-                      compact: compact,
-                      selected: focus,
-                      onSelected: (value) => setState(() => focus = value),
-                    ),
-                    SizedBox(height: compact ? 42 : 54),
                     Text(
                       l10n.yearsBuildingSoftware,
                       style: TextStyle(
@@ -108,38 +89,30 @@ class _HeroState extends State<PortfolioHero> {
                       ),
                     ),
                     SizedBox(height: compact ? 22 : 28),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 320),
-                      child: Text(
-                        role,
-                        key: ValueKey(role),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: roleSize,
-                          height: 1.03,
-                          letterSpacing: compact ? -1.2 : -2.1,
-                          fontWeight: FontWeight.w700,
-                        ),
+                    Text(
+                      l10n.mobileEngineer,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: roleSize,
+                        height: 1.03,
+                        letterSpacing: compact ? -1.2 : -2.1,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     SizedBox(height: compact ? 16 : 20),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 320),
-                      child: Text(
-                        supportingLine,
-                        key: ValueKey(supportingLine),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: palette.mutedInk,
-                          fontSize: compact ? 14 : 17,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    Text(
+                      l10n.mobileSupporting,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: palette.mutedInk,
+                        fontSize: compact ? 14 : 17,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     SizedBox(height: compact ? 24 : 30),
                     Expanded(
                       child: _BrandedViewportFrame(
-                        autoPlay: widget.autoPlay,
+                        autoPlay: autoPlay,
                         alignment: compact
                             ? Alignment.topCenter
                             : Alignment.center,
@@ -571,102 +544,6 @@ class _SkeletonLine extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: strong ? .34 : .16),
             borderRadius: BorderRadius.circular(99),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _HeroFocusSelector extends StatelessWidget {
-  const _HeroFocusSelector({
-    required this.compact,
-    required this.selected,
-    required this.onSelected,
-  });
-
-  final bool compact;
-  final int selected;
-  final ValueChanged<int> onSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.leonePalette;
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: palette.surfaceRaised.withValues(alpha: .72),
-        borderRadius: BorderRadius.circular(99),
-        border: Border.all(color: palette.outline),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _HeroFocusButton(
-            label: 'Mobile',
-            compact: compact,
-            selected: selected == 0,
-            accent: _green,
-            onTap: () => onSelected(0),
-          ),
-          _HeroFocusButton(
-            label: context.l10n.aiAutomationTab,
-            compact: compact,
-            selected: selected == 1,
-            accent: _blue,
-            onTap: () => onSelected(1),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _HeroFocusButton extends StatelessWidget {
-  const _HeroFocusButton({
-    required this.label,
-    required this.compact,
-    required this.selected,
-    required this.accent,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool compact;
-  final bool selected;
-  final Color accent;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.leonePalette;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(99),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 240),
-        padding: EdgeInsets.symmetric(
-          horizontal: compact ? 12 : 18,
-          vertical: compact ? 9 : 10,
-        ),
-        decoration: BoxDecoration(
-          color: selected ? palette.ink : Colors.transparent,
-          borderRadius: BorderRadius.circular(99),
-          boxShadow: selected
-              ? [
-                  BoxShadow(
-                    color: accent.withValues(alpha: .22),
-                    blurRadius: 18,
-                  ),
-                ]
-              : null,
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: selected ? palette.canvas : palette.mutedInk,
-            fontSize: compact ? 10 : 12,
-            fontWeight: FontWeight.w700,
           ),
         ),
       ),
