@@ -150,10 +150,15 @@ void main() {
       final galleryNarrow = tester.getRect(
         find.byKey(const Key('production-app-screenshots-van-cranenbroek')),
       );
+      final headingNarrow = tester.getRect(
+        find.byKey(const Key('production-app-heading-van-cranenbroek')),
+      );
       final contentNarrow = tester.getRect(
         find.byKey(const Key('production-app-content-van-cranenbroek')),
       );
+      expect(headingNarrow.bottom, lessThan(galleryNarrow.top));
       expect(galleryNarrow.bottom, lessThan(contentNarrow.top));
+      expect(galleryNarrow.height, closeTo(224, .01));
       expect(tester.takeException(), isNull);
     },
   );
@@ -285,7 +290,14 @@ List<ProductionAppCase> _apps() => [
       ProductionAppScreenshot(
         assetPath: 'assets/client_logos/human_robotics.png',
         semanticLabel: 'Tela de ofertas do Van Cranenbroek',
-        caption: 'Ofertas',
+      ),
+      ProductionAppScreenshot(
+        assetPath: 'assets/client_logos/human_robotics.png',
+        semanticLabel: 'Tela do catálogo do Van Cranenbroek',
+      ),
+      ProductionAppScreenshot(
+        assetPath: 'assets/client_logos/human_robotics.png',
+        semanticLabel: 'Tela de lojas do Van Cranenbroek',
       ),
     ],
     storeProof: [

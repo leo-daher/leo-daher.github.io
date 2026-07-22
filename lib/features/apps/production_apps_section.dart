@@ -125,22 +125,32 @@ class ProductionAppCaseCard extends StatelessWidget {
               accent: accent,
               compact: !wide,
             );
-            final caseCopy = _CaseCopy(
-              app: app,
-              content: content,
-              accent: accent,
-            );
 
             if (!wide) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (app.screenshots.isNotEmpty) gallery,
-                  if (app.screenshots.isNotEmpty) const SizedBox(height: 26),
-                  caseCopy,
+                  _CaseHeading(app: app, accent: accent),
+                  SizedBox(height: app.screenshots.isEmpty ? 14 : 20),
+                  if (app.screenshots.isNotEmpty) ...[
+                    gallery,
+                    const SizedBox(height: 20),
+                  ],
+                  _CaseDetails(
+                    key: Key('production-app-content-${app.id}'),
+                    app: app,
+                    content: content,
+                    accent: accent,
+                  ),
                 ],
               );
             }
+
+            final caseCopy = _CaseCopy(
+              app: app,
+              content: content,
+              accent: accent,
+            );
 
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,13 +182,36 @@ class _CaseCopy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.leonePalette;
     return Column(
       key: Key('production-app-content-${app.id}'),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _CaseHeading(app: app, accent: accent),
         const SizedBox(height: 14),
+        _CaseDetails(app: app, content: content, accent: accent),
+      ],
+    );
+  }
+}
+
+class _CaseDetails extends StatelessWidget {
+  const _CaseDetails({
+    super.key,
+    required this.app,
+    required this.content,
+    required this.accent,
+  });
+
+  final ProductionAppCase app;
+  final ProductionAppsSectionContent content;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         Semantics(
           label: '${content.roleLabel}: ${app.role}',
           child: ExcludeSemantics(
@@ -234,6 +267,7 @@ class _CaseHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.leonePalette;
     return Column(
+      key: Key('production-app-heading-${app.id}'),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -369,7 +403,6 @@ class _ScreenshotGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = compact ? 258.0 : 360.0;
     final hasCaptions = screenshots.any(
       (screenshot) => screenshot.caption != null,
     );
@@ -377,38 +410,46 @@ class _ScreenshotGallery extends StatelessWidget {
       container: true,
       explicitChildNodes: true,
       label: label,
-      child: Container(
-        key: Key('production-app-screenshots-$appId'),
-        height: height,
-        decoration: BoxDecoration(
-          color: accent.withValues(alpha: .045),
-          borderRadius: BorderRadius.circular(compact ? 22 : 28),
-        ),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final captionSpace = hasCaptions ? 28.0 : 0.0;
-            final maxByHeight = (height - 32 - captionSpace) * (9 / 16);
-            final availableWidth =
-                constraints.maxWidth -
-                32 -
-                _screenshotGap * (screenshots.length - 1);
-            final fitWidth = availableWidth / screenshots.length;
-            final frameWidth = math.max(
-              compact ? 108.0 : 116.0,
-              math.min(maxByHeight, fitWidth),
-            );
-            final contentWidth =
-                frameWidth * screenshots.length +
-                _screenshotGap * (screenshots.length - 1);
-            final horizontalPadding = math.max(
-              16.0,
-              (constraints.maxWidth - contentWidth) / 2,
-            );
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          const verticalPadding = 16.0;
+          final captionSpace = hasCaptions ? 28.0 : 0.0;
+          final availableWidth =
+              constraints.maxWidth -
+              32 -
+              _screenshotGap * (screenshots.length - 1);
+          final fitWidth = availableWidth / screenshots.length;
+          final frameWidth = compact
+              ? math.max(108.0, math.min(127.0, fitWidth))
+              : math.max(
+                  116.0,
+                  math.min(
+                    (360 - verticalPadding * 2 - captionSpace) * (9 / 16),
+                    fitWidth,
+                  ),
+                );
+          final galleryHeight = compact
+              ? verticalPadding * 2 + frameWidth * (16 / 9) + captionSpace
+              : 360.0;
+          final contentWidth =
+              frameWidth * screenshots.length +
+              _screenshotGap * (screenshots.length - 1);
+          final horizontalPadding = math.max(
+            16.0,
+            (constraints.maxWidth - contentWidth) / 2,
+          );
 
-            return ListView.separated(
+          return Container(
+            key: Key('production-app-screenshots-$appId'),
+            height: galleryHeight,
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: .045),
+              borderRadius: BorderRadius.circular(compact ? 22 : 28),
+            ),
+            child: ListView.separated(
               padding: EdgeInsets.symmetric(
                 horizontal: horizontalPadding,
-                vertical: 16,
+                vertical: verticalPadding,
               ),
               scrollDirection: Axis.horizontal,
               itemCount: screenshots.length,
@@ -419,9 +460,9 @@ class _ScreenshotGallery extends StatelessWidget {
                 accent: accent,
                 width: frameWidth,
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
