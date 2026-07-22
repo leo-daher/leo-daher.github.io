@@ -824,15 +824,19 @@ class _LdFramePainter extends CustomPainter {
     final lPath = Path()
       ..moveTo(left, top + opening)
       ..lineTo(left, bottom - lRadius)
-      ..quadraticBezierTo(left, bottom, left + lRadius, bottom)
+      ..arcToPoint(
+        Offset(left + lRadius, bottom),
+        radius: Radius.circular(lRadius),
+        clockwise: false,
+      )
       ..lineTo(joinX, bottom);
 
     final dPath = Path()
       ..moveTo(left + opening, top)
       ..lineTo(right - r, top)
-      ..quadraticBezierTo(right, top, right, top + r)
+      ..arcToPoint(Offset(right, top + r), radius: Radius.circular(r))
       ..lineTo(right, bottom - r)
-      ..quadraticBezierTo(right, bottom, right - r, bottom)
+      ..arcToPoint(Offset(right - r, bottom), radius: Radius.circular(r))
       ..lineTo(joinX, bottom);
 
     canvas.saveLayer(Offset.zero & size, Paint());

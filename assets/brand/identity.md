@@ -195,7 +195,8 @@ palco fica ancorado no topo: tablet e desktop permanecem inteiros na primeira
 tela, enquanto a proporção mobile pode avançar além da área visível. O contorno
 adaptativo usa as cores da versão autorizada da logo para o tema atual, preserva
 a abertura superior esquerda e o microcorte inferior. As curvas do conteúdo e
-do contorno compartilham os mesmos centros geométricos.
+do contorno compartilham os mesmos centros geométricos e são construídas com
+arcos circulares, mantendo distância constante entre as bordas.
 
 ### Redução de movimento
 
