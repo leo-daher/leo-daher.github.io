@@ -37,7 +37,7 @@ class _HeroState extends State<PortfolioHero> {
             ? l10n.mobileSupporting
             : l10n.aiSupporting;
         return Container(
-          height: compact ? 1080 : 1120,
+          height: compact ? 900 : 880,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: palette.canvas,
@@ -164,19 +164,9 @@ class _BrandedViewportFrame extends StatelessWidget {
           autoPlay: autoPlay,
           frames: [
             LdViewportFrameSpec(
-              id: 'action',
-              builder: (context, morph) => _IdentityFrameContent(
-                morph: morph,
-                variant: _InterfaceVariant.action,
-              ),
-            ),
-            LdViewportFrameSpec(
               id: 'content',
               showActionButton: false,
-              builder: (context, morph) => _IdentityFrameContent(
-                morph: morph,
-                variant: _InterfaceVariant.content,
-              ),
+              builder: (context, morph) => _IdentityFrameContent(morph: morph),
             ),
           ],
         ),
@@ -186,20 +176,18 @@ class _BrandedViewportFrame extends StatelessWidget {
 }
 
 class _IdentityFrameContent extends StatelessWidget {
-  const _IdentityFrameContent({required this.morph, required this.variant});
+  const _IdentityFrameContent({required this.morph});
 
   final LdViewportMorph morph;
-  final _InterfaceVariant variant;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final size = Size(constraints.maxWidth, constraints.maxHeight);
-        final from = _InterfaceLayout.resolve(morph.from, size, variant);
-        final to = _InterfaceLayout.resolve(morph.to, size, variant);
+        final from = _InterfaceLayout.resolve(morph.from, size);
+        final to = _InterfaceLayout.resolve(morph.to, size);
         Rect position(Rect a, Rect b) => Rect.lerp(a, b, morph.progress)!;
-        final keyPrefix = 'hero-interface-${variant.name}';
         return DecoratedBox(
           decoration: const BoxDecoration(
             gradient: RadialGradient(
@@ -212,39 +200,42 @@ class _IdentityFrameContent extends StatelessWidget {
             children: [
               Positioned.fromRect(
                 rect: position(from.topBar, to.topBar),
-                child: _InterfaceTopBar(key: Key('$keyPrefix-topbar')),
+                child: const _InterfaceTopBar(
+                  key: Key('hero-interface-topbar'),
+                ),
               ),
               Positioned.fromRect(
                 rect: position(from.navigation, to.navigation),
-                child: _InterfaceNavigation(key: Key('$keyPrefix-navigation')),
+                child: const _InterfaceNavigation(
+                  key: Key('hero-interface-navigation'),
+                ),
               ),
               Positioned.fromRect(
                 rect: position(from.message, to.message),
                 child: _InterfaceMessage(
-                  key: Key('$keyPrefix-message'),
+                  key: const Key('hero-interface-message'),
                   label: context.l10n.everySurface,
                 ),
               ),
               Positioned.fromRect(
                 rect: position(from.primaryCard, to.primaryCard),
-                child: _InterfaceCard(
-                  key: Key('$keyPrefix-primary-card'),
+                child: const _InterfaceCard(
+                  key: Key('hero-interface-primary-card'),
                   identifier: _green,
                   emphasis: true,
                 ),
               ),
-              if (variant == _InterfaceVariant.content)
-                Positioned.fromRect(
-                  rect: position(from.secondaryCard, to.secondaryCard),
-                  child: _InterfaceCard(
-                    key: Key('$keyPrefix-secondary-card'),
-                    identifier: _blue,
-                  ),
+              Positioned.fromRect(
+                rect: position(from.secondaryCard, to.secondaryCard),
+                child: const _InterfaceCard(
+                  key: Key('hero-interface-secondary-card'),
+                  identifier: _blue,
                 ),
+              ),
               Positioned.fromRect(
                 rect: position(from.identifiers, to.identifiers),
-                child: _InterfaceIdentifiers(
-                  key: Key('$keyPrefix-identifiers'),
+                child: const _InterfaceIdentifiers(
+                  key: Key('hero-interface-identifiers'),
                 ),
               ),
             ],
@@ -254,8 +245,6 @@ class _IdentityFrameContent extends StatelessWidget {
     );
   }
 }
-
-enum _InterfaceVariant { action, content }
 
 class _InterfaceLayout {
   const _InterfaceLayout({
@@ -274,11 +263,7 @@ class _InterfaceLayout {
   final Rect secondaryCard;
   final Rect identifiers;
 
-  static _InterfaceLayout resolve(
-    LdViewportPreset preset,
-    Size size,
-    _InterfaceVariant variant,
-  ) {
+  static _InterfaceLayout resolve(LdViewportPreset preset, Size size) {
     Rect area(double left, double top, double width, double height) =>
         Rect.fromLTWH(
           size.width * left,
@@ -286,34 +271,6 @@ class _InterfaceLayout {
           size.width * width,
           size.height * height,
         );
-    if (variant == _InterfaceVariant.action) {
-      return switch (preset) {
-        LdViewportPreset.desktop => _InterfaceLayout(
-          topBar: area(.05, .06, .90, .11),
-          navigation: area(.05, .23, .14, .67),
-          message: area(.24, .23, .55, .24),
-          primaryCard: area(.24, .54, .46, .36),
-          secondaryCard: Rect.zero,
-          identifiers: area(.66, .55, .16, .11),
-        ),
-        LdViewportPreset.tablet => _InterfaceLayout(
-          topBar: area(.06, .06, .88, .12),
-          navigation: area(.06, .24, .88, .12),
-          message: area(.06, .42, .59, .20),
-          primaryCard: area(.06, .68, .58, .26),
-          secondaryCard: Rect.zero,
-          identifiers: area(.66, .48, .16, .11),
-        ),
-        LdViewportPreset.mobile => _InterfaceLayout(
-          topBar: area(.08, .05, .84, .09),
-          navigation: area(.08, .73, .42, .08),
-          message: area(.08, .20, .84, .16),
-          primaryCard: area(.08, .42, .57, .25),
-          secondaryCard: Rect.zero,
-          identifiers: area(.08, .86, .34, .07),
-        ),
-      };
-    }
     return switch (preset) {
       LdViewportPreset.desktop => _InterfaceLayout(
         topBar: area(.05, .06, .90, .11),
