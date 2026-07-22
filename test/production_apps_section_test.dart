@@ -43,6 +43,13 @@ void main() {
     expect(mag.accent, LeoneBrandColors.intelligence);
     expect(lyzer.storeProof, hasLength(4));
     expect(
+      lyzer.storeProof
+          .where((proof) => proof.store == ProductionAppStore.appStore)
+          .map((proof) => proof.evidence),
+      everyElement(isNull),
+    );
+    expect(mag.storeProof.single.evidence, '1K+ downloads');
+    expect(
       lyzer.storeProof.map((proof) => (proof.productId, proof.store)).toSet(),
       {
         ('lyzer-collect', ProductionAppStore.googlePlay),

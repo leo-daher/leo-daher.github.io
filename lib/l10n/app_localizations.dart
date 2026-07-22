@@ -470,12 +470,6 @@ abstract class AppLocalizations {
   /// **'Updated Jul 14, 2026 · Checked in July 2026.'**
   String get lyzerDeliverProofDetails;
 
-  /// Lyzer availability proof from the App Store.
-  ///
-  /// In en, this message translates to:
-  /// **'Available for iPhone'**
-  String get lyzerAppStoreProof;
-
   /// MAG Venda Digital case context.
   ///
   /// In en, this message translates to:
@@ -503,7 +497,7 @@ abstract class AppLocalizations {
   /// MAG Venda Digital Google Play proof.
   ///
   /// In en, this message translates to:
-  /// **'Active app · 1K+ downloads'**
+  /// **'1K+ downloads'**
   String get magPlayProof;
 
   /// Supporting date for the MAG Venda Digital Google Play proof.

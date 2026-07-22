@@ -87,7 +87,7 @@ class ProductionAppScreenshot {
 
 /// Verifiable evidence from an app marketplace or another public store page.
 ///
-/// [evidence] is intentionally already formatted by the caller so ratings,
+/// When present, [evidence] is already formatted by the caller so ratings,
 /// review counts and dates can follow the active locale and source wording.
 enum ProductionAppStore {
   googlePlay('Google Play'),
@@ -103,13 +103,13 @@ class ProductionAppStoreProof {
   const ProductionAppStoreProof({
     required this.productId,
     required this.store,
-    required this.evidence,
     required this.semanticLabel,
+    this.evidence,
     this.productLabel,
     this.supportingText,
     this.uri,
   }) : assert(productId.length > 0),
-       assert(evidence.length > 0),
+       assert(evidence == null || evidence.length > 0),
        assert(semanticLabel.length > 0);
 
   /// Stable product identifier used to build durable widget keys.
@@ -119,7 +119,7 @@ class ProductionAppStoreProof {
   final String? productLabel;
 
   final ProductionAppStore store;
-  final String evidence;
+  final String? evidence;
   final String semanticLabel;
   final String? supportingText;
   final Uri? uri;

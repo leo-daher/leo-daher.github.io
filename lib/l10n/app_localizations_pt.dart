@@ -206,9 +206,6 @@ class AppLocalizationsPt extends AppLocalizations {
       'Atualizado em 14 jul. 2026 · Consultado em julho de 2026.';
 
   @override
-  String get lyzerAppStoreProof => 'Disponível para iPhone';
-
-  @override
   String get magContext => 'Seguros · Brasil · Android';
 
   @override
@@ -223,7 +220,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Evolução em Java/Kotlin, dados offline com Realm, flavors Gradle, Firebase/Crashlytics e pipeline no Azure.';
 
   @override
-  String get magPlayProof => 'App ativo · 1 mil+ downloads';
+  String get magPlayProof => '1 mil+ downloads';
 
   @override
   String get magPlayProofDetails =>

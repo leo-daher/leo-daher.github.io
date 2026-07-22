@@ -35,19 +35,28 @@ class ProductionAppsPresentation {
       required String productId,
       String? productLabel,
       required ProductionAppStore store,
-      required String evidence,
+      String? evidence,
       required Uri uri,
       String? supportingText,
-    }) => ProductionAppStoreProof(
-      productId: productId,
-      productLabel: productLabel,
-      store: store,
-      evidence: evidence,
-      semanticLabel:
-          '$appName · ${store.displayName} · $evidence. ${supportingText ?? checked}',
-      supportingText: supportingText ?? checked,
-      uri: uri,
-    );
+    }) {
+      final resolvedSupportingText =
+          supportingText ?? (evidence == null ? null : checked);
+      final semanticParts = [
+        appName,
+        store.displayName,
+        ?evidence,
+        ?resolvedSupportingText,
+      ];
+      return ProductionAppStoreProof(
+        productId: productId,
+        productLabel: productLabel,
+        store: store,
+        evidence: evidence,
+        semanticLabel: semanticParts.join(' · '),
+        supportingText: resolvedSupportingText,
+        uri: uri,
+      );
+    }
 
     const vanName = 'Van Cranenbroek';
     const lyzerName = 'Lyzer Collect + Deliver';
@@ -182,7 +191,6 @@ class ProductionAppsPresentation {
               productId: 'lyzer-collect',
               productLabel: 'Collect',
               store: ProductionAppStore.appStore,
-              evidence: l10n.lyzerAppStoreProof,
               uri: collectAppStore,
             ),
             proof(
@@ -199,7 +207,6 @@ class ProductionAppsPresentation {
               productId: 'lyzer-deliver',
               productLabel: 'Deliver',
               store: ProductionAppStore.appStore,
-              evidence: l10n.lyzerAppStoreProof,
               uri: deliverAppStore,
             ),
           ],

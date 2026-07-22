@@ -642,7 +642,7 @@ class _StoreProofChip extends StatelessWidget {
       ProductionAppStore.googlePlay => Icons.play_arrow_rounded,
       ProductionAppStore.appStore => Icons.apple,
     };
-    final evidenceParts = proof.evidence.split(' · ');
+    final evidenceParts = proof.evidence?.split(' · ');
     return Semantics(
       button: onTap != null,
       link: onTap != null,
@@ -716,41 +716,43 @@ class _StoreProofChip extends StatelessWidget {
                             ),
                         ],
                       ),
-                      const SizedBox(height: 5),
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            for (
-                              var index = 0;
-                              index < evidenceParts.length;
-                              index++
-                            ) ...[
-                              if (index > 0)
+                      if (evidenceParts != null) ...[
+                        const SizedBox(height: 5),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              for (
+                                var index = 0;
+                                index < evidenceParts.length;
+                                index++
+                              ) ...[
+                                if (index > 0)
+                                  TextSpan(
+                                    text: '  ·  ',
+                                    style: TextStyle(
+                                      color: palette.mutedInk,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
                                 TextSpan(
-                                  text: '  ·  ',
+                                  text: evidenceParts[index],
                                   style: TextStyle(
-                                    color: palette.mutedInk,
-                                    fontWeight: FontWeight.w400,
+                                    color: index == 0
+                                        ? palette.ink
+                                        : palette.mutedInk,
+                                    fontWeight: index == 0
+                                        ? FontWeight.w700
+                                        : FontWeight.w500,
                                   ),
                                 ),
-                              TextSpan(
-                                text: evidenceParts[index],
-                                style: TextStyle(
-                                  color: index == 0
-                                      ? palette.ink
-                                      : palette.mutedInk,
-                                  fontWeight: index == 0
-                                      ? FontWeight.w700
-                                      : FontWeight.w500,
-                                ),
-                              ),
+                              ],
                             ],
-                          ],
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 11.5, height: 1.25),
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 11.5, height: 1.25),
-                      ),
+                      ],
                     ],
                   ),
                 ),
