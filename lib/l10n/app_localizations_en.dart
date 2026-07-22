@@ -379,16 +379,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get technologies => 'Technologies';
 
   @override
-  String get verified => 'Verified';
-
-  @override
   String issuedBy(String issuer) {
     return 'Issued by $issuer';
-  }
-
-  @override
-  String completedIn(String year) {
-    return 'Completed in $year';
   }
 
   @override

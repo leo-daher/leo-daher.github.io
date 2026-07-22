@@ -770,23 +770,11 @@ abstract class AppLocalizations {
   /// **'Technologies'**
   String get technologies;
 
-  /// Certificate verification status.
-  ///
-  /// In en, this message translates to:
-  /// **'Verified'**
-  String get verified;
-
   /// Certificate issuer label.
   ///
   /// In en, this message translates to:
   /// **'Issued by {issuer}'**
   String issuedBy(String issuer);
-
-  /// Certificate completion year.
-  ///
-  /// In en, this message translates to:
-  /// **'Completed in {year}'**
-  String completedIn(String year);
 
   /// Opens the issuer verification page.
   ///

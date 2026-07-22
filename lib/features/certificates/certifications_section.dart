@@ -582,7 +582,7 @@ class _CertificateYearGrid extends StatelessWidget {
     sliver: SliverGrid(
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 320,
-        mainAxisExtent: 250,
+        mainAxisExtent: 200,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
       ),
@@ -619,61 +619,46 @@ class _CertificateGalleryCard extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(
-                    Icons.verified_rounded,
-                    size: 17,
-                    color: LeoneBrandColors.interactive,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    l10n.verified.toUpperCase(),
-                    style: const TextStyle(
-                      color: LeoneBrandColors.interactive,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: .8,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 26),
+                    child: Text(
+                      certificate.title,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: palette.ink,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                        height: 1.2,
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 12),
+                  _CertificateTechnologyTags(
+                    technologies: certificate.technologies,
+                  ),
                   const Spacer(),
-                  Icon(
-                    Icons.arrow_outward_rounded,
-                    size: 18,
-                    color: palette.mutedInk,
+                  Text(
+                    l10n.issuedBy(certificate.issuer),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: palette.mutedInk, fontSize: 12),
                   ),
                 ],
               ),
-              const SizedBox(height: 14),
-              Text(
-                certificate.title,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: palette.ink,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  height: 1.2,
+              Positioned(
+                top: 0,
+                right: 0,
+                child: Icon(
+                  Icons.arrow_outward_rounded,
+                  size: 18,
+                  color: palette.mutedInk,
                 ),
-              ),
-              const SizedBox(height: 12),
-              _CertificateTechnologyTags(
-                technologies: certificate.technologies,
-              ),
-              const Spacer(),
-              Text(
-                l10n.issuedBy(certificate.issuer),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: palette.mutedInk, fontSize: 12),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                l10n.completedIn(certificate.completedOn.year.toString()),
-                style: TextStyle(color: palette.mutedInk, fontSize: 12),
               ),
             ],
           ),

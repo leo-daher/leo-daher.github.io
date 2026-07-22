@@ -642,6 +642,14 @@ void main() {
     ]) {
       expect(find.byKey(Key('certificate-card-$id')), findsOneWidget);
     }
+    expect(find.text('VERIFIED'), findsNothing);
+    expect(find.byIcon(Icons.verified_rounded), findsNothing);
+    expect(
+      tester
+          .getSize(find.byKey(const Key('certificate-card-demo-credential')))
+          .height,
+      closeTo(200, .01),
+    );
     expect(
       find.byKey(const Key('certificate-filter-results-all')),
       findsOneWidget,
