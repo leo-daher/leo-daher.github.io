@@ -338,23 +338,11 @@ abstract class AppLocalizations {
   /// **'Published apps Leone Daher contributed to'**
   String get productionAppsSemanticLabel;
 
-  /// Production apps section eyebrow.
-  ///
-  /// In en, this message translates to:
-  /// **'PRODUCTION PROOF'**
-  String get productionAppsEyebrow;
-
   /// Production apps section title.
   ///
   /// In en, this message translates to:
-  /// **'Production apps I contributed to.'**
+  /// **'Apps in production.'**
   String get productionAppsTitle;
-
-  /// Production apps section supporting copy.
-  ///
-  /// In en, this message translates to:
-  /// **'Store screens, public metrics, and the work I delivered in each product. Checked in July 2026.'**
-  String get productionAppsCopy;
 
   /// Production app role label.
   ///

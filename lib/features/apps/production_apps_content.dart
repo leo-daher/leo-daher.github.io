@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
+
 import '../../brand/leone_brand.dart';
 import '../../l10n/app_localizations.dart';
 import 'production_app_models.dart';
+
+const _vanCranenbroekGreen = Color(0xFF008932);
 
 class ProductionAppsPresentation {
   const ProductionAppsPresentation({required this.content, required this.apps});
@@ -65,9 +69,7 @@ class ProductionAppsPresentation {
     return ProductionAppsPresentation(
       content: ProductionAppsSectionContent(
         semanticLabel: l10n.productionAppsSemanticLabel,
-        eyebrow: l10n.productionAppsEyebrow,
         title: l10n.productionAppsTitle,
-        description: l10n.productionAppsCopy,
         roleLabel: l10n.appRoleLabel,
         contributionLabel: l10n.appContributionLabel,
         stackLabel: l10n.appStackLabel,
@@ -115,7 +117,7 @@ class ProductionAppsPresentation {
               uri: vanAppStore,
             ),
           ],
-          accent: LeoneBrandColors.interactive,
+          accent: _vanCranenbroekGreen,
         ),
         ProductionAppCase(
           id: 'lyzer-collect-deliver',

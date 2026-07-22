@@ -132,14 +132,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Published apps Leone Daher contributed to';
 
   @override
-  String get productionAppsEyebrow => 'PRODUCTION PROOF';
-
-  @override
-  String get productionAppsTitle => 'Production apps I contributed to.';
-
-  @override
-  String get productionAppsCopy =>
-      'Store screens, public metrics, and the work I delivered in each product. Checked in July 2026.';
+  String get productionAppsTitle => 'Apps in production.';
 
   @override
   String get appRoleLabel => 'My role';

@@ -7,10 +7,7 @@ import 'package:url_launcher/link.dart';
 
 const _content = ProductionAppsSectionContent(
   semanticLabel: 'Apps em produção em que atuei',
-  eyebrow: 'APPS EM PRODUÇÃO',
-  title: 'Produtos publicados, trabalho verificável.',
-  description:
-      'Aplicativos e operações digitais em que contribuí com engenharia.',
+  title: 'Apps em produção.',
   roleLabel: 'Papel',
   contributionLabel: 'Contribuição',
   stackLabel: 'Stack',
@@ -41,6 +38,7 @@ void main() {
       ]),
     );
     expect(lyzer.contribution, contains('proprietary GetX-based engine'));
+    expect(van.accent, const Color(0xFF008932));
     expect(lyzer.accent, LeoneBrandColors.editorialWarm);
     expect(mag.accent, LeoneBrandColors.intelligence);
     expect(lyzer.storeProof, hasLength(4));
@@ -81,6 +79,8 @@ void main() {
       await _pumpSection(tester, size: const Size(1440, 2200));
 
       expect(find.text('Van Cranenbroek'), findsOneWidget);
+      expect(find.text('Apps em produção.'), findsOneWidget);
+      expect(find.text('APPS EM PRODUÇÃO'), findsNothing);
       expect(find.text('Lyzer Collect+Deliver'), findsOneWidget);
       expect(find.text('MAG Venda Digital'), findsOneWidget);
       expect(find.textContaining('4,6 ★', findRichText: true), findsOneWidget);

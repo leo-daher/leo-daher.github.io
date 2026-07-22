@@ -8,9 +8,7 @@ import 'package:flutter/material.dart';
 class ProductionAppsSectionContent {
   const ProductionAppsSectionContent({
     required this.semanticLabel,
-    required this.eyebrow,
     required this.title,
-    required this.description,
     required this.roleLabel,
     required this.contributionLabel,
     required this.stackLabel,
@@ -20,9 +18,7 @@ class ProductionAppsSectionContent {
   });
 
   final String semanticLabel;
-  final String eyebrow;
   final String title;
-  final String description;
   final String roleLabel;
   final String contributionLabel;
   final String stackLabel;

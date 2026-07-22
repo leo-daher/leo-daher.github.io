@@ -94,9 +94,7 @@ void main() {
     await tester.tap(viewApps);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 900));
-    final appsHeadingY = tester
-        .getTopLeft(find.text('Production apps I contributed to.'))
-        .dy;
+    final appsHeadingY = tester.getTopLeft(find.text('Apps in production.')).dy;
     expect(appsHeadingY, inInclusiveRange(0, 180));
 
     await tester.drag(

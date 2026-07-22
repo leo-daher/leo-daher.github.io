@@ -59,11 +59,7 @@ class ProductionAppsSection extends StatelessWidget {
                         width: double.infinity,
                         child: Semantics(
                           header: true,
-                          child: PortfolioSectionHeading(
-                            eyebrow: content.eyebrow,
-                            title: content.title,
-                            copy: content.description,
-                          ),
+                          child: PortfolioSectionHeading(title: content.title),
                         ),
                       ),
                     ),

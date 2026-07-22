@@ -132,14 +132,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Apps publicados em que Leone Daher atuou';
 
   @override
-  String get productionAppsEyebrow => 'PROVA DE PRODUÇÃO';
-
-  @override
-  String get productionAppsTitle => 'Apps em produção em que atuei.';
-
-  @override
-  String get productionAppsCopy =>
-      'Telas das lojas, métricas públicas e o trabalho que entreguei em cada produto. Consultado em julho de 2026.';
+  String get productionAppsTitle => 'Apps em produção.';
 
   @override
   String get appRoleLabel => 'Minha atuação';
