@@ -192,7 +192,10 @@ O hero alterna automaticamente entre proporções mobile (`178 × 308`), tablet
 frame apresenta a composição completa, e os mesmos elementos abstratos de
 interface reorganizam sua hierarquia em cada formato. Em janelas estreitas, o
 palco fica ancorado no topo: tablet e desktop permanecem inteiros na primeira
-tela, enquanto a proporção mobile pode avançar além da área visível.
+tela, enquanto a proporção mobile pode avançar além da área visível. O contorno
+adaptativo usa as cores da versão autorizada da logo para o tema atual, preserva
+a abertura superior esquerda e o microcorte inferior. As curvas do conteúdo e
+do contorno compartilham os mesmos centros geométricos.
 
 ### Redução de movimento
 

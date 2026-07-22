@@ -659,40 +659,114 @@ class _LdViewportStageState extends State<LdViewportStage>
   }
 }
 
+@immutable
+class LdFrameGeometry {
+  const LdFrameGeometry({
+    required this.stroke,
+    required this.radius,
+    required this.lRadius,
+    required this.contentInset,
+    required this.contentRadius,
+    required this.contentLRadius,
+  });
+
+  factory LdFrameGeometry.resolve(Size size) {
+    if (size.isEmpty) {
+      return const LdFrameGeometry(
+        stroke: 0,
+        radius: 0,
+        lRadius: 0,
+        contentInset: 0,
+        contentRadius: 0,
+        contentLRadius: 0,
+      );
+    }
+    final shortest = math.min(size.width, size.height);
+    final stroke = (shortest * .052).clamp(8.0, 14.0);
+    final radius = math.min((shortest * .22).clamp(24.0, 72.0), shortest * .24);
+    final lRadius = radius * .76;
+    final contentInset = stroke + 5;
+    return LdFrameGeometry(
+      stroke: stroke,
+      radius: radius,
+      lRadius: lRadius,
+      contentInset: contentInset,
+      contentRadius: math.max(0, radius + stroke / 2 - contentInset),
+      contentLRadius: math.max(0, lRadius + stroke / 2 - contentInset),
+    );
+  }
+
+  final double stroke;
+  final double radius;
+  final double lRadius;
+  final double contentInset;
+  final double contentRadius;
+  final double contentLRadius;
+
+  Offset outerTopRightCenter(Size size) =>
+      Offset(size.width - stroke / 2 - radius, stroke / 2 + radius);
+
+  Offset contentTopRightCenter(Size size) => Offset(
+    size.width - contentInset - contentRadius,
+    contentInset + contentRadius,
+  );
+
+  Offset outerBottomLeftCenter(Size size) =>
+      Offset(stroke / 2 + lRadius, size.height - stroke / 2 - lRadius);
+
+  Offset contentBottomLeftCenter(Size size) => Offset(
+    contentInset + contentLRadius,
+    size.height - contentInset - contentLRadius,
+  );
+}
+
 class LdFrame extends StatelessWidget {
   const LdFrame({
     super.key,
     required this.child,
-    this.lColor = LeoneBrandColors.structureOnDark,
-    this.dColor = LeoneBrandColors.surfaceOnDark,
+    this.lColor,
+    this.dColor,
     this.actionButtonColor = LeoneBrandColors.action,
     this.backgroundColor = Colors.transparent,
     this.showActionButton = true,
   });
 
   final Widget child;
-  final Color lColor;
-  final Color dColor;
+  final Color? lColor;
+  final Color? dColor;
   final Color actionButtonColor;
   final Color backgroundColor;
   final bool showActionButton;
+
+  static ({Color l, Color d}) brandColorsFor(Brightness brightness) =>
+      brightness == Brightness.light
+      ? (
+          l: LeoneBrandColors.structureOnLight,
+          d: LeoneBrandColors.surfaceOnLight,
+        )
+      : (
+          l: LeoneBrandColors.structureOnDark,
+          d: LeoneBrandColors.surfaceOnDark,
+        );
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final shortest = math.min(constraints.maxWidth, constraints.maxHeight);
-        final stroke = (shortest * .052).clamp(8.0, 14.0);
-        final radius = (shortest * .22).clamp(24.0, 72.0);
-        final inset = stroke + 5;
+        final size = Size(constraints.maxWidth, constraints.maxHeight);
+        final geometry = LdFrameGeometry.resolve(size);
+        final brandColors = brandColorsFor(Theme.of(context).brightness);
         return Stack(
           fit: StackFit.expand,
           children: [
             Padding(
-              padding: EdgeInsets.all(inset),
+              padding: EdgeInsets.all(geometry.contentInset),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  math.max(10, radius - stroke * .72),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(geometry.contentLRadius),
+                  topRight: Radius.circular(geometry.contentRadius),
+                  bottomRight: Radius.circular(geometry.contentRadius),
+                  bottomLeft: Radius.circular(geometry.contentLRadius),
                 ),
                 child: ColoredBox(color: backgroundColor, child: child),
               ),
@@ -700,10 +774,10 @@ class LdFrame extends StatelessWidget {
             IgnorePointer(
               child: CustomPaint(
                 painter: _LdFramePainter(
-                  stroke: stroke,
-                  radius: radius,
-                  lColor: lColor,
-                  dColor: dColor,
+                  stroke: geometry.stroke,
+                  radius: geometry.radius,
+                  lColor: lColor ?? brandColors.l,
+                  dColor: dColor ?? brandColors.d,
                   actionButtonColor: actionButtonColor,
                   showActionButton: showActionButton,
                 ),
@@ -761,17 +835,18 @@ class _LdFramePainter extends CustomPainter {
       ..quadraticBezierTo(right, bottom, right - r, bottom)
       ..lineTo(joinX, bottom);
 
-    final shadowPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = stroke + 1
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round
-      ..color = dColor.withValues(alpha: .09)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 9);
-    canvas.drawPath(dPath, shadowPaint);
-
+    canvas.saveLayer(Offset.zero & size, Paint());
     canvas.drawPath(lPath, _strokePaint(lColor));
     canvas.drawPath(dPath, _strokePaint(dColor));
+    canvas.drawLine(
+      Offset(joinX - stroke * .29, bottom + stroke * .57),
+      Offset(joinX + stroke * .57, bottom - stroke * .57),
+      Paint()
+        ..blendMode = BlendMode.clear
+        ..strokeWidth = stroke * (4 / 14)
+        ..strokeCap = StrokeCap.round,
+    );
+    canvas.restore();
 
     if (showActionButton) {
       _paintActionButton(canvas, size, right, bottom);

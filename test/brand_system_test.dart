@@ -158,6 +158,43 @@ void main() {
       );
     });
 
+    test('matches the adaptive frame colors to each authorized logo', () {
+      expect(LdFrame.brandColorsFor(Brightness.light), (
+        l: LeoneBrandColors.structureOnLight,
+        d: LeoneBrandColors.surfaceOnLight,
+      ));
+      expect(LdFrame.brandColorsFor(Brightness.dark), (
+        l: LeoneBrandColors.structureOnDark,
+        d: LeoneBrandColors.surfaceOnDark,
+      ));
+    });
+
+    test('keeps frame and content corners concentric', () {
+      for (final size in const [
+        Size(178, 308),
+        Size(316, 240),
+        Size(620, 260),
+      ]) {
+        final geometry = LdFrameGeometry.resolve(size);
+        final dCenterDelta =
+            geometry.contentTopRightCenter(size) -
+            geometry.outerTopRightCenter(size);
+        final lCenterDelta =
+            geometry.contentBottomLeftCenter(size) -
+            geometry.outerBottomLeftCenter(size);
+        expect(
+          dCenterDelta.distance,
+          closeTo(0, .0001),
+          reason: 'D corner at $size',
+        );
+        expect(
+          lCenterDelta.distance,
+          closeTo(0, .0001),
+          reason: 'L corner at $size',
+        );
+      }
+    });
+
     test(
       'keeps the approved SVG variants on the canonical geometry',
       () {
