@@ -26,6 +26,7 @@ void main() {
     ).apps;
     final van = apps.singleWhere((app) => app.id == 'van-cranenbroek');
     final lyzer = apps.singleWhere((app) => app.id == 'lyzer-collect-deliver');
+    final mag = apps.singleWhere((app) => app.id == 'mag-venda-digital');
 
     expect(van.stack, contains('Riverpod'));
     expect(van.contribution, contains('Flutter with Riverpod'));
@@ -40,6 +41,8 @@ void main() {
       ]),
     );
     expect(lyzer.contribution, contains('proprietary GetX-based engine'));
+    expect(lyzer.accent, LeoneBrandColors.editorialWarm);
+    expect(mag.accent, LeoneBrandColors.intelligence);
     expect(lyzer.storeProof, hasLength(4));
     expect(
       lyzer.storeProof.map((proof) => (proof.productId, proof.store)).toSet(),

@@ -201,7 +201,7 @@ class ProductionAppsPresentation {
               uri: deliverAppStore,
             ),
           ],
-          accent: LeoneBrandColors.intelligence,
+          accent: LeoneBrandColors.editorialWarm,
         ),
         ProductionAppCase(
           id: 'mag-venda-digital',
@@ -235,7 +235,7 @@ class ProductionAppsPresentation {
               supportingText: l10n.magPlayProofDetails,
             ),
           ],
-          accent: LeoneBrandColors.editorialWarm,
+          accent: LeoneBrandColors.intelligence,
         ),
       ],
     );
