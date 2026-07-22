@@ -441,7 +441,7 @@ class _InterfaceMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final compact = constraints.maxHeight < 36;
+        final compact = constraints.maxHeight < 48;
         final fontSize = (constraints.maxHeight * .30).clamp(7.5, 14.0);
         return Padding(
           padding: EdgeInsets.symmetric(vertical: compact ? 0 : 2),
@@ -451,11 +451,13 @@ class _InterfaceMessage extends StatelessWidget {
             children: [
               Text(
                 label,
-                maxLines: 1,
-                overflow: TextOverflow.fade,
+                maxLines: 2,
+                overflow: TextOverflow.clip,
+                softWrap: true,
                 style: TextStyle(
                   color: _green,
                   fontSize: fontSize,
+                  height: 1,
                   fontWeight: FontWeight.w800,
                   letterSpacing: .8,
                 ),

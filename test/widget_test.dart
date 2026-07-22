@@ -128,6 +128,13 @@ void main() {
       find.byKey(const Key('hero-interface-content-secondary-card')),
       findsOneWidget,
     );
+    final actionMessageText = tester.widget<Text>(
+      find.descendant(
+        of: find.byKey(const Key('hero-interface-action-message')),
+        matching: find.text('YOUR IDEAS. EVERYWHERE.'),
+      ),
+    );
+    expect(actionMessageText.maxLines, 2);
 
     final desktopSize = tester.getSize(frame);
     final desktopFrameOrigin = tester.getTopLeft(frame);
