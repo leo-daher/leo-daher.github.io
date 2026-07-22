@@ -196,7 +196,9 @@ tela, enquanto a proporção mobile pode avançar além da área visível. O con
 adaptativo usa as cores da versão autorizada da logo para o tema atual, preserva
 a abertura superior esquerda e o microcorte inferior. As curvas do conteúdo e
 do contorno compartilham os mesmos centros geométricos e são construídas com
-arcos circulares, mantendo distância constante entre as bordas.
+arcos circulares, mantendo distância constante entre as bordas. No encontro
+inferior, os segmentos terminam sem sobreposição antes da máscara diagonal, para
+que as cores de L e D não vazem através do microcorte.
 
 ### Redução de movimento
 

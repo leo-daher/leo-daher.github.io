@@ -99,16 +99,6 @@ class PortfolioHero extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(height: compact ? 16 : 20),
-                    Text(
-                      l10n.mobileSupporting,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: palette.mutedInk,
-                        fontSize: compact ? 14 : 17,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
                     SizedBox(height: compact ? 24 : 30),
                     Expanded(
                       child: _BrandedViewportFrame(

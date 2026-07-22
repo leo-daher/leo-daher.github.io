@@ -54,7 +54,7 @@ void main() {
     expect(find.text('YOUR IDEAS. EVERYWHERE.'), findsOneWidget);
     expect(
       find.text('Mobile products powered by smart, connected systems.'),
-      findsOneWidget,
+      findsNothing,
     );
     expect(find.text('Mobile'), findsNothing);
     expect(find.text('AI + Automation'), findsNothing);

@@ -842,6 +842,16 @@ class _LdFramePainter extends CustomPainter {
     canvas.saveLayer(Offset.zero & size, Paint());
     canvas.drawPath(lPath, _strokePaint(lColor));
     canvas.drawPath(dPath, _strokePaint(dColor));
+    canvas.drawCircle(
+      Offset(left, top + opening),
+      stroke / 2,
+      Paint()..color = lColor,
+    );
+    canvas.drawCircle(
+      Offset(left + opening, top),
+      stroke / 2,
+      Paint()..color = dColor,
+    );
     canvas.drawLine(
       Offset(joinX - stroke * .29, bottom + stroke * .57),
       Offset(joinX + stroke * .57, bottom - stroke * .57),
@@ -896,7 +906,7 @@ class _LdFramePainter extends CustomPainter {
   Paint _strokePaint(Color color) => Paint()
     ..style = PaintingStyle.stroke
     ..strokeWidth = stroke
-    ..strokeCap = StrokeCap.round
+    ..strokeCap = StrokeCap.butt
     ..strokeJoin = StrokeJoin.round
     ..color = color;
 
