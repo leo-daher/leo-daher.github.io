@@ -28,14 +28,20 @@ class ProductionAppsPresentation {
 
     ProductionAppStoreProof proof({
       required String appName,
-      required String storeName,
+      required String productId,
+      String? productLabel,
+      required ProductionAppStore store,
       required String evidence,
       required Uri uri,
+      String? supportingText,
     }) => ProductionAppStoreProof(
-      storeName: storeName,
+      productId: productId,
+      productLabel: productLabel,
+      store: store,
       evidence: evidence,
-      semanticLabel: '$appName · $storeName · $evidence. $checked',
-      supportingText: checked,
+      semanticLabel:
+          '$appName · ${store.displayName} · $evidence. ${supportingText ?? checked}',
+      supportingText: supportingText ?? checked,
       uri: uri,
     );
 
@@ -47,7 +53,13 @@ class ProductionAppsPresentation {
       'https://apps.apple.com/nl/app/van-cranenbroek/id6462761167',
     );
     final collectPlay = playStore('tech.lyzer.collect');
+    final collectAppStore = Uri.parse(
+      'https://apps.apple.com/pt/app/lyzer-collect/id6738952338',
+    );
     final deliverPlay = playStore('tech.lyzer.deliver');
+    final deliverAppStore = Uri.parse(
+      'https://apps.apple.com/br/app/lyzer-deliver/id6748221787',
+    );
     final magPlay = playStore('com.mongeralaegon.vendadigital');
 
     return ProductionAppsPresentation(
@@ -90,13 +102,15 @@ class ProductionAppsPresentation {
           storeProof: [
             proof(
               appName: vanName,
-              storeName: 'Google Play',
+              productId: 'van-cranenbroek',
+              store: ProductionAppStore.googlePlay,
               evidence: l10n.vanCranenbroekPlayProof,
               uri: vanPlay,
             ),
             proof(
               appName: vanName,
-              storeName: 'App Store',
+              productId: 'van-cranenbroek',
+              store: ProductionAppStore.appStore,
               evidence: l10n.vanCranenbroekAppStoreProof,
               uri: vanAppStore,
             ),
@@ -154,15 +168,37 @@ class ProductionAppsPresentation {
           storeProof: [
             proof(
               appName: 'Lyzer Collect',
-              storeName: 'Google Play',
+              productId: 'lyzer-collect',
+              productLabel: 'Collect',
+              store: ProductionAppStore.googlePlay,
               evidence: l10n.lyzerCollectProof,
               uri: collectPlay,
+              supportingText: l10n.lyzerCollectProofDetails,
+            ),
+            proof(
+              appName: 'Lyzer Collect',
+              productId: 'lyzer-collect',
+              productLabel: 'Collect',
+              store: ProductionAppStore.appStore,
+              evidence: l10n.lyzerAppStoreProof,
+              uri: collectAppStore,
             ),
             proof(
               appName: 'Lyzer Deliver',
-              storeName: 'Google Play',
+              productId: 'lyzer-deliver',
+              productLabel: 'Deliver',
+              store: ProductionAppStore.googlePlay,
               evidence: l10n.lyzerDeliverProof,
               uri: deliverPlay,
+              supportingText: l10n.lyzerDeliverProofDetails,
+            ),
+            proof(
+              appName: 'Lyzer Deliver',
+              productId: 'lyzer-deliver',
+              productLabel: 'Deliver',
+              store: ProductionAppStore.appStore,
+              evidence: l10n.lyzerAppStoreProof,
+              uri: deliverAppStore,
             ),
           ],
           accent: LeoneBrandColors.intelligence,
@@ -192,9 +228,11 @@ class ProductionAppsPresentation {
           storeProof: [
             proof(
               appName: magName,
-              storeName: 'Google Play',
+              productId: 'mag-venda-digital',
+              store: ProductionAppStore.googlePlay,
               evidence: l10n.magPlayProof,
               uri: magPlay,
+              supportingText: l10n.magPlayProofDetails,
             ),
           ],
           accent: LeoneBrandColors.editorialWarm,

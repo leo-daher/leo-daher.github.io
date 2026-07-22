@@ -36,6 +36,14 @@ void main() {
         LeoneBrandMotion.openingTotal,
       );
       expect(
+        LeoneBrandMotion.openingHold,
+        greaterThanOrEqualTo(const Duration(milliseconds: 650)),
+      );
+      expect(
+        LeoneBrandMotion.openingTransform,
+        const Duration(milliseconds: 950),
+      );
+      expect(
         LeoneBrandMotion.openingFrameStart,
         lessThan(LeoneBrandMotion.openingFabStart),
       );
@@ -47,6 +55,26 @@ void main() {
         LeoneBrandMotion.openingViewportArrival,
         lessThan(LeoneBrandMotion.openingViewportExit),
       );
+    });
+
+    test('keeps the opening mark still throughout the recognition hold', () {
+      const viewport = Size(390, 844);
+      final initial = LdOpeningFrameGeometry.resolve(viewport, 0);
+      final justBeforeMotion = LdOpeningFrameGeometry.resolve(
+        viewport,
+        (LeoneBrandMotion.openingHold.inMicroseconds - 1) /
+            LeoneBrandMotion.openingTotal.inMicroseconds,
+      );
+      final intoMotion = LdOpeningFrameGeometry.resolve(
+        viewport,
+        (LeoneBrandMotion.openingHold + const Duration(milliseconds: 240))
+                .inMicroseconds /
+            LeoneBrandMotion.openingTotal.inMicroseconds,
+      );
+
+      expect(justBeforeMotion.frameRect, initial.frameRect);
+      expect(justBeforeMotion.stroke, initial.stroke);
+      expect(intoMotion.frameRect, isNot(initial.frameRect));
     });
 
     test('makes the mark become the exact viewport before it exits', () {

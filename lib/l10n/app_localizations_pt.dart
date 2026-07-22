@@ -178,8 +178,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Atuação em Flutter com Riverpod e Kotlin, Firebase/Firestore, deep links, mapas e SVGs interativos, CI/CD e Cloud Functions em Python.';
 
   @override
-  String get vanCranenbroekPlayProof =>
-      '4,6 ★ · 179 avaliações · 5 mil+ downloads';
+  String get vanCranenbroekPlayProof => '4,6 ★ · 179 avaliações · 5 mil+';
 
   @override
   String get vanCranenbroekAppStoreProof => '4,7 ★ · 143 avaliações';
@@ -200,11 +199,21 @@ class AppLocalizationsPt extends AppLocalizations {
       'Fluxos de picking e entrega construídos sobre uma engine proprietária baseada em GetX, com leitura de códigos de barras, sincronização offline e integrações para operação em campo.';
 
   @override
-  String get lyzerCollectProof =>
-      '1 mil+ downloads · atualizado em 6 jul. 2026';
+  String get lyzerCollectProof => '1 mil+ downloads';
 
   @override
-  String get lyzerDeliverProof => '100+ downloads · atualizado em 14 jul. 2026';
+  String get lyzerCollectProofDetails =>
+      'Atualizado em 6 jul. 2026 · Consultado em julho de 2026.';
+
+  @override
+  String get lyzerDeliverProof => '100+ downloads';
+
+  @override
+  String get lyzerDeliverProofDetails =>
+      'Atualizado em 14 jul. 2026 · Consultado em julho de 2026.';
+
+  @override
+  String get lyzerAppStoreProof => 'Disponível para iPhone';
 
   @override
   String get magContext => 'Seguros · Brasil · Android';
@@ -221,8 +230,11 @@ class AppLocalizationsPt extends AppLocalizations {
       'Evolução em Java/Kotlin, dados offline com Realm, flavors Gradle, Firebase/Crashlytics e pipeline no Azure.';
 
   @override
-  String get magPlayProof =>
-      'App ativo · 1 mil+ downloads · atualizado em 16 jul. 2026';
+  String get magPlayProof => 'App ativo · 1 mil+ downloads';
+
+  @override
+  String get magPlayProofDetails =>
+      'Atualizado em 16 jul. 2026 · Consultado em julho de 2026.';
 
   @override
   String get systemEyebrow => 'ARQUITETURA PONTA A PONTA';

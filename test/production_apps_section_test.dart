@@ -40,6 +40,36 @@ void main() {
       ]),
     );
     expect(lyzer.contribution, contains('proprietary GetX-based engine'));
+    expect(lyzer.storeProof, hasLength(4));
+    expect(
+      lyzer.storeProof.map((proof) => (proof.productId, proof.store)).toSet(),
+      {
+        ('lyzer-collect', ProductionAppStore.googlePlay),
+        ('lyzer-collect', ProductionAppStore.appStore),
+        ('lyzer-deliver', ProductionAppStore.googlePlay),
+        ('lyzer-deliver', ProductionAppStore.appStore),
+      },
+    );
+    expect(
+      lyzer.storeProof
+          .singleWhere(
+            (proof) =>
+                proof.productId == 'lyzer-collect' &&
+                proof.store == ProductionAppStore.appStore,
+          )
+          .uri,
+      Uri.parse('https://apps.apple.com/pt/app/lyzer-collect/id6738952338'),
+    );
+    expect(
+      lyzer.storeProof
+          .singleWhere(
+            (proof) =>
+                proof.productId == 'lyzer-deliver' &&
+                proof.store == ProductionAppStore.appStore,
+          )
+          .uri,
+      Uri.parse('https://apps.apple.com/br/app/lyzer-deliver/id6748221787'),
+    );
   });
 
   testWidgets(
@@ -50,7 +80,7 @@ void main() {
       expect(find.text('Van Cranenbroek'), findsOneWidget);
       expect(find.text('Lyzer Collect+Deliver'), findsOneWidget);
       expect(find.text('MAG Venda Digital'), findsOneWidget);
-      expect(find.textContaining('4,6 ★ · 120 avaliações'), findsOneWidget);
+      expect(find.textContaining('4,6 ★', findRichText: true), findsOneWidget);
       expect(find.textContaining('Flutter'), findsWidgets);
       expect(find.textContaining('Riverpod'), findsOneWidget);
       expect(find.textContaining('Proprietary GetX engine'), findsOneWidget);
@@ -131,7 +161,9 @@ void main() {
     await _pumpSection(tester, size: const Size(1440, 2200));
 
     final storeProof = find.byKey(
-      const Key('production-app-store-proof-van-cranenbroek-0'),
+      const Key(
+        'production-app-store-proof-van-cranenbroek-van-cranenbroek-googlePlay',
+      ),
     );
     final storeLink = tester.widget<Link>(
       find.descendant(of: storeProof, matching: find.byType(Link)),
@@ -140,7 +172,50 @@ void main() {
     expect(storeLink.target, LinkTarget.blank);
     expect(find.byType(ListTile), findsNothing);
     expect(find.byType(Chip), findsNothing);
+    expect(find.byIcon(Icons.verified_outlined), findsNothing);
+    expect(find.byIcon(Icons.play_arrow_rounded), findsOneWidget);
     expect(tester.getSize(storeProof).height, greaterThanOrEqualTo(48));
+    expect(tester.getSize(storeProof).height, lessThan(80));
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('links both Lyzer products to Google Play and the App Store', (
+    tester,
+  ) async {
+    final lyzer = ProductionAppsPresentation.localized(
+      AppLocalizationsEn(),
+    ).apps.singleWhere((app) => app.id == 'lyzer-collect-deliver');
+    await _pumpSection(tester, size: const Size(1440, 1500), apps: [lyzer]);
+
+    final collectAppStore = find.byKey(
+      const Key(
+        'production-app-store-proof-lyzer-collect-deliver-lyzer-collect-appStore',
+      ),
+    );
+    final deliverAppStore = find.byKey(
+      const Key(
+        'production-app-store-proof-lyzer-collect-deliver-lyzer-deliver-appStore',
+      ),
+    );
+    final collectLink = tester.widget<Link>(
+      find.descendant(of: collectAppStore, matching: find.byType(Link)),
+    );
+    final deliverLink = tester.widget<Link>(
+      find.descendant(of: deliverAppStore, matching: find.byType(Link)),
+    );
+
+    expect(
+      collectLink.uri,
+      Uri.parse('https://apps.apple.com/pt/app/lyzer-collect/id6738952338'),
+    );
+    expect(
+      deliverLink.uri,
+      Uri.parse('https://apps.apple.com/br/app/lyzer-deliver/id6748221787'),
+    );
+    expect(find.text('COLLECT'), findsNWidgets(2));
+    expect(find.text('DELIVER'), findsNWidgets(2));
+    expect(find.text('APP STORE'), findsNWidgets(2));
+    expect(find.byIcon(Icons.apple), findsNWidgets(2));
     expect(tester.takeException(), isNull);
   });
 
@@ -212,7 +287,8 @@ List<ProductionAppCase> _apps() => [
     ],
     storeProof: [
       ProductionAppStoreProof(
-        storeName: 'Google Play',
+        productId: 'van-cranenbroek',
+        store: ProductionAppStore.googlePlay,
         evidence: '4,6 ★ · 120 avaliações',
         semanticLabel:
             'Van Cranenbroek na Google Play, 4,6 estrelas e 120 avaliações',

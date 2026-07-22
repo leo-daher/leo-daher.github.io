@@ -117,7 +117,7 @@ class ProductionAppCaseCard extends StatelessWidget {
       child: Container(
         key: Key('production-app-card-${app.id}'),
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 38),
+        padding: const EdgeInsets.symmetric(vertical: 32),
         child: LayoutBuilder(
           builder: (context, constraints) {
             final wide = constraints.maxWidth >= _wideCaseMinWidth;
@@ -147,13 +147,13 @@ class ProductionAppCaseCard extends StatelessWidget {
             }
 
             return Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (app.screenshots.isNotEmpty) ...[
-                  Expanded(flex: 7, child: gallery),
+                  Expanded(flex: 13, child: gallery),
                   const SizedBox(width: _caseGap),
                 ],
-                Expanded(flex: 5, child: caseCopy),
+                Expanded(flex: 11, child: caseCopy),
               ],
             );
           },
@@ -182,7 +182,7 @@ class _CaseCopy extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _CaseHeading(app: app, accent: accent),
-        const SizedBox(height: 18),
+        const SizedBox(height: 14),
         Semantics(
           label: '${content.roleLabel}: ${app.role}',
           child: ExcludeSemantics(
@@ -190,27 +190,32 @@ class _CaseCopy extends StatelessWidget {
               app.role,
               style: TextStyle(
                 color: accent,
-                fontSize: 13,
-                height: 1.4,
-                fontWeight: FontWeight.w700,
+                fontSize: 13.5,
+                height: 1.42,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
         ),
-        const SizedBox(height: 9),
+        const SizedBox(height: 7),
         Semantics(
           label: '${content.contributionLabel}: ${app.contribution}',
           child: ExcludeSemantics(
             child: Text(
               app.contribution,
-              style: TextStyle(color: palette.ink, height: 1.5),
+              style: TextStyle(
+                color: palette.ink.withValues(alpha: .92),
+                fontSize: 14,
+                height: 1.5,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 13),
         _StackLine(label: content.stackLabel, technologies: app.stack),
         if (app.storeProof.isNotEmpty) ...[
-          const SizedBox(height: 18),
+          const SizedBox(height: 14),
           _StoreProofWrap(
             appId: app.id,
             label: content.storeProofLabel,
@@ -232,28 +237,28 @@ class _CaseHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.leonePalette;
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (app.iconAssetPaths.isNotEmpty) ...[
-          _AppIcons(assetPaths: app.iconAssetPaths, accent: accent),
-          const SizedBox(width: 14),
-        ],
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                app.contextLabel.toUpperCase(),
-                style: TextStyle(
-                  color: accent,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 1.05,
-                ),
-              ),
-              const SizedBox(height: 7),
-              Semantics(
+        Text(
+          app.contextLabel.toUpperCase(),
+          style: TextStyle(
+            color: accent,
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+            letterSpacing: .95,
+          ),
+        ),
+        const SizedBox(height: 7),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (app.iconAssetPaths.isNotEmpty) ...[
+              _AppIcons(assetPaths: app.iconAssetPaths),
+              const SizedBox(width: 11),
+            ],
+            Expanded(
+              child: Semantics(
                 header: true,
                 child: Text(
                   app.name,
@@ -266,12 +271,17 @@ class _CaseHeading extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              Text(
-                app.summary,
-                style: TextStyle(color: palette.mutedInk, height: 1.45),
-              ),
-            ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Text(
+          app.summary,
+          style: TextStyle(
+            color: palette.mutedInk,
+            fontSize: 14,
+            height: 1.45,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ],
@@ -280,38 +290,34 @@ class _CaseHeading extends StatelessWidget {
 }
 
 class _AppIcons extends StatelessWidget {
-  const _AppIcons({required this.assetPaths, required this.accent});
+  const _AppIcons({required this.assetPaths});
 
   final List<String> assetPaths;
-  final Color accent;
 
   @override
   Widget build(BuildContext context) {
     final paths = assetPaths.take(2).toList(growable: false);
+    final iconSize = paths.length == 1 ? 40.0 : 36.0;
     return SizedBox(
-      width: paths.length == 1 ? 48 : 64,
-      height: 48,
+      width: paths.length == 1 ? iconSize : 48,
+      height: 40,
       child: Stack(
         children: [
           for (var index = 0; index < paths.length; index++)
             Positioned(
-              left: index * 16,
+              left: index * 12,
+              top: paths.length == 1 ? 0 : 2,
               child: Container(
-                width: 48,
-                height: 48,
-                padding: const EdgeInsets.all(2),
+                width: iconSize,
+                height: iconSize,
+                padding: const EdgeInsets.all(1.5),
                 decoration: BoxDecoration(
-                  color: context.leonePalette.canvas,
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: [
-                    BoxShadow(
-                      color: accent.withValues(alpha: .16),
-                      blurRadius: 18,
-                    ),
-                  ],
+                  color: context.leonePalette.surfaceRaised,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: context.leonePalette.outline),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(11),
+                  borderRadius: BorderRadius.circular(10),
                   child: Image.asset(paths[index], fit: BoxFit.cover),
                 ),
               ),
@@ -337,10 +343,10 @@ class _StackLine extends StatelessWidget {
         child: Text(
           technologies.join('  ·  '),
           style: TextStyle(
-            color: palette.mutedInk,
-            fontSize: 12,
+            color: palette.mutedInk.withValues(alpha: .88),
+            fontSize: 11.5,
             height: 1.55,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
@@ -530,22 +536,37 @@ class _StoreProofWrap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      container: true,
-      explicitChildNodes: true,
-      label: label,
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: [
-          for (var index = 0; index < proof.length; index++)
-            _StoreProofChip(
-              key: Key('production-app-store-proof-$appId-$index'),
-              proof: proof[index],
-              accent: accent,
-            ),
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final useTwoColumns = proof.length > 1 && constraints.maxWidth >= 420;
+        final tileWidth = useTwoColumns
+            ? (constraints.maxWidth - 8) / 2
+            : proof.length == 1
+            ? math.min(286.0, constraints.maxWidth)
+            : constraints.maxWidth;
+        return Semantics(
+          container: true,
+          explicitChildNodes: true,
+          label: label,
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final item in proof)
+                SizedBox(
+                  width: tileWidth,
+                  child: _StoreProofChip(
+                    key: Key(
+                      'production-app-store-proof-$appId-${item.productId}-${item.store.name}',
+                    ),
+                    proof: item,
+                    accent: accent,
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -569,51 +590,132 @@ class _StoreProofChip extends StatelessWidget {
 
   Widget _surface(BuildContext context, VoidCallback? onTap) {
     final palette = context.leonePalette;
+    final brightness = Theme.of(context).brightness;
+    final storeColor = switch (proof.store) {
+      ProductionAppStore.googlePlay =>
+        brightness == Brightness.dark
+            ? const Color(0xFF66D58A)
+            : const Color(0xFF176B35),
+      ProductionAppStore.appStore =>
+        brightness == Brightness.dark
+            ? const Color(0xFF68B7FF)
+            : const Color(0xFF1769A8),
+    };
+    final storeIcon = switch (proof.store) {
+      ProductionAppStore.googlePlay => Icons.play_arrow_rounded,
+      ProductionAppStore.appStore => Icons.apple,
+    };
+    final evidenceParts = proof.evidence.split(' · ');
     return Semantics(
       button: onTap != null,
       link: onTap != null,
       label: proof.semanticLabel,
-      child: Tooltip(
-        message: proof.supportingText ?? proof.semanticLabel,
-        excludeFromSemantics: true,
-        child: Material(
-          color: accent.withValues(alpha: .09),
-          shape: const StadiumBorder(),
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            onTap: onTap,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 48),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 9,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.verified_outlined, color: accent, size: 16),
-                    const SizedBox(width: 7),
-                    Flexible(
-                      child: Text(
-                        '${proof.storeName} · ${proof.evidence}',
-                        style: TextStyle(
-                          color: palette.ink,
-                          fontSize: 11,
-                          height: 1.25,
-                          fontWeight: FontWeight.w700,
-                        ),
+      child: ExcludeSemantics(
+        child: Tooltip(
+          message: proof.supportingText ?? proof.semanticLabel,
+          excludeFromSemantics: true,
+          child: Material(
+            color: palette.surfaceRaised.withValues(alpha: .72),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: BorderSide(color: palette.outline),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: onTap,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 48),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 11,
+                    vertical: 9,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          if (proof.productLabel case final productLabel?) ...[
+                            Text(
+                              productLabel.toUpperCase(),
+                              style: TextStyle(
+                                color: accent,
+                                fontSize: 9.5,
+                                height: 1.2,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: .65,
+                              ),
+                            ),
+                            Text(
+                              '  ·  ',
+                              style: TextStyle(
+                                color: palette.mutedInk,
+                                fontSize: 9.5,
+                              ),
+                            ),
+                          ],
+                          Icon(storeIcon, color: storeColor, size: 14),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              proof.store.displayName.toUpperCase(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: storeColor,
+                                fontSize: 9.5,
+                                height: 1.2,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: .6,
+                              ),
+                            ),
+                          ),
+                          if (onTap != null)
+                            Icon(
+                              Icons.arrow_outward_rounded,
+                              color: palette.mutedInk,
+                              size: 13,
+                            ),
+                        ],
                       ),
-                    ),
-                    if (onTap != null) ...[
-                      const SizedBox(width: 7),
-                      Icon(
-                        Icons.arrow_outward_rounded,
-                        color: palette.mutedInk,
-                        size: 14,
+                      const SizedBox(height: 5),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            for (
+                              var index = 0;
+                              index < evidenceParts.length;
+                              index++
+                            ) ...[
+                              if (index > 0)
+                                TextSpan(
+                                  text: '  ·  ',
+                                  style: TextStyle(
+                                    color: palette.mutedInk,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              TextSpan(
+                                text: evidenceParts[index],
+                                style: TextStyle(
+                                  color: index == 0
+                                      ? palette.ink
+                                      : palette.mutedInk,
+                                  fontWeight: index == 0
+                                      ? FontWeight.w700
+                                      : FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 11.5, height: 1.25),
                       ),
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),

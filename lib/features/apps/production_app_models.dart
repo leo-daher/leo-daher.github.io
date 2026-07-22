@@ -93,17 +93,36 @@ class ProductionAppScreenshot {
 ///
 /// [evidence] is intentionally already formatted by the caller so ratings,
 /// review counts and dates can follow the active locale and source wording.
+enum ProductionAppStore {
+  googlePlay('Google Play'),
+  appStore('App Store');
+
+  const ProductionAppStore(this.displayName);
+
+  final String displayName;
+}
+
 @immutable
 class ProductionAppStoreProof {
   const ProductionAppStoreProof({
-    required this.storeName,
+    required this.productId,
+    required this.store,
     required this.evidence,
     required this.semanticLabel,
+    this.productLabel,
     this.supportingText,
     this.uri,
-  });
+  }) : assert(productId.length > 0),
+       assert(evidence.length > 0),
+       assert(semanticLabel.length > 0);
 
-  final String storeName;
+  /// Stable product identifier used to build durable widget keys.
+  final String productId;
+
+  /// Optional short label when one portfolio case groups multiple apps.
+  final String? productLabel;
+
+  final ProductionAppStore store;
   final String evidence;
   final String semanticLabel;
   final String? supportingText;

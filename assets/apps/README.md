@@ -9,7 +9,9 @@ Sources checked on 2026-07-22:
 
 - Van Cranenbroek: https://play.google.com/store/apps/details?id=nl.vancranenbroek&hl=nl&gl=NL
 - Lyzer Collect: https://play.google.com/store/apps/details?id=tech.lyzer.collect&hl=en
+- Lyzer Collect (App Store): https://apps.apple.com/pt/app/lyzer-collect/id6738952338
 - Lyzer Deliver: https://play.google.com/store/apps/details?id=tech.lyzer.deliver&hl=en
+- Lyzer Deliver (App Store): https://apps.apple.com/br/app/lyzer-deliver/id6748221787
 - MAG Venda Digital: https://play.google.com/store/apps/details?id=com.mongeralaegon.vendadigital&hl=en
 
 The portfolio links back to the corresponding public listing and labels store

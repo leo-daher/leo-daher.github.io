@@ -425,7 +425,7 @@ abstract class AppLocalizations {
   /// Google Play proof checked in July 2026.
   ///
   /// In en, this message translates to:
-  /// **'4.6 ★ · 179 ratings · 5K+ downloads'**
+  /// **'4.6 ★ · 179 ratings · 5K+'**
   String get vanCranenbroekPlayProof;
 
   /// App Store proof checked in July 2026.
@@ -461,14 +461,32 @@ abstract class AppLocalizations {
   /// Lyzer Collect Google Play proof.
   ///
   /// In en, this message translates to:
-  /// **'1K+ downloads · updated Jul 6, 2026'**
+  /// **'1K+ downloads'**
   String get lyzerCollectProof;
+
+  /// Supporting date for the Lyzer Collect Google Play proof.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated Jul 6, 2026 · Checked in July 2026.'**
+  String get lyzerCollectProofDetails;
 
   /// Lyzer Deliver Google Play proof.
   ///
   /// In en, this message translates to:
-  /// **'100+ downloads · updated Jul 14, 2026'**
+  /// **'100+ downloads'**
   String get lyzerDeliverProof;
+
+  /// Supporting date for the Lyzer Deliver Google Play proof.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated Jul 14, 2026 · Checked in July 2026.'**
+  String get lyzerDeliverProofDetails;
+
+  /// Lyzer availability proof from the App Store.
+  ///
+  /// In en, this message translates to:
+  /// **'Available for iPhone'**
+  String get lyzerAppStoreProof;
 
   /// MAG Venda Digital case context.
   ///
@@ -497,8 +515,14 @@ abstract class AppLocalizations {
   /// MAG Venda Digital Google Play proof.
   ///
   /// In en, this message translates to:
-  /// **'Active app · 1K+ downloads · updated Jul 16, 2026'**
+  /// **'Active app · 1K+ downloads'**
   String get magPlayProof;
+
+  /// Supporting date for the MAG Venda Digital Google Play proof.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated Jul 16, 2026 · Checked in July 2026.'**
+  String get magPlayProofDetails;
 
   /// System section eyebrow.
   ///
