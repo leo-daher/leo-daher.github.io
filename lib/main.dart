@@ -510,8 +510,9 @@ class _Footer extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 1240),
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final compact = constraints.maxWidth < 620;
+              final stacked = constraints.maxWidth < 1100;
               final signature = Row(
+                key: const Key('footer-signature'),
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
@@ -530,11 +531,12 @@ class _Footer extends StatelessWidget {
                   ),
                 ],
               );
-              if (compact) {
+              if (stacked) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
+                      key: const Key('footer-invitation'),
                       context.l10n.footerInvitation,
                       style: const TextStyle(
                         fontSize: 18,
@@ -550,6 +552,7 @@ class _Footer extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
+                      key: const Key('footer-invitation'),
                       context.l10n.footerInvitation,
                       style: const TextStyle(
                         fontSize: 18,

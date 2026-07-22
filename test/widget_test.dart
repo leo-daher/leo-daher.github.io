@@ -334,6 +334,35 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('stacks the iPad portrait footer clear of the FAB', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1024, 1366);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await _finishOpening(tester);
+
+    await tester.drag(
+      find.byKey(const Key('portfolio-scroll-view')),
+      const Offset(0, -10000),
+    );
+    await tester.pumpAndSettle();
+
+    final invitation = find.byKey(const Key('footer-invitation'));
+    final signature = find.byKey(const Key('footer-signature'));
+    final fab = find.byKey(const Key('portfolio-floating-action'));
+    final invitationRect = tester.getRect(invitation);
+    final signatureRect = tester.getRect(signature);
+
+    expect(signatureRect.top, greaterThan(invitationRect.bottom));
+    expect(signatureRect.left, closeTo(invitationRect.left, .01));
+    expect(signatureRect.overlaps(tester.getRect(fab)), isFalse);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('keeps the map full-width with details and client logos below', (
     tester,
   ) async {
