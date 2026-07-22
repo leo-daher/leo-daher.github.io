@@ -237,14 +237,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Atualizado em 16 jul. 2026 · Consultado em julho de 2026.';
 
   @override
-  String get systemEyebrow => 'ARQUITETURA PONTA A PONTA';
-
-  @override
-  String get systemTitle => 'Eu desenho e entrego produtos ponta a ponta.';
-
-  @override
-  String get systemCopy =>
-      'Dos fluxos de produto e estado offline às APIs, dados, CI/CD e operação em produção. IA e automação entram onde geram ganho prático.';
+  String get systemTitle => 'Arquitetura de produto ponta a ponta.';
 
   @override
   String get architectureProductTitle => 'Produto e mobile';

@@ -40,11 +40,7 @@ class SystemOverviewSection extends StatelessWidget {
         key: const Key('architecture-section'),
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PortfolioSectionHeading(
-            eyebrow: l10n.systemEyebrow,
-            title: l10n.systemTitle,
-            copy: l10n.systemCopy,
-          ),
+          PortfolioSectionHeading(title: l10n.systemTitle),
           const SizedBox(height: 36),
           LayoutBuilder(
             builder: (context, constraints) {

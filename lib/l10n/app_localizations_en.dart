@@ -237,14 +237,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Updated Jul 16, 2026 · Checked in July 2026.';
 
   @override
-  String get systemEyebrow => 'END-TO-END ARCHITECTURE';
-
-  @override
-  String get systemTitle => 'I architect and deliver products end to end.';
-
-  @override
-  String get systemCopy =>
-      'From product flows and offline state to APIs, data, CI/CD, and production operations. AI and automation enter where they add practical leverage.';
+  String get systemTitle => 'End-to-end product architecture.';
 
   @override
   String get architectureProductTitle => 'Product and mobile';

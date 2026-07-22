@@ -318,7 +318,7 @@ void main() {
     expect(find.bySemanticsLabel('Open navigation menu'), findsOneWidget);
     expect(find.text('Code with visible impact.'), findsNothing);
     final headingY = tester
-        .getTopLeft(find.text('I architect and deliver products end to end.'))
+        .getTopLeft(find.text('End-to-end product architecture.'))
         .dy;
     expect(headingY, inInclusiveRange(0, 180));
     expect(tester.takeException(), isNull);

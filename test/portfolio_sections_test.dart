@@ -141,10 +141,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('END-TO-END ARCHITECTURE'), findsOneWidget);
+      expect(find.text('End-to-end product architecture.'), findsOneWidget);
+      expect(find.text('END-TO-END ARCHITECTURE'), findsNothing);
       expect(
-        find.text('I architect and deliver products end to end.'),
-        findsOneWidget,
+        find.textContaining('From product flows and offline state'),
+        findsNothing,
       );
       expect(find.text('Product and mobile'), findsOneWidget);
       expect(find.text('Services and data'), findsOneWidget);

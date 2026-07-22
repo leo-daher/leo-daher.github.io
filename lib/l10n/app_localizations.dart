@@ -524,23 +524,11 @@ abstract class AppLocalizations {
   /// **'Updated Jul 16, 2026 · Checked in July 2026.'**
   String get magPlayProofDetails;
 
-  /// System section eyebrow.
-  ///
-  /// In en, this message translates to:
-  /// **'END-TO-END ARCHITECTURE'**
-  String get systemEyebrow;
-
   /// System section title.
   ///
   /// In en, this message translates to:
-  /// **'I architect and deliver products end to end.'**
+  /// **'End-to-end product architecture.'**
   String get systemTitle;
-
-  /// End-to-end architecture supporting copy.
-  ///
-  /// In en, this message translates to:
-  /// **'From product flows and offline state to APIs, data, CI/CD, and production operations. AI and automation enter where they add practical leverage.'**
-  String get systemCopy;
 
   /// Product architecture scope title.
   ///
