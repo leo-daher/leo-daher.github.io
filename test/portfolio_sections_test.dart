@@ -175,6 +175,9 @@ void main() {
     expect(github.uri, Uri.parse('https://github.com/leo-daher'));
     expect(whatsApp.uri, Uri.parse('https://wa.me/5521999997667'));
     expect(schedule.uri, Uri.parse('https://calendly.com/leonedaher/30min'));
+    expect(find.byKey(const Key('contact-icon-linkedin')), findsOneWidget);
+    expect(find.byKey(const Key('contact-icon-whatsapp')), findsOneWidget);
+    expect(find.byKey(const Key('contact-icon-github')), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

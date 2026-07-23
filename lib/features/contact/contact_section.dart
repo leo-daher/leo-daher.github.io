@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
@@ -28,7 +29,7 @@ class ContactSection extends StatelessWidget {
         label: l10n.contactLinkedIn,
         supportingText: l10n.contactLinkedInCopy,
         uri: _linkedinUri,
-        icon: Icons.work_outline_rounded,
+        iconAsset: 'assets/brand/linkedin-symbol.svg',
       ),
       _ContactDestination(
         key: const Key('contact-link-whatsapp'),
@@ -36,7 +37,7 @@ class ContactSection extends StatelessWidget {
         label: l10n.contactWhatsApp,
         supportingText: l10n.contactWhatsAppCopy,
         uri: _whatsAppUri,
-        icon: Icons.chat_bubble_outline_rounded,
+        iconAsset: 'assets/brand/whatsapp-symbol.svg',
         emphasized: true,
         isLead: true,
       ),
@@ -46,7 +47,7 @@ class ContactSection extends StatelessWidget {
         label: l10n.contactGitHub,
         supportingText: l10n.contactGitHubCopy,
         uri: _githubUri,
-        icon: Icons.code_rounded,
+        iconAsset: 'assets/brand/github-symbol.svg',
       ),
       _ContactDestination(
         key: const Key('contact-link-schedule'),
@@ -108,17 +109,19 @@ class _ContactDestination {
     required this.label,
     required this.supportingText,
     required this.uri,
-    required this.icon,
+    this.icon,
+    this.iconAsset,
     this.emphasized = false,
     this.isLead = false,
-  });
+  }) : assert(icon != null || iconAsset != null);
 
   final Key key;
   final String analyticsId;
   final String label;
   final String supportingText;
   final Uri uri;
-  final IconData icon;
+  final IconData? icon;
+  final String? iconAsset;
   final bool emphasized;
   final bool isLead;
 }
@@ -182,7 +185,21 @@ class _ContactCard extends StatelessWidget {
                         color: accent.withValues(alpha: .1),
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      child: Icon(destination.icon, color: accent, size: 22),
+                      child: destination.iconAsset == null
+                          ? Icon(destination.icon!, color: accent, size: 22)
+                          : SvgPicture.asset(
+                              destination.iconAsset!,
+                              key: Key(
+                                'contact-icon-${destination.analyticsId}',
+                              ),
+                              width: 22,
+                              height: 22,
+                              colorFilter: ColorFilter.mode(
+                                accent,
+                                BlendMode.srcIn,
+                              ),
+                              excludeFromSemantics: true,
+                            ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
