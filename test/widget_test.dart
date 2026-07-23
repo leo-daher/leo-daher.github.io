@@ -127,6 +127,7 @@ void main() {
     final stage = find.byKey(const Key('hero-viewport-stage'));
     final navigation = find.byKey(const Key('hero-interface-navigation'));
     final message = find.byKey(const Key('hero-interface-message'));
+    final desktopInput = find.byKey(const Key('hero-desktop-input-sketch'));
 
     expect(find.byKey(const Key('ld-viewport-frame-action')), findsNothing);
     expect(
@@ -147,6 +148,12 @@ void main() {
         tester.getTopLeft(navigation) - desktopFrameOrigin;
     final desktopMessage = tester.getTopLeft(message) - desktopFrameOrigin;
     expect(desktopSize.width, greaterThan(desktopSize.height));
+    expect(desktopInput, findsOneWidget);
+    expect(tester.widget<Opacity>(desktopInput).opacity, closeTo(.38, .001));
+    expect(
+      tester.getTopLeft(desktopInput).dy,
+      greaterThan(tester.getBottomLeft(frame).dy),
+    );
     expect(desktopNavigation.dx, lessThan(desktopMessage.dx));
     expect(
       tester.getTopLeft(frame).dy,
@@ -165,6 +172,7 @@ void main() {
     final mobileNavigation = tester.getTopLeft(navigation) - mobileFrameOrigin;
     final mobileMessage = tester.getTopLeft(message) - mobileFrameOrigin;
     expect(mobileSize.height, greaterThan(mobileSize.width));
+    expect(tester.widget<Opacity>(desktopInput).opacity, 0);
     expect(mobileNavigation.dy, greaterThan(mobileMessage.dy));
     expect(find.text('YOUR IDEAS.\nEVERYWHERE.'), findsOneWidget);
     expect(

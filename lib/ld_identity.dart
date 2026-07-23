@@ -460,6 +460,13 @@ class LdViewportMorph {
 typedef LdViewportBuilder =
     Widget Function(BuildContext context, LdViewportMorph morph);
 
+typedef LdViewportAccessoryBuilder =
+    Widget Function(
+      BuildContext context,
+      LdViewportMorph morph,
+      Size frameSize,
+    );
+
 @immutable
 class LdViewportFrameSpec {
   const LdViewportFrameSpec({
@@ -481,6 +488,8 @@ class LdViewportStage extends StatefulWidget {
     this.initialPreset = LdViewportPreset.desktop,
     this.spacing = 18,
     this.alignment = Alignment.center,
+    this.accessoryBuilder,
+    this.accessorySpacing = 14,
   }) : assert(frames.length > 0);
 
   final List<LdViewportFrameSpec> frames;
@@ -488,6 +497,8 @@ class LdViewportStage extends StatefulWidget {
   final LdViewportPreset initialPreset;
   final double spacing;
   final Alignment alignment;
+  final LdViewportAccessoryBuilder? accessoryBuilder;
+  final double accessorySpacing;
 
   @override
   State<LdViewportStage> createState() => _LdViewportStageState();
@@ -582,36 +593,58 @@ class _LdViewportStageState extends State<LdViewportStage>
             );
             return Align(
               alignment: widget.alignment,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+              child: Stack(
+                clipBehavior: Clip.none,
                 children: [
-                  for (
-                    var index = 0;
-                    index < widget.frames.length;
-                    index++
-                  ) ...[
-                    if (index > 0) SizedBox(height: widget.spacing),
-                    Semantics(
-                      key: Key(
-                        'ld-viewport-semantics-${widget.frames[index].id}',
-                      ),
-                      container: true,
-                      label: context.l10n.everySurface,
-                      value: _to.name,
-                      child: SizedBox(
-                        key: Key(
-                          'ld-viewport-frame-${widget.frames[index].id}',
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      for (
+                        var index = 0;
+                        index < widget.frames.length;
+                        index++
+                      ) ...[
+                        if (index > 0) SizedBox(height: widget.spacing),
+                        Semantics(
+                          key: Key(
+                            'ld-viewport-semantics-${widget.frames[index].id}',
+                          ),
+                          container: true,
+                          label: context.l10n.everySurface,
+                          value: _to.name,
+                          child: SizedBox(
+                            key: Key(
+                              'ld-viewport-frame-${widget.frames[index].id}',
+                            ),
+                            width: frameSize.width,
+                            height: frameSize.height,
+                            child: LdFrame(
+                              showActionButton:
+                                  widget.frames[index].showActionButton,
+                              child: widget.frames[index].builder(
+                                context,
+                                morph,
+                              ),
+                            ),
+                          ),
                         ),
-                        width: frameSize.width,
-                        height: frameSize.height,
-                        child: LdFrame(
-                          showActionButton:
-                              widget.frames[index].showActionButton,
-                          child: widget.frames[index].builder(context, morph),
-                        ),
+                      ],
+                    ],
+                  ),
+                  if (widget.accessoryBuilder != null)
+                    Positioned(
+                      top:
+                          frameSize.height * widget.frames.length +
+                          totalSpacing +
+                          widget.accessorySpacing,
+                      left: 0,
+                      right: 0,
+                      child: widget.accessoryBuilder!(
+                        context,
+                        morph,
+                        frameSize,
                       ),
                     ),
-                  ],
                 ],
               ),
             );

@@ -103,6 +103,7 @@ class PortfolioHero extends StatelessWidget {
                     Expanded(
                       child: _BrandedViewportFrame(
                         autoPlay: autoPlay,
+                        showDesktopAccessories: compact,
                         alignment: compact
                             ? Alignment.topCenter
                             : Alignment.center,
@@ -122,10 +123,12 @@ class PortfolioHero extends StatelessWidget {
 class _BrandedViewportFrame extends StatelessWidget {
   const _BrandedViewportFrame({
     required this.autoPlay,
+    required this.showDesktopAccessories,
     required this.alignment,
   });
 
   final bool autoPlay;
+  final bool showDesktopAccessories;
   final Alignment alignment;
 
   @override
@@ -136,6 +139,10 @@ class _BrandedViewportFrame extends StatelessWidget {
           key: const Key('hero-viewport-stage'),
           autoPlay: autoPlay,
           alignment: alignment,
+          accessoryBuilder: showDesktopAccessories
+              ? (context, morph, frameSize) =>
+                    _DesktopInputSketch(morph: morph, frameSize: frameSize)
+              : null,
           frames: [
             LdViewportFrameSpec(
               id: 'content',
@@ -147,6 +154,106 @@ class _BrandedViewportFrame extends StatelessWidget {
       ),
     );
   }
+}
+
+class _DesktopInputSketch extends StatelessWidget {
+  const _DesktopInputSketch({required this.morph, required this.frameSize});
+
+  final LdViewportMorph morph;
+  final Size frameSize;
+
+  @override
+  Widget build(BuildContext context) {
+    final desktopPresence = switch ((morph.from, morph.to)) {
+      (LdViewportPreset.desktop, LdViewportPreset.desktop) => 1.0,
+      (LdViewportPreset.desktop, _) => 1 - morph.progress,
+      (_, LdViewportPreset.desktop) => morph.progress,
+      _ => 0.0,
+    };
+    final height = (frameSize.width * .26).clamp(82.0, 112.0);
+    return IgnorePointer(
+      child: Opacity(
+        key: const Key('hero-desktop-input-sketch'),
+        opacity: desktopPresence * .38,
+        child: Transform.translate(
+          offset: Offset(0, (1 - desktopPresence) * 8),
+          child: CustomPaint(
+            size: Size(frameSize.width, height),
+            painter: _DesktopInputPainter(color: context.leonePalette.mutedInk),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DesktopInputPainter extends CustomPainter {
+  const _DesktopInputPainter({required this.color});
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final stroke = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.15
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
+
+    final keyboard = Rect.fromLTWH(
+      size.width * .11,
+      size.height * .08,
+      size.width * .62,
+      size.height * .68,
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(keyboard, const Radius.circular(10)),
+      stroke,
+    );
+
+    final keyLeft = keyboard.left + keyboard.width * .08;
+    final keyRight = keyboard.right - keyboard.width * .08;
+    final keyWidth = (keyRight - keyLeft) / 10;
+    for (var row = 0; row < 3; row++) {
+      final y = keyboard.top + keyboard.height * (.23 + row * .20);
+      final inset = row == 1 ? keyWidth * .35 : 0.0;
+      for (var key = 0; key < 9; key++) {
+        final x = keyLeft + inset + key * keyWidth;
+        canvas.drawLine(Offset(x, y), Offset(x + keyWidth * .48, y), stroke);
+      }
+    }
+    canvas.drawLine(
+      Offset(keyboard.left + keyboard.width * .34, keyboard.bottom - 11),
+      Offset(keyboard.right - keyboard.width * .34, keyboard.bottom - 11),
+      stroke,
+    );
+
+    final mouse = Rect.fromLTWH(
+      size.width * .80,
+      size.height * .12,
+      size.width * .09,
+      size.height * .58,
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(mouse, Radius.circular(mouse.width * .48)),
+      stroke,
+    );
+    canvas.drawLine(
+      Offset(mouse.center.dx, mouse.top + mouse.height * .08),
+      Offset(mouse.center.dx, mouse.top + mouse.height * .34),
+      stroke,
+    );
+    canvas.drawLine(
+      Offset(mouse.center.dx, mouse.top + mouse.height * .17),
+      Offset(mouse.center.dx, mouse.top + mouse.height * .23),
+      stroke..strokeWidth = 2.2,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _DesktopInputPainter oldDelegate) =>
+      oldDelegate.color != color;
 }
 
 class _IdentityFrameContent extends StatelessWidget {
