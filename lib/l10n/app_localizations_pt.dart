@@ -116,16 +116,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get proofPlatformsLabel => 'publicação em lojas oficiais';
 
   @override
-  String get proofMarketsValue => 'Brasil + Europa';
+  String get proofMarketsValue => 'LATAM · USA · EU';
 
   @override
   String get proofMarketsLabel => 'produtos para mercados reais';
 
   @override
-  String get proofCheckedValue => 'JUL 2026';
+  String get proofDownloadsValue => '≈20 mil';
 
   @override
-  String get proofCheckedLabel => 'dados das lojas consultados';
+  String get proofDownloadsLabel => 'downloads estimados entre os apps';
 
   @override
   String get productionAppsSemanticLabel =>
@@ -174,7 +174,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vanCranenbroekPlayProof => '4,6 ★ · 179 avaliações · 5 mil+';
 
   @override
-  String get vanCranenbroekAppStoreProof => '4,7 ★ · 143 avaliações';
+  String get vanCranenbroekAppStoreProof =>
+      '4,7 ★ · 143 avaliações · 6.511 primeiros downloads';
 
   @override
   String get lyzerContext => 'Logística · Portugal · Flutter · Android e iOS';

@@ -39,6 +39,12 @@ void main() {
     );
     expect(lyzer.contribution, contains('proprietary GetX-based engine'));
     expect(van.accent, const Color(0xFF008932));
+    expect(
+      van.storeProof
+          .singleWhere((proof) => proof.store == ProductionAppStore.appStore)
+          .evidence,
+      '4.7 ★ · 143 ratings · 6,511 first-time downloads',
+    );
     expect(lyzer.accent, LeoneBrandColors.editorialWarm);
     expect(mag.accent, LeoneBrandColors.intelligence);
     expect(lyzer.storeProof, hasLength(4));

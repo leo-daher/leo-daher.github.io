@@ -311,7 +311,7 @@ abstract class AppLocalizations {
   /// Markets represented by highlighted apps.
   ///
   /// In en, this message translates to:
-  /// **'Brazil + Europe'**
+  /// **'LATAM · USA · EU'**
   String get proofMarketsValue;
 
   /// Market proof label.
@@ -320,17 +320,17 @@ abstract class AppLocalizations {
   /// **'products for real markets'**
   String get proofMarketsLabel;
 
-  /// Store data consultation month.
+  /// Estimated combined downloads across highlighted apps.
   ///
   /// In en, this message translates to:
-  /// **'JUL 2026'**
-  String get proofCheckedValue;
+  /// **'≈20K'**
+  String get proofDownloadsValue;
 
-  /// Store data recency label.
+  /// Combined app download estimate label.
   ///
   /// In en, this message translates to:
-  /// **'store data checked'**
-  String get proofCheckedLabel;
+  /// **'estimated downloads across apps'**
+  String get proofDownloadsLabel;
 
   /// Accessible production apps section label.
   ///
@@ -416,10 +416,10 @@ abstract class AppLocalizations {
   /// **'4.6 ★ · 179 ratings · 5K+'**
   String get vanCranenbroekPlayProof;
 
-  /// App Store proof checked in July 2026.
+  /// App Store rating and confirmed first-time downloads.
   ///
   /// In en, this message translates to:
-  /// **'4.7 ★ · 143 ratings'**
+  /// **'4.7 ★ · 143 ratings · 6,511 first-time downloads'**
   String get vanCranenbroekAppStoreProof;
 
   /// Lyzer case context.

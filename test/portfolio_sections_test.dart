@@ -124,13 +124,14 @@ void main() {
 
     expect(find.byKey(const Key('portfolio-proof-strip')), findsOneWidget);
     expect(find.text('Android + iOS'), findsOneWidget);
-    expect(find.text('Brazil + Europe'), findsOneWidget);
+    expect(find.text('LATAM · USA · EU'), findsOneWidget);
+    expect(find.text('≈20K'), findsOneWidget);
     final appsRect = tester.getRect(find.text('4'));
     final platformsRect = tester.getRect(find.text('Android + iOS'));
-    final marketsRect = tester.getRect(find.text('Brazil + Europe'));
-    final checkedRect = tester.getRect(find.text('JUL 2026'));
+    final marketsRect = tester.getRect(find.text('LATAM · USA · EU'));
+    final downloadsRect = tester.getRect(find.text('≈20K'));
     expect(appsRect.top, closeTo(platformsRect.top, 8));
-    expect(marketsRect.top, closeTo(checkedRect.top, 8));
+    expect(marketsRect.top, closeTo(downloadsRect.top, 8));
     expect(appsRect.right, lessThan(platformsRect.left));
     expect(marketsRect.top, greaterThan(appsRect.bottom));
     expect(
