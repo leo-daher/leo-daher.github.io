@@ -139,6 +139,7 @@ class _BrandedViewportFrame extends StatelessWidget {
           key: const Key('hero-viewport-stage'),
           autoPlay: autoPlay,
           alignment: alignment,
+          mobilePresetScale: .68,
           accessoryBuilder: showDesktopAccessories
               ? (context, morph, frameSize) =>
                     _DesktopInputSketch(morph: morph, frameSize: frameSize)

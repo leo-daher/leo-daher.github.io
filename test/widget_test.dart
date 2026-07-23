@@ -172,12 +172,13 @@ void main() {
     final mobileNavigation = tester.getTopLeft(navigation) - mobileFrameOrigin;
     final mobileMessage = tester.getTopLeft(message) - mobileFrameOrigin;
     expect(mobileSize.height, greaterThan(mobileSize.width));
+    expect(mobileSize.width / desktopSize.width, closeTo(.68, .01));
     expect(tester.widget<Opacity>(desktopInput).opacity, 0);
     expect(mobileNavigation.dy, greaterThan(mobileMessage.dy));
     expect(find.text('YOUR IDEAS.\nEVERYWHERE.'), findsOneWidget);
     expect(
       tester.getBottomRight(frame).dy,
-      greaterThan(tester.view.physicalSize.height),
+      lessThanOrEqualTo(tester.view.physicalSize.height),
     );
 
     await tester.pump(LeoneBrandMotion.viewportHold);

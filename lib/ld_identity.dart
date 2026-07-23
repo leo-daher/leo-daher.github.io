@@ -490,7 +490,9 @@ class LdViewportStage extends StatefulWidget {
     this.alignment = Alignment.center,
     this.accessoryBuilder,
     this.accessorySpacing = 14,
-  }) : assert(frames.length > 0);
+    this.mobilePresetScale = 1,
+  }) : assert(frames.length > 0),
+       assert(mobilePresetScale > 0 && mobilePresetScale <= 1);
 
   final List<LdViewportFrameSpec> frames;
   final bool autoPlay;
@@ -499,6 +501,7 @@ class LdViewportStage extends StatefulWidget {
   final Alignment alignment;
   final LdViewportAccessoryBuilder? accessoryBuilder;
   final double accessorySpacing;
+  final double mobilePresetScale;
 
   @override
   State<LdViewportStage> createState() => _LdViewportStageState();
@@ -583,8 +586,8 @@ class _LdViewportStageState extends State<LdViewportStage>
             final progress = _motionDisabled
                 ? 1.0
                 : LeoneBrandMotion.viewportCurve.transform(_controller.value);
-            final fromSize = _fitDesignSize(_from.designSize, frameBounds);
-            final toSize = _fitDesignSize(_to.designSize, frameBounds);
+            final fromSize = _fitPresetSize(_from, frameBounds);
+            final toSize = _fitPresetSize(_to, frameBounds);
             final frameSize = Size.lerp(fromSize, toSize, progress)!;
             final morph = LdViewportMorph(
               from: _from,
@@ -661,6 +664,13 @@ class _LdViewportStageState extends State<LdViewportStage>
       bounds.height / design.height,
     );
     return Size(design.width * scale, design.height * scale);
+  }
+
+  Size _fitPresetSize(LdViewportPreset preset, Size bounds) {
+    final fitted = _fitDesignSize(preset.designSize, bounds);
+    return preset == LdViewportPreset.mobile
+        ? fitted * widget.mobilePresetScale
+        : fitted;
   }
 }
 
