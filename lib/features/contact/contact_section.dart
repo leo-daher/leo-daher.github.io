@@ -3,6 +3,7 @@ import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
 import '../../l10n/l10n.dart';
+import '../../telemetry/portfolio_telemetry.dart';
 import '../shared/portfolio_section_heading.dart';
 
 class ContactSection extends StatelessWidget {
@@ -146,7 +147,15 @@ class _ContactCard extends StatelessWidget {
           ),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
-            onTap: followLink,
+            onTap: followLink == null
+                ? null
+                : () {
+                    PortfolioTelemetry.outboundLink(
+                      destination.label,
+                      destination.uri,
+                    );
+                    followLink();
+                  },
             child: ConstrainedBox(
               constraints: const BoxConstraints(minHeight: 132),
               child: Padding(
