@@ -147,8 +147,9 @@ abstract final class LeoneBrandMotion {
   static const viewportHold = Duration(milliseconds: 4800);
   static const Curve viewportCurve = Curves.easeInOutCubic;
 
-  static const fabMenuExpand = Duration(milliseconds: 420);
-  static const fabMenuCollapse = Duration(milliseconds: 320);
+  static const fabMenuExpand = Duration(milliseconds: 360);
+  static const fabMenuCollapse = Duration(milliseconds: 260);
+  static const Curve fabMenuSpatialCurve = Cubic(0.2, 0, 0, 1);
 }
 
 abstract final class LeoneBrandTheme {

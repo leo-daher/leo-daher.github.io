@@ -449,10 +449,10 @@ class _StaggeredFabMenuItem extends StatelessWidget {
 
   double _progress() {
     final revealOrder = itemCount - 1 - index;
-    final start = revealOrder * .09;
-    final end = (start + .7).clamp(0.0, 1.0);
+    final start = revealOrder * .065;
+    final end = (start + .74).clamp(0.0, 1.0);
     final value = ((animation.value - start) / (end - start)).clamp(0.0, 1.0);
-    return Curves.easeOutCubic.transform(value);
+    return LeoneBrandMotion.fabMenuSpatialCurve.transform(value);
   }
 
   @override
@@ -475,11 +475,11 @@ class _StaggeredFabMenuItem extends StatelessWidget {
               ignoring: !visible,
               child: Opacity(
                 opacity: progress,
-                child: ClipRect(
-                  child: Align(
+                child: Transform.translate(
+                  offset: Offset(0, 10 * (1 - progress)),
+                  child: Transform.scale(
                     alignment: Alignment.centerRight,
-                    widthFactor: progress,
-                    heightFactor: progress,
+                    scaleX: .82 + (.18 * progress),
                     child: Padding(
                       padding: EdgeInsets.only(bottom: isLast ? 0 : 4),
                       child: child,
