@@ -3,6 +3,7 @@ import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
 import '../../l10n/l10n.dart';
+import '../../telemetry/portfolio_telemetry.dart';
 import '../shared/portfolio_section_heading.dart';
 import 'certificate_catalog.dart';
 
@@ -38,6 +39,7 @@ class _CertificationsContent extends StatelessWidget {
   final CertificateCatalog catalog;
 
   void _openRegister(BuildContext context) {
+    PortfolioTelemetry.certificateAction('open_register');
     showDialog<void>(
       context: context,
       builder: (context) => _CertificateRegisterDialog(catalog: catalog),
@@ -209,6 +211,10 @@ class _CertificateRegisterDialogState
   void _clearFilters() => setState(_selectedTechnologies.clear);
 
   void _openPreview(BuildContext context, CertificateRecord certificate) {
+    PortfolioTelemetry.certificateAction(
+      'open_preview',
+      certificateId: certificate.id,
+    );
     showDialog<void>(
       context: context,
       builder: (context) => _CertificatePreviewDialog(certificate: certificate),
@@ -815,7 +821,19 @@ class _CertificatePreviewDialog extends StatelessWidget {
                     uri: certificate.verificationUrl,
                     target: LinkTarget.blank,
                     builder: (context, followLink) => FilledButton.icon(
-                      onPressed: followLink,
+                      onPressed: followLink == null
+                          ? null
+                          : () {
+                              PortfolioTelemetry.certificateAction(
+                                'verify',
+                                certificateId: certificate.id,
+                              );
+                              PortfolioTelemetry.outboundLink(
+                                'certificate_verification',
+                                certificate.verificationUrl,
+                              );
+                              followLink();
+                            },
                       icon: const Icon(Icons.verified_outlined, size: 18),
                       label: Text(l10n.verifyCredential),
                     ),

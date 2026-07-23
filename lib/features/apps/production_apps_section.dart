@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
+import '../../telemetry/portfolio_telemetry.dart';
 import '../shared/portfolio_section_heading.dart';
 import 'production_app_models.dart';
 
@@ -621,7 +622,18 @@ class _StoreProofChip extends StatelessWidget {
     return Link(
       uri: uri,
       target: LinkTarget.blank,
-      builder: (context, followLink) => _surface(context, followLink),
+      builder: (context, followLink) => _surface(
+        context,
+        followLink == null
+            ? null
+            : () {
+                PortfolioTelemetry.outboundLink(
+                  '${proof.productId}_${proof.store.name}',
+                  uri,
+                );
+                followLink();
+              },
+      ),
     );
   }
 

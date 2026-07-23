@@ -43,7 +43,12 @@ jobs:
         run: flutter test
 
       - name: Build web release
-        run: flutter build web --release --base-href /
+        run: >-
+          flutter build web --release --base-href /
+          --dart-define=GA_MEASUREMENT_ID=${{ vars.GA_MEASUREMENT_ID }}
+          --dart-define=SENTRY_DSN=${{ secrets.SENTRY_DSN }}
+          --dart-define=TELEMETRY_ENVIRONMENT=production
+          --dart-define=PORTFOLIO_RELEASE=${{ github.sha }}
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

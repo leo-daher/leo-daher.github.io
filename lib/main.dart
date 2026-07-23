@@ -15,8 +15,12 @@ import 'features/system/system_overview_section.dart';
 import 'ld_identity.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/l10n.dart';
+import 'telemetry/portfolio_telemetry.dart';
 
-void main() => runApp(const LeonePortfolioApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PortfolioTelemetry.initialize(() => runApp(const LeonePortfolioApp()));
+}
 
 const _green = LeoneBrandColors.interactive;
 
@@ -62,6 +66,7 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
     if (_locale?.languageCode == locale.languageCode) return;
     _localeChosenInSession = true;
     setState(() => _locale = locale);
+    PortfolioTelemetry.preferenceChanged('language', locale.languageCode);
     final preferences = await SharedPreferences.getInstance();
     await preferences.setString(_localePreferenceKey, locale.languageCode);
   }
@@ -70,6 +75,7 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
     if (_themeMode == themeMode) return;
     _themeChosenInSession = true;
     setState(() => _themeMode = themeMode);
+    PortfolioTelemetry.preferenceChanged('theme', themeMode.name);
     final preferences = await SharedPreferences.getInstance();
     await preferences.setString(_themePreferenceKey, themeMode.name);
   }
@@ -142,7 +148,12 @@ class _PortfolioEntryState extends State<_PortfolioEntry> {
           LdOpeningTransition(
             start: _homeMounted,
             onCompleted: () {
-              if (mounted) setState(() => _showOpening = false);
+              if (!mounted) return;
+              setState(() => _showOpening = false);
+              PortfolioTelemetry.portfolioViewed(
+                locale: Localizations.localeOf(context).languageCode,
+                theme: Theme.of(context).brightness.name,
+              );
             },
           ),
       ],
@@ -191,6 +202,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   }
 
   void _navigateTo(PortfolioDestination destination) {
+    PortfolioTelemetry.sectionSelected(destination.name);
     if (destination == PortfolioDestination.home) {
       if (!_scrollController.hasClients) return;
       _scrollController.animateTo(

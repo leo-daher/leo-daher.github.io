@@ -25,6 +25,35 @@ fvm flutter test
 fvm flutter build web
 ```
 
+## Telemetry
+
+Production supports two complementary dashboards:
+
+- Google Analytics 4 measures visits, acquisition, geography, devices, and
+  portfolio interactions.
+- Sentry captures unhandled errors, affected sessions, releases, and sampled
+  performance traces.
+
+Neither provider is enabled in local builds unless its configuration is
+supplied. To test both locally:
+
+```bash
+fvm flutter run -d chrome \
+  --dart-define=GA_MEASUREMENT_ID=G-XXXXXXXXXX \
+  --dart-define=SENTRY_DSN=https://PUBLIC_KEY@SENTRY_HOST/PROJECT_ID \
+  --dart-define=TELEMETRY_ENVIRONMENT=development
+```
+
+For GitHub Pages, create the repository variable `GA_MEASUREMENT_ID` and the
+Actions secret `SENTRY_DSN`. The deploy workflow supplies the commit SHA as the
+Sentry release automatically.
+
+The custom GA4 events are `portfolio_view`, `select_section`,
+`change_preference`, `select_outbound_link`, and `certificate_action`. Event
+parameters intentionally exclude names, email addresses, full outbound URLs,
+and other personal data. Google Signals and ad-personalization signals are
+disabled; Sentry default PII collection is disabled.
+
 ## Experience map
 
 The world-experience map remains available in `lib/world_experience_map.dart`,
