@@ -182,7 +182,9 @@ class PortfolioHomePage extends StatefulWidget {
 }
 
 class _PortfolioHomePageState extends State<PortfolioHomePage> {
+  static const _scrollDepthThresholds = [25, 50, 75, 90];
   final ScrollController _scrollController = ScrollController();
+  final Set<int> _reportedScrollDepths = {};
   final GlobalKey _appsSectionKey = GlobalKey(
     debugLabel: 'portfolio-apps-section',
   );
@@ -195,8 +197,31 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   final GlobalKey _contactSectionKey = GlobalKey(
     debugLabel: 'portfolio-contact-section',
   );
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_trackScrollDepth);
+  }
+
+  void _trackScrollDepth() {
+    if (!_scrollController.hasClients) return;
+    final maxScrollExtent = _scrollController.position.maxScrollExtent;
+    if (maxScrollExtent <= 0) return;
+    final percent = (_scrollController.offset / maxScrollExtent * 100).clamp(
+      0,
+      100,
+    );
+    for (final threshold in _scrollDepthThresholds) {
+      if (percent >= threshold && _reportedScrollDepths.add(threshold)) {
+        PortfolioTelemetry.scrollDepth(threshold);
+      }
+    }
+  }
+
   @override
   void dispose() {
+    _scrollController.removeListener(_trackScrollDepth);
     _scrollController.dispose();
     super.dispose();
   }

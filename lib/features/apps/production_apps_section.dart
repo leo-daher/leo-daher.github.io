@@ -630,6 +630,7 @@ class _StoreProofChip extends StatelessWidget {
                 PortfolioTelemetry.outboundLink(
                   '${proof.productId}_${proof.store.name}',
                   uri,
+                  linkType: 'app_store',
                 );
                 followLink();
               },

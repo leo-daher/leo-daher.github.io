@@ -24,6 +24,7 @@ class ContactSection extends StatelessWidget {
     final links = <_ContactDestination>[
       _ContactDestination(
         key: const Key('contact-link-linkedin'),
+        analyticsId: 'linkedin',
         label: l10n.contactLinkedIn,
         supportingText: l10n.contactLinkedInCopy,
         uri: _linkedinUri,
@@ -31,14 +32,17 @@ class ContactSection extends StatelessWidget {
       ),
       _ContactDestination(
         key: const Key('contact-link-whatsapp'),
+        analyticsId: 'whatsapp',
         label: l10n.contactWhatsApp,
         supportingText: l10n.contactWhatsAppCopy,
         uri: _whatsAppUri,
         icon: Icons.chat_bubble_outline_rounded,
         emphasized: true,
+        isLead: true,
       ),
       _ContactDestination(
         key: const Key('contact-link-github'),
+        analyticsId: 'github',
         label: l10n.contactGitHub,
         supportingText: l10n.contactGitHubCopy,
         uri: _githubUri,
@@ -46,10 +50,12 @@ class ContactSection extends StatelessWidget {
       ),
       _ContactDestination(
         key: const Key('contact-link-schedule'),
+        analyticsId: 'calendly',
         label: l10n.contactSchedule,
         supportingText: l10n.contactScheduleCopy,
         uri: _calendlyUri,
         icon: Icons.calendar_month_outlined,
+        isLead: true,
       ),
     ];
 
@@ -98,19 +104,23 @@ class ContactSection extends StatelessWidget {
 class _ContactDestination {
   const _ContactDestination({
     required this.key,
+    required this.analyticsId,
     required this.label,
     required this.supportingText,
     required this.uri,
     required this.icon,
     this.emphasized = false,
+    this.isLead = false,
   });
 
   final Key key;
+  final String analyticsId;
   final String label;
   final String supportingText;
   final Uri uri;
   final IconData icon;
   final bool emphasized;
+  final bool isLead;
 }
 
 class _ContactCard extends StatelessWidget {
@@ -150,9 +160,10 @@ class _ContactCard extends StatelessWidget {
             onTap: followLink == null
                 ? null
                 : () {
-                    PortfolioTelemetry.outboundLink(
-                      destination.label,
+                    PortfolioTelemetry.contactIntent(
+                      destination.analyticsId,
                       destination.uri,
+                      isLead: destination.isLead,
                     );
                     followLink();
                   },
