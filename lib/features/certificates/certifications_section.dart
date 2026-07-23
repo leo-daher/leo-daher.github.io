@@ -831,6 +831,7 @@ class _CertificatePreviewDialog extends StatelessWidget {
                               PortfolioTelemetry.outboundLink(
                                 'certificate_verification',
                                 certificate.verificationUrl,
+                                linkType: 'certificate',
                               );
                               followLink();
                             },

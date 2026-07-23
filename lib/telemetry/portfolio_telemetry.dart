@@ -57,16 +57,41 @@ class PortfolioTelemetry {
     required String theme,
   }) => event('portfolio_view', {'locale': locale, 'theme': theme});
 
-  static void sectionSelected(String section) =>
-      event('select_section', {'section': section});
+  static void sectionSelected(String section) => event('section_view', {
+    'section_name': section,
+    'navigation_type': 'menu',
+  });
 
   static void preferenceChanged(String preference, String value) =>
       event('change_preference', {'preference': preference, 'value': value});
 
-  static void outboundLink(String destination, Uri uri) => event(
-    'select_outbound_link',
-    {'destination': destination, 'host': uri.host},
-  );
+  static void scrollDepth(int percent) =>
+      event('scroll_depth', {'scroll_percent': percent});
+
+  static void outboundLink(
+    String destination,
+    Uri uri, {
+    String linkType = 'external',
+  }) => event('select_outbound_link', {
+    'destination': destination,
+    'link_type': linkType,
+    'link_domain': uri.host,
+    'link_url': uri.toString(),
+  });
+
+  static void contactIntent(String method, Uri uri, {required bool isLead}) {
+    outboundLink(method, uri, linkType: 'contact');
+    event('contact_intent', {
+      'contact_method': method,
+      'link_domain': uri.host,
+    });
+    if (isLead) {
+      event('generate_lead', {
+        'contact_method': method,
+        'link_domain': uri.host,
+      });
+    }
+  }
 
   static void certificateAction(String action, {String? certificateId}) =>
       event('certificate_action', {
