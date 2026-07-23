@@ -125,11 +125,13 @@ void main() {
 
     final frame = find.byKey(const Key('ld-viewport-frame-content'));
     final stage = find.byKey(const Key('hero-viewport-stage'));
+    final hero = find.byKey(const Key('portfolio-hero'));
     final navigation = find.byKey(const Key('hero-interface-navigation'));
     final message = find.byKey(const Key('hero-interface-message'));
     final desktopInput = find.byKey(const Key('hero-desktop-input-sketch'));
 
     expect(find.byKey(const Key('ld-viewport-frame-action')), findsNothing);
+    expect(tester.getSize(hero).height, 620);
     expect(
       find.byKey(const Key('hero-interface-secondary-card')),
       findsOneWidget,
@@ -172,13 +174,17 @@ void main() {
     final mobileNavigation = tester.getTopLeft(navigation) - mobileFrameOrigin;
     final mobileMessage = tester.getTopLeft(message) - mobileFrameOrigin;
     expect(mobileSize.height, greaterThan(mobileSize.width));
-    expect(mobileSize.width / desktopSize.width, closeTo(.68, .01));
+    expect(mobileSize.width / desktopSize.width, lessThan(.66));
     expect(tester.widget<Opacity>(desktopInput).opacity, 0);
     expect(mobileNavigation.dy, greaterThan(mobileMessage.dy));
     expect(find.text('YOUR IDEAS.\nEVERYWHERE.'), findsOneWidget);
     expect(
       tester.getBottomRight(frame).dy,
       lessThanOrEqualTo(tester.view.physicalSize.height),
+    );
+    expect(
+      tester.getBottomRight(hero).dy - tester.getBottomRight(frame).dy,
+      lessThan(110),
     );
 
     await tester.pump(LeoneBrandMotion.viewportHold);

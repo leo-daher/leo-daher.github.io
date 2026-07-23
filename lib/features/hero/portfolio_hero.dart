@@ -24,7 +24,8 @@ class PortfolioHero extends StatelessWidget {
         final roleSize = compact ? 30.0 : 48.0;
         const accent = _green;
         return Container(
-          height: compact ? 900 : 880,
+          key: const Key('portfolio-hero'),
+          height: compact ? 620 : 880,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: palette.canvas,
@@ -139,7 +140,7 @@ class _BrandedViewportFrame extends StatelessWidget {
           key: const Key('hero-viewport-stage'),
           autoPlay: autoPlay,
           alignment: alignment,
-          mobilePresetScale: .68,
+          mobilePresetScale: .82,
           accessoryBuilder: showDesktopAccessories
               ? (context, morph, frameSize) =>
                     _DesktopInputSketch(morph: morph, frameSize: frameSize)
@@ -459,13 +460,26 @@ class _NavigationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _Identifier(color: color),
-          const SizedBox(width: 5),
-          const Flexible(child: _SkeletonLine(widthFactor: .65)),
-        ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 18 || constraints.maxHeight < 7) {
+            final size = Size(
+              constraints.maxWidth,
+              constraints.maxHeight,
+            ).shortestSide.clamp(0.0, 5.0);
+            return Center(
+              child: _Identifier(color: color, size: size),
+            );
+          }
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _Identifier(color: color),
+              const SizedBox(width: 5),
+              const Flexible(child: _SkeletonLine(widthFactor: .65)),
+            ],
+          );
+        },
       ),
     );
   }
@@ -608,15 +622,16 @@ class _InterfaceIdentifiers extends StatelessWidget {
 }
 
 class _Identifier extends StatelessWidget {
-  const _Identifier({required this.color});
+  const _Identifier({required this.color, this.size = 7});
 
   final Color color;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 7,
-      height: 7,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(2.5),
