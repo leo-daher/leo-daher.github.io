@@ -80,7 +80,7 @@ void main() {
     expect(preferences.getString('portfolio_theme'), 'light');
   });
 
-  testWidgets('keeps Material navigation pinned with scroll-under elevation', (
+  testWidgets('keeps the top app bar pinned without a section navbar', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(1440, 1000);
@@ -97,11 +97,11 @@ void main() {
     expect(appBar.pinned, isTrue);
     expect(appBar.elevation, 0);
     expect(appBar.scrolledUnderElevation, 3);
-    expect(find.byKey(const Key('top-nav-home')), findsOneWidget);
-    expect(find.byKey(const Key('top-nav-apps')), findsOneWidget);
-    expect(find.byKey(const Key('top-nav-system')), findsOneWidget);
-    expect(find.byKey(const Key('top-nav-clients')), findsOneWidget);
-    expect(find.byKey(const Key('top-nav-contact')), findsOneWidget);
+    expect(find.byKey(const Key('top-nav-home')), findsNothing);
+    expect(find.byKey(const Key('top-nav-apps')), findsNothing);
+    expect(find.byKey(const Key('top-nav-system')), findsNothing);
+    expect(find.byKey(const Key('top-nav-clients')), findsNothing);
+    expect(find.byKey(const Key('top-nav-contact')), findsNothing);
   });
 
   testWidgets('routes the top CTA to apps and keeps Calendly in contact', (
@@ -134,6 +134,27 @@ void main() {
       Uri.parse('https://calendly.com/leonedaher/30min'),
     );
     expect(calendlyLink.target, LinkTarget.blank);
+  });
+
+  testWidgets('returns to the top when the header mark is tapped', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await _finishOpening(tester);
+
+    final scrollable = find.byKey(const Key('portfolio-scroll-view'));
+    await tester.drag(scrollable, const Offset(0, -900));
+    await tester.pumpAndSettle();
+
+    final position = tester
+        .state<ScrollableState>(find.byType(Scrollable).first)
+        .position;
+    expect(position.pixels, greaterThan(0));
+
+    await tester.tap(find.byKey(const Key('ld-topbar-mark')));
+    await tester.pumpAndSettle();
+
+    expect(position.pixels, 0);
   });
 
   testWidgets('morphs the FAB-free frame and reflows its complete interface', (

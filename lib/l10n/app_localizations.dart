@@ -380,6 +380,42 @@ abstract class AppLocalizations {
   /// **'Open app details'**
   String get openAppDetails;
 
+  /// Combined minimum store downloads and rounded-up average rating for Van Cranenbroek.
+  ///
+  /// In en, this message translates to:
+  /// **'11.5K+ across stores · 4.7 ★ average'**
+  String get vanCranenbroekStorefrontMetric;
+
+  /// Compact storefront summary for Lyzer Collect.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection and order preparation built for connected field operations.'**
+  String get lyzerCollectStorefrontSummary;
+
+  /// Public platform and minimum download proof for Lyzer Collect.
+  ///
+  /// In en, this message translates to:
+  /// **'Android + iOS · 1K+ downloads'**
+  String get lyzerCollectStorefrontMetric;
+
+  /// Compact storefront summary for Lyzer Deliver.
+  ///
+  /// In en, this message translates to:
+  /// **'Routes, offline execution, and proof of delivery for field teams.'**
+  String get lyzerDeliverStorefrontSummary;
+
+  /// Public platform and minimum download proof for Lyzer Deliver.
+  ///
+  /// In en, this message translates to:
+  /// **'Android + iOS · 100+ downloads'**
+  String get lyzerDeliverStorefrontMetric;
+
+  /// Public platform and minimum download proof for MAG Venda Digital.
+  ///
+  /// In en, this message translates to:
+  /// **'Android · 1K+ downloads'**
+  String get magStorefrontMetric;
+
   /// Production app role label.
   ///
   /// In en, this message translates to:

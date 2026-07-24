@@ -10,11 +10,13 @@ class ProductionAppsPresentation {
   const ProductionAppsPresentation({
     required this.content,
     required this.storefrontContent,
+    required this.storefrontItems,
     required this.apps,
   });
 
   final ProductionAppsSectionContent content;
   final ProductionAppsStorefrontContent storefrontContent;
+  final List<ProductionAppStorefrontItem> storefrontItems;
   final List<ProductionAppCase> apps;
 
   factory ProductionAppsPresentation.localized(AppLocalizations l10n) {
@@ -80,6 +82,206 @@ class ProductionAppsPresentation {
     );
     final magPlay = playStore('com.mongeralaegon.vendadigital');
 
+    final apps = <ProductionAppCase>[
+      ProductionAppCase(
+        id: 'van-cranenbroek',
+        semanticLabel: '$vanName. ${l10n.vanCranenbroekSummary}',
+        name: vanName,
+        contextLabel: l10n.vanCranenbroekContext,
+        summary: l10n.vanCranenbroekSummary,
+        role: l10n.vanCranenbroekRole,
+        contribution: l10n.vanCranenbroekContribution,
+        stack: const [
+          'Flutter',
+          'Riverpod',
+          'Kotlin',
+          'Firebase',
+          'Firestore',
+          'Python',
+          'CI/CD',
+        ],
+        iconAssetPaths: const ['assets/apps/van-cranenbroek-icon.png'],
+        screenshots: [
+          screenshot(vanName, 'assets/apps/van-cranenbroek-01.png', 0),
+          screenshot(vanName, 'assets/apps/van-cranenbroek-02.png', 1),
+          screenshot(vanName, 'assets/apps/van-cranenbroek-03.png', 2),
+        ],
+        storeProof: [
+          proof(
+            appName: vanName,
+            productId: 'van-cranenbroek',
+            store: ProductionAppStore.googlePlay,
+            evidence: l10n.vanCranenbroekPlayProof,
+            uri: vanPlay,
+          ),
+          proof(
+            appName: vanName,
+            productId: 'van-cranenbroek',
+            store: ProductionAppStore.appStore,
+            evidence: l10n.vanCranenbroekAppStoreProof,
+            uri: vanAppStore,
+          ),
+        ],
+        accent: _vanCranenbroekGreen,
+      ),
+      ProductionAppCase(
+        id: 'lyzer-collect-deliver',
+        semanticLabel: '$lyzerName. ${l10n.lyzerSummary}',
+        name: lyzerName,
+        contextLabel: l10n.lyzerContext,
+        summary: l10n.lyzerSummary,
+        role: l10n.lyzerRole,
+        contribution: l10n.lyzerContribution,
+        stack: const [
+          'Flutter',
+          'Android',
+          'iOS',
+          'Proprietary GetX engine',
+          'Offline-first',
+          'Barcode',
+          '.NET BFF',
+          'GraphQL',
+        ],
+        iconAssetPaths: const [
+          'assets/apps/lyzer-collect-icon.png',
+          'assets/apps/lyzer-deliver-icon.png',
+        ],
+        screenshots: [
+          screenshot(
+            'Lyzer Collect',
+            'assets/apps/lyzer-collect-01.png',
+            0,
+            caption: 'Collect',
+          ),
+          screenshot(
+            'Lyzer Collect',
+            'assets/apps/lyzer-collect-02.png',
+            1,
+            caption: 'Collect',
+          ),
+          screenshot(
+            'Lyzer Deliver',
+            'assets/apps/lyzer-deliver-01.png',
+            0,
+            caption: 'Deliver',
+          ),
+          screenshot(
+            'Lyzer Deliver',
+            'assets/apps/lyzer-deliver-02.png',
+            1,
+            caption: 'Deliver',
+          ),
+        ],
+        storeProof: [
+          proof(
+            appName: 'Lyzer Collect',
+            productId: 'lyzer-collect',
+            productLabel: 'Collect',
+            store: ProductionAppStore.googlePlay,
+            evidence: l10n.lyzerCollectProof,
+            uri: collectPlay,
+            supportingText: l10n.lyzerCollectProofDetails,
+          ),
+          proof(
+            appName: 'Lyzer Collect',
+            productId: 'lyzer-collect',
+            productLabel: 'Collect',
+            store: ProductionAppStore.appStore,
+            uri: collectAppStore,
+          ),
+          proof(
+            appName: 'Lyzer Deliver',
+            productId: 'lyzer-deliver',
+            productLabel: 'Deliver',
+            store: ProductionAppStore.googlePlay,
+            evidence: l10n.lyzerDeliverProof,
+            uri: deliverPlay,
+            supportingText: l10n.lyzerDeliverProofDetails,
+          ),
+          proof(
+            appName: 'Lyzer Deliver',
+            productId: 'lyzer-deliver',
+            productLabel: 'Deliver',
+            store: ProductionAppStore.appStore,
+            uri: deliverAppStore,
+          ),
+        ],
+        accent: LeoneBrandColors.editorialWarm,
+      ),
+      ProductionAppCase(
+        id: 'mag-venda-digital',
+        semanticLabel: '$magName. ${l10n.magSummary}',
+        name: magName,
+        contextLabel: l10n.magContext,
+        summary: l10n.magSummary,
+        role: l10n.magRole,
+        contribution: l10n.magContribution,
+        stack: const [
+          'Android',
+          'Java',
+          'Kotlin',
+          'Realm',
+          'Firebase',
+          'Azure',
+        ],
+        iconAssetPaths: const ['assets/apps/mag-venda-digital-icon.jpg'],
+        screenshots: [
+          screenshot(magName, 'assets/apps/mag-venda-digital-01.jpg', 0),
+          screenshot(magName, 'assets/apps/mag-venda-digital-02.jpg', 1),
+          screenshot(magName, 'assets/apps/mag-venda-digital-03.jpg', 2),
+        ],
+        storeProof: [
+          proof(
+            appName: magName,
+            productId: 'mag-venda-digital',
+            store: ProductionAppStore.googlePlay,
+            evidence: l10n.magPlayProof,
+            uri: magPlay,
+            supportingText: l10n.magPlayProofDetails,
+          ),
+        ],
+        accent: LeoneBrandColors.intelligence,
+      ),
+    ];
+    final storefrontItems = <ProductionAppStorefrontItem>[
+      ProductionAppStorefrontItem(
+        id: 'van-cranenbroek',
+        appCaseId: 'van-cranenbroek',
+        name: vanName,
+        summary: l10n.vanCranenbroekSummary,
+        metric: l10n.vanCranenbroekStorefrontMetric,
+        iconAssetPaths: const ['assets/apps/van-cranenbroek-icon.png'],
+        accent: _vanCranenbroekGreen,
+      ),
+      ProductionAppStorefrontItem(
+        id: 'lyzer-collect',
+        appCaseId: 'lyzer-collect-deliver',
+        name: 'Lyzer Collect',
+        summary: l10n.lyzerCollectStorefrontSummary,
+        metric: l10n.lyzerCollectStorefrontMetric,
+        iconAssetPaths: const ['assets/apps/lyzer-collect-icon.png'],
+        accent: LeoneBrandColors.editorialWarm,
+      ),
+      ProductionAppStorefrontItem(
+        id: 'lyzer-deliver',
+        appCaseId: 'lyzer-collect-deliver',
+        name: 'Lyzer Deliver',
+        summary: l10n.lyzerDeliverStorefrontSummary,
+        metric: l10n.lyzerDeliverStorefrontMetric,
+        iconAssetPaths: const ['assets/apps/lyzer-deliver-icon.png'],
+        accent: LeoneBrandColors.editorialWarm,
+      ),
+      ProductionAppStorefrontItem(
+        id: 'mag-venda-digital',
+        appCaseId: 'mag-venda-digital',
+        name: magName,
+        summary: l10n.magSummary,
+        metric: l10n.magStorefrontMetric,
+        iconAssetPaths: const ['assets/apps/mag-venda-digital-icon.jpg'],
+        accent: LeoneBrandColors.intelligence,
+      ),
+    ];
+
     return ProductionAppsPresentation(
       content: ProductionAppsSectionContent(
         semanticLabel: l10n.productionAppsSemanticLabel,
@@ -99,167 +301,8 @@ class ProductionAppsPresentation {
         allAppsSupportingText: l10n.allAppsSupportingText,
         openDetailsLabel: l10n.openAppDetails,
       ),
-      apps: [
-        ProductionAppCase(
-          id: 'van-cranenbroek',
-          semanticLabel: '$vanName. ${l10n.vanCranenbroekSummary}',
-          name: vanName,
-          contextLabel: l10n.vanCranenbroekContext,
-          summary: l10n.vanCranenbroekSummary,
-          role: l10n.vanCranenbroekRole,
-          contribution: l10n.vanCranenbroekContribution,
-          stack: const [
-            'Flutter',
-            'Riverpod',
-            'Kotlin',
-            'Firebase',
-            'Firestore',
-            'Python',
-            'CI/CD',
-          ],
-          iconAssetPaths: const ['assets/apps/van-cranenbroek-icon.png'],
-          screenshots: [
-            screenshot(vanName, 'assets/apps/van-cranenbroek-01.png', 0),
-            screenshot(vanName, 'assets/apps/van-cranenbroek-02.png', 1),
-            screenshot(vanName, 'assets/apps/van-cranenbroek-03.png', 2),
-          ],
-          storeProof: [
-            proof(
-              appName: vanName,
-              productId: 'van-cranenbroek',
-              store: ProductionAppStore.googlePlay,
-              evidence: l10n.vanCranenbroekPlayProof,
-              uri: vanPlay,
-            ),
-            proof(
-              appName: vanName,
-              productId: 'van-cranenbroek',
-              store: ProductionAppStore.appStore,
-              evidence: l10n.vanCranenbroekAppStoreProof,
-              uri: vanAppStore,
-            ),
-          ],
-          accent: _vanCranenbroekGreen,
-        ),
-        ProductionAppCase(
-          id: 'lyzer-collect-deliver',
-          semanticLabel: '$lyzerName. ${l10n.lyzerSummary}',
-          name: lyzerName,
-          contextLabel: l10n.lyzerContext,
-          summary: l10n.lyzerSummary,
-          role: l10n.lyzerRole,
-          contribution: l10n.lyzerContribution,
-          stack: const [
-            'Flutter',
-            'Android',
-            'iOS',
-            'Proprietary GetX engine',
-            'Offline-first',
-            'Barcode',
-            '.NET BFF',
-            'GraphQL',
-          ],
-          iconAssetPaths: const [
-            'assets/apps/lyzer-collect-icon.png',
-            'assets/apps/lyzer-deliver-icon.png',
-          ],
-          screenshots: [
-            screenshot(
-              'Lyzer Collect',
-              'assets/apps/lyzer-collect-01.png',
-              0,
-              caption: 'Collect',
-            ),
-            screenshot(
-              'Lyzer Collect',
-              'assets/apps/lyzer-collect-02.png',
-              1,
-              caption: 'Collect',
-            ),
-            screenshot(
-              'Lyzer Deliver',
-              'assets/apps/lyzer-deliver-01.png',
-              0,
-              caption: 'Deliver',
-            ),
-            screenshot(
-              'Lyzer Deliver',
-              'assets/apps/lyzer-deliver-02.png',
-              1,
-              caption: 'Deliver',
-            ),
-          ],
-          storeProof: [
-            proof(
-              appName: 'Lyzer Collect',
-              productId: 'lyzer-collect',
-              productLabel: 'Collect',
-              store: ProductionAppStore.googlePlay,
-              evidence: l10n.lyzerCollectProof,
-              uri: collectPlay,
-              supportingText: l10n.lyzerCollectProofDetails,
-            ),
-            proof(
-              appName: 'Lyzer Collect',
-              productId: 'lyzer-collect',
-              productLabel: 'Collect',
-              store: ProductionAppStore.appStore,
-              uri: collectAppStore,
-            ),
-            proof(
-              appName: 'Lyzer Deliver',
-              productId: 'lyzer-deliver',
-              productLabel: 'Deliver',
-              store: ProductionAppStore.googlePlay,
-              evidence: l10n.lyzerDeliverProof,
-              uri: deliverPlay,
-              supportingText: l10n.lyzerDeliverProofDetails,
-            ),
-            proof(
-              appName: 'Lyzer Deliver',
-              productId: 'lyzer-deliver',
-              productLabel: 'Deliver',
-              store: ProductionAppStore.appStore,
-              uri: deliverAppStore,
-            ),
-          ],
-          accent: LeoneBrandColors.editorialWarm,
-        ),
-        ProductionAppCase(
-          id: 'mag-venda-digital',
-          semanticLabel: '$magName. ${l10n.magSummary}',
-          name: magName,
-          contextLabel: l10n.magContext,
-          summary: l10n.magSummary,
-          role: l10n.magRole,
-          contribution: l10n.magContribution,
-          stack: const [
-            'Android',
-            'Java',
-            'Kotlin',
-            'Realm',
-            'Firebase',
-            'Azure',
-          ],
-          iconAssetPaths: const ['assets/apps/mag-venda-digital-icon.jpg'],
-          screenshots: [
-            screenshot(magName, 'assets/apps/mag-venda-digital-01.jpg', 0),
-            screenshot(magName, 'assets/apps/mag-venda-digital-02.jpg', 1),
-            screenshot(magName, 'assets/apps/mag-venda-digital-03.jpg', 2),
-          ],
-          storeProof: [
-            proof(
-              appName: magName,
-              productId: 'mag-venda-digital',
-              store: ProductionAppStore.googlePlay,
-              evidence: l10n.magPlayProof,
-              uri: magPlay,
-              supportingText: l10n.magPlayProofDetails,
-            ),
-          ],
-          accent: LeoneBrandColors.intelligence,
-        ),
-      ],
+      storefrontItems: storefrontItems,
+      apps: apps,
     );
   }
 }

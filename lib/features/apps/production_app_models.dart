@@ -47,6 +47,34 @@ class ProductionAppsStorefrontContent {
   final String openDetailsLabel;
 }
 
+/// A product entry shown in the compact storefront.
+///
+/// [appCaseId] lets related store products, such as Lyzer Collect and Lyzer
+/// Deliver, open a shared portfolio case without merging their store identity.
+@immutable
+class ProductionAppStorefrontItem {
+  const ProductionAppStorefrontItem({
+    required this.id,
+    required this.appCaseId,
+    required this.name,
+    required this.summary,
+    required this.metric,
+    this.iconAssetPaths = const [],
+    this.accent,
+  }) : assert(id.length > 0),
+       assert(appCaseId.length > 0),
+       assert(name.length > 0),
+       assert(metric.length > 0);
+
+  final String id;
+  final String appCaseId;
+  final String name;
+  final String summary;
+  final String metric;
+  final List<String> iconAssetPaths;
+  final Color? accent;
+}
+
 /// A production app or client product to present as a compact case study.
 @immutable
 class ProductionAppCase {
