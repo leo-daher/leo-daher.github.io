@@ -175,7 +175,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get vanCranenbroekAppStoreProof =>
-      '4,7 ★ · 143 avaliações · 6,5 mil+ primeiros downloads';
+      '4,7 ★ · 143 avaliações · 6,5 mil+';
 
   @override
   String get lyzerContext => 'Logística · Portugal · Flutter · Android e iOS';
