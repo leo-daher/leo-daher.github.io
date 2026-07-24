@@ -185,6 +185,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   static const _scrollDepthThresholds = [25, 50, 75, 90];
   final ScrollController _scrollController = ScrollController();
   final Set<int> _reportedScrollDepths = {};
+  PortfolioDestination _selectedDestination = PortfolioDestination.home;
   final GlobalKey _appsSectionKey = GlobalKey(
     debugLabel: 'portfolio-apps-section',
   );
@@ -228,6 +229,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
   void _navigateTo(PortfolioDestination destination) {
     PortfolioTelemetry.sectionSelected(destination.name);
+    if (_selectedDestination != destination) {
+      setState(() => _selectedDestination = destination);
+    }
     if (destination == PortfolioDestination.home) {
       if (!_scrollController.hasClients) return;
       _scrollController.animateTo(
@@ -266,12 +270,11 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
           key: const Key('portfolio-scroll-view'),
           controller: _scrollController,
           slivers: [
-            SliverToBoxAdapter(
-              child: _TopBar(
-                onLocaleChanged: widget.onLocaleChanged,
-                onThemeModeChanged: widget.onThemeModeChanged,
-                onViewApps: () => _navigateTo(PortfolioDestination.apps),
-              ),
+            _TopBar(
+              selectedDestination: _selectedDestination,
+              onLocaleChanged: widget.onLocaleChanged,
+              onThemeModeChanged: widget.onThemeModeChanged,
+              onSelected: _navigateTo,
             ),
             SliverToBoxAdapter(
               child: _SectionFrame(
@@ -289,12 +292,13 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               child: SizedBox(key: _appsSectionKey, height: 1),
             ),
             SliverToBoxAdapter(
-              child: ProductionAppsSection(
-                content: appsPresentation.content,
+              child: ProductionAppsStorefront(
+                content: appsPresentation.storefrontContent,
+                caseContent: appsPresentation.content,
                 apps: appsPresentation.apps,
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 92)),
+            const SliverToBoxAdapter(child: SizedBox(height: 72)),
             SliverToBoxAdapter(
               child: _SectionFrame(
                 key: _systemSectionKey,
@@ -354,72 +358,198 @@ class _SectionFrame extends StatelessWidget {
 
 class _TopBar extends StatelessWidget {
   const _TopBar({
+    required this.selectedDestination,
     required this.onLocaleChanged,
     required this.onThemeModeChanged,
-    required this.onViewApps,
+    required this.onSelected,
   });
 
+  final PortfolioDestination selectedDestination;
   final ValueChanged<Locale> onLocaleChanged;
   final ValueChanged<ThemeMode> onThemeModeChanged;
-  final VoidCallback onViewApps;
+  final ValueChanged<PortfolioDestination> onSelected;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.leonePalette;
     final lightMode = Theme.of(context).brightness == Brightness.light;
-    return Container(
-      height: 76,
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      decoration: BoxDecoration(
-        color: palette.canvas.withValues(alpha: .9),
-        border: Border(bottom: BorderSide(color: palette.outline)),
-      ),
-      child: Center(
+    final windowWidth = MediaQuery.sizeOf(context).width;
+    final compactNavigation = windowWidth < 1180;
+    final compactControls = windowWidth < 440;
+    return SliverAppBar(
+      key: const Key('portfolio-top-app-bar'),
+      pinned: true,
+      automaticallyImplyLeading: false,
+      toolbarHeight: 72,
+      elevation: 0,
+      scrolledUnderElevation: 3,
+      shadowColor: Colors.black.withValues(alpha: .34),
+      surfaceTintColor: Colors.transparent,
+      backgroundColor: palette.canvas,
+      foregroundColor: palette.ink,
+      titleSpacing: 0,
+      title: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1392),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final compact = constraints.maxWidth < 440;
-              return Row(
-                children: [
-                  Semantics(
-                    label: 'Leone Daher',
-                    image: true,
-                    child: SizedBox(
-                      key: const Key('ld-topbar-mark'),
-                      width: 34,
-                      height: 34,
-                      child: SvgPicture.asset(
-                        lightMode
-                            ? 'assets/brand/ld-mark.svg'
-                            : 'assets/brand/ld-mark-inverse.svg',
-                      ),
+          constraints: const BoxConstraints(maxWidth: 1440),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: compactNavigation ? 16 : 24,
+            ),
+            child: Row(
+              children: [
+                Semantics(
+                  label: 'Leone Daher',
+                  image: true,
+                  child: SizedBox(
+                    key: const Key('ld-topbar-mark'),
+                    width: 34,
+                    height: 34,
+                    child: SvgPicture.asset(
+                      lightMode
+                          ? 'assets/brand/ld-mark.svg'
+                          : 'assets/brand/ld-mark-inverse.svg',
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  if (!compact)
-                    const Expanded(
-                      child: Text(
-                        'LEONE DAHER',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 12,
-                          letterSpacing: 1.8,
-                        ),
-                      ),
-                    )
-                  else
-                    const Spacer(),
-                  _LanguageToggle(onLocaleChanged: onLocaleChanged),
-                  SizedBox(width: compact ? 6 : 12),
-                  _ThemeToggle(onThemeModeChanged: onThemeModeChanged),
-                  SizedBox(width: compact ? 6 : 12),
-                  _ViewAppsButton(compact: compact, onPressed: onViewApps),
+                ),
+                const SizedBox(width: 12),
+                if (!compactNavigation) ...[
+                  const Text(
+                    'LEONE DAHER',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 12,
+                      letterSpacing: 1.8,
+                    ),
+                  ),
+                  const SizedBox(width: 28),
+                  _TopBarNavigation(
+                    selectedDestination: selectedDestination,
+                    onSelected: onSelected,
+                  ),
                 ],
-              );
-            },
+                const Spacer(),
+                _LanguageToggle(onLocaleChanged: onLocaleChanged),
+                SizedBox(width: compactNavigation ? 4 : 10),
+                _ThemeToggle(onThemeModeChanged: onThemeModeChanged),
+                SizedBox(width: compactNavigation ? 4 : 10),
+                _ViewAppsButton(
+                  compact: compactControls,
+                  onPressed: () => onSelected(PortfolioDestination.apps),
+                ),
+              ],
+            ),
           ),
         ),
+      ),
+      bottom: compactNavigation
+          ? PreferredSize(
+              preferredSize: const Size.fromHeight(48),
+              child: _TopBarNavigation(
+                selectedDestination: selectedDestination,
+                onSelected: onSelected,
+                scrollable: true,
+              ),
+            )
+          : null,
+    );
+  }
+}
+
+class _TopBarNavigation extends StatelessWidget {
+  const _TopBarNavigation({
+    required this.selectedDestination,
+    required this.onSelected,
+    this.scrollable = false,
+  });
+
+  final PortfolioDestination selectedDestination;
+  final ValueChanged<PortfolioDestination> onSelected;
+  final bool scrollable;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = <(PortfolioDestination, String)>[
+      (PortfolioDestination.home, context.l10n.navHome),
+      (PortfolioDestination.apps, context.l10n.navApps),
+      (PortfolioDestination.system, context.l10n.navSystem),
+      (PortfolioDestination.clients, context.l10n.navClients),
+      (PortfolioDestination.contact, context.l10n.navContact),
+    ];
+    final row = Row(
+      key: const Key('top-bar-navigation'),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (final item in items)
+          _TopBarDestinationButton(
+            destination: item.$1,
+            label: item.$2,
+            selected: selectedDestination == item.$1,
+            onPressed: () => onSelected(item.$1),
+          ),
+      ],
+    );
+    if (!scrollable) return row;
+    return SizedBox(
+      height: 48,
+      width: double.infinity,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: row,
+      ),
+    );
+  }
+}
+
+class _TopBarDestinationButton extends StatelessWidget {
+  const _TopBarDestinationButton({
+    required this.destination,
+    required this.label,
+    required this.selected,
+    required this.onPressed,
+  });
+
+  final PortfolioDestination destination;
+  final String label;
+  final bool selected;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return TextButton(
+      key: Key('top-nav-${destination.name}'),
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: selected
+            ? LeoneBrandColors.interactive
+            : palette.mutedInk,
+        minimumSize: const Size(48, 48),
+        padding: const EdgeInsets.symmetric(horizontal: 13),
+        shape: const RoundedRectangleBorder(),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 5),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOut,
+            width: selected ? 24 : 0,
+            height: 3,
+            decoration: BoxDecoration(
+              color: LeoneBrandColors.interactive,
+              borderRadius: BorderRadius.circular(999),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -27,6 +27,26 @@ class ProductionAppsSectionContent {
   final String imageUnavailableLabel;
 }
 
+/// Localized labels for the compact app-store-inspired catalog surfaces.
+@immutable
+class ProductionAppsStorefrontContent {
+  const ProductionAppsStorefrontContent({
+    required this.featuredTitle,
+    required this.featuredSupportingText,
+    required this.viewAllLabel,
+    required this.allAppsTitle,
+    required this.allAppsSupportingText,
+    required this.openDetailsLabel,
+  });
+
+  final String featuredTitle;
+  final String featuredSupportingText;
+  final String viewAllLabel;
+  final String allAppsTitle;
+  final String allAppsSupportingText;
+  final String openDetailsLabel;
+}
+
 /// A production app or client product to present as a compact case study.
 @immutable
 class ProductionAppCase {

@@ -344,6 +344,42 @@ abstract class AppLocalizations {
   /// **'Apps in production.'**
   String get productionAppsTitle;
 
+  /// Compact home storefront heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured apps'**
+  String get featuredAppsTitle;
+
+  /// Supporting copy for featured apps on the home page.
+  ///
+  /// In en, this message translates to:
+  /// **'Published products, real stores, and selected delivery details.'**
+  String get featuredAppsSupportingText;
+
+  /// Action that opens the complete app catalog.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get viewAllApps;
+
+  /// Complete app catalog page title.
+  ///
+  /// In en, this message translates to:
+  /// **'All apps'**
+  String get allAppsTitle;
+
+  /// Supporting copy for the complete app catalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the published mobile products and open each case for screens, stack, and public store proof.'**
+  String get allAppsSupportingText;
+
+  /// Accessible action label for opening an app case.
+  ///
+  /// In en, this message translates to:
+  /// **'Open app details'**
+  String get openAppDetails;
+
   /// Production app role label.
   ///
   /// In en, this message translates to:

@@ -80,6 +80,30 @@ void main() {
     expect(preferences.getString('portfolio_theme'), 'light');
   });
 
+  testWidgets('keeps Material navigation pinned with scroll-under elevation', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await _finishOpening(tester);
+
+    final appBar = tester.widget<SliverAppBar>(
+      find.byKey(const Key('portfolio-top-app-bar')),
+    );
+    expect(appBar.pinned, isTrue);
+    expect(appBar.elevation, 0);
+    expect(appBar.scrolledUnderElevation, 3);
+    expect(find.byKey(const Key('top-nav-home')), findsOneWidget);
+    expect(find.byKey(const Key('top-nav-apps')), findsOneWidget);
+    expect(find.byKey(const Key('top-nav-system')), findsOneWidget);
+    expect(find.byKey(const Key('top-nav-clients')), findsOneWidget);
+    expect(find.byKey(const Key('top-nav-contact')), findsOneWidget);
+  });
+
   testWidgets('routes the top CTA to apps and keeps Calendly in contact', (
     tester,
   ) async {
@@ -94,7 +118,7 @@ void main() {
     await tester.tap(viewApps);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 900));
-    final appsHeadingY = tester.getTopLeft(find.text('Apps in production.')).dy;
+    final appsHeadingY = tester.getTopLeft(find.text('Featured apps')).dy;
     expect(appsHeadingY, inInclusiveRange(0, 180));
 
     await tester.drag(

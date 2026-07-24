@@ -7,9 +7,14 @@ import 'production_app_models.dart';
 const _vanCranenbroekGreen = Color(0xFF008932);
 
 class ProductionAppsPresentation {
-  const ProductionAppsPresentation({required this.content, required this.apps});
+  const ProductionAppsPresentation({
+    required this.content,
+    required this.storefrontContent,
+    required this.apps,
+  });
 
   final ProductionAppsSectionContent content;
+  final ProductionAppsStorefrontContent storefrontContent;
   final List<ProductionAppCase> apps;
 
   factory ProductionAppsPresentation.localized(AppLocalizations l10n) {
@@ -85,6 +90,14 @@ class ProductionAppsPresentation {
         storeProofLabel: l10n.appStoreProofLabel,
         screenshotsLabel: l10n.appScreenshotsLabel,
         imageUnavailableLabel: l10n.appImageUnavailableLabel,
+      ),
+      storefrontContent: ProductionAppsStorefrontContent(
+        featuredTitle: l10n.featuredAppsTitle,
+        featuredSupportingText: l10n.featuredAppsSupportingText,
+        viewAllLabel: l10n.viewAllApps,
+        allAppsTitle: l10n.allAppsTitle,
+        allAppsSupportingText: l10n.allAppsSupportingText,
+        openDetailsLabel: l10n.openAppDetails,
       ),
       apps: [
         ProductionAppCase(
