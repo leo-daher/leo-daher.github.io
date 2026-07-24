@@ -96,7 +96,7 @@ const _latituddeClientLogos = <_ClientLogo>[
   _ClientLogo(
     id: 'ascendi',
     name: 'Ascendi',
-    asset: 'assets/client_logos/ascendi-official.svg',
+    asset: 'assets/client_logos/ascendi-official.png',
     contrastOutline: true,
   ),
 ];
