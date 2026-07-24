@@ -12,27 +12,25 @@ const _catalogGap = 12.0;
 
 /// Compact home-page presentation inspired by mobile app marketplaces.
 ///
-/// The home surface intentionally shows only a small featured set. Full case
-/// studies live behind normal Material routes so the main page remains easy to
-/// scan on a phone.
+/// Full case studies live behind normal Material routes so the home remains
+/// easy to scan on a phone.
 class ProductionAppsStorefront extends StatelessWidget {
   const ProductionAppsStorefront({
     super.key,
     required this.content,
     required this.caseContent,
+    required this.items,
     required this.apps,
-    this.featuredCount = 2,
-  }) : assert(apps.length > 0),
-       assert(featuredCount > 0);
+  }) : assert(items.length > 0),
+       assert(apps.length > 0);
 
   final ProductionAppsStorefrontContent content;
   final ProductionAppsSectionContent caseContent;
+  final List<ProductionAppStorefrontItem> items;
   final List<ProductionAppCase> apps;
-  final int featuredCount;
 
   @override
   Widget build(BuildContext context) {
-    final featuredApps = apps.take(featuredCount).toList(growable: false);
     return Center(
       key: const Key('production-apps-storefront'),
       child: ConstrainedBox(
@@ -51,9 +49,9 @@ class ProductionAppsStorefront extends StatelessWidget {
               const SizedBox(height: 22),
               _AdaptiveAppTiles(
                 key: const Key('featured-apps-list'),
-                apps: featuredApps,
+                items: items,
                 openDetailsLabel: content.openDetailsLabel,
-                onOpen: (app) => _openDetails(context, app),
+                onOpen: (item) => _openDetails(context, item),
               ),
             ],
           ),
@@ -68,13 +66,15 @@ class ProductionAppsStorefront extends StatelessWidget {
         builder: (_) => ProductionAppsCatalogPage(
           content: content,
           caseContent: caseContent,
+          items: items,
           apps: apps,
         ),
       ),
     );
   }
 
-  void _openDetails(BuildContext context, ProductionAppCase app) {
+  void _openDetails(BuildContext context, ProductionAppStorefrontItem item) {
+    final app = apps.singleWhere((app) => app.id == item.appCaseId);
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => ProductionAppDetailPage(content: caseContent, app: app),
@@ -88,11 +88,13 @@ class ProductionAppsCatalogPage extends StatelessWidget {
     super.key,
     required this.content,
     required this.caseContent,
+    required this.items,
     required this.apps,
   });
 
   final ProductionAppsStorefrontContent content;
   final ProductionAppsSectionContent caseContent;
+  final List<ProductionAppStorefrontItem> items;
   final List<ProductionAppCase> apps;
 
   @override
@@ -130,17 +132,21 @@ class ProductionAppsCatalogPage extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(24, 8, 24, 72),
                     child: _AdaptiveAppTiles(
                       key: const Key('all-apps-list'),
-                      apps: apps,
+                      items: items,
                       openDetailsLabel: content.openDetailsLabel,
-                      maxColumns: 3,
-                      onOpen: (app) => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => ProductionAppDetailPage(
-                            content: caseContent,
-                            app: app,
+                      onOpen: (item) {
+                        final app = apps.singleWhere(
+                          (app) => app.id == item.appCaseId,
+                        );
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => ProductionAppDetailPage(
+                              content: caseContent,
+                              app: app,
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -277,16 +283,14 @@ class _StorefrontHeading extends StatelessWidget {
 class _AdaptiveAppTiles extends StatelessWidget {
   const _AdaptiveAppTiles({
     super.key,
-    required this.apps,
+    required this.items,
     required this.openDetailsLabel,
     required this.onOpen,
-    this.maxColumns = 2,
   });
 
-  final List<ProductionAppCase> apps;
+  final List<ProductionAppStorefrontItem> items;
   final String openDetailsLabel;
-  final ValueChanged<ProductionAppCase> onOpen;
-  final int maxColumns;
+  final ValueChanged<ProductionAppStorefrontItem> onOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -296,35 +300,35 @@ class _AdaptiveAppTiles extends StatelessWidget {
         if (!wide) {
           return Column(
             children: [
-              for (var index = 0; index < apps.length; index++) ...[
+              for (var index = 0; index < items.length; index++) ...[
                 _AppStoreTile(
-                  app: apps[index],
+                  item: items[index],
                   openDetailsLabel: openDetailsLabel,
                   wide: false,
-                  onTap: () => onOpen(apps[index]),
+                  onTap: () => onOpen(items[index]),
                 ),
-                if (index != apps.length - 1)
+                if (index != items.length - 1)
                   Divider(height: 1, color: context.leonePalette.outline),
               ],
             ],
           );
         }
 
-        final columns = math.min(maxColumns, apps.length);
+        final columns = math.min(2, items.length);
         final tileWidth =
             (constraints.maxWidth - _catalogGap * (columns - 1)) / columns;
         return Wrap(
           spacing: _catalogGap,
           runSpacing: _catalogGap,
           children: [
-            for (final app in apps)
+            for (final item in items)
               SizedBox(
                 width: tileWidth,
                 child: _AppStoreTile(
-                  app: app,
+                  item: item,
                   openDetailsLabel: openDetailsLabel,
                   wide: true,
-                  onTap: () => onOpen(app),
+                  onTap: () => onOpen(item),
                 ),
               ),
           ],
@@ -336,13 +340,13 @@ class _AdaptiveAppTiles extends StatelessWidget {
 
 class _AppStoreTile extends StatelessWidget {
   const _AppStoreTile({
-    required this.app,
+    required this.item,
     required this.openDetailsLabel,
     required this.wide,
     required this.onTap,
   });
 
-  final ProductionAppCase app;
+  final ProductionAppStorefrontItem item;
   final String openDetailsLabel;
   final bool wide;
   final VoidCallback onTap;
@@ -350,17 +354,13 @@ class _AppStoreTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.leonePalette;
-    final proof = app.storeProof
-        .where((item) => item.evidence != null)
-        .firstOrNull;
-    final supporting = proof?.evidence ?? app.stack.take(3).join(' · ');
-    final accent = app.accent ?? LeoneBrandColors.interactive;
+    final accent = item.accent ?? LeoneBrandColors.interactive;
 
     return Semantics(
       button: true,
-      label: '$openDetailsLabel: ${app.name}',
+      label: '$openDetailsLabel: ${item.name}',
       child: Material(
-        key: Key('app-store-tile-${app.id}'),
+        key: Key('app-store-tile-${item.id}'),
         color: wide
             ? palette.surfaceRaised.withValues(alpha: .58)
             : Colors.transparent,
@@ -379,14 +379,14 @@ class _AppStoreTile extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _CatalogAppIcon(app: app, size: wide ? 76 : 68),
+                _CatalogAppIcon(item: item, size: wide ? 76 : 68),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        app.name,
+                        item.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -398,7 +398,7 @@ class _AppStoreTile extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        app.summary,
+                        item.summary,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -409,7 +409,7 @@ class _AppStoreTile extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        supporting,
+                        item.metric,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -438,27 +438,27 @@ class _AppStoreTile extends StatelessWidget {
 }
 
 class _CatalogAppIcon extends StatelessWidget {
-  const _CatalogAppIcon({required this.app, required this.size});
+  const _CatalogAppIcon({required this.item, required this.size});
 
-  final ProductionAppCase app;
+  final ProductionAppStorefrontItem item;
   final double size;
 
   @override
   Widget build(BuildContext context) {
-    final paths = app.iconAssetPaths.take(2).toList(growable: false);
+    final paths = item.iconAssetPaths.take(2).toList(growable: false);
     if (paths.isEmpty) {
       return Container(
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: (app.accent ?? LeoneBrandColors.interactive).withValues(
+          color: (item.accent ?? LeoneBrandColors.interactive).withValues(
             alpha: .14,
           ),
           borderRadius: BorderRadius.circular(size * .24),
         ),
         child: Icon(
           Icons.apps_rounded,
-          color: app.accent ?? LeoneBrandColors.interactive,
+          color: item.accent ?? LeoneBrandColors.interactive,
         ),
       );
     }

@@ -155,6 +155,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openAppDetails => 'Open app details';
 
   @override
+  String get vanCranenbroekStorefrontMetric =>
+      '11.5K+ across stores · 4.7 ★ average';
+
+  @override
+  String get lyzerCollectStorefrontSummary =>
+      'Collection and order preparation built for connected field operations.';
+
+  @override
+  String get lyzerCollectStorefrontMetric => 'Android + iOS · 1K+ downloads';
+
+  @override
+  String get lyzerDeliverStorefrontSummary =>
+      'Routes, offline execution, and proof of delivery for field teams.';
+
+  @override
+  String get lyzerDeliverStorefrontMetric => 'Android + iOS · 100+ downloads';
+
+  @override
+  String get magStorefrontMetric => 'Android · 1K+ downloads';
+
+  @override
   String get appRoleLabel => 'My role';
 
   @override

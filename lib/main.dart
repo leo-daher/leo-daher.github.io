@@ -185,7 +185,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   static const _scrollDepthThresholds = [25, 50, 75, 90];
   final ScrollController _scrollController = ScrollController();
   final Set<int> _reportedScrollDepths = {};
-  PortfolioDestination _selectedDestination = PortfolioDestination.home;
   final GlobalKey _appsSectionKey = GlobalKey(
     debugLabel: 'portfolio-apps-section',
   );
@@ -229,9 +228,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
   void _navigateTo(PortfolioDestination destination) {
     PortfolioTelemetry.sectionSelected(destination.name);
-    if (_selectedDestination != destination) {
-      setState(() => _selectedDestination = destination);
-    }
     if (destination == PortfolioDestination.home) {
       if (!_scrollController.hasClients) return;
       _scrollController.animateTo(
@@ -271,7 +267,6 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
           controller: _scrollController,
           slivers: [
             _TopBar(
-              selectedDestination: _selectedDestination,
               onLocaleChanged: widget.onLocaleChanged,
               onThemeModeChanged: widget.onThemeModeChanged,
               onSelected: _navigateTo,
@@ -295,6 +290,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               child: ProductionAppsStorefront(
                 content: appsPresentation.storefrontContent,
                 caseContent: appsPresentation.content,
+                items: appsPresentation.storefrontItems,
                 apps: appsPresentation.apps,
               ),
             ),
@@ -358,13 +354,11 @@ class _SectionFrame extends StatelessWidget {
 
 class _TopBar extends StatelessWidget {
   const _TopBar({
-    required this.selectedDestination,
     required this.onLocaleChanged,
     required this.onThemeModeChanged,
     required this.onSelected,
   });
 
-  final PortfolioDestination selectedDestination;
   final ValueChanged<Locale> onLocaleChanged;
   final ValueChanged<ThemeMode> onThemeModeChanged;
   final ValueChanged<PortfolioDestination> onSelected;
@@ -374,8 +368,8 @@ class _TopBar extends StatelessWidget {
     final palette = context.leonePalette;
     final lightMode = Theme.of(context).brightness == Brightness.light;
     final windowWidth = MediaQuery.sizeOf(context).width;
-    final compactNavigation = windowWidth < 1180;
     final compactControls = windowWidth < 440;
+    final showBrandName = windowWidth >= 520;
     return SliverAppBar(
       key: const Key('portfolio-top-app-bar'),
       pinned: true,
@@ -393,26 +387,42 @@ class _TopBar extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 1440),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: compactNavigation ? 16 : 24,
+              horizontal: compactControls ? 16 : 24,
             ),
             child: Row(
               children: [
-                Semantics(
-                  label: 'Leone Daher',
-                  image: true,
-                  child: SizedBox(
-                    key: const Key('ld-topbar-mark'),
-                    width: 34,
-                    height: 34,
-                    child: SvgPicture.asset(
-                      lightMode
-                          ? 'assets/brand/ld-mark.svg'
-                          : 'assets/brand/ld-mark-inverse.svg',
+                Tooltip(
+                  message: context.l10n.navHome,
+                  child: Semantics(
+                    button: true,
+                    label: 'Leone Daher · ${context.l10n.navHome}',
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        key: const Key('ld-topbar-mark'),
+                        onTap: () => onSelected(PortfolioDestination.home),
+                        customBorder: const CircleBorder(),
+                        child: SizedBox(
+                          width: 48,
+                          height: 48,
+                          child: Center(
+                            child: SizedBox(
+                              width: 34,
+                              height: 34,
+                              child: SvgPicture.asset(
+                                lightMode
+                                    ? 'assets/brand/ld-mark.svg'
+                                    : 'assets/brand/ld-mark-inverse.svg',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
-                if (!compactNavigation) ...[
+                if (showBrandName) ...[
+                  const SizedBox(width: 12),
                   const Text(
                     'LEONE DAHER',
                     style: TextStyle(
@@ -421,17 +431,12 @@ class _TopBar extends StatelessWidget {
                       letterSpacing: 1.8,
                     ),
                   ),
-                  const SizedBox(width: 28),
-                  _TopBarNavigation(
-                    selectedDestination: selectedDestination,
-                    onSelected: onSelected,
-                  ),
                 ],
                 const Spacer(),
                 _LanguageToggle(onLocaleChanged: onLocaleChanged),
-                SizedBox(width: compactNavigation ? 4 : 10),
+                SizedBox(width: compactControls ? 4 : 10),
                 _ThemeToggle(onThemeModeChanged: onThemeModeChanged),
-                SizedBox(width: compactNavigation ? 4 : 10),
+                SizedBox(width: compactControls ? 4 : 10),
                 _ViewAppsButton(
                   compact: compactControls,
                   onPressed: () => onSelected(PortfolioDestination.apps),
@@ -440,116 +445,6 @@ class _TopBar extends StatelessWidget {
             ),
           ),
         ),
-      ),
-      bottom: compactNavigation
-          ? PreferredSize(
-              preferredSize: const Size.fromHeight(48),
-              child: _TopBarNavigation(
-                selectedDestination: selectedDestination,
-                onSelected: onSelected,
-                scrollable: true,
-              ),
-            )
-          : null,
-    );
-  }
-}
-
-class _TopBarNavigation extends StatelessWidget {
-  const _TopBarNavigation({
-    required this.selectedDestination,
-    required this.onSelected,
-    this.scrollable = false,
-  });
-
-  final PortfolioDestination selectedDestination;
-  final ValueChanged<PortfolioDestination> onSelected;
-  final bool scrollable;
-
-  @override
-  Widget build(BuildContext context) {
-    final items = <(PortfolioDestination, String)>[
-      (PortfolioDestination.home, context.l10n.navHome),
-      (PortfolioDestination.apps, context.l10n.navApps),
-      (PortfolioDestination.system, context.l10n.navSystem),
-      (PortfolioDestination.clients, context.l10n.navClients),
-      (PortfolioDestination.contact, context.l10n.navContact),
-    ];
-    final row = Row(
-      key: const Key('top-bar-navigation'),
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (final item in items)
-          _TopBarDestinationButton(
-            destination: item.$1,
-            label: item.$2,
-            selected: selectedDestination == item.$1,
-            onPressed: () => onSelected(item.$1),
-          ),
-      ],
-    );
-    if (!scrollable) return row;
-    return SizedBox(
-      height: 48,
-      width: double.infinity,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: row,
-      ),
-    );
-  }
-}
-
-class _TopBarDestinationButton extends StatelessWidget {
-  const _TopBarDestinationButton({
-    required this.destination,
-    required this.label,
-    required this.selected,
-    required this.onPressed,
-  });
-
-  final PortfolioDestination destination;
-  final String label;
-  final bool selected;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.leonePalette;
-    return TextButton(
-      key: Key('top-nav-${destination.name}'),
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        foregroundColor: selected
-            ? LeoneBrandColors.interactive
-            : palette.mutedInk,
-        minimumSize: const Size(48, 48),
-        padding: const EdgeInsets.symmetric(horizontal: 13),
-        shape: const RoundedRectangleBorder(),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 5),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOut,
-            width: selected ? 24 : 0,
-            height: 3,
-            decoration: BoxDecoration(
-              color: LeoneBrandColors.interactive,
-              borderRadius: BorderRadius.circular(999),
-            ),
-          ),
-        ],
       ),
     );
   }
