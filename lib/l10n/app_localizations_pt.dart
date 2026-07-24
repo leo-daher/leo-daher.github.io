@@ -135,6 +135,26 @@ class AppLocalizationsPt extends AppLocalizations {
   String get productionAppsTitle => 'Apps em produção.';
 
   @override
+  String get featuredAppsTitle => 'Apps em destaque';
+
+  @override
+  String get featuredAppsSupportingText =>
+      'Produtos publicados, lojas reais e detalhes selecionados da entrega.';
+
+  @override
+  String get viewAllApps => 'Ver todos';
+
+  @override
+  String get allAppsTitle => 'Todos os apps';
+
+  @override
+  String get allAppsSupportingText =>
+      'Explore os produtos mobile publicados e abra cada case para ver telas, stack e provas públicas nas lojas.';
+
+  @override
+  String get openAppDetails => 'Abrir detalhes do app';
+
+  @override
   String get appRoleLabel => 'Minha atuação';
 
   @override
@@ -174,8 +194,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vanCranenbroekPlayProof => '4,6 ★ · 179 avaliações · 5 mil+';
 
   @override
-  String get vanCranenbroekAppStoreProof =>
-      '4,7 ★ · 143 avaliações · 6,5 mil+';
+  String get vanCranenbroekAppStoreProof => '4,7 ★ · 143 avaliações · 6,5 mil+';
 
   @override
   String get lyzerContext => 'Logística · Portugal · Flutter · Android e iOS';

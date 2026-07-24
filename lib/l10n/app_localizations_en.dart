@@ -135,6 +135,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get productionAppsTitle => 'Apps in production.';
 
   @override
+  String get featuredAppsTitle => 'Featured apps';
+
+  @override
+  String get featuredAppsSupportingText =>
+      'Published products, real stores, and selected delivery details.';
+
+  @override
+  String get viewAllApps => 'View all';
+
+  @override
+  String get allAppsTitle => 'All apps';
+
+  @override
+  String get allAppsSupportingText =>
+      'Browse the published mobile products and open each case for screens, stack, and public store proof.';
+
+  @override
+  String get openAppDetails => 'Open app details';
+
+  @override
   String get appRoleLabel => 'My role';
 
   @override
