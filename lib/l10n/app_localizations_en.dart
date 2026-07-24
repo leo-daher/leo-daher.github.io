@@ -78,6 +78,60 @@ class AppLocalizationsEn extends AppLocalizations {
   String get closeMenu => 'Close menu';
 
   @override
+  String get articlesEyebrow => 'ARTICLES';
+
+  @override
+  String get articlesTitle =>
+      'Ideas, lessons, and decisions behind the product.';
+
+  @override
+  String get articlesCopy =>
+      'A place to share processes, technical knowledge, and what I learn while building real products.';
+
+  @override
+  String get articlesPageTitle => 'Articles';
+
+  @override
+  String get articleDraftStatus => 'In preparation';
+
+  @override
+  String get identityArticleTitle =>
+      'How I developed this portfolio\'s logo and visual identity';
+
+  @override
+  String get identityArticleSummary =>
+      'The process behind the LD symbol, its visual language, and the idea of turning the brand itself into an interface.';
+
+  @override
+  String get identityArticlePlanTitle => 'What this article will explore';
+
+  @override
+  String get identityArticleTopicStrategy =>
+      'The strategy and meaning behind the brand.';
+
+  @override
+  String get identityArticleTopicSymbol =>
+      'The LD symbol construction and its geometric decisions.';
+
+  @override
+  String get identityArticleTopicMotion =>
+      'How the identity adapts and becomes a functional interface.';
+
+  @override
+  String get identityArticleTopicSystem =>
+      'Color, typography, components, and product consistency.';
+
+  @override
+  String get shareArticleTitle => 'Share article';
+
+  @override
+  String get shareArticleCopy =>
+      'The sharing shortcuts are ready for when the article is published.';
+
+  @override
+  String get shareOn => 'Share on';
+
+  @override
   String get yearsBuildingSoftware => '7+ YEARS BUILDING SOFTWARE';
 
   @override

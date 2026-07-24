@@ -78,6 +78,60 @@ class AppLocalizationsPt extends AppLocalizations {
   String get closeMenu => 'Fechar menu';
 
   @override
+  String get articlesEyebrow => 'ARTIGOS';
+
+  @override
+  String get articlesTitle =>
+      'Ideias, aprendizados e decisões por trás do produto.';
+
+  @override
+  String get articlesCopy =>
+      'Um espaço para compartilhar processos, conhecimento técnico e o que aprendo construindo produtos reais.';
+
+  @override
+  String get articlesPageTitle => 'Artigos';
+
+  @override
+  String get articleDraftStatus => 'Em preparação';
+
+  @override
+  String get identityArticleTitle =>
+      'Como desenvolvi a logo e a identidade visual deste portfólio';
+
+  @override
+  String get identityArticleSummary =>
+      'O processo por trás do símbolo LD, da linguagem visual e da ideia de transformar a própria marca em interface.';
+
+  @override
+  String get identityArticlePlanTitle => 'O que este artigo vai explorar';
+
+  @override
+  String get identityArticleTopicStrategy =>
+      'A estratégia e o significado por trás da marca.';
+
+  @override
+  String get identityArticleTopicSymbol =>
+      'A construção do símbolo LD e suas decisões geométricas.';
+
+  @override
+  String get identityArticleTopicMotion =>
+      'Como a identidade se adapta e se transforma em uma interface funcional.';
+
+  @override
+  String get identityArticleTopicSystem =>
+      'Cores, tipografia, componentes e consistência no produto.';
+
+  @override
+  String get shareArticleTitle => 'Compartilhar artigo';
+
+  @override
+  String get shareArticleCopy =>
+      'Os atalhos de compartilhamento já estão preparados para quando o artigo for publicado.';
+
+  @override
+  String get shareOn => 'Compartilhar no';
+
+  @override
   String get yearsBuildingSoftware => '7+ ANOS CONSTRUINDO SOFTWARE';
 
   @override

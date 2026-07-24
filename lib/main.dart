@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'brand/leone_brand.dart';
+import 'features/articles/articles.dart';
 import 'features/apps/production_apps.dart';
 import 'features/certificates/certifications_section.dart';
 import 'features/clients/client_logo_cloud.dart';
@@ -96,6 +97,15 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
+      onGenerateRoute: (settings) {
+        if (settings.name == ArticlesPage.routeName) {
+          return MaterialPageRoute<void>(
+            builder: (_) => const ArticlesPage(),
+            settings: settings,
+          );
+        }
+        return null;
+      },
       home: _PortfolioEntry(
         onLocaleChanged: _setLocale,
         onThemeModeChanged: _setThemeMode,
@@ -193,6 +203,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   );
   final GlobalKey _clientsSectionKey = GlobalKey(
     debugLabel: 'portfolio-clients-section',
+  );
+  final GlobalKey _articlesSectionKey = GlobalKey(
+    debugLabel: 'portfolio-articles-section',
   );
   final GlobalKey _contactSectionKey = GlobalKey(
     debugLabel: 'portfolio-contact-section',
@@ -310,6 +323,16 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 92)),
             SliverToBoxAdapter(child: const CertificationsSection()),
+            const SliverToBoxAdapter(child: SizedBox(height: 92)),
+            SliverToBoxAdapter(
+              child: _SectionFrame(
+                key: _articlesSectionKey,
+                child: ArticlesSection(
+                  onOpenArticles: () =>
+                      Navigator.of(context).pushNamed(ArticlesPage.routeName),
+                ),
+              ),
+            ),
             const SliverToBoxAdapter(child: SizedBox(height: 92)),
             SliverToBoxAdapter(
               child: _SectionFrame(

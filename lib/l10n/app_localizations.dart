@@ -236,6 +236,96 @@ abstract class AppLocalizations {
   /// **'Close menu'**
   String get closeMenu;
 
+  /// Articles section eyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'ARTICLES'**
+  String get articlesEyebrow;
+
+  /// Articles section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ideas, lessons, and decisions behind the product.'**
+  String get articlesTitle;
+
+  /// Articles section supporting copy.
+  ///
+  /// In en, this message translates to:
+  /// **'A place to share processes, technical knowledge, and what I learn while building real products.'**
+  String get articlesCopy;
+
+  /// Articles page app bar title.
+  ///
+  /// In en, this message translates to:
+  /// **'Articles'**
+  String get articlesPageTitle;
+
+  /// Status for an article that is not published yet.
+  ///
+  /// In en, this message translates to:
+  /// **'In preparation'**
+  String get articleDraftStatus;
+
+  /// Title of the planned visual identity article.
+  ///
+  /// In en, this message translates to:
+  /// **'How I developed this portfolio\'s logo and visual identity'**
+  String get identityArticleTitle;
+
+  /// Summary of the planned visual identity article.
+  ///
+  /// In en, this message translates to:
+  /// **'The process behind the LD symbol, its visual language, and the idea of turning the brand itself into an interface.'**
+  String get identityArticleSummary;
+
+  /// Heading for the planned article outline.
+  ///
+  /// In en, this message translates to:
+  /// **'What this article will explore'**
+  String get identityArticlePlanTitle;
+
+  /// Planned article topic.
+  ///
+  /// In en, this message translates to:
+  /// **'The strategy and meaning behind the brand.'**
+  String get identityArticleTopicStrategy;
+
+  /// Planned article topic.
+  ///
+  /// In en, this message translates to:
+  /// **'The LD symbol construction and its geometric decisions.'**
+  String get identityArticleTopicSymbol;
+
+  /// Planned article topic.
+  ///
+  /// In en, this message translates to:
+  /// **'How the identity adapts and becomes a functional interface.'**
+  String get identityArticleTopicMotion;
+
+  /// Planned article topic.
+  ///
+  /// In en, this message translates to:
+  /// **'Color, typography, components, and product consistency.'**
+  String get identityArticleTopicSystem;
+
+  /// Sharing group title.
+  ///
+  /// In en, this message translates to:
+  /// **'Share article'**
+  String get shareArticleTitle;
+
+  /// Sharing group supporting copy.
+  ///
+  /// In en, this message translates to:
+  /// **'The sharing shortcuts are ready for when the article is published.'**
+  String get shareArticleCopy;
+
+  /// Accessible prefix for social sharing controls.
+  ///
+  /// In en, this message translates to:
+  /// **'Share on'**
+  String get shareOn;
+
   /// Hero experience statement.
   ///
   /// In en, this message translates to:
