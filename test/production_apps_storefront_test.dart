@@ -30,7 +30,10 @@ void main() {
         find.byKey(const Key('app-store-tile-mag-venda-digital')),
         findsOneWidget,
       );
-      expect(find.text('11.5K+ across stores · 4.7 ★ average'), findsOneWidget);
+      expect(
+        find.text('11.5K+ downloads · Flutter · Kotlin · Swift'),
+        findsOneWidget,
+      );
 
       await tester.tap(find.byKey(const Key('app-store-tile-van-cranenbroek')));
       await tester.pumpAndSettle();

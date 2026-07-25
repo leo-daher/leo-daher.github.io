@@ -210,24 +210,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vanCranenbroekStorefrontMetric =>
-      '11.5K+ across stores · 4.7 ★ average';
+      '11.5K+ downloads · Flutter · Kotlin · Swift';
 
   @override
   String get lyzerCollectStorefrontSummary =>
       'Collection and order preparation built for connected field operations.';
 
   @override
-  String get lyzerCollectStorefrontMetric => 'Android + iOS · 1K+ downloads';
+  String get lyzerCollectStorefrontMetric =>
+      '1K+ downloads · Flutter · Android · iOS';
 
   @override
   String get lyzerDeliverStorefrontSummary =>
       'Routes, offline execution, and proof of delivery for field teams.';
 
   @override
-  String get lyzerDeliverStorefrontMetric => 'Android + iOS · 100+ downloads';
+  String get lyzerDeliverStorefrontMetric =>
+      '100+ downloads · Flutter · Android · iOS';
 
   @override
-  String get magStorefrontMetric => 'Android · 1K+ downloads';
+  String get magStorefrontMetric => '1K+ downloads · Android · Kotlin';
 
   @override
   String get appRoleLabel => 'My role';

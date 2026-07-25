@@ -470,10 +470,10 @@ abstract class AppLocalizations {
   /// **'Open app details'**
   String get openAppDetails;
 
-  /// Combined minimum store downloads and rounded-up average rating for Van Cranenbroek.
+  /// Combined minimum downloads and core mobile technologies for Van Cranenbroek.
   ///
   /// In en, this message translates to:
-  /// **'11.5K+ across stores · 4.7 ★ average'**
+  /// **'11.5K+ downloads · Flutter · Kotlin · Swift'**
   String get vanCranenbroekStorefrontMetric;
 
   /// Compact storefront summary for Lyzer Collect.
@@ -482,10 +482,10 @@ abstract class AppLocalizations {
   /// **'Collection and order preparation built for connected field operations.'**
   String get lyzerCollectStorefrontSummary;
 
-  /// Public platform and minimum download proof for Lyzer Collect.
+  /// Minimum downloads, technology, and platforms for Lyzer Collect.
   ///
   /// In en, this message translates to:
-  /// **'Android + iOS · 1K+ downloads'**
+  /// **'1K+ downloads · Flutter · Android · iOS'**
   String get lyzerCollectStorefrontMetric;
 
   /// Compact storefront summary for Lyzer Deliver.
@@ -494,16 +494,16 @@ abstract class AppLocalizations {
   /// **'Routes, offline execution, and proof of delivery for field teams.'**
   String get lyzerDeliverStorefrontSummary;
 
-  /// Public platform and minimum download proof for Lyzer Deliver.
+  /// Minimum downloads, technology, and platforms for Lyzer Deliver.
   ///
   /// In en, this message translates to:
-  /// **'Android + iOS · 100+ downloads'**
+  /// **'100+ downloads · Flutter · Android · iOS'**
   String get lyzerDeliverStorefrontMetric;
 
-  /// Public platform and minimum download proof for MAG Venda Digital.
+  /// Minimum downloads, platform, and technology for MAG Venda Digital.
   ///
   /// In en, this message translates to:
-  /// **'Android · 1K+ downloads'**
+  /// **'1K+ downloads · Android · Kotlin'**
   String get magStorefrontMetric;
 
   /// Production app role label.

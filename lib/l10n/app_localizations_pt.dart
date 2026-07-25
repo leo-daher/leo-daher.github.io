@@ -210,24 +210,26 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get vanCranenbroekStorefrontMetric =>
-      '11,5 mil+ nas lojas · média 4,7 ★';
+      '11,5 mil+ downloads · Flutter · Kotlin · Swift';
 
   @override
   String get lyzerCollectStorefrontSummary =>
       'Coleta e preparação de pedidos para operações de campo conectadas.';
 
   @override
-  String get lyzerCollectStorefrontMetric => 'Android + iOS · 1 mil+ downloads';
+  String get lyzerCollectStorefrontMetric =>
+      '1 mil+ downloads · Flutter · Android · iOS';
 
   @override
   String get lyzerDeliverStorefrontSummary =>
       'Rotas, operação offline e comprovação de entrega para equipes em campo.';
 
   @override
-  String get lyzerDeliverStorefrontMetric => 'Android + iOS · 100+ downloads';
+  String get lyzerDeliverStorefrontMetric =>
+      '100+ downloads · Flutter · Android · iOS';
 
   @override
-  String get magStorefrontMetric => 'Android · 1 mil+ downloads';
+  String get magStorefrontMetric => '1 mil+ downloads · Android · Kotlin';
 
   @override
   String get appRoleLabel => 'Minha atuação';
