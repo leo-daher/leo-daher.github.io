@@ -346,7 +346,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get architectureDeliveryDetail =>
-      'CI/CD · Azure · store releases · Crashlytics · performance';
+      'CI/CD · AWS · Azure · store releases · Crashlytics · performance';
 
   @override
   String get architectureAutomationTitle => 'AI and automation';

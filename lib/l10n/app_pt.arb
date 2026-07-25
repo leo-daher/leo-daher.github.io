@@ -101,7 +101,7 @@
   "architectureServicesTitle": "Serviços e dados",
   "architectureServicesDetail": "Python · .NET · APIs · GraphQL · Firebase · sincronização",
   "architectureDeliveryTitle": "Entrega e confiabilidade",
-  "architectureDeliveryDetail": "CI/CD · Azure · publicação nas lojas · Crashlytics · performance",
+  "architectureDeliveryDetail": "CI/CD · AWS · Azure · publicação nas lojas · Crashlytics · performance",
   "architectureAutomationTitle": "IA e automação",
   "architectureAutomationDetail": "Agentes · ferramentas com LLMs · fluxos em segundo plano",
   "deviceLab": "LABORATÓRIO DE DISPOSITIVOS",

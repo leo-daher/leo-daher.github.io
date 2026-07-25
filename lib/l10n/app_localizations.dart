@@ -707,7 +707,7 @@ abstract class AppLocalizations {
   /// Delivery architecture scope detail.
   ///
   /// In en, this message translates to:
-  /// **'CI/CD · Azure · store releases · Crashlytics · performance'**
+  /// **'CI/CD · AWS · Azure · store releases · Crashlytics · performance'**
   String get architectureDeliveryDetail;
 
   /// Automation architecture scope title.

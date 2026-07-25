@@ -202,7 +202,7 @@
   "@architectureServicesDetail": {"description": "Services architecture scope detail."},
   "architectureDeliveryTitle": "Delivery and reliability",
   "@architectureDeliveryTitle": {"description": "Delivery architecture scope title."},
-  "architectureDeliveryDetail": "CI/CD · Azure · store releases · Crashlytics · performance",
+  "architectureDeliveryDetail": "CI/CD · AWS · Azure · store releases · Crashlytics · performance",
   "@architectureDeliveryDetail": {"description": "Delivery architecture scope detail."},
   "architectureAutomationTitle": "AI and automation",
   "@architectureAutomationTitle": {"description": "Automation architecture scope title."},
