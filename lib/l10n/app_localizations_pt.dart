@@ -265,7 +265,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get vanCranenbroekContribution =>
-      'Atuação em Flutter com Riverpod e Kotlin, Firebase/Firestore, deep links, mapas e SVGs interativos, CI/CD e Cloud Functions em Python.';
+      'Atuação em Flutter com GetX, GetIt/Injectable e Provider, Firebase/Firestore, deep links, mapas e SVGs interativos, GitLab CI/CD e Fastlane, além de Cloud Functions em Python.';
 
   @override
   String get vanCranenbroekPlayProof => '4,6 ★ · 179 avaliações · 5 mil+';

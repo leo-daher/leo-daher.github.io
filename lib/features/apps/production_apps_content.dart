@@ -93,8 +93,10 @@ class ProductionAppsPresentation {
         contribution: l10n.vanCranenbroekContribution,
         stack: const [
           'Flutter',
-          'Riverpod',
-          'Kotlin',
+          'GetX',
+          'GetIt',
+          'Injectable',
+          'Provider',
           'Firebase',
           'Firestore',
           'Python',

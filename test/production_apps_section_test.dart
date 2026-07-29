@@ -25,8 +25,10 @@ void main() {
     final lyzer = apps.singleWhere((app) => app.id == 'lyzer-collect-deliver');
     final mag = apps.singleWhere((app) => app.id == 'mag-venda-digital');
 
-    expect(van.stack, contains('Riverpod'));
-    expect(van.contribution, contains('Flutter with Riverpod'));
+    expect(van.stack, contains('GetX'));
+    expect(van.stack, contains('GetIt'));
+    expect(van.stack, contains('Provider'));
+    expect(van.contribution, contains('Flutter with GetX'));
     expect(lyzer.contextLabel, contains('Android and iOS'));
     expect(
       lyzer.stack,
@@ -98,7 +100,10 @@ void main() {
       expect(find.text('MAG Venda Digital'), findsOneWidget);
       expect(find.textContaining('4,6 ★', findRichText: true), findsOneWidget);
       expect(find.textContaining('Flutter'), findsWidgets);
-      expect(find.textContaining('Riverpod'), findsOneWidget);
+      expect(
+        find.textContaining('Flutter  ·  GetX  ·  GetIt'),
+        findsOneWidget,
+      );
       expect(find.textContaining('Proprietary GetX engine'), findsOneWidget);
       expect(find.text('Stack'), findsNothing);
       expect(find.text('Prova da loja'), findsNothing);
@@ -298,7 +303,7 @@ List<ProductionAppCase> _apps() => [
     role: 'Contribuição em engenharia mobile e integração de produto.',
     contribution:
         'Atuação em fluxos híbridos, mapas SVG, dados sincronizados e entrega contínua.',
-    stack: const ['Flutter', 'Riverpod', 'Kotlin', 'Firebase', 'Python'],
+    stack: const ['Flutter', 'GetX', 'GetIt', 'Provider', 'Firebase', 'Python'],
     screenshots: const [
       ProductionAppScreenshot(
         assetPath: 'assets/client_logos/human_robotics.png',

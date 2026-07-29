@@ -569,7 +569,7 @@ abstract class AppLocalizations {
   /// Van Cranenbroek contribution.
   ///
   /// In en, this message translates to:
-  /// **'Work across Flutter with Riverpod and Kotlin, Firebase/Firestore, deep links, interactive maps and SVGs, CI/CD, and Python Cloud Functions.'**
+  /// **'Work across Flutter with GetX, GetIt/Injectable, and Provider, Firebase/Firestore, deep links, interactive maps and SVGs, GitLab CI/CD and Fastlane, and Python Cloud Functions.'**
   String get vanCranenbroekContribution;
 
   /// Google Play proof checked in July 2026.

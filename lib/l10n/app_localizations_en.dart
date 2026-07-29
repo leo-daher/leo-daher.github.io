@@ -265,7 +265,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vanCranenbroekContribution =>
-      'Work across Flutter with Riverpod and Kotlin, Firebase/Firestore, deep links, interactive maps and SVGs, CI/CD, and Python Cloud Functions.';
+      'Work across Flutter with GetX, GetIt/Injectable, and Provider, Firebase/Firestore, deep links, interactive maps and SVGs, GitLab CI/CD and Fastlane, and Python Cloud Functions.';
 
   @override
   String get vanCranenbroekPlayProof => '4.6 ★ · 179 ratings · 5K+';

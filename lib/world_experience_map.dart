@@ -28,7 +28,7 @@ const _portfolioCountries = <PortfolioCountry>[
     projects: [
       PortfolioProject(
         logo: 'MAG',
-        name: 'MAG / Mongeral Aegon',
+        name: 'MAG Seguros',
         description:
             'App de vendas de seguros em Java/Kotlin, Realm, Firebase e CI/CD.',
       ),
@@ -36,7 +36,7 @@ const _portfolioCountries = <PortfolioCountry>[
         logo: 'HR',
         name: 'Human Robotics / Robios',
         description:
-            'Face detection e classificacao de mascara com Camera2, TensorFlow e MQTT.',
+            'Visao computacional com Python/TensorFlow, TFLite, Camera2/CameraX e MQTT.',
       ),
       PortfolioProject(
         logo: 'VIS',
@@ -140,7 +140,7 @@ const _portfolioCountries = <PortfolioCountry>[
     location: 'Van Cranenbroek',
     role: 'Retail mobile e backend',
     summary:
-        'Aplicacao de catalogo/vendas com Flutter/Kotlin, mapas SVG, Firebase e backend Python.',
+        'Aplicacao de catalogo/vendas em Flutter para Android/iOS, com Firebase e backend Python.',
     yearRange: '2023 - atual',
     anchor: Offset(0.49, 0.39),
     projects: [
@@ -148,7 +148,7 @@ const _portfolioCountries = <PortfolioCountry>[
         logo: 'VCB',
         name: 'Van Cranenbroek',
         description:
-            'App hibrido Kotlin/Flutter, CI/CD, Firebase, Firestore, deeplinks, mapas SVG e Cloud Functions em Python.',
+            'App Flutter com GetX, GetIt/Injectable e Provider, CI/CD, Firebase/Firestore, mapas SVG e Cloud Functions em Python.',
       ),
     ],
   ),
@@ -191,7 +191,7 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
       projects: [
         PortfolioProject(
           logo: 'MAG',
-          name: 'MAG / Mongeral Aegon',
+          name: 'MAG Seguros',
           description:
               'Insurance sales app using Java/Kotlin, Realm, Firebase and CI/CD.',
         ),
@@ -199,7 +199,7 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
           logo: 'HR',
           name: 'Human Robotics / Robios',
           description:
-              'Face detection and mask classification using Camera2, TensorFlow and MQTT.',
+              'Computer vision with Python/TensorFlow, TFLite, Camera2/CameraX and MQTT.',
         ),
         PortfolioProject(
           logo: 'VIS',
@@ -303,7 +303,7 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
       location: 'Van Cranenbroek',
       role: 'Retail mobile and backend',
       summary:
-          'Catalog and sales app using Flutter/Kotlin, SVG maps, Firebase and a Python backend.',
+          'Catalog and sales app built with Flutter for Android/iOS, Firebase and a Python backend.',
       yearRange: '2023 - present',
       anchor: Offset(0.49, 0.39),
       projects: [
@@ -311,7 +311,7 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
           logo: 'VCB',
           name: 'Van Cranenbroek',
           description:
-              'Hybrid Kotlin/Flutter app, CI/CD, Firebase, Firestore, deep links, SVG maps and Python Cloud Functions.',
+              'Flutter app using GetX, GetIt/Injectable and Provider, CI/CD, Firebase/Firestore, SVG maps and Python Cloud Functions.',
         ),
       ],
     ),
