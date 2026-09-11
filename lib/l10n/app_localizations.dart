@@ -1073,13 +1073,13 @@ abstract class AppLocalizations {
   /// Public team recognition for the MAG Venda Digital case.
   ///
   /// In en, this message translates to:
-  /// **'Team recognition'**
+  /// **'Authentication and identity verification'**
   String get magRecognitionTitle;
 
   /// Public team recognition for the MAG Venda Digital case.
   ///
   /// In en, this message translates to:
-  /// **'Luis Henrique Fontes Oliveira, identified as Mongeral Aegon\'s technology director in the post, recognized the Venda Digital team for delivering facial-recognition authentication and identity verification. Leone Crespo Daher de Souza is among the professionals named.'**
+  /// **'Implemented facial-recognition authentication and identity verification in Venda Digital using the SERPRO API available at the time. The post below documents the team delivery, with Leone Crespo Daher de Souza among its members.'**
   String get magRecognitionText;
 
   /// Public team recognition for the MAG Venda Digital case.
