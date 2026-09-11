@@ -67,6 +67,8 @@ void main() {
       expect(find.text(evidence.text), findsOneWidget);
       expect(evidence.text, contains('Leone Crespo Daher de Souza'));
       expect(evidence.text, contains('Venda Digital'));
+      expect(evidence.text, contains('SERPRO'));
+      expect(mag.stack, contains('SERPRO API'));
       expect(find.bySemanticsLabel(evidence.imageLabel), findsOneWidget);
       expect(tester.takeException(), isNull);
       final qaPath = Platform.environment['PORTFOLIO_QA_DIR'];

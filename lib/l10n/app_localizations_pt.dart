@@ -568,11 +568,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get contactScheduleCopy => 'Calendly · 30 minutos';
 
   @override
-  String get magRecognitionTitle => 'Reconhecimento à equipe';
+  String get magRecognitionTitle => 'Autenticação e validação de identidade';
 
   @override
   String get magRecognitionText =>
-      'Luis Henrique Fontes Oliveira, apresentado como diretor de tecnologia da Mongeral Aegon na publicação, reconheceu a equipe Venda Digital pela entrega de autenticação e validação de identidade por reconhecimento facial. Leone Crespo Daher de Souza está entre os profissionais citados.';
+      'Implementei autenticação e validação de identidade por reconhecimento facial no Venda Digital utilizando a API do SERPRO disponível à época. A publicação abaixo registra a entrega da equipe, da qual Leone Crespo Daher de Souza fez parte.';
 
   @override
   String get magRecognitionImageLabel =>

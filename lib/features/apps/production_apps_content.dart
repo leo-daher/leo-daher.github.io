@@ -232,6 +232,7 @@ class ProductionAppsPresentation {
           'Realm',
           'Firebase',
           'Azure',
+          'SERPRO API',
         ],
         iconAssetPaths: const ['assets/apps/mag-venda-digital-icon.jpg'],
         screenshots: [
