@@ -567,4 +567,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contactScheduleCopy => 'Calendly · 30 minutes';
+
+  @override
+  String get magRecognitionTitle => 'Team recognition';
+
+  @override
+  String get magRecognitionText =>
+      'Luis Henrique Fontes Oliveira, identified as Mongeral Aegon\'s technology director in the post, recognized the Venda Digital team for delivering facial-recognition authentication and identity verification. Leone Crespo Daher de Souza is among the professionals named.';
+
+  @override
+  String get magRecognitionImageLabel =>
+      'Post by Luis Henrique Fontes Oliveira recognizing the Venda Digital team and naming Leone Crespo Daher de Souza.';
 }

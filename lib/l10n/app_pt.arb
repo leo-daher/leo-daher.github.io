@@ -161,5 +161,8 @@
   "contactGitHub": "GitHub",
   "contactGitHubCopy": "Código público e estudos técnicos.",
   "contactSchedule": "Agendar conversa",
-  "contactScheduleCopy": "Calendly · 30 minutos"
+  "contactScheduleCopy": "Calendly · 30 minutos",
+  "magRecognitionTitle": "Reconhecimento à equipe",
+  "magRecognitionText": "Luis Henrique Fontes Oliveira, apresentado como diretor de tecnologia da Mongeral Aegon na publicação, reconheceu a equipe Venda Digital pela entrega de autenticação e validação de identidade por reconhecimento facial. Leone Crespo Daher de Souza está entre os profissionais citados.",
+  "magRecognitionImageLabel": "Publicação de Luis Henrique Fontes Oliveira reconhecendo a equipe Venda Digital e citando Leone Crespo Daher de Souza."
 }

@@ -1,0 +1,20 @@
+{
+  "id": "mag-venda-digital-reconhecimento-facial",
+  "company": "MAG | Mongeral Aegon",
+  "product": "Venda Digital",
+  "author": "Luis Henrique Fontes Oliveira",
+  "postUrl": null,
+  "postDate": null,
+  "portfolio": {
+    "pt": {
+      "title": "Reconhecimento à equipe",
+      "text": "Luis Henrique Fontes Oliveira, apresentado como diretor de tecnologia da Mongeral Aegon na publicação, reconheceu a equipe Venda Digital pela entrega de autenticação e validação de identidade por reconhecimento facial. Leone Crespo Daher de Souza está entre os profissionais citados.",
+      "imageLabel": "Publicação de Luis Henrique Fontes Oliveira reconhecendo a equipe Venda Digital e citando Leone Crespo Daher de Souza."
+    },
+    "en": {
+      "title": "Team recognition",
+      "text": "Luis Henrique Fontes Oliveira, identified as Mongeral Aegon's technology director in the post, recognized the Venda Digital team for delivering facial-recognition authentication and identity verification. Leone Crespo Daher de Souza is among the professionals named.",
+      "imageLabel": "Post by Luis Henrique Fontes Oliveira recognizing the Venda Digital team and naming Leone Crespo Daher de Souza."
+    }
+  }
+}

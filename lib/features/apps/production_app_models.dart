@@ -90,6 +90,7 @@ class ProductionAppCase {
     this.iconAssetPaths = const [],
     this.screenshots = const [],
     this.storeProof = const [],
+    this.recognition,
     this.accent,
   }) : assert(id.length > 0),
        assert(name.length > 0),
@@ -110,10 +111,26 @@ class ProductionAppCase {
   final List<String> iconAssetPaths;
   final List<ProductionAppScreenshot> screenshots;
   final List<ProductionAppStoreProof> storeProof;
+  final ProductionAppRecognition? recognition;
 
   /// Optional project color. It is contained inside the case and never changes
   /// the portfolio's primary brand mark.
   final Color? accent;
+}
+
+@immutable
+class ProductionAppRecognition {
+  const ProductionAppRecognition({
+    required this.title,
+    required this.text,
+    required this.imageAssetPath,
+    required this.imageLabel,
+  });
+
+  final String title;
+  final String text;
+  final String imageAssetPath;
+  final String imageLabel;
 }
 
 /// Screenshot metadata. The caller owns the asset declaration and copy.

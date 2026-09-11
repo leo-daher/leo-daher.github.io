@@ -323,5 +323,17 @@
   "contactSchedule": "Schedule a conversation",
   "@contactSchedule": {"description": "Calendly contact label."},
   "contactScheduleCopy": "Calendly · 30 minutes",
-  "@contactScheduleCopy": {"description": "Calendly contact supporting copy."}
+  "@contactScheduleCopy": {"description": "Calendly contact supporting copy."},
+  "magRecognitionTitle": "Team recognition",
+  "@magRecognitionTitle": {
+    "description": "Public team recognition for the MAG Venda Digital case."
+  },
+  "magRecognitionText": "Luis Henrique Fontes Oliveira, identified as Mongeral Aegon's technology director in the post, recognized the Venda Digital team for delivering facial-recognition authentication and identity verification. Leone Crespo Daher de Souza is among the professionals named.",
+  "@magRecognitionText": {
+    "description": "Public team recognition for the MAG Venda Digital case."
+  },
+  "magRecognitionImageLabel": "Post by Luis Henrique Fontes Oliveira recognizing the Venda Digital team and naming Leone Crespo Daher de Souza.",
+  "@magRecognitionImageLabel": {
+    "description": "Public team recognition for the MAG Venda Digital case."
+  }
 }

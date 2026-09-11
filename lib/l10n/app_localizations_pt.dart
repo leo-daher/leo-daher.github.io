@@ -566,4 +566,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get contactScheduleCopy => 'Calendly · 30 minutos';
+
+  @override
+  String get magRecognitionTitle => 'Reconhecimento à equipe';
+
+  @override
+  String get magRecognitionText =>
+      'Luis Henrique Fontes Oliveira, apresentado como diretor de tecnologia da Mongeral Aegon na publicação, reconheceu a equipe Venda Digital pela entrega de autenticação e validação de identidade por reconhecimento facial. Leone Crespo Daher de Souza está entre os profissionais citados.';
+
+  @override
+  String get magRecognitionImageLabel =>
+      'Publicação de Luis Henrique Fontes Oliveira reconhecendo a equipe Venda Digital e citando Leone Crespo Daher de Souza.';
 }

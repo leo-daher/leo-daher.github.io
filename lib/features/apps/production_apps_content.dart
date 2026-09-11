@@ -218,6 +218,13 @@ class ProductionAppsPresentation {
         summary: l10n.magSummary,
         role: l10n.magRole,
         contribution: l10n.magContribution,
+        recognition: ProductionAppRecognition(
+          title: l10n.magRecognitionTitle,
+          text: l10n.magRecognitionText,
+          imageAssetPath:
+              'assets/evidence/mag-venda-digital-reconhecimento-facial.png',
+          imageLabel: l10n.magRecognitionImageLabel,
+        ),
         stack: const [
           'Android',
           'Java',

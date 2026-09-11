@@ -253,6 +253,27 @@ class _CaseDetails extends StatelessWidget {
             accent: accent,
           ),
         ],
+        if (app.recognition case final recognition?) ...[
+          const SizedBox(height: 18),
+          ExpansionTile(
+            key: Key('recognition-${app.id}'),
+            tilePadding: EdgeInsets.zero,
+            childrenPadding: const EdgeInsets.only(bottom: 12),
+            title: Text(recognition.title),
+            children: [
+              Text(
+                recognition.text,
+                style: TextStyle(color: palette.ink, height: 1.5),
+              ),
+              const SizedBox(height: 14),
+              Image.asset(
+                recognition.imageAssetPath,
+                fit: BoxFit.contain,
+                semanticLabel: recognition.imageLabel,
+              ),
+            ],
+          ),
+        ],
       ],
     );
   }

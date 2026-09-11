@@ -1069,6 +1069,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Calendly · 30 minutes'**
   String get contactScheduleCopy;
+
+  /// Public team recognition for the MAG Venda Digital case.
+  ///
+  /// In en, this message translates to:
+  /// **'Team recognition'**
+  String get magRecognitionTitle;
+
+  /// Public team recognition for the MAG Venda Digital case.
+  ///
+  /// In en, this message translates to:
+  /// **'Luis Henrique Fontes Oliveira, identified as Mongeral Aegon\'s technology director in the post, recognized the Venda Digital team for delivering facial-recognition authentication and identity verification. Leone Crespo Daher de Souza is among the professionals named.'**
+  String get magRecognitionText;
+
+  /// Public team recognition for the MAG Venda Digital case.
+  ///
+  /// In en, this message translates to:
+  /// **'Post by Luis Henrique Fontes Oliveira recognizing the Venda Digital team and naming Leone Crespo Daher de Souza.'**
+  String get magRecognitionImageLabel;
 }
 
 class _AppLocalizationsDelegate

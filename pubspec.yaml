@@ -74,6 +74,7 @@ flutter:
     - assets/client_logos/
     - assets/brand/
     - assets/apps/
+    - assets/evidence/
     - assets/certificates/catalog.json
     - assets/certificates/originals/anthropic-ai-capabilities-and-limitations.jpg
     - assets/certificates/originals/anthropic-ai-fluency-framework-and-foundations.jpg
