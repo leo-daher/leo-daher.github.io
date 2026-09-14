@@ -688,6 +688,7 @@ class _CertificateTechnologyChips extends StatelessWidget {
       for (final technology in technologies)
         FilterChip(
           key: Key('certificate-filter-${_technologyKey(technology)}'),
+          avatar: _technologyLogo(technology, size: 18),
           label: Text(technology),
           selected: selectedTechnologies.contains(technology),
           onSelected: (_) => onTechnologySelected(technology),
@@ -881,31 +882,34 @@ class _TechnologyTag extends StatelessWidget {
         color: LeoneBrandColors.interactive.withValues(alpha: .24),
       ),
     ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (label == 'Flutter') ...[
-          SvgPicture.asset(
-            'assets/brand/flutter-logo.svg',
-            width: 13,
-            height: 13,
-          ),
-          const SizedBox(width: 4),
-        ] else if (label == 'Dart') ...[
-          SvgPicture.asset('assets/brand/dart-logo.svg', width: 13, height: 13),
-          const SizedBox(width: 4),
-        ],
-        Text(
-          label,
-          style: TextStyle(
-            color: context.leonePalette.ink,
-            fontSize: 11,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ],
+    child: Text(
+      label,
+      style: TextStyle(
+        color: context.leonePalette.ink,
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
+      ),
     ),
   );
+}
+
+Widget? _technologyLogo(String technology, {required double size}) {
+  final asset = switch (technology) {
+    'Flutter' => 'assets/brand/flutter-logo.svg',
+    'Dart' => 'assets/brand/dart-logo.svg',
+    _ => null,
+  };
+  return asset == null
+      ? null
+      : Padding(
+          padding: const EdgeInsetsDirectional.only(start: 2),
+          child: SvgPicture.asset(
+            asset,
+            width: size,
+            height: size,
+            fit: BoxFit.contain,
+          ),
+        );
 }
 
 class _CertificatePreviewDialog extends StatelessWidget {
