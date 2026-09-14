@@ -339,6 +339,34 @@
           "sha256": "a066eaee7e0c349c46c3a5e6de80ce20b7574e40d684efeacebd1384358bddf8"
         }
       }
+    },
+    {
+      "id": "isf-acd7e9a9",
+      "credential_id": "ACD7E9A9",
+      "provider": "isf",
+      "issuer": "Universidade Federal do Rio de Janeiro",
+      "title": "Laboratório de Conversação e Leitura acadêmica em inglês através de textos literários. - Intermediário, nível B2",
+      "holder": "LEONE CRESPO DAHER DE SOUZA",
+      "completed_on": "2015-02-28",
+      "verification_url": "https://isfaluno.mec.gov.br/validar-certificado",
+      "course_url": null,
+      "verified_on": "2026-09-14",
+      "verification_status": "verified",
+      "technologies": ["English", "B2", "Idiomas sem Fronteiras"],
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/ufrj-idiomas-sem-fronteiras-ingles-2015.pdf",
+          "media_type": "application/pdf",
+          "bytes": 58060,
+          "sha256": "9688bdea69f33db6f1d743f79d0a4328842fbb6a41e60b35038525a9a5cf3f91"
+        },
+        "image": {
+          "path": "assets/certificates/originals/ufrj-idiomas-sem-fronteiras-ingles-2015.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 147213,
+          "sha256": "a20aa372f50a84ff04222bba1f4f3135e8468a99154c73e2f5b2fdb415920758"
+        }
+      }
     }
   ]
 }

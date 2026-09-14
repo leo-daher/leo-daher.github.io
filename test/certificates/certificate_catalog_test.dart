@@ -8,16 +8,17 @@ void main() {
     ) async {
       final catalog = await CertificateCatalog.load();
 
-      expect(catalog.certificates, hasLength(12));
-      expect(catalog.issuerCount, 2);
+      expect(catalog.certificates, hasLength(13));
+      expect(catalog.issuerCount, 3);
       expect(catalog.certificates.first.completedOn.year, 2026);
       expect(
         catalog.groupsByYear.map((group) => group.year),
-        orderedEquals([2026, 2024, 2021]),
+        orderedEquals([2026, 2024, 2021, 2015]),
       );
       expect(catalog.groupsByYear[0].certificates, hasLength(10));
       expect(catalog.groupsByYear[1].certificates, hasLength(1));
       expect(catalog.groupsByYear[2].certificates, hasLength(1));
+      expect(catalog.groupsByYear[3].certificates, hasLength(1));
       expect(
         catalog.technologyTags,
         containsAll(const [

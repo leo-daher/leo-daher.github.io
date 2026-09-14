@@ -88,6 +88,8 @@ flutter:
     - assets/certificates/originals/anthropic-model-context-protocol-advanced-topics.jpg
     - assets/certificates/originals/udemy-build-asp-net-core-web-api-scratch-to-finish-net8-api.jpg
     - assets/certificates/originals/udemy-complete-flutter-development-bootcamp-with-dart.jpg
+    - assets/certificates/originals/ufrj-idiomas-sem-fronteiras-ingles-2015.jpg
+    - assets/certificates/originals/ufrj-idiomas-sem-fronteiras-ingles-2015.pdf
 
   fonts:
     - family: Inter
