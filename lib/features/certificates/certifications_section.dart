@@ -143,7 +143,6 @@ class _CertificateHighlights extends StatelessWidget {
             height: 250,
             child: _CertificateHighlightCard(
               certificate: certificate,
-              showThumbnail: !compact,
               onTap: () => onOpenPreview(certificate),
             ),
           ),
@@ -176,12 +175,10 @@ class _CertificateHighlights extends StatelessWidget {
 class _CertificateHighlightCard extends StatelessWidget {
   const _CertificateHighlightCard({
     required this.certificate,
-    required this.showThumbnail,
     required this.onTap,
   });
 
   final CertificateRecord certificate;
-  final bool showThumbnail;
   final VoidCallback onTap;
 
   @override
@@ -198,15 +195,6 @@ class _CertificateHighlightCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (showThumbnail)
-              SizedBox(
-                height: 88,
-                width: double.infinity,
-                child: Image.asset(
-                  certificate.imageAssetPath,
-                  fit: BoxFit.cover,
-                ),
-              ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
