@@ -460,6 +460,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get viewCredentials => 'Ver credenciais';
 
   @override
+  String get viewAllCertificates => 'Ver todas as certificações';
+
+  @override
   String get certificateRegister => 'Registro de certificações';
 
   @override

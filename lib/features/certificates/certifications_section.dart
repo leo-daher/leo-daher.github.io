@@ -105,8 +105,235 @@ class _CertificationsContent extends StatelessWidget {
                     );
                   },
                 ),
+                const SizedBox(height: 24),
+                _CertificateHighlights(
+                  certificates: catalog.certificates.take(3).toList(),
+                  onOpenPreview: (certificate) =>
+                      _openCertificatePreview(context, certificate),
+                  onOpenRegister: () => _openRegister(context),
+                ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+void _openCertificatePreview(
+  BuildContext context,
+  CertificateRecord certificate,
+) {
+  PortfolioTelemetry.certificateAction(
+    'open_preview',
+    certificateId: certificate.id,
+  );
+  showDialog<void>(
+    context: context,
+    builder: (context) => _CertificatePreviewDialog(certificate: certificate),
+  );
+}
+
+class _CertificateHighlights extends StatelessWidget {
+  const _CertificateHighlights({
+    required this.certificates,
+    required this.onOpenPreview,
+    required this.onOpenRegister,
+  });
+
+  final List<CertificateRecord> certificates;
+  final ValueChanged<CertificateRecord> onOpenPreview;
+  final VoidCallback onOpenRegister;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final compact = constraints.maxWidth < 620;
+      final cardWidth = compact ? 270.0 : (constraints.maxWidth - 48) / 4;
+      final cards = [
+        for (final certificate in certificates)
+          SizedBox(
+            width: cardWidth,
+            height: 250,
+            child: _CertificateHighlightCard(
+              certificate: certificate,
+              showThumbnail: !compact,
+              onTap: () => onOpenPreview(certificate),
+            ),
+          ),
+        SizedBox(
+          width: cardWidth,
+          height: 250,
+          child: _ViewAllCertificatesCard(onTap: onOpenRegister),
+        ),
+      ];
+      if (compact) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.only(bottom: 4),
+          child: Row(
+            children: [
+              for (var index = 0; index < cards.length; index++) ...[
+                if (index > 0) const SizedBox(width: 16),
+                cards[index],
+              ],
+            ],
+          ),
+        );
+      }
+      return Wrap(spacing: 16, runSpacing: 16, children: cards);
+    },
+  );
+}
+
+class _CertificateHighlightCard extends StatelessWidget {
+  const _CertificateHighlightCard({
+    required this.certificate,
+    required this.showThumbnail,
+    required this.onTap,
+  });
+
+  final CertificateRecord certificate;
+  final bool showThumbnail;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    final l10n = context.l10n;
+    return Material(
+      color: palette.surface.withValues(alpha: .72),
+      borderRadius: BorderRadius.circular(20),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        key: Key('certificate-highlight-card-${certificate.id}'),
+        onTap: onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (showThumbnail)
+              SizedBox(
+                height: 88,
+                width: double.infinity,
+                child: Image.asset(
+                  certificate.imageAssetPath,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      certificate.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: palette.ink,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        height: 1.2,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      l10n.certificateFor(certificate.holder),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: palette.mutedInk, fontSize: 11),
+                    ),
+                    const SizedBox(height: 8),
+                    _CertificateHighlightTags(
+                      technologies: certificate.technologies.take(2).toList(),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.issuedBy(certificate.issuer),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: palette.mutedInk, fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CertificateHighlightTags extends StatelessWidget {
+  const _CertificateHighlightTags({required this.technologies});
+
+  final List<String> technologies;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    height: 26,
+    child: ClipRect(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            for (var index = 0; index < technologies.length; index++) ...[
+              if (index > 0) const SizedBox(width: 6),
+              _TechnologyTag(label: technologies[index]),
+            ],
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+class _ViewAllCertificatesCard extends StatelessWidget {
+  const _ViewAllCertificatesCard({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return Material(
+      color: LeoneBrandColors.interactive.withValues(alpha: .12),
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        key: const Key('certificates-view-all-card'),
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.arrow_forward_rounded,
+                color: LeoneBrandColors.interactive,
+                size: 28,
+              ),
+              const SizedBox(height: 18),
+              Text(
+                context.l10n.viewAllCertificates,
+                style: TextStyle(
+                  color: palette.ink,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                context.l10n.certificateRegisterCopy,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: palette.mutedInk, height: 1.35),
+              ),
+            ],
           ),
         ),
       ),

@@ -461,6 +461,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get viewCredentials => 'View credentials';
 
   @override
+  String get viewAllCertificates => 'View all certificates';
+
+  @override
   String get certificateRegister => 'Certificate register';
 
   @override

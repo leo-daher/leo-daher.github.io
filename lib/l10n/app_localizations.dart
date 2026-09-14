@@ -902,6 +902,12 @@ abstract class AppLocalizations {
   /// **'View credentials'**
   String get viewCredentials;
 
+  /// Opens the complete certificate register.
+  ///
+  /// In en, this message translates to:
+  /// **'View all certificates'**
+  String get viewAllCertificates;
+
   /// Certificate catalog dialog title.
   ///
   /// In en, this message translates to:

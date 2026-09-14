@@ -134,6 +134,7 @@
   "verifiedCredentials": "{count, plural, =1{1 credencial verificada} other{{count} credenciais verificadas}}",
   "issuers": "emissores",
   "viewCredentials": "Ver credenciais",
+  "viewAllCertificates": "Ver todas as certificações",
   "certificateRegister": "Registro de certificações",
   "certificateRegisterCopy": "Navegue pelas credenciais por ano e selecione uma para ver o registro oficial e as opções de validação.",
   "filterTechnologies": "Filtrar por tecnologia",
