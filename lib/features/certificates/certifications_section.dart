@@ -68,7 +68,7 @@ class _CertificationsContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 _CertificateHighlights(
-                  certificates: catalog.certificates.take(3).toList(),
+                  certificates: _featuredCertificates(catalog),
                   onOpenPreview: (certificate) =>
                       _openCertificatePreview(context, certificate),
                   onOpenRegister: () => _openRegister(context),
@@ -80,6 +80,30 @@ class _CertificationsContent extends StatelessWidget {
       ),
     );
   }
+}
+
+List<CertificateRecord> _featuredCertificates(CertificateCatalog catalog) {
+  final selected = <CertificateRecord>[];
+
+  void addFirst(bool Function(CertificateRecord) matches) {
+    for (final certificate in catalog.certificates) {
+      if (matches(certificate) && !selected.contains(certificate)) {
+        selected.add(certificate);
+        return;
+      }
+    }
+  }
+
+  addFirst((certificate) => certificate.technologies.contains('Flutter'));
+  addFirst(
+    (certificate) => certificate.title.toLowerCase().contains('ai fluency'),
+  );
+  addFirst((certificate) => certificate.technologies.contains('MCP'));
+  for (final certificate in catalog.certificates) {
+    if (selected.length == 3) break;
+    if (!selected.contains(certificate)) selected.add(certificate);
+  }
+  return selected;
 }
 
 void _openCertificatePreview(
