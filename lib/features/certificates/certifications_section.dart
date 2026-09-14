@@ -880,13 +880,29 @@ class _TechnologyTag extends StatelessWidget {
         color: LeoneBrandColors.interactive.withValues(alpha: .24),
       ),
     ),
-    child: Text(
-      label,
-      style: TextStyle(
-        color: context.leonePalette.ink,
-        fontSize: 11,
-        fontWeight: FontWeight.w700,
-      ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (label == 'Flutter') ...[
+          Icon(Icons.flutter_dash, size: 13, color: context.leonePalette.ink),
+          const SizedBox(width: 4),
+        ] else if (label == 'Dart') ...[
+          Icon(
+            Icons.data_object_rounded,
+            size: 13,
+            color: context.leonePalette.ink,
+          ),
+          const SizedBox(width: 4),
+        ],
+        Text(
+          label,
+          style: TextStyle(
+            color: context.leonePalette.ink,
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
     ),
   );
 }

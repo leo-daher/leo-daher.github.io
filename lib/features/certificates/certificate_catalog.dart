@@ -16,6 +16,17 @@ class CertificateCatalog {
     final tags = <String>{
       for (final certificate in certificates) ...certificate.technologies,
     }.toList()..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+    const primaryTechnologies = ['Flutter', 'Dart'];
+    tags.sort((a, b) {
+      final aPriority = primaryTechnologies.indexOf(a);
+      final bPriority = primaryTechnologies.indexOf(b);
+      if (aPriority != -1 || bPriority != -1) {
+        if (aPriority == -1) return 1;
+        if (bPriority == -1) return -1;
+        return aPriority.compareTo(bPriority);
+      }
+      return a.toLowerCase().compareTo(b.toLowerCase());
+    });
     return List.unmodifiable(tags);
   }
 
