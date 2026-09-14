@@ -48,11 +48,14 @@ For GitHub Pages, create the repository variable `GA_MEASUREMENT_ID` and the
 Actions secret `SENTRY_DSN`. The deploy workflow supplies the commit SHA as the
 Sentry release automatically.
 
-The custom GA4 events are `portfolio_view`, `select_section`,
-`change_preference`, `select_outbound_link`, and `certificate_action`. Event
-parameters intentionally exclude names, email addresses, full outbound URLs,
-and other personal data. Google Signals and ad-personalization signals are
-disabled; Sentry default PII collection is disabled.
+The custom GA4 events are `portfolio_view`, `portfolio_attribution`,
+`select_section`, `change_preference`, `select_outbound_link`, and
+`certificate_action`. Resume and application links can use `utm_source`,
+`utm_medium`, `utm_campaign`, `utm_content`, `utm_term`, or the short `ref`
+parameter. The portfolio records only sanitized, bounded parameter values;
+names, email addresses, full outbound URLs, and other personal data are
+excluded. Google Signals and ad-personalization signals are disabled; Sentry
+default PII collection is disabled.
 
 ## Experience map
 

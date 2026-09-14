@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
@@ -884,14 +885,14 @@ class _TechnologyTag extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (label == 'Flutter') ...[
-          Icon(Icons.flutter_dash, size: 13, color: context.leonePalette.ink),
+          SvgPicture.asset(
+            'assets/brand/flutter-logo.svg',
+            width: 13,
+            height: 13,
+          ),
           const SizedBox(width: 4),
         ] else if (label == 'Dart') ...[
-          Icon(
-            Icons.data_object_rounded,
-            size: 13,
-            color: context.leonePalette.ink,
-          ),
+          SvgPicture.asset('assets/brand/dart-logo.svg', width: 13, height: 13),
           const SizedBox(width: 4),
         ],
         Text(
