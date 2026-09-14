@@ -124,7 +124,7 @@ void main() {
 
     expect(find.byKey(const Key('portfolio-proof-strip')), findsOneWidget);
     expect(find.text('LATAM · USA · EU'), findsOneWidget);
-    final appsRect = tester.getRect(find.text('16'));
+    final appsRect = tester.getRect(find.text('16 Apps published'));
     final marketsRect = tester.getRect(find.text('LATAM · USA · EU'));
     expect(appsRect.right, lessThan(marketsRect.left));
     expect(

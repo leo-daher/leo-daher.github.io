@@ -377,7 +377,7 @@ abstract class AppLocalizations {
   /// Total mobile apps delivered across platforms.
   ///
   /// In en, this message translates to:
-  /// **'16'**
+  /// **'16 Apps published'**
   String get proofAppsValue;
 
   /// Total mobile apps published in official stores.

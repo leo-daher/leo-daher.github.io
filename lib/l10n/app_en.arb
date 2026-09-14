@@ -92,7 +92,7 @@
   "@everySurface": {"description": "Creative product statement."},
   "surfaceList": "mobile  ·  desktop  ·  web",
   "@surfaceList": {"description": "Supported device surfaces."},
-  "proofAppsValue": "16",
+  "proofAppsValue": "16 Apps published",
   "@proofAppsValue": {"description": "Total mobile apps delivered across platforms."},
   "proofAppsLabel": "mobile apps in official stores",
   "@proofAppsLabel": {"description": "Total mobile apps published in official stores."},
