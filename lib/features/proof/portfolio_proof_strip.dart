@@ -11,15 +11,7 @@ class PortfolioProofStrip extends StatelessWidget {
     final l10n = context.l10n;
     final items = <_ProofItem>[
       _ProofItem(value: l10n.proofAppsValue, label: l10n.proofAppsLabel),
-      _ProofItem(
-        value: l10n.proofPlatformsValue,
-        label: l10n.proofPlatformsLabel,
-      ),
       _ProofItem(value: l10n.proofMarketsValue, label: l10n.proofMarketsLabel),
-      _ProofItem(
-        value: l10n.proofDownloadsValue,
-        label: l10n.proofDownloadsLabel,
-      ),
     ];
     final palette = context.leonePalette;
 

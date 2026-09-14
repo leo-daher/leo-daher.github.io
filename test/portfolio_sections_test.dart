@@ -123,17 +123,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('portfolio-proof-strip')), findsOneWidget);
-    expect(find.text('Android + iOS'), findsOneWidget);
     expect(find.text('LATAM · USA · EU'), findsOneWidget);
-    expect(find.text('≈20K'), findsOneWidget);
     final appsRect = tester.getRect(find.text('16'));
-    final platformsRect = tester.getRect(find.text('Android + iOS'));
     final marketsRect = tester.getRect(find.text('LATAM · USA · EU'));
-    final downloadsRect = tester.getRect(find.text('≈20K'));
-    expect(appsRect.top, closeTo(platformsRect.top, 8));
-    expect(marketsRect.top, closeTo(downloadsRect.top, 8));
-    expect(appsRect.right, lessThan(platformsRect.left));
-    expect(marketsRect.top, greaterThan(appsRect.bottom));
+    expect(appsRect.right, lessThan(marketsRect.left));
     expect(
       tester.getSize(find.byKey(const Key('portfolio-proof-strip'))).width,
       closeTo(342, .01),

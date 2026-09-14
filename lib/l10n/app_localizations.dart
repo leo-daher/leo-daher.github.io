@@ -380,23 +380,11 @@ abstract class AppLocalizations {
   /// **'16'**
   String get proofAppsValue;
 
-  /// Total mobile app delivery count across platforms.
+  /// Total mobile apps published in official stores.
   ///
   /// In en, this message translates to:
-  /// **'mobile apps delivered'**
+  /// **'mobile apps in official stores'**
   String get proofAppsLabel;
-
-  /// Published mobile platforms.
-  ///
-  /// In en, this message translates to:
-  /// **'Android + iOS'**
-  String get proofPlatformsValue;
-
-  /// Store publication proof label.
-  ///
-  /// In en, this message translates to:
-  /// **'published in official stores'**
-  String get proofPlatformsLabel;
 
   /// Markets represented by highlighted apps.
   ///
@@ -409,18 +397,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'products for real markets'**
   String get proofMarketsLabel;
-
-  /// Estimated combined downloads across highlighted apps.
-  ///
-  /// In en, this message translates to:
-  /// **'≈20K'**
-  String get proofDownloadsValue;
-
-  /// Combined app download estimate label.
-  ///
-  /// In en, this message translates to:
-  /// **'estimated downloads across apps'**
-  String get proofDownloadsLabel;
 
   /// Accessible production apps section label.
   ///

@@ -161,25 +161,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get proofAppsValue => '16';
 
   @override
-  String get proofAppsLabel => 'mobile apps delivered';
-
-  @override
-  String get proofPlatformsValue => 'Android + iOS';
-
-  @override
-  String get proofPlatformsLabel => 'published in official stores';
+  String get proofAppsLabel => 'mobile apps in official stores';
 
   @override
   String get proofMarketsValue => 'LATAM · USA · EU';
 
   @override
   String get proofMarketsLabel => 'products for real markets';
-
-  @override
-  String get proofDownloadsValue => '≈20K';
-
-  @override
-  String get proofDownloadsLabel => 'estimated downloads across apps';
 
   @override
   String get productionAppsSemanticLabel =>
