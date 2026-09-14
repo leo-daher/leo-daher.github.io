@@ -374,16 +374,16 @@ abstract class AppLocalizations {
   /// **'mobile  ·  desktop  ·  web'**
   String get surfaceList;
 
-  /// Number of highlighted production apps.
+  /// Total mobile apps delivered across platforms.
   ///
   /// In en, this message translates to:
-  /// **'4'**
+  /// **'16'**
   String get proofAppsValue;
 
-  /// Production app proof label.
+  /// Total mobile app delivery count across platforms.
   ///
   /// In en, this message translates to:
-  /// **'production apps highlighted'**
+  /// **'mobile apps delivered'**
   String get proofAppsLabel;
 
   /// Published mobile platforms.

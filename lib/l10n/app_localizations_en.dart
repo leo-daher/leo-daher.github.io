@@ -158,10 +158,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get surfaceList => 'mobile  ·  desktop  ·  web';
 
   @override
-  String get proofAppsValue => '4';
+  String get proofAppsValue => '16';
 
   @override
-  String get proofAppsLabel => 'production apps highlighted';
+  String get proofAppsLabel => 'mobile apps delivered';
 
   @override
   String get proofPlatformsValue => 'Android + iOS';

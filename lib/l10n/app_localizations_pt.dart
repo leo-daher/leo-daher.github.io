@@ -158,10 +158,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get surfaceList => 'mobile  ·  desktop  ·  web';
 
   @override
-  String get proofAppsValue => '4';
+  String get proofAppsValue => '16';
 
   @override
-  String get proofAppsLabel => 'apps em produção em destaque';
+  String get proofAppsLabel => 'apps mobile entregues';
 
   @override
   String get proofPlatformsValue => 'Android + iOS';

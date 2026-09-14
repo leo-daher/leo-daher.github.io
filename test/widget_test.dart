@@ -667,7 +667,6 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('CERTIFICATIONS'), findsOneWidget);
-    expect(find.text('4 VERIFIED CREDENTIALS'), findsOneWidget);
     final title = find.text('Continuous learning, backed by proof.');
     final copy = find.text(
       'Official course records available for consultation, with source '
@@ -686,7 +685,7 @@ void main() {
       closeTo(124, .01),
     );
 
-    await tester.tap(find.byKey(const Key('certificates-open-register')));
+    await tester.tap(find.byKey(const Key('certificates-view-all-card')));
     await tester.pumpAndSettle();
 
     expect(
@@ -793,7 +792,12 @@ void main() {
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
-    await tester.tap(find.byKey(const Key('certificates-open-register')));
+    await tester.drag(
+      find.byKey(const Key('certificate-highlights-scroll')),
+      const Offset(-900, 0),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('certificates-view-all-card')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
 

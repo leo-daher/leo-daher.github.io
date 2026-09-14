@@ -126,7 +126,7 @@ void main() {
     expect(find.text('Android + iOS'), findsOneWidget);
     expect(find.text('LATAM · USA · EU'), findsOneWidget);
     expect(find.text('≈20K'), findsOneWidget);
-    final appsRect = tester.getRect(find.text('4'));
+    final appsRect = tester.getRect(find.text('16'));
     final platformsRect = tester.getRect(find.text('Android + iOS'));
     final marketsRect = tester.getRect(find.text('LATAM · USA · EU'));
     final downloadsRect = tester.getRect(find.text('≈20K'));

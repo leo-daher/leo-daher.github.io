@@ -49,7 +49,6 @@ class _CertificationsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final palette = context.leonePalette;
     return Center(
       key: const Key('certifications-section'),
       child: ConstrainedBox(
@@ -68,44 +67,6 @@ class _CertificationsContent extends StatelessWidget {
                   copyBelowTitle: true,
                 ),
                 const SizedBox(height: 30),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    final compact = constraints.maxWidth < 620;
-                    return Container(
-                      padding: EdgeInsets.all(compact ? 20 : 24),
-                      decoration: BoxDecoration(
-                        color: palette.surface.withValues(alpha: .78),
-                        borderRadius: BorderRadius.circular(compact ? 24 : 30),
-                        border: Border.all(color: palette.outline),
-                      ),
-                      child: Wrap(
-                        spacing: 28,
-                        runSpacing: 20,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          const _CertificateSeal(),
-                          _CertificateMetrics(
-                            credentials: l10n.verifiedCredentials(
-                              catalog.certificates.length,
-                            ),
-                            issuerCount: catalog.issuerCount,
-                            issuersLabel: l10n.issuers,
-                          ),
-                          OutlinedButton.icon(
-                            key: const Key('certificates-open-register'),
-                            onPressed: () => _openRegister(context),
-                            icon: const Icon(
-                              Icons.open_in_new_rounded,
-                              size: 18,
-                            ),
-                            label: Text(l10n.viewCredentials),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
                 _CertificateHighlights(
                   certificates: catalog.certificates.take(3).toList(),
                   onOpenPreview: (certificate) =>
@@ -170,6 +131,7 @@ class _CertificateHighlights extends StatelessWidget {
       ];
       if (compact) {
         return SingleChildScrollView(
+          key: const Key('certificate-highlights-scroll'),
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.only(bottom: 4),
           child: Row(
@@ -337,63 +299,6 @@ class _ViewAllCertificatesCard extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _CertificateSeal extends StatelessWidget {
-  const _CertificateSeal();
-
-  @override
-  Widget build(BuildContext context) => Container(
-    width: 48,
-    height: 48,
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      color: LeoneBrandColors.interactive.withValues(alpha: .13),
-      borderRadius: BorderRadius.circular(16),
-    ),
-    child: const Icon(
-      Icons.verified_outlined,
-      color: LeoneBrandColors.interactive,
-      size: 26,
-    ),
-  );
-}
-
-class _CertificateMetrics extends StatelessWidget {
-  const _CertificateMetrics({
-    required this.credentials,
-    required this.issuerCount,
-    required this.issuersLabel,
-  });
-
-  final String credentials;
-  final int issuerCount;
-  final String issuersLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.leonePalette;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          credentials.toUpperCase(),
-          style: TextStyle(
-            color: palette.ink,
-            fontSize: 12,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 1.1,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          '$issuerCount $issuersLabel',
-          style: TextStyle(color: palette.mutedInk, height: 1.4),
-        ),
-      ],
     );
   }
 }
