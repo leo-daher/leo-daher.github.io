@@ -1,5 +1,3 @@
-import 'dart:ui' show SemanticsRole, Tristate;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,6 +6,7 @@ import 'package:leone_portfolio/features/articles/article_catalog.dart';
 import 'package:leone_portfolio/features/articles/article_page_layout.dart';
 import 'package:leone_portfolio/features/articles/article_publication_metadata.dart';
 import 'package:leone_portfolio/features/articles/articles.dart';
+import 'package:leone_portfolio/features/contact/portfolio_contact_links.dart';
 import 'package:leone_portfolio/l10n/app_localizations.dart';
 import 'package:leone_portfolio/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,7 +33,7 @@ void main() {
   testWidgets('article page publishes the complete identity story', (
     tester,
   ) async {
-    await tester.pumpWidget(_localizedApp(const ArticlesPage()));
+    await tester.pumpWidget(_localizedApp(_articlesPage()));
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('articles-page')), findsOneWidget);
@@ -70,7 +69,7 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(
-      _localizedApp(const ArticlesPage(), locale: const Locale('pt')),
+      _localizedApp(_articlesPage(), locale: const Locale('pt')),
     );
     await tester.pumpAndSettle();
 
@@ -96,7 +95,7 @@ void main() {
   testWidgets('article share badges expose canonical social URLs', (
     tester,
   ) async {
-    await tester.pumpWidget(_localizedApp(const ArticlesPage()));
+    await tester.pumpWidget(_localizedApp(_articlesPage()));
     await tester.pumpAndSettle();
 
     final linkedin = tester.widget<Link>(
@@ -143,7 +142,7 @@ void main() {
   ) async {
     final semantics = tester.ensureSemantics();
 
-    await tester.pumpWidget(_localizedApp(const ArticlesPage()));
+    await tester.pumpWidget(_localizedApp(_articlesPage()));
     await tester.pumpAndSettle();
 
     final figure = tester.getSemantics(
@@ -167,24 +166,27 @@ void main() {
     semantics.dispose();
   });
 
-  testWidgets('article page remains usable on a narrow viewport', (
+  testWidgets('article hides related reading when no other article exists', (
     tester,
   ) async {
-    tester.view.physicalSize = const Size(390, 844);
-    tester.view.devicePixelRatio = 1;
+    for (final size in [const Size(390, 844), const Size(1440, 1000)]) {
+      tester.view.physicalSize = size;
+      tester.view.devicePixelRatio = 1;
+
+      await tester.pumpWidget(_localizedApp(_articlesPage()));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('article-share-badges')), findsOneWidget);
+      expect(find.byKey(const Key('related-articles-section')), findsNothing);
+      expect(find.byKey(const Key('related-articles-divider')), findsNothing);
+      expect(find.byKey(const Key('related-articles-heading')), findsNothing);
+      expect(tester.takeException(), isNull);
+    }
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-
-    await tester.pumpWidget(_localizedApp(const ArticlesPage()));
-    await tester.pumpAndSettle();
-
-    expect(find.byKey(const Key('article-share-badges')), findsOneWidget);
-    expect(find.byKey(const Key('article-navigation-inline')), findsOneWidget);
-    expect(find.byKey(const Key('article-navigation-sidebar')), findsNothing);
-    expect(tester.takeException(), isNull);
   });
 
-  testWidgets('wide article page keeps quick navigation on the right', (
+  testWidgets('wide article stays centered in a readable column', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(1440, 1000);
@@ -192,69 +194,117 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
 
-    await tester.pumpWidget(_localizedApp(const ArticlesPage()));
+    await tester.pumpWidget(_localizedApp(_articlesPage()));
     await tester.pumpAndSettle();
 
-    final mainRect = tester.getRect(
-      find.byKey(const Key('article-main-scroll')),
-    );
-    final sidebarRect = tester.getRect(
-      find.byKey(const Key('article-navigation-sidebar')),
-    );
-    final articleSize = tester.getSize(
+    final articleRect = tester.getRect(
       find.byKey(const Key('article-reading-column')),
     );
-
-    expect(find.byKey(const Key('article-navigation-inline')), findsNothing);
-    expect(sidebarRect.width, 288);
-    expect(sidebarRect.left - mainRect.right, 32);
-    expect(sidebarRect.right, lessThanOrEqualTo(1440 - 24));
-    expect(articleSize.width, lessThanOrEqualTo(920));
-
-    await tester.drag(
-      find.byKey(const Key('article-main-scroll')),
-      const Offset(0, -1800),
-    );
-    await tester.pumpAndSettle();
-    expect(
-      tester.getRect(find.byKey(const Key('article-navigation-sidebar'))),
-      sidebarRect,
-    );
+    expect(articleRect.width, lessThanOrEqualTo(920));
+    expect(articleRect.center.dx, closeTo(720, 1));
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('article navigation switches layout at the desktop breakpoint', (
+  testWidgets('related articles follow the text in a quiet desktop grid', (
     tester,
   ) async {
+    tester.view.physicalSize = const Size(1440, 1000);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
+    final current = _articleEntry(id: 'current', title: 'Current article');
+    final first = _articleEntry(id: 'first', title: 'First related article');
+    final second = _articleEntry(id: 'second', title: 'Second related article');
 
-    tester.view.physicalSize = const Size(1199, 900);
-    await tester.pumpWidget(_localizedApp(const ArticlesPage()));
-    await tester.pumpAndSettle();
-    expect(find.byKey(const Key('article-navigation-inline')), findsOneWidget);
-    expect(find.byKey(const Key('article-navigation-sidebar')), findsNothing);
-    final narrowScroll = tester.widget<SingleChildScrollView>(
-      find.byKey(const Key('article-main-scroll')),
+    await tester.pumpWidget(
+      _localizedApp(
+        ArticlePageLayout(
+          pageKey: const Key('test-article-page'),
+          currentArticle: current,
+          articles: [current, first, second],
+          article: const SizedBox(
+            key: Key('test-article-content'),
+            width: double.infinity,
+            height: 240,
+          ),
+        ),
+      ),
     );
-    await tester.drag(
-      find.byKey(const Key('article-main-scroll')),
-      const Offset(0, -600),
-    );
     await tester.pumpAndSettle();
-    final offsetBeforeResize = narrowScroll.controller!.offset;
-    expect(offsetBeforeResize, greaterThan(0));
 
-    tester.view.physicalSize = const Size(1200, 900);
-    await tester.pumpAndSettle();
-    expect(find.byKey(const Key('article-navigation-inline')), findsNothing);
-    expect(find.byKey(const Key('article-navigation-sidebar')), findsOneWidget);
-    final desktopScroll = tester.widget<SingleChildScrollView>(
-      find.byKey(const Key('article-main-scroll')),
+    final contentRect = tester.getRect(
+      find.byKey(const Key('test-article-content')),
     );
-    expect(desktopScroll.controller, same(narrowScroll.controller));
-    expect(desktopScroll.controller!.offset, offsetBeforeResize);
+    final relatedRect = tester.getRect(
+      find.byKey(const Key('related-articles-section')),
+    );
+    final firstRect = tester.getRect(
+      find.byKey(const Key('related-article-first')),
+    );
+    final secondRect = tester.getRect(
+      find.byKey(const Key('related-article-second')),
+    );
+    final firstMaterial = tester.widget<Material>(
+      find.byKey(const Key('related-article-first')),
+    );
+
+    expect(find.text('More to read'), findsOneWidget);
+    expect(find.byKey(const Key('related-article-current')), findsNothing);
+    expect(relatedRect.top, greaterThan(contentRect.bottom));
+    expect(secondRect.width, closeTo(firstRect.width, 1));
+    expect(secondRect.top, closeTo(firstRect.top, 1));
+    expect(secondRect.left, greaterThan(firstRect.right));
+    expect(firstRect.left, greaterThanOrEqualTo(relatedRect.left));
+    expect(secondRect.right, lessThanOrEqualTo(relatedRect.right));
+    expect(firstMaterial.color, Colors.transparent);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('related articles form a vertical list after text on mobile', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final current = _articleEntry(id: 'current', title: 'Current article');
+    final first = _articleEntry(id: 'first', title: 'First related article');
+    final second = _articleEntry(id: 'second', title: 'Second related article');
+
+    await tester.pumpWidget(
+      _localizedApp(
+        ArticlePageLayout(
+          pageKey: const Key('test-article-page'),
+          currentArticle: current,
+          articles: [current, first, second],
+          article: const SizedBox(
+            key: Key('test-article-content'),
+            width: double.infinity,
+            height: 180,
+          ),
+        ),
+        locale: const Locale('pt'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final contentRect = tester.getRect(
+      find.byKey(const Key('test-article-content')),
+    );
+    final relatedRect = tester.getRect(
+      find.byKey(const Key('related-articles-section')),
+    );
+    final firstRect = tester.getRect(
+      find.byKey(const Key('related-article-first')),
+    );
+    final secondRect = tester.getRect(
+      find.byKey(const Key('related-article-second')),
+    );
+
+    expect(find.text('Leia também'), findsOneWidget);
+    expect(relatedRect.top, greaterThan(contentRect.bottom));
+    expect(secondRect.top, greaterThan(firstRect.bottom));
+    expect(firstRect.width, closeTo(secondRect.width, 1));
     expect(tester.takeException(), isNull);
   });
 
@@ -268,9 +318,11 @@ void main() {
 
     await tester.pumpWidget(
       _localizedApp(
-        const MediaQuery(
-          data: MediaQueryData(padding: EdgeInsets.only(left: 48, right: 64)),
-          child: ArticlesPage(),
+        MediaQuery(
+          data: const MediaQueryData(
+            padding: EdgeInsets.only(left: 48, right: 64),
+          ),
+          child: _articlesPage(),
         ),
       ),
     );
@@ -279,11 +331,8 @@ void main() {
     final articleRect = tester.getRect(
       find.byKey(const Key('article-reading-column')),
     );
-    final sidebarRect = tester.getRect(
-      find.byKey(const Key('article-navigation-sidebar')),
-    );
     expect(articleRect.left, greaterThanOrEqualTo(48));
-    expect(sidebarRect.right, lessThanOrEqualTo(1440 - 64));
+    expect(articleRect.right, lessThanOrEqualTo(1440 - 64));
     expect(tester.takeException(), isNull);
   });
 
@@ -306,30 +355,25 @@ void main() {
 
       await tester.pumpWidget(
         _localizedApp(
-          Scaffold(
-            body: ArticleQuickNavigation(
-              entries: [entry],
-              currentArticleId: entry.id,
-            ),
-          ),
+          Scaffold(body: RelatedArticlesNavigation(entries: [entry])),
         ),
       );
       await tester.pumpAndSettle();
 
       final titleText = tester.widget<Text>(
-        find.byKey(const Key('article-navigation-title-long')),
+        find.byKey(const Key('related-article-title-long')),
       );
       final summaryText = tester.widget<Text>(
-        find.byKey(const Key('article-navigation-summary-long')),
+        find.byKey(const Key('related-article-summary-long')),
       );
       final cardSize = tester.getSize(
-        find.byKey(const Key('article-navigation-long')),
+        find.byKey(const Key('related-article-long')),
       );
-      final selectedArticle = tester.getSemantics(
-        find.bySemanticsLabel('Current article: $title. $summary'),
+      final relatedArticle = tester.getSemantics(
+        find.bySemanticsLabel('Open article: $title. $summary'),
       );
       final navigation = tester.getSemantics(
-        find.bySemanticsLabel('Quick navigation between articles'),
+        find.bySemanticsLabel('More articles to read'),
       );
 
       expect(titleText.maxLines, 2);
@@ -337,12 +381,16 @@ void main() {
       expect(summaryText.maxLines, 2);
       expect(summaryText.overflow, TextOverflow.ellipsis);
       expect(cardSize.height, lessThan(300));
-      expect(selectedArticle.label, contains(title));
-      expect(selectedArticle.label, contains(summary));
-      expect(selectedArticle.flagsCollection.isSelected, Tristate.isTrue);
+      expect(relatedArticle.label, contains(title));
+      expect(relatedArticle.label, contains(summary));
+      expect(relatedArticle.getSemanticsData().flagsCollection.isLink, isTrue);
       expect(
-        selectedArticle.getSemanticsData().hasAction(SemanticsAction.tap),
+        relatedArticle.getSemanticsData().flagsCollection.isButton,
         isFalse,
+      );
+      expect(
+        relatedArticle.getSemanticsData().hasAction(SemanticsAction.tap),
+        isTrue,
       );
       expect(navigation.getSemanticsData().role, SemanticsRole.navigation);
       expect(tester.takeException(), isNull);
@@ -350,8 +398,9 @@ void main() {
     },
   );
 
-  testWidgets('article navigation opens another catalog entry', (tester) async {
-    final current = _articleEntry(id: 'current', title: 'Current');
+  testWidgets('article navigation exposes an internal route link', (
+    tester,
+  ) async {
     final other = _articleEntry(
       id: 'other',
       routeName: '/articles/other',
@@ -359,34 +408,22 @@ void main() {
     );
 
     await tester.pumpWidget(
-      MaterialApp(
-        theme: LeoneBrandTheme.dark(),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routes: {
-          other.routeName: (_) => const Scaffold(key: Key('other-article')),
-        },
-        home: Scaffold(
-          body: ArticleQuickNavigation(
-            entries: [current, other],
-            currentArticleId: current.id,
-          ),
-        ),
+      _localizedApp(
+        Scaffold(body: RelatedArticlesNavigation(entries: [other])),
       ),
     );
     await tester.pumpAndSettle();
 
-    final currentInkWell = tester.widget<InkWell>(
+    final link = tester.widget<Link>(find.byType(Link));
+    final inkWell = tester.widget<InkWell>(
       find.descendant(
-        of: find.byKey(const Key('article-navigation-current')),
+        of: find.byKey(const Key('related-article-other')),
         matching: find.byType(InkWell),
       ),
     );
-    expect(currentInkWell.onTap, isNull);
-
-    await tester.tap(find.byKey(const Key('article-navigation-other')));
-    await tester.pumpAndSettle();
-    expect(find.byKey(const Key('other-article')), findsOneWidget);
+    expect(link.uri, Uri.parse(other.routeName));
+    expect(link.target, LinkTarget.defaultTarget);
+    expect(inkWell.onTap, isNotNull);
   });
 
   testWidgets('article metadata reveals the optional last edition', (
@@ -481,9 +518,10 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    final semantics = tester.ensureSemantics();
 
     await tester.pumpWidget(
-      _localizedApp(const ArticlesPage(), locale: const Locale('pt')),
+      _localizedApp(_articlesPage(), locale: const Locale('pt')),
     );
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.byKey(const Key('article-share-badges')));
@@ -492,8 +530,85 @@ void main() {
     expect(find.byKey(const Key('identity-exploded-figure')), findsOneWidget);
     expect(find.byKey(const Key('identity-fab-figure')), findsOneWidget);
     expect(find.byKey(const Key('article-share-badges')), findsOneWidget);
+    for (final key in [
+      const Key('language-toggle'),
+      const Key('theme-toggle'),
+      const Key('header-contact-button'),
+    ]) {
+      final rect = tester.getRect(find.byKey(key));
+      expect(rect.left, greaterThanOrEqualTo(0));
+      expect(rect.right, lessThanOrEqualTo(320));
+      expect(rect.width, greaterThanOrEqualTo(48));
+      expect(rect.height, greaterThanOrEqualTo(48));
+    }
+    expect(find.bySemanticsLabel('Escolher idioma: English'), findsOneWidget);
+    expect(find.bySemanticsLabel('Mudar para tema claro'), findsOneWidget);
+    expect(find.bySemanticsLabel('Conversar'), findsOneWidget);
     expect(tester.takeException(), isNull);
+    semantics.dispose();
   });
+
+  testWidgets(
+    'article header changes language and theme and links to contact',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({
+        'portfolio_locale': 'en',
+        'portfolio_theme': 'dark',
+      });
+      final semantics = tester.ensureSemantics();
+      await tester.pumpWidget(const LeonePortfolioApp());
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 2));
+      await tester.pumpAndSettle();
+
+      final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+      navigator.pushNamed(ArticlesPage.routeName);
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('language-toggle')), findsOneWidget);
+      expect(find.byKey(const Key('theme-toggle')), findsOneWidget);
+      expect(find.byKey(const Key('header-contact-button')), findsOneWidget);
+      final contactLink = tester.widget<Link>(
+        find.byKey(const Key('header-contact-link')),
+      );
+      final contactSemantics = tester.getSemantics(
+        find.bySemanticsLabel("Let's talk"),
+      );
+      expect(contactLink.uri, PortfolioContactLinks.whatsApp);
+      expect(contactLink.target, LinkTarget.blank);
+      expect(
+        contactSemantics.getSemanticsData().flagsCollection.isLink,
+        isTrue,
+      );
+      expect(
+        contactSemantics.getSemanticsData().flagsCollection.isButton,
+        isFalse,
+      );
+
+      await tester.tap(find.byKey(const Key('language-toggle')));
+      await tester.pumpAndSettle();
+      expect(
+        find.text(
+          'Como desenvolvi a logo e a identidade visual deste portfólio',
+        ),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(const Key('theme-toggle')));
+      await tester.pumpAndSettle();
+      expect(
+        Theme.of(
+          tester.element(find.byKey(const Key('articles-page'))),
+        ).brightness,
+        Brightness.light,
+      );
+
+      final preferences = await SharedPreferences.getInstance();
+      expect(preferences.getString('portfolio_locale'), 'pt');
+      expect(preferences.getString('portfolio_theme'), 'light');
+      semantics.dispose();
+    },
+  );
 
   testWidgets('portfolio registers the canonical article route', (
     tester,
@@ -519,6 +634,9 @@ Widget _localizedApp(Widget child, {Locale locale = const Locale('en')}) =>
       supportedLocales: AppLocalizations.supportedLocales,
       home: child,
     );
+
+Widget _articlesPage() =>
+    ArticlesPage(onLocaleChanged: (_) {}, onThemeModeChanged: (_) {});
 
 ArticleEntry _articleEntry({
   required String id,

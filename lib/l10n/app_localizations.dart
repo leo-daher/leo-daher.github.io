@@ -140,29 +140,17 @@ abstract class AppLocalizations {
   /// **'Switch to dark theme'**
   String get switchToDarkTheme;
 
-  /// Direct CTA that opens the scheduling page.
+  /// Direct CTA that opens a WhatsApp conversation.
   ///
   /// In en, this message translates to:
-  /// **'Hire me here'**
+  /// **'Let\'s talk'**
   String get hireMe;
 
-  /// Compact direct CTA that opens the scheduling page.
+  /// Compact CTA that opens a WhatsApp conversation.
   ///
   /// In en, this message translates to:
-  /// **'Hire me'**
+  /// **'Contact'**
   String get hireMeCompact;
-
-  /// Primary action that scrolls to production apps.
-  ///
-  /// In en, this message translates to:
-  /// **'View apps'**
-  String get viewApps;
-
-  /// Compact action that scrolls to production apps.
-  ///
-  /// In en, this message translates to:
-  /// **'Apps'**
-  String get viewAppsCompact;
 
   /// Accessible label for the navigation menu barrier.
   ///
@@ -254,23 +242,17 @@ abstract class AppLocalizations {
   /// **'A place to share processes, technical knowledge, and what I learn while building real products.'**
   String get articlesCopy;
 
-  /// Heading for quick article navigation.
+  /// Heading for related articles after an article.
   ///
   /// In en, this message translates to:
-  /// **'Articles'**
-  String get articlesPageTitle;
+  /// **'More to read'**
+  String get relatedArticlesTitle;
 
-  /// Accessible label for the article navigation region.
+  /// Accessible label for related article navigation.
   ///
   /// In en, this message translates to:
-  /// **'Quick navigation between articles'**
-  String get articleNavigationSemantics;
-
-  /// Accessible label for the selected article navigation card.
-  ///
-  /// In en, this message translates to:
-  /// **'Current article: {title}. {summary}'**
-  String currentArticle(String title, String summary);
+  /// **'More articles to read'**
+  String get relatedArticlesSemantics;
 
   /// Accessible label for an article navigation card.
   ///

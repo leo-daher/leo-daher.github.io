@@ -4,6 +4,7 @@ import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
 import '../../l10n/l10n.dart';
+import '../navigation/portfolio_header_actions.dart';
 import '../shared/portfolio_section_heading.dart';
 import 'article_catalog.dart';
 import 'article_page_layout.dart';
@@ -143,7 +144,14 @@ class _ArticleCardCopy extends StatelessWidget {
 }
 
 class ArticlesPage extends StatelessWidget {
-  const ArticlesPage({super.key});
+  const ArticlesPage({
+    super.key,
+    required this.onLocaleChanged,
+    required this.onThemeModeChanged,
+  });
+
+  final ValueChanged<Locale> onLocaleChanged;
+  final ValueChanged<ThemeMode> onThemeModeChanged;
 
   static const routeName = ArticleCatalog.identityRouteName;
 
@@ -177,6 +185,7 @@ class ArticlesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final compact = MediaQuery.sizeOf(context).width < 440;
     final articles = ArticleCatalog.localized(l10n);
     final currentArticle = articles.singleWhere(
       (article) => article.id == ArticleCatalog.identityId,
@@ -187,6 +196,11 @@ class ArticlesPage extends StatelessWidget {
       currentArticle: currentArticle,
       articles: articles,
       article: _IdentityArticleContent(article: currentArticle),
+      topActions: PortfolioHeaderActions(
+        compact: compact,
+        onLocaleChanged: onLocaleChanged,
+        onThemeModeChanged: onThemeModeChanged,
+      ),
     );
   }
 }

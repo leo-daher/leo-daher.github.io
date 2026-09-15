@@ -6,18 +6,10 @@ import '../../brand/leone_brand.dart';
 import '../../l10n/l10n.dart';
 import '../../telemetry/portfolio_telemetry.dart';
 import '../shared/portfolio_section_heading.dart';
+import 'portfolio_contact_links.dart';
 
 class ContactSection extends StatelessWidget {
   const ContactSection({super.key});
-
-  static final _linkedinUri = Uri.parse(
-    'https://www.linkedin.com/in/leonedaher/',
-  );
-  static final _githubUri = Uri.parse('https://github.com/leo-daher');
-  static final _calendlyUri = Uri.parse(
-    'https://calendly.com/leonedaher/30min',
-  );
-  static final _whatsAppUri = Uri.parse('https://wa.me/5521999997667');
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +20,7 @@ class ContactSection extends StatelessWidget {
         analyticsId: 'linkedin',
         label: l10n.contactLinkedIn,
         supportingText: l10n.contactLinkedInCopy,
-        uri: _linkedinUri,
+        uri: PortfolioContactLinks.linkedin,
         iconAsset: 'assets/brand/linkedin-symbol.svg',
       ),
       _ContactDestination(
@@ -36,7 +28,7 @@ class ContactSection extends StatelessWidget {
         analyticsId: 'whatsapp',
         label: l10n.contactWhatsApp,
         supportingText: l10n.contactWhatsAppCopy,
-        uri: _whatsAppUri,
+        uri: PortfolioContactLinks.whatsApp,
         iconAsset: 'assets/brand/whatsapp-symbol.svg',
         emphasized: true,
         isLead: true,
@@ -46,7 +38,7 @@ class ContactSection extends StatelessWidget {
         analyticsId: 'github',
         label: l10n.contactGitHub,
         supportingText: l10n.contactGitHubCopy,
-        uri: _githubUri,
+        uri: PortfolioContactLinks.github,
         iconAsset: 'assets/brand/github-symbol.svg',
       ),
       _ContactDestination(
@@ -54,7 +46,7 @@ class ContactSection extends StatelessWidget {
         analyticsId: 'calendly',
         label: l10n.contactSchedule,
         supportingText: l10n.contactScheduleCopy,
-        uri: _calendlyUri,
+        uri: PortfolioContactLinks.calendly,
         icon: Icons.calendar_month_outlined,
         isLead: true,
       ),
