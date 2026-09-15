@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/link.dart';
 
@@ -20,9 +20,8 @@ class ArticlesSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final palette = context.leonePalette;
-    final identityArticle = ArticleCatalog.localized(
-      l10n,
-    ).singleWhere((article) => article.id == ArticleCatalog.identityId);
+    final identityArticle = ArticleCatalog.localized(l10n)
+        .singleWhere((article) => article.id == ArticleCatalog.identityId);
     return Column(
       key: const Key('articles-section'),
       crossAxisAlignment: CrossAxisAlignment.start,

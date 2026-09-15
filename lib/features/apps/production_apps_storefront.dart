@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../brand/leone_brand.dart';
 import '../shared/portfolio_section_heading.dart';

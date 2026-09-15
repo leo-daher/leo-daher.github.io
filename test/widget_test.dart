@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
@@ -105,13 +105,9 @@ void main() {
     final unscrolledColor = backgroundColor.resolve({});
     final scrolledColor = backgroundColor.resolve({WidgetState.scrolledUnder});
     expect(unscrolledColor, LeonePalette.dark.canvas);
-    expect(
-      scrolledColor,
-      Theme.of(
-        tester.element(find.byKey(const Key('portfolio-home-page'))),
-      ).colorScheme.surfaceContainer,
-    );
+    expect(scrolledColor, LeonePalette.dark.canvas.withValues(alpha: .72));
     expect(scrolledColor, isNot(unscrolledColor));
+    expect(find.byType(BackdropFilter), findsOneWidget);
     expect(find.byKey(const Key('top-nav-home')), findsNothing);
     expect(find.byKey(const Key('top-nav-apps')), findsNothing);
     expect(find.byKey(const Key('top-nav-system')), findsNothing);
@@ -1186,10 +1182,8 @@ CertificateRecord _testCertificate({
   holder: 'Leone Souza',
   completedOn: DateTime(year, 7, 17),
   verificationUrl: Uri.parse('https://verify.skilljar.com/c/$id'),
-  imageAssetPath:
-      'assets/certificates/originals/anthropic-ai-capabilities-and-limitations.jpg',
-  pdfAssetPath:
-      'assets/certificates/originals/anthropic-ai-capabilities-and-limitations.pdf',
+  imageAssetPath: 'assets/certificates/originals/anthropic-ai-capabilities-and-limitations.jpg',
+  pdfAssetPath: 'assets/certificates/originals/anthropic-ai-capabilities-and-limitations.pdf',
   technologies: technologies,
 );
 

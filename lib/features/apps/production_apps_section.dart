@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
@@ -255,23 +255,26 @@ class _CaseDetails extends StatelessWidget {
         ],
         if (app.recognition case final recognition?) ...[
           const SizedBox(height: 18),
-          ExpansionTile(
-            key: Key('recognition-${app.id}'),
-            tilePadding: EdgeInsets.zero,
-            childrenPadding: const EdgeInsets.only(bottom: 12),
-            title: Text(recognition.title),
-            children: [
-              Text(
-                recognition.text,
-                style: TextStyle(color: palette.ink, height: 1.5),
-              ),
-              const SizedBox(height: 14),
-              Image.asset(
-                recognition.imageAssetPath,
-                fit: BoxFit.contain,
-                semanticLabel: recognition.imageLabel,
-              ),
-            ],
+          Material(
+            type: MaterialType.transparency,
+            child: ExpansionTile(
+              key: Key('recognition-${app.id}'),
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: const EdgeInsets.only(bottom: 12),
+              title: Text(recognition.title),
+              children: [
+                Text(
+                  recognition.text,
+                  style: TextStyle(color: palette.ink, height: 1.5),
+                ),
+                const SizedBox(height: 14),
+                Image.asset(
+                  recognition.imageAssetPath,
+                  fit: BoxFit.contain,
+                  semanticLabel: recognition.imageLabel,
+                ),
+              ],
+            ),
           ),
         ],
       ],

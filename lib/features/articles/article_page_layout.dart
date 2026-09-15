@@ -1,6 +1,6 @@
 import 'dart:ui' show SemanticsRole;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/link.dart';
 
@@ -38,6 +38,7 @@ class ArticlePageLayout extends StatelessWidget {
     return Scaffold(
       key: pageKey,
       backgroundColor: Colors.transparent,
+      extendBodyBehindAppBar: true,
       appBar: appBar,
       body: ClipRect(
         child: PortfolioPageTransition(
@@ -49,7 +50,14 @@ class ArticlePageLayout extends StatelessWidget {
               top: false,
               child: SingleChildScrollView(
                 key: const Key('article-main-scroll'),
-                padding: const EdgeInsets.fromLTRB(24, 32, 24, 72),
+                padding: EdgeInsets.fromLTRB(
+                  24,
+                  MediaQuery.paddingOf(context).top +
+                      (appBar?.preferredSize.height ?? 0) +
+                      32,
+                  24,
+                  72,
+                ),
                 child: Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 920),

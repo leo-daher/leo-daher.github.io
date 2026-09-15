@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/features/apps/production_apps.dart';
@@ -18,9 +18,8 @@ const _content = ProductionAppsSectionContent(
 
 void main() {
   test('keeps platform and state-management metadata explicit', () {
-    final apps = ProductionAppsPresentation.localized(
-      AppLocalizationsEn(),
-    ).apps;
+    final apps = ProductionAppsPresentation.localized(AppLocalizationsEn())
+        .apps;
     final van = apps.singleWhere((app) => app.id == 'van-cranenbroek');
     final lyzer = apps.singleWhere((app) => app.id == 'lyzer-collect-deliver');
     final mag = apps.singleWhere((app) => app.id == 'mag-venda-digital');
@@ -100,10 +99,7 @@ void main() {
       expect(find.text('MAG Venda Digital'), findsOneWidget);
       expect(find.textContaining('4,6 ★', findRichText: true), findsOneWidget);
       expect(find.textContaining('Flutter'), findsWidgets);
-      expect(
-        find.textContaining('Flutter  ·  GetX  ·  GetIt'),
-        findsOneWidget,
-      );
+      expect(find.textContaining('Flutter  ·  GetX  ·  GetIt'), findsOneWidget);
       expect(find.textContaining('Proprietary GetX engine'), findsOneWidget);
       expect(find.text('Stack'), findsNothing);
       expect(find.text('Prova da loja'), findsNothing);
@@ -208,9 +204,9 @@ void main() {
   testWidgets('links both Lyzer products to Google Play and the App Store', (
     tester,
   ) async {
-    final lyzer = ProductionAppsPresentation.localized(
-      AppLocalizationsEn(),
-    ).apps.singleWhere((app) => app.id == 'lyzer-collect-deliver');
+    final lyzer = ProductionAppsPresentation.localized(AppLocalizationsEn())
+        .apps
+        .singleWhere((app) => app.id == 'lyzer-collect-deliver');
     await _pumpSection(tester, size: const Size(1440, 1500), apps: [lyzer]);
 
     final collectAppStore = find.byKey(
@@ -301,8 +297,7 @@ List<ProductionAppCase> _apps() => [
     contextLabel: 'Retail mobile · Países Baixos',
     summary: 'Aplicativo de catálogo e vendas usado em uma operação de varejo.',
     role: 'Contribuição em engenharia mobile e integração de produto.',
-    contribution:
-        'Atuação em fluxos híbridos, mapas SVG, dados sincronizados e entrega contínua.',
+    contribution: 'Atuação em fluxos híbridos, mapas SVG, dados sincronizados e entrega contínua.',
     stack: const ['Flutter', 'GetX', 'GetIt', 'Provider', 'Firebase', 'Python'],
     screenshots: const [
       ProductionAppScreenshot(
@@ -338,8 +333,7 @@ List<ProductionAppCase> _apps() => [
     summary:
         'Fluxos operacionais de coleta e entrega conectados ao backoffice.',
     role: 'Contribuição em produto mobile e integração de serviços.',
-    contribution:
-        'Atuação em uma engine proprietária baseada em GetX, workflows logísticos e contratos entre aplicativo, BFF e GraphQL.',
+    contribution: 'Atuação em uma engine proprietária baseada em GetX, workflows logísticos e contratos entre aplicativo, BFF e GraphQL.',
     stack: const [
       'Flutter',
       'Android',
@@ -363,8 +357,7 @@ List<ProductionAppCase> _apps() => [
     contextLabel: 'Seguros · Venda assistida',
     summary: 'Aplicativo de apoio ao processo comercial e à venda de seguros.',
     role: 'Contribuição em engenharia Android e evolução do produto.',
-    contribution:
-        'Atuação em jornadas de venda, persistência local, integrações e CI/CD.',
+    contribution: 'Atuação em jornadas de venda, persistência local, integrações e CI/CD.',
     stack: const ['Android', 'Java', 'Kotlin', 'Realm', 'Firebase'],
     screenshots: const [
       ProductionAppScreenshot(

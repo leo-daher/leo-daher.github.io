@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'brand/leone_brand.dart';
 import 'l10n/l10n.dart';
@@ -517,15 +517,16 @@ class LdViewportMorph {
   final double progress;
 }
 
-typedef LdViewportBuilder =
-    Widget Function(BuildContext context, LdViewportMorph morph);
+typedef LdViewportBuilder = Widget Function(
+  BuildContext context,
+  LdViewportMorph morph,
+);
 
-typedef LdViewportAccessoryBuilder =
-    Widget Function(
-      BuildContext context,
-      LdViewportMorph morph,
-      Size frameSize,
-    );
+typedef LdViewportAccessoryBuilder = Widget Function(
+  BuildContext context,
+  LdViewportMorph morph,
+  Size frameSize,
+);
 
 @immutable
 class LdViewportFrameSpec {
