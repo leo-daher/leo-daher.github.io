@@ -18,6 +18,7 @@ import 'features/system/system_overview_section.dart';
 import 'ld_identity.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/l10n.dart';
+import 'seo/portfolio_seo_metadata.dart';
 import 'telemetry/portfolio_telemetry.dart';
 
 Future<void> main() async {
@@ -42,6 +43,11 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
   ThemeMode _themeMode = ThemeMode.dark;
   bool _localeChosenInSession = false;
   bool _themeChosenInSession = false;
+  late final PortfolioSeoRouteObserver _seoRouteObserver =
+      PortfolioSeoRouteObserver(
+        initialLanguageCode:
+            WidgetsBinding.instance.platformDispatcher.locale.languageCode,
+      );
 
   @override
   void initState() {
@@ -64,12 +70,16 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
         _themeMode = ThemeMode.values.byName(savedTheme!);
       }
     });
+    if (languageCode == 'en' || languageCode == 'pt') {
+      _seoRouteObserver.setLanguageCode(languageCode!);
+    }
   }
 
   Future<void> _setLocale(Locale locale) async {
     if (_locale?.languageCode == locale.languageCode) return;
     _localeChosenInSession = true;
     setState(() => _locale = locale);
+    _seoRouteObserver.setLanguageCode(locale.languageCode);
     PortfolioTelemetry.preferenceChanged('language', locale.languageCode);
     final preferences = await SharedPreferences.getInstance();
     await preferences.setString(_localePreferenceKey, locale.languageCode);
@@ -98,6 +108,7 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
         ...GlobalMaterialLocalizations.delegates,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
+      navigatorObservers: [_seoRouteObserver],
       initialRoute: widget.initialRoute,
       onGenerateInitialRoutes: (initialRouteName) {
         final initialRoute = _generateRoute(

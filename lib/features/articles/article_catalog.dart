@@ -28,7 +28,7 @@ abstract final class ArticleCatalog {
   static const identityRouteName = '/artigos/identidade-visual';
 
   static final identityCanonicalUri = Uri.parse(
-    'https://leo-daher.github.io/#/artigos/identidade-visual',
+    'https://leo-daher.github.io/artigos/identidade-visual/',
   );
 
   static final identityPublicationInfo = ArticlePublicationInfo(
