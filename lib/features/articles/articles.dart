@@ -4,7 +4,7 @@ import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
 import '../../l10n/l10n.dart';
-import '../navigation/portfolio_header_actions.dart';
+import '../navigation/portfolio_top_bar.dart';
 import '../shared/portfolio_section_heading.dart';
 import 'article_catalog.dart';
 import 'article_page_layout.dart';
@@ -185,7 +185,6 @@ class ArticlesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final compact = MediaQuery.sizeOf(context).width < 440;
     final articles = ArticleCatalog.localized(l10n);
     final currentArticle = articles.singleWhere(
       (article) => article.id == ArticleCatalog.identityId,
@@ -196,8 +195,8 @@ class ArticlesPage extends StatelessWidget {
       currentArticle: currentArticle,
       articles: articles,
       article: _IdentityArticleContent(article: currentArticle),
-      topActions: PortfolioHeaderActions(
-        compact: compact,
+      appBar: PortfolioPageTopBar(
+        onBackPressed: () => Navigator.of(context).maybePop(),
         onLocaleChanged: onLocaleChanged,
         onThemeModeChanged: onThemeModeChanged,
       ),

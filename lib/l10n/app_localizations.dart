@@ -140,17 +140,23 @@ abstract class AppLocalizations {
   /// **'Switch to dark theme'**
   String get switchToDarkTheme;
 
-  /// Direct CTA that opens a WhatsApp conversation.
+  /// CTA that opens the contact options menu.
   ///
   /// In en, this message translates to:
   /// **'Let\'s talk'**
   String get hireMe;
 
-  /// Compact CTA that opens a WhatsApp conversation.
+  /// Compact CTA that opens the contact options menu.
   ///
   /// In en, this message translates to:
   /// **'Contact'**
   String get hireMeCompact;
+
+  /// Accessible label for the contact options menu.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact options'**
+  String get contactMenuLabel;
 
   /// Accessible label for the navigation menu barrier.
   ///

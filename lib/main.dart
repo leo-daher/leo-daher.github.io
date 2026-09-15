@@ -11,7 +11,7 @@ import 'features/clients/client_logo_cloud.dart';
 import 'features/contact/contact_section.dart';
 import 'features/hero/portfolio_hero.dart';
 import 'features/navigation/portfolio_fab_menu.dart';
-import 'features/navigation/portfolio_header_actions.dart';
+import 'features/navigation/portfolio_top_bar.dart';
 import 'features/proof/portfolio_proof_strip.dart';
 import 'features/system/system_overview_section.dart';
 import 'ld_identity.dart';
@@ -98,12 +98,15 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
       supportedLocales: AppLocalizations.supportedLocales,
       onGenerateRoute: (settings) {
         if (settings.name == ArticlesPage.routeName) {
-          return MaterialPageRoute<void>(
-            builder: (_) => ArticlesPage(
+          return PageRouteBuilder<void>(
+            pageBuilder: (_, _, _) => ArticlesPage(
               onLocaleChanged: _setLocale,
               onThemeModeChanged: _setThemeMode,
             ),
             settings: settings,
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+            transitionsBuilder: (_, _, _, child) => child,
           );
         }
         return null;
@@ -281,10 +284,10 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
           key: const Key('portfolio-scroll-view'),
           controller: _scrollController,
           slivers: [
-            _TopBar(
+            PortfolioSliverTopBar(
               onLocaleChanged: widget.onLocaleChanged,
               onThemeModeChanged: widget.onThemeModeChanged,
-              onSelected: _navigateTo,
+              onHomePressed: () => _navigateTo(PortfolioDestination.home),
             ),
             SliverToBoxAdapter(
               child: _SectionFrame(
@@ -371,101 +374,6 @@ class _SectionFrame extends StatelessWidget {
         child: Padding(
           padding: padding ?? const EdgeInsets.symmetric(horizontal: 24),
           child: child,
-        ),
-      ),
-    );
-  }
-}
-
-class _TopBar extends StatelessWidget {
-  const _TopBar({
-    required this.onLocaleChanged,
-    required this.onThemeModeChanged,
-    required this.onSelected,
-  });
-
-  final ValueChanged<Locale> onLocaleChanged;
-  final ValueChanged<ThemeMode> onThemeModeChanged;
-  final ValueChanged<PortfolioDestination> onSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.leonePalette;
-    final lightMode = Theme.of(context).brightness == Brightness.light;
-    final windowWidth = MediaQuery.sizeOf(context).width;
-    final compactControls = windowWidth < 440;
-    final showBrandName = windowWidth >= 520;
-    return SliverAppBar(
-      key: const Key('portfolio-top-app-bar'),
-      pinned: true,
-      automaticallyImplyLeading: false,
-      toolbarHeight: 72,
-      elevation: 0,
-      scrolledUnderElevation: 3,
-      shadowColor: Colors.black.withValues(alpha: .34),
-      surfaceTintColor: Colors.transparent,
-      backgroundColor: palette.canvas,
-      foregroundColor: palette.ink,
-      titleSpacing: 0,
-      title: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1440),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: compactControls ? 16 : 24,
-            ),
-            child: Row(
-              children: [
-                Tooltip(
-                  message: context.l10n.navHome,
-                  child: Semantics(
-                    button: true,
-                    label: 'Leone Daher · ${context.l10n.navHome}',
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        key: const Key('ld-topbar-mark'),
-                        onTap: () => onSelected(PortfolioDestination.home),
-                        customBorder: const CircleBorder(),
-                        child: SizedBox(
-                          width: 48,
-                          height: 48,
-                          child: Center(
-                            child: SizedBox(
-                              width: 34,
-                              height: 34,
-                              child: SvgPicture.asset(
-                                lightMode
-                                    ? 'assets/brand/ld-mark.svg'
-                                    : 'assets/brand/ld-mark-inverse.svg',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                if (showBrandName) ...[
-                  const SizedBox(width: 12),
-                  const Text(
-                    'LEONE DAHER',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 12,
-                      letterSpacing: 1.8,
-                    ),
-                  ),
-                ],
-                const Spacer(),
-                PortfolioHeaderActions(
-                  compact: compactControls,
-                  onLocaleChanged: onLocaleChanged,
-                  onThemeModeChanged: onThemeModeChanged,
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

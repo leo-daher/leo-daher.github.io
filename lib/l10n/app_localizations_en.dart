@@ -36,6 +36,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hireMeCompact => 'Contact';
 
   @override
+  String get contactMenuLabel => 'Contact options';
+
+  @override
   String get dismissNavigationMenu => 'Dismiss navigation menu';
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/features/articles/article_catalog.dart';
@@ -7,6 +8,7 @@ import 'package:leone_portfolio/features/articles/article_page_layout.dart';
 import 'package:leone_portfolio/features/articles/article_publication_metadata.dart';
 import 'package:leone_portfolio/features/articles/articles.dart';
 import 'package:leone_portfolio/features/contact/portfolio_contact_links.dart';
+import 'package:leone_portfolio/features/navigation/portfolio_top_bar.dart';
 import 'package:leone_portfolio/l10n/app_localizations.dart';
 import 'package:leone_portfolio/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,7 +39,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('articles-page')), findsOneWidget);
-    expect(tester.widget<AppBar>(find.byType(AppBar)).title, isNull);
+    expect(
+      tester.widget<AppBar>(find.byType(AppBar)).title,
+      isA<PortfolioTopBarContent>(),
+    );
     expect(find.text('PUBLISHED'), findsNothing);
     expect(find.byKey(const Key('article-published-at')), findsOneWidget);
     expect(find.byKey(const Key('article-last-edited-at')), findsNothing);
@@ -543,13 +548,13 @@ void main() {
     }
     expect(find.bySemanticsLabel('Escolher idioma: English'), findsOneWidget);
     expect(find.bySemanticsLabel('Mudar para tema claro'), findsOneWidget);
-    expect(find.bySemanticsLabel('Conversar'), findsOneWidget);
+    expect(find.bySemanticsLabel('Opções de contato'), findsOneWidget);
     expect(tester.takeException(), isNull);
     semantics.dispose();
   });
 
   testWidgets(
-    'article header changes language and theme and links to contact',
+    'article header changes language and theme and opens contact options',
     (tester) async {
       SharedPreferences.setMockInitialValues({
         'portfolio_locale': 'en',
@@ -568,22 +573,43 @@ void main() {
       expect(find.byKey(const Key('language-toggle')), findsOneWidget);
       expect(find.byKey(const Key('theme-toggle')), findsOneWidget);
       expect(find.byKey(const Key('header-contact-button')), findsOneWidget);
-      final contactLink = tester.widget<Link>(
-        find.byKey(const Key('header-contact-link')),
-      );
       final contactSemantics = tester.getSemantics(
-        find.bySemanticsLabel("Let's talk"),
+        find.bySemanticsLabel('Contact options'),
       );
-      expect(contactLink.uri, PortfolioContactLinks.whatsApp);
-      expect(contactLink.target, LinkTarget.blank);
       expect(
         contactSemantics.getSemanticsData().flagsCollection.isLink,
-        isTrue,
+        isFalse,
       );
       expect(
         contactSemantics.getSemanticsData().flagsCollection.isButton,
+        isTrue,
+      );
+      expect(
+        contactSemantics
+            .getSemanticsData()
+            .flagsCollection
+            .isExpanded
+            .toBoolOrNull(),
         isFalse,
       );
+
+      await tester.tap(find.byKey(const Key('header-contact-button')));
+      await tester.pumpAndSettle();
+      final contactLinks = {
+        'whatsapp': PortfolioContactLinks.whatsApp,
+        'calendly': PortfolioContactLinks.calendly,
+        'linkedin': PortfolioContactLinks.linkedin,
+        'github': PortfolioContactLinks.github,
+      };
+      for (final entry in contactLinks.entries) {
+        final link = tester.widget<Link>(
+          find.byKey(Key('header-contact-link-${entry.key}')),
+        );
+        expect(link.uri, entry.value);
+        expect(link.target, LinkTarget.blank);
+      }
+      await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+      await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(const Key('language-toggle')));
       await tester.pumpAndSettle();
