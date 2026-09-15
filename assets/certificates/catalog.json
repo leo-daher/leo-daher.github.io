@@ -266,7 +266,7 @@
       "course_url": "https://anthropic.skilljar.com/claude-platform-101",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["Claude API", "LLMs"],
+      "technologies": ["Claude", "LLMs"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-claude-platform-101.pdf",
