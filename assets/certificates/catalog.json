@@ -210,7 +210,7 @@
       "course_url": "https://anthropic.skilljar.com/claude-code-101",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["Claude Code", "AI Agents"],
+      "technologies": ["Claude", "AI Agents"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-claude-code-101.pdf",
@@ -238,7 +238,7 @@
       "course_url": "https://anthropic.skilljar.com/claude-code-in-action",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["Claude Code", "AI Agents"],
+      "technologies": ["Claude", "AI Agents"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-claude-code-in-action.pdf",

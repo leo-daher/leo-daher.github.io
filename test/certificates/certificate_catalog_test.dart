@@ -25,7 +25,7 @@ void main() {
           '.NET 8',
           'AI',
           'ASP.NET Core',
-          'Claude Code',
+          'Claude',
           'Flutter',
           'MCP',
         ]),
