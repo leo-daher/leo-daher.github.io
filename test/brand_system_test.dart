@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/ld_identity.dart';
@@ -227,28 +227,24 @@ void main() {
       }
     });
 
-    test(
-      'keeps the approved SVG variants on the canonical geometry',
-      () {
-        const variants = [
-          'assets/brand/ld-mark.svg',
-          'assets/brand/ld-mark-inverse.svg',
-          'assets/brand/ld-mark-mono.svg',
-        ];
+    test('keeps the approved SVG variants on the canonical geometry', () {
+      const variants = [
+        'assets/brand/ld-mark.svg',
+        'assets/brand/ld-mark-inverse.svg',
+        'assets/brand/ld-mark-mono.svg',
+      ];
 
-        for (final path in variants) {
-          final svg = readLocalTextFile(path);
-          expect(svg, contains('viewBox="0 0 256 256"'), reason: path);
-          expect(svg, contains('stroke-width="14"'), reason: path);
-          expect(
-            svg,
-            contains('x="155" y="155" width="48" height="48" rx="17"'),
-            reason: path,
-          );
-        }
-      },
-      skip: !canReadLocalFiles,
-    );
+      for (final path in variants) {
+        final svg = readLocalTextFile(path);
+        expect(svg, contains('viewBox="0 0 256 256"'), reason: path);
+        expect(svg, contains('stroke-width="14"'), reason: path);
+        expect(
+          svg,
+          contains('x="155" y="155" width="48" height="48" rx="17"'),
+          reason: path,
+        );
+      }
+    }, skip: !canReadLocalFiles);
 
     test('builds the app theme from the brand source of truth', () {
       final theme = LeoneBrandTheme.dark();
@@ -267,19 +263,18 @@ void main() {
       );
     });
 
-    test(
-      'pins the web build before the Android WebView renderer regression',
-      () {
-        final fvmConfig = readLocalTextFile('.fvmrc');
-        final pagesWorkflow = readLocalTextFile(
-          '.github/workflows/deploy-pages.yml',
-        );
+    test('pins the migrated Flutter and design-system releases', () {
+      final fvmConfig = readLocalTextFile('.fvmrc');
+      final pagesWorkflow = readLocalTextFile(
+        '.github/workflows/deploy-pages.yml',
+      );
+      final pubspec = readLocalTextFile('pubspec.yaml');
 
-        expect(fvmConfig, contains('"flutter": "3.38.5"'));
-        expect(pagesWorkflow, contains('flutter-version: 3.38.5'));
-      },
-      skip: !canReadLocalFiles,
-    );
+      expect(fvmConfig, contains('"flutter": "3.47.3"'));
+      expect(pagesWorkflow, contains('flutter-version: 3.47.3'));
+      expect(pubspec, contains('material_ui: ^1.3.0'));
+      expect(pubspec, contains('cupertino_ui: ^1.1.0'));
+    }, skip: !canReadLocalFiles);
   });
 
   testWidgets('opening resolves immediately when motion is reduced', (

@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
@@ -21,8 +21,7 @@ const _portfolioCountries = <PortfolioCountry>[
     name: 'Brasil',
     location: 'Rio de Janeiro / Sao Paulo',
     role: 'Mobile, full-stack e robotics',
-    summary:
-        'Projetos em seguros, visao computacional, robotics e sistemas publicos.',
+    summary: 'Projetos em seguros, visao computacional, robotics e sistemas publicos.',
     yearRange: '2019 - atual',
     anchor: Offset(0.33, 0.69),
     projects: [
@@ -35,14 +34,12 @@ const _portfolioCountries = <PortfolioCountry>[
       PortfolioProject(
         logo: 'HR',
         name: 'Human Robotics / Robios',
-        description:
-            'Visao computacional com Python/TensorFlow, TFLite, Camera2/CameraX e MQTT.',
+        description: 'Visao computacional com Python/TensorFlow, TFLite, Camera2/CameraX e MQTT.',
       ),
       PortfolioProject(
         logo: 'VIS',
         name: 'Visagio',
-        description:
-            'Sistema de alocacao para rede publica usando Python, Django, React e OR-Tools.',
+        description: 'Sistema de alocacao para rede publica usando Python, Django, React e OR-Tools.',
       ),
     ],
   ),
@@ -52,22 +49,19 @@ const _portfolioCountries = <PortfolioCountry>[
     name: 'Estados Unidos',
     location: 'Projetos remotos',
     role: 'Field ops e Flutter',
-    summary:
-        'Projetos remotos para operacao em campo, mapas, formularios dinamicos e produto mobile.',
+    summary: 'Projetos remotos para operacao em campo, mapas, formularios dinamicos e produto mobile.',
     yearRange: 'remoto',
     anchor: Offset(0.23, 0.44),
     projects: [
       PortfolioProject(
         logo: '495',
         name: 'Code 495',
-        description:
-            'Mapeamento de infraestrutura offline-first, clustering em mapa e formularios configuraveis.',
+        description: 'Mapeamento de infraestrutura offline-first, clustering em mapa e formularios configuraveis.',
       ),
       PortfolioProject(
         logo: 'LL',
         name: 'Linelinker Pro',
-        description:
-            'Projeto informado para os EUA; manter como entrada editavel do portfolio.',
+        description: 'Projeto informado para os EUA; manter como entrada editavel do portfolio.',
       ),
     ],
   ),
@@ -77,34 +71,29 @@ const _portfolioCountries = <PortfolioCountry>[
     name: 'Portugal',
     location: 'Lisboa',
     role: 'Logistica, governo e utilities',
-    summary:
-        'Projetos em backoffice logistico, tracking, requisitos, backend support e infraestrutura.',
+    summary: 'Projetos em backoffice logistico, tracking, requisitos, backend support e infraestrutura.',
     yearRange: '2022 - atual',
     anchor: Offset(0.455, 0.45),
     projects: [
       PortfolioProject(
         logo: 'CTT',
         name: 'CTT Correios de Portugal',
-        description:
-            'Tracking Android/Kotlin, scanners, Zebra, Firebase e uso offline por carteiros.',
+        description: 'Tracking Android/Kotlin, scanners, Zebra, Firebase e uso offline por carteiros.',
       ),
       PortfolioProject(
         logo: 'LYZ',
         name: 'Lyzer',
-        description:
-            '.NET Backend for Frontend, GraphQL e workflows logisticos para retail/e-commerce.',
+        description: '.NET Backend for Frontend, GraphQL e workflows logisticos para retail/e-commerce.',
       ),
       PortfolioProject(
         logo: 'ADP',
         name: 'Aguas de Portugal',
-        description:
-            'Levantamento de requisitos, regras de negocio e suporte backend com PHP/Laravel/Python.',
+        description: 'Levantamento de requisitos, regras de negocio e suporte backend com PHP/Laravel/Python.',
       ),
       PortfolioProject(
         logo: 'ADM',
         name: 'Aguas de Monchique',
-        description:
-            'Infraestrutura Docker do zero para frontend, backend e banco de dados.',
+        description: 'Infraestrutura Docker do zero para frontend, backend e banco de dados.',
       ),
     ],
   ),
@@ -114,22 +103,19 @@ const _portfolioCountries = <PortfolioCountry>[
     name: 'Espanha',
     location: 'Madrid / operacao Iberica',
     role: 'Energia e tracking',
-    summary:
-        'Experiencias associadas a operacoes ibericas em energia renovavel e tracking.',
+    summary: 'Experiencias associadas a operacoes ibericas em energia renovavel e tracking.',
     yearRange: '2022 - 2024',
     anchor: Offset(0.47, 0.46),
     projects: [
       PortfolioProject(
         logo: 'CTT',
         name: 'CTT',
-        description:
-            'Projeto de tracking tambem associado a Espanha conforme contexto informado.',
+        description: 'Projeto de tracking tambem associado a Espanha conforme contexto informado.',
       ),
       PortfolioProject(
         logo: 'IBD',
         name: 'Iberdrola',
-        description:
-            'Sistema de vendas de energia renovavel com Laravel, Vue, PWA e protecao antifraude.',
+        description: 'Sistema de vendas de energia renovavel com Laravel, Vue, PWA e protecao antifraude.',
       ),
     ],
   ),
@@ -139,16 +125,14 @@ const _portfolioCountries = <PortfolioCountry>[
     name: 'Holanda',
     location: 'Van Cranenbroek',
     role: 'Retail mobile e backend',
-    summary:
-        'Aplicacao de catalogo/vendas em Flutter para Android/iOS, com Firebase e backend Python.',
+    summary: 'Aplicacao de catalogo/vendas em Flutter para Android/iOS, com Firebase e backend Python.',
     yearRange: '2023 - atual',
     anchor: Offset(0.49, 0.39),
     projects: [
       PortfolioProject(
         logo: 'VCB',
         name: 'Van Cranenbroek',
-        description:
-            'App Flutter com GetX, GetIt/Injectable e Provider, CI/CD, Firebase/Firestore, mapas SVG e Cloud Functions em Python.',
+        description: 'App Flutter com GetX, GetIt/Injectable e Provider, CI/CD, Firebase/Firestore, mapas SVG e Cloud Functions em Python.',
       ),
     ],
   ),
@@ -158,16 +142,14 @@ const _portfolioCountries = <PortfolioCountry>[
     name: 'Singapura',
     location: 'Jurong Shipyard, Singapura',
     role: 'Arquitetura de modulos eletricos',
-    summary:
-        'Pela Radix, detalhamento de arquitetura dos modulos do FPSO Pioneiro de Libra, com requisicoes de material, especificacoes tecnicas e cotacoes de materiais e servicos de engenharia.',
+    summary: 'Pela Radix, detalhamento de arquitetura dos modulos do FPSO Pioneiro de Libra, com requisicoes de material, especificacoes tecnicas e cotacoes de materiais e servicos de engenharia.',
     yearRange: '2015 - 2016',
     anchor: Offset(0.793, 0.706),
     projects: [
       PortfolioProject(
         logo: 'RDX',
         name: 'FPSO Pioneiro de Libra - modulos eletricos',
-        description:
-            'Entrega para GE Oil & Gas / GE Power Conversion, Odebrecht Oil & Gas e Jurong Shipyard. CNPC e CNOOC aparecem como participantes chinesas do consorcio, nao como local de atuacao.',
+        description: 'Entrega para GE Oil & Gas / GE Power Conversion, Odebrecht Oil & Gas e Jurong Shipyard. CNPC e CNOOC aparecem como participantes chinesas do consorcio, nao como local de atuacao.',
       ),
     ],
   ),
@@ -184,28 +166,24 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
       name: 'Brazil',
       location: 'Rio de Janeiro / São Paulo',
       role: 'Mobile, full-stack and robotics',
-      summary:
-          'Projects in insurance, computer vision, robotics and public systems.',
+      summary: 'Projects in insurance, computer vision, robotics and public systems.',
       yearRange: '2019 - present',
       anchor: Offset(0.33, 0.69),
       projects: [
         PortfolioProject(
           logo: 'MAG',
           name: 'MAG Seguros',
-          description:
-              'Insurance sales app using Java/Kotlin, Realm, Firebase and CI/CD.',
+          description: 'Insurance sales app using Java/Kotlin, Realm, Firebase and CI/CD.',
         ),
         PortfolioProject(
           logo: 'HR',
           name: 'Human Robotics / Robios',
-          description:
-              'Computer vision with Python/TensorFlow, TFLite, Camera2/CameraX and MQTT.',
+          description: 'Computer vision with Python/TensorFlow, TFLite, Camera2/CameraX and MQTT.',
         ),
         PortfolioProject(
           logo: 'VIS',
           name: 'Visagio',
-          description:
-              'Public-network allocation system using Python, Django, React and OR-Tools.',
+          description: 'Public-network allocation system using Python, Django, React and OR-Tools.',
         ),
       ],
     ),
@@ -215,22 +193,19 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
       name: 'United States',
       location: 'Remote projects',
       role: 'Field operations and Flutter',
-      summary:
-          'Remote projects for field operations, maps, dynamic forms and mobile products.',
+      summary: 'Remote projects for field operations, maps, dynamic forms and mobile products.',
       yearRange: 'remote',
       anchor: Offset(0.23, 0.44),
       projects: [
         PortfolioProject(
           logo: '495',
           name: 'Code 495',
-          description:
-              'Offline-first infrastructure mapping, map clustering and configurable forms.',
+          description: 'Offline-first infrastructure mapping, map clustering and configurable forms.',
         ),
         PortfolioProject(
           logo: 'LL',
           name: 'Linelinker Pro',
-          description:
-              'US project included as an editable portfolio entry based on supplied context.',
+          description: 'US project included as an editable portfolio entry based on supplied context.',
         ),
       ],
     ),
@@ -240,34 +215,29 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
       name: 'Portugal',
       location: 'Lisbon',
       role: 'Logistics, government and utilities',
-      summary:
-          'Projects in logistics back offices, tracking, requirements, backend support and infrastructure.',
+      summary: 'Projects in logistics back offices, tracking, requirements, backend support and infrastructure.',
       yearRange: '2022 - present',
       anchor: Offset(0.455, 0.45),
       projects: [
         PortfolioProject(
           logo: 'CTT',
           name: 'CTT Correios de Portugal',
-          description:
-              'Android/Kotlin tracking, scanners, Zebra, Firebase and offline use by postal workers.',
+          description: 'Android/Kotlin tracking, scanners, Zebra, Firebase and offline use by postal workers.',
         ),
         PortfolioProject(
           logo: 'LYZ',
           name: 'Lyzer',
-          description:
-              '.NET Backend for Frontend, GraphQL and logistics workflows for retail/e-commerce.',
+          description: '.NET Backend for Frontend, GraphQL and logistics workflows for retail/e-commerce.',
         ),
         PortfolioProject(
           logo: 'ADP',
           name: 'Águas de Portugal',
-          description:
-              'Requirements, business rules and backend support with PHP/Laravel/Python.',
+          description: 'Requirements, business rules and backend support with PHP/Laravel/Python.',
         ),
         PortfolioProject(
           logo: 'ADM',
           name: 'Águas de Monchique',
-          description:
-              'Docker infrastructure built from scratch for frontend, backend and database.',
+          description: 'Docker infrastructure built from scratch for frontend, backend and database.',
         ),
       ],
     ),
@@ -277,22 +247,19 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
       name: 'Spain',
       location: 'Madrid / Iberian operations',
       role: 'Energy and tracking',
-      summary:
-          'Experience tied to Iberian operations in renewable energy and tracking.',
+      summary: 'Experience tied to Iberian operations in renewable energy and tracking.',
       yearRange: '2022 - 2024',
       anchor: Offset(0.47, 0.46),
       projects: [
         PortfolioProject(
           logo: 'CTT',
           name: 'CTT',
-          description:
-              'Tracking project also associated with Spain in the supplied context.',
+          description: 'Tracking project also associated with Spain in the supplied context.',
         ),
         PortfolioProject(
           logo: 'IBD',
           name: 'Iberdrola',
-          description:
-              'Renewable-energy sales system using Laravel, Vue, PWA and anti-fraud protection.',
+          description: 'Renewable-energy sales system using Laravel, Vue, PWA and anti-fraud protection.',
         ),
       ],
     ),
@@ -302,16 +269,14 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
       name: 'Netherlands',
       location: 'Van Cranenbroek',
       role: 'Retail mobile and backend',
-      summary:
-          'Catalog and sales app built with Flutter for Android/iOS, Firebase and a Python backend.',
+      summary: 'Catalog and sales app built with Flutter for Android/iOS, Firebase and a Python backend.',
       yearRange: '2023 - present',
       anchor: Offset(0.49, 0.39),
       projects: [
         PortfolioProject(
           logo: 'VCB',
           name: 'Van Cranenbroek',
-          description:
-              'Flutter app using GetX, GetIt/Injectable and Provider, CI/CD, Firebase/Firestore, SVG maps and Python Cloud Functions.',
+          description: 'Flutter app using GetX, GetIt/Injectable and Provider, CI/CD, Firebase/Firestore, SVG maps and Python Cloud Functions.',
         ),
       ],
     ),
@@ -321,16 +286,14 @@ List<PortfolioCountry> _localizedPortfolioCountries(BuildContext context) {
       name: 'Singapore',
       location: 'Jurong Shipyard, Singapore',
       role: 'Electrical-module architecture',
-      summary:
-          'At Radix, detailed architecture work for the FPSO Pioneiro de Libra modules, including material requisitions, technical specifications, and quotations for materials and engineering services.',
+      summary: 'At Radix, detailed architecture work for the FPSO Pioneiro de Libra modules, including material requisitions, technical specifications, and quotations for materials and engineering services.',
       yearRange: '2015 - 2016',
       anchor: Offset(0.793, 0.706),
       projects: [
         PortfolioProject(
           logo: 'RDX',
           name: 'FPSO Pioneiro de Libra - electrical modules',
-          description:
-              'Delivery for GE Oil & Gas / GE Power Conversion, Odebrecht Oil & Gas and Jurong Shipyard. CNPC and CNOOC were Chinese consortium participants, not a work location.',
+          description: 'Delivery for GE Oil & Gas / GE Power Conversion, Odebrecht Oil & Gas and Jurong Shipyard. CNPC and CNOOC were Chinese consortium participants, not a work location.',
         ),
       ],
     ),
@@ -720,9 +683,8 @@ class _SingaporeMapInset extends StatelessWidget {
                         top: 8,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
-                            color: const Color(
-                              0xFF061015,
-                            ).withValues(alpha: 0.88),
+                            color: const Color(0xFF061015)
+                                .withValues(alpha: 0.88),
                             border: Border.all(
                               color: _mapAccent.withValues(alpha: 0.65),
                             ),
@@ -1139,10 +1101,8 @@ class _MiniMetric extends StatelessWidget {
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: const Color(0xFF9CB4BA),
-                letterSpacing: 0,
-              ),
+              style: Theme.of(context).textTheme.labelSmall
+                  ?.copyWith(color: const Color(0xFF9CB4BA), letterSpacing: 0),
             ),
           ],
         ),

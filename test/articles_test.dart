@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -46,7 +46,10 @@ void main() {
     expect(find.text('PUBLISHED'), findsNothing);
     expect(find.byKey(const Key('article-published-at')), findsOneWidget);
     expect(find.byKey(const Key('article-last-edited-at')), findsNothing);
-    expect(find.text('Published Sep 15, 2026 · 10:38 AM BRT'), findsOneWidget);
+    expect(
+      find.text('Published Sep 15, 2026 · 10:38\u202FAM BRT'),
+      findsOneWidget,
+    );
     expect(
       find.descendant(
         of: find.byKey(const Key('article-reading-column')),
@@ -452,7 +455,7 @@ void main() {
     expect(find.byKey(const Key('article-last-edited-at')), findsOneWidget);
     expect(find.textContaining('Published Sep 14, 2026'), findsOneWidget);
     expect(find.textContaining('Last edited Sep 16, 2026'), findsOneWidget);
-    expect(find.textContaining('10:05 AM BRT'), findsOneWidget);
+    expect(find.textContaining('10:05\u202FAM BRT'), findsOneWidget);
   });
 
   testWidgets('article metadata omits an unchanged edition timestamp', (
@@ -623,9 +626,8 @@ void main() {
       await tester.tap(find.byKey(const Key('theme-toggle')));
       await tester.pumpAndSettle();
       expect(
-        Theme.of(
-          tester.element(find.byKey(const Key('articles-page'))),
-        ).brightness,
+        Theme.of(tester.element(find.byKey(const Key('articles-page'))))
+            .brightness,
         Brightness.light,
       );
 
@@ -656,7 +658,10 @@ Widget _localizedApp(Widget child, {Locale locale = const Locale('en')}) =>
     MaterialApp(
       locale: locale,
       theme: LeoneBrandTheme.dark(),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        ...GlobalMaterialLocalizations.delegates,
+      ],
       supportedLocales: AppLocalizations.supportedLocales,
       home: child,
     );

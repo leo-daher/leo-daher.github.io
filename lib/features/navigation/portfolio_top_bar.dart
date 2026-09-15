@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
+
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../brand/leone_brand.dart';
@@ -29,7 +31,8 @@ class PortfolioSliverTopBar extends StatelessWidget {
       scrolledUnderElevation: 3,
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
-      backgroundColor: _topBarBackground(context, palette),
+      backgroundColor: _topBarBackground(palette),
+      flexibleSpace: const _FrostedTopBarBackdrop(),
       foregroundColor: palette.ink,
       titleSpacing: 0,
       title: PortfolioTopBarContent(
@@ -69,7 +72,8 @@ class PortfolioPageTopBar extends StatelessWidget
       scrolledUnderElevation: 3,
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
-      backgroundColor: _topBarBackground(context, palette),
+      backgroundColor: _topBarBackground(palette),
+      flexibleSpace: const _FrostedTopBarBackdrop(),
       foregroundColor: palette.ink,
       titleSpacing: 0,
       title: PortfolioTopBarContent(
@@ -81,14 +85,26 @@ class PortfolioPageTopBar extends StatelessWidget
   }
 }
 
-WidgetStateColor _topBarBackground(
-  BuildContext context,
-  LeonePalette palette,
-) => WidgetStateColor.resolveWith(
-  (states) => states.contains(WidgetState.scrolledUnder)
-      ? Theme.of(context).colorScheme.surfaceContainer
-      : palette.canvas,
-);
+WidgetStateColor _topBarBackground(LeonePalette palette) =>
+    WidgetStateColor.resolveWith(
+      (states) => states.contains(WidgetState.scrolledUnder)
+          ? palette.canvas.withValues(alpha: .72)
+          : palette.canvas,
+    );
+
+class _FrostedTopBarBackdrop extends StatelessWidget {
+  const _FrostedTopBarBackdrop();
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+        child: const SizedBox.expand(),
+      ),
+    );
+  }
+}
 
 class PortfolioTopBarContent extends StatelessWidget {
   const PortfolioTopBarContent({
