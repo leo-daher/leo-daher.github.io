@@ -130,94 +130,268 @@ class PortfolioThemeToggle extends StatelessWidget {
   }
 }
 
-class PortfolioContactButton extends StatelessWidget {
+class PortfolioContactButton extends StatefulWidget {
   const PortfolioContactButton({super.key, required this.compact});
 
   final bool compact;
 
   @override
-  Widget build(BuildContext context) {
-    final label = compact ? context.l10n.hireMeCompact : context.l10n.hireMe;
-    final uri = PortfolioContactLinks.whatsApp;
+  State<PortfolioContactButton> createState() => _PortfolioContactButtonState();
+}
 
-    return Link(
-      key: const Key('header-contact-link'),
-      uri: uri,
-      target: LinkTarget.blank,
-      builder: (context, followLink) => Semantics(
-        link: true,
-        label: label,
-        onTap: followLink == null ? null : () => _openContact(followLink, uri),
-        child: ExcludeSemantics(
-          child: Tooltip(
-            message: label,
-            excludeFromSemantics: true,
-            child: compact
-                ? IconButton(
-                    key: const Key('header-contact-button'),
-                    onPressed: followLink == null
-                        ? null
-                        : () => _openContact(followLink, uri),
-                    style: IconButton.styleFrom(
-                      foregroundColor: LeoneBrandColors.interactive,
-                      fixedSize: const Size(48, 48),
-                      backgroundColor: LeoneBrandColors.interactive.withValues(
-                        alpha: .10,
-                      ),
-                      side: BorderSide(
-                        color: LeoneBrandColors.interactive.withValues(
-                          alpha: .34,
-                        ),
-                      ),
-                    ),
-                    icon: SvgPicture.asset(
-                      'assets/brand/whatsapp-symbol.svg',
-                      width: 18,
-                      height: 18,
-                      colorFilter: const ColorFilter.mode(
-                        LeoneBrandColors.interactive,
-                        BlendMode.srcIn,
-                      ),
-                      excludeFromSemantics: true,
-                    ),
-                  )
-                : TextButton.icon(
-                    key: const Key('header-contact-button'),
-                    onPressed: followLink == null
-                        ? null
-                        : () => _openContact(followLink, uri),
-                    style: TextButton.styleFrom(
-                      foregroundColor: LeoneBrandColors.interactive,
-                      minimumSize: const Size(0, 48),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      backgroundColor: LeoneBrandColors.interactive.withValues(
-                        alpha: .10,
-                      ),
-                      side: BorderSide(
-                        color: LeoneBrandColors.interactive.withValues(
-                          alpha: .34,
-                        ),
-                      ),
-                      shape: const StadiumBorder(),
-                    ),
-                    icon: const Icon(Icons.arrow_outward_rounded, size: 17),
-                    label: Text(
-                      label.toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: .8,
-                      ),
-                    ),
-                  ),
-          ),
+class _PortfolioContactButtonState extends State<PortfolioContactButton> {
+  final MenuController _menuController = MenuController();
+  final FocusNode _buttonFocusNode = FocusNode(
+    debugLabel: 'Portfolio contact menu',
+  );
+
+  @override
+  void dispose() {
+    _buttonFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final palette = context.leonePalette;
+    final menuWidth = (MediaQuery.sizeOf(context).width - 16)
+        .clamp(0, 264)
+        .toDouble();
+    final destinations = [
+      _ContactMenuDestination(
+        id: 'whatsapp',
+        label: l10n.contactWhatsApp,
+        uri: PortfolioContactLinks.whatsApp,
+        iconAsset: 'assets/brand/whatsapp-symbol.svg',
+        isLead: true,
+      ),
+      _ContactMenuDestination(
+        id: 'calendly',
+        label: l10n.contactSchedule,
+        uri: PortfolioContactLinks.calendly,
+        icon: Icons.calendar_month_outlined,
+        isLead: true,
+      ),
+      _ContactMenuDestination(
+        id: 'linkedin',
+        label: l10n.contactLinkedIn,
+        uri: PortfolioContactLinks.linkedin,
+        iconAsset: 'assets/brand/linkedin-symbol.svg',
+      ),
+      _ContactMenuDestination(
+        id: 'github',
+        label: l10n.contactGitHub,
+        uri: PortfolioContactLinks.github,
+        iconAsset: 'assets/brand/github-symbol.svg',
+      ),
+    ];
+
+    return MenuAnchor(
+      key: const Key('header-contact-menu'),
+      controller: _menuController,
+      childFocusNode: _buttonFocusNode,
+      alignmentOffset: Offset(-menuWidth, 8),
+      reservedPadding: const EdgeInsets.all(8),
+      crossAxisUnconstrained: false,
+      useRootOverlay: true,
+      onOpen: _refreshMenuState,
+      onClose: _refreshMenuState,
+      style: MenuStyle(
+        alignment: AlignmentDirectional.bottomEnd,
+        backgroundColor: WidgetStatePropertyAll(palette.surfaceRaised),
+        surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+        shadowColor: WidgetStatePropertyAll(
+          Colors.black.withValues(alpha: .30),
+        ),
+        elevation: const WidgetStatePropertyAll(8),
+        padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
+        fixedSize: WidgetStatePropertyAll(Size.fromWidth(menuWidth)),
+        side: WidgetStatePropertyAll(BorderSide(color: palette.outline)),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
       ),
+      menuChildren: [
+        for (final destination in destinations)
+          _PortfolioContactMenuLink(
+            destination: destination,
+            menuController: _menuController,
+          ),
+      ],
+      builder: (context, controller, _) {
+        final expanded = controller.isOpen;
+        final visibleLabel = widget.compact ? l10n.hireMeCompact : l10n.hireMe;
+        return Semantics(
+          button: true,
+          label: l10n.contactMenuLabel,
+          expanded: expanded,
+          value: expanded ? l10n.expanded : l10n.collapsed,
+          onTap: _toggleMenu,
+          child: ExcludeSemantics(
+            child: Tooltip(
+              message: l10n.contactMenuLabel,
+              excludeFromSemantics: true,
+              child: widget.compact
+                  ? IconButton(
+                      key: const Key('header-contact-button'),
+                      focusNode: _buttonFocusNode,
+                      onPressed: _toggleMenu,
+                      style: IconButton.styleFrom(
+                        foregroundColor: LeoneBrandColors.interactive,
+                        fixedSize: const Size(48, 48),
+                        backgroundColor: LeoneBrandColors.interactive
+                            .withValues(alpha: .10),
+                        side: BorderSide(
+                          color: LeoneBrandColors.interactive.withValues(
+                            alpha: .34,
+                          ),
+                        ),
+                      ),
+                      icon: Icon(
+                        expanded ? Icons.close_rounded : Icons.forum_outlined,
+                        size: 20,
+                      ),
+                    )
+                  : TextButton.icon(
+                      key: const Key('header-contact-button'),
+                      focusNode: _buttonFocusNode,
+                      onPressed: _toggleMenu,
+                      style: TextButton.styleFrom(
+                        foregroundColor: LeoneBrandColors.interactive,
+                        minimumSize: const Size(0, 48),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        backgroundColor: LeoneBrandColors.interactive
+                            .withValues(alpha: .10),
+                        side: BorderSide(
+                          color: LeoneBrandColors.interactive.withValues(
+                            alpha: .34,
+                          ),
+                        ),
+                        shape: const StadiumBorder(),
+                      ),
+                      icon: Icon(
+                        expanded
+                            ? Icons.keyboard_arrow_up_rounded
+                            : Icons.keyboard_arrow_down_rounded,
+                        size: 18,
+                      ),
+                      label: Text(
+                        visibleLabel.toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: .8,
+                        ),
+                      ),
+                    ),
+            ),
+          ),
+        );
+      },
     );
   }
 
-  void _openContact(VoidCallback followLink, Uri uri) {
-    PortfolioTelemetry.contactIntent('whatsapp', uri, isLead: true);
-    followLink();
+  void _toggleMenu() {
+    if (_menuController.isOpen) {
+      _menuController.close();
+    } else {
+      _menuController.open();
+    }
+  }
+
+  void _refreshMenuState() {
+    if (mounted) setState(() {});
+  }
+}
+
+class _ContactMenuDestination {
+  const _ContactMenuDestination({
+    required this.id,
+    required this.label,
+    required this.uri,
+    this.icon,
+    this.iconAsset,
+    this.isLead = false,
+  }) : assert(icon != null || iconAsset != null);
+
+  final String id;
+  final String label;
+  final Uri uri;
+  final IconData? icon;
+  final String? iconAsset;
+  final bool isLead;
+}
+
+class _PortfolioContactMenuLink extends StatelessWidget {
+  const _PortfolioContactMenuLink({
+    required this.destination,
+    required this.menuController,
+  });
+
+  final _ContactMenuDestination destination;
+  final MenuController menuController;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    final accent = LeoneBrandColors.interactive;
+    return Link(
+      key: Key('header-contact-link-${destination.id}'),
+      uri: destination.uri,
+      target: LinkTarget.blank,
+      builder: (context, followLink) {
+        final openLink = followLink == null
+            ? null
+            : () {
+                PortfolioTelemetry.contactIntent(
+                  destination.id,
+                  destination.uri,
+                  isLead: destination.isLead,
+                );
+                followLink();
+                menuController.close();
+              };
+        return Semantics(
+          link: true,
+          label: destination.label,
+          onTap: openLink,
+          child: ExcludeSemantics(
+            child: MenuItemButton(
+              key: Key('header-contact-item-${destination.id}'),
+              closeOnActivate: false,
+              onPressed: openLink,
+              style: ButtonStyle(
+                foregroundColor: WidgetStatePropertyAll(palette.ink),
+                minimumSize: const WidgetStatePropertyAll(Size(0, 48)),
+                padding: const WidgetStatePropertyAll(
+                  EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                ),
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+              ),
+              leadingIcon: destination.iconAsset == null
+                  ? Icon(destination.icon, color: accent, size: 21)
+                  : SvgPicture.asset(
+                      destination.iconAsset!,
+                      width: 20,
+                      height: 20,
+                      colorFilter: ColorFilter.mode(accent, BlendMode.srcIn),
+                      excludeFromSemantics: true,
+                    ),
+              child: Text(
+                destination.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

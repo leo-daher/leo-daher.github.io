@@ -36,6 +36,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get hireMeCompact => 'Conversar';
 
   @override
+  String get contactMenuLabel => 'Opções de contato';
+
+  @override
   String get dismissNavigationMenu => 'Descartar menu de navegação';
 
   @override

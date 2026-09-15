@@ -15,38 +15,25 @@ class ArticlePageLayout extends StatelessWidget {
     required this.currentArticle,
     required this.articles,
     required this.article,
-    this.topActions,
+    this.appBar,
   });
 
   final Key pageKey;
   final ArticleEntry currentArticle;
   final List<ArticleEntry> articles;
   final Widget article;
-  final Widget? topActions;
+  final PreferredSizeWidget? appBar;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.leonePalette;
-    final compact = MediaQuery.sizeOf(context).width < 440;
     final relatedArticles = articles
         .where((article) => article.id != currentArticle.id)
         .toList(growable: false);
 
     return Scaffold(
       key: pageKey,
-      appBar: AppBar(
-        toolbarHeight: 72,
-        backgroundColor: palette.canvas,
-        surfaceTintColor: Colors.transparent,
-        actions: topActions == null
-            ? null
-            : [
-                Padding(
-                  padding: EdgeInsets.only(right: compact ? 8 : 16),
-                  child: topActions,
-                ),
-              ],
-      ),
+      appBar: appBar,
       body: SafeArea(
         top: false,
         child: SingleChildScrollView(

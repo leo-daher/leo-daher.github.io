@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
+import 'package:leone_portfolio/features/articles/articles.dart';
 import 'package:leone_portfolio/features/certificates/certificate_catalog.dart';
 import 'package:leone_portfolio/features/certificates/certifications_section.dart';
 import 'package:leone_portfolio/features/clients/client_logo_cloud.dart';
@@ -105,21 +106,75 @@ void main() {
     expect(find.byKey(const Key('top-nav-contact')), findsNothing);
   });
 
-  testWidgets('top CTA opens direct contact and keeps Calendly available', (
+  testWidgets('top CTA opens four contact options without assuming a channel', (
     tester,
   ) async {
     await tester.pumpWidget(const LeonePortfolioApp());
     await _finishOpening(tester);
 
     final contactButton = find.byKey(const Key('header-contact-button'));
-    final contactLink = tester.widget<Link>(
-      find.byKey(const Key('header-contact-link')),
+    final collapsedSemantics = tester.getSemantics(
+      find.bySemanticsLabel('Contact options'),
     );
     expect(contactButton, findsOneWidget);
-    expect(find.bySemanticsLabel("Let's talk"), findsOneWidget);
     expect(tester.getSize(contactButton).height, 48);
-    expect(contactLink.uri, PortfolioContactLinks.whatsApp);
-    expect(contactLink.target, LinkTarget.blank);
+    expect(
+      collapsedSemantics.getSemanticsData().flagsCollection.isButton,
+      true,
+    );
+    expect(collapsedSemantics.getSemanticsData().flagsCollection.isLink, false);
+    expect(
+      collapsedSemantics
+          .getSemanticsData()
+          .flagsCollection
+          .isExpanded
+          .toBoolOrNull(),
+      false,
+    );
+    expect(find.byKey(const Key('header-contact-link-whatsapp')), findsNothing);
+
+    await tester.tap(contactButton);
+    await tester.pumpAndSettle();
+
+    final expectedLinks = {
+      'whatsapp': PortfolioContactLinks.whatsApp,
+      'calendly': PortfolioContactLinks.calendly,
+      'linkedin': PortfolioContactLinks.linkedin,
+      'github': PortfolioContactLinks.github,
+    };
+    for (final entry in expectedLinks.entries) {
+      final item = find.byKey(Key('header-contact-item-${entry.key}'));
+      final link = tester.widget<Link>(
+        find.byKey(Key('header-contact-link-${entry.key}')),
+      );
+      expect(item, findsOneWidget);
+      expect(tester.getSize(item).height, greaterThanOrEqualTo(48));
+      expect(link.uri, entry.value);
+      expect(link.target, LinkTarget.blank);
+    }
+    final expandedSemantics = tester.getSemantics(
+      find.bySemanticsLabel('Contact options'),
+    );
+    expect(
+      expandedSemantics
+          .getSemanticsData()
+          .flagsCollection
+          .isExpanded
+          .toBoolOrNull(),
+      true,
+    );
+
+    final itemOrder = expectedLinks.keys
+        .map(
+          (id) =>
+              tester.getTopLeft(find.byKey(Key('header-contact-item-$id'))).dy,
+        )
+        .toList();
+    expect(itemOrder, orderedEquals([...itemOrder]..sort()));
+
+    await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('header-contact-item-whatsapp')), findsNothing);
 
     await tester.drag(
       find.byKey(const Key('portfolio-scroll-view')),
@@ -132,6 +187,87 @@ void main() {
     expect(calendlyLink.uri, PortfolioContactLinks.calendly);
     expect(calendlyLink.target, LinkTarget.blank);
   });
+
+  testWidgets('top header keeps its geometry when the article replaces home', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await _finishOpening(tester);
+
+    final contentRect = tester.getRect(
+      find.byKey(const Key('portfolio-top-bar-content')),
+    );
+    final markRect = tester.getRect(find.byKey(const Key('ld-topbar-mark')));
+    final controlRects = {
+      for (final key in const [
+        Key('language-toggle'),
+        Key('theme-toggle'),
+        Key('header-contact-button'),
+      ])
+        key: tester.getRect(find.byKey(key)),
+    };
+
+    final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+    navigator.pushNamed(ArticlesPage.routeName);
+    await tester.pump();
+
+    expect(find.byKey(const Key('articles-page')), findsOneWidget);
+    final route = ModalRoute.of(
+      tester.element(find.byKey(const Key('articles-page'))),
+    )!;
+    expect(route.transitionDuration, Duration.zero);
+    expect(route.reverseTransitionDuration, Duration.zero);
+    expect(
+      tester.getRect(find.byKey(const Key('portfolio-top-bar-content'))),
+      contentRect,
+    );
+    expect(
+      tester.getRect(find.byKey(const Key('article-back-button'))),
+      markRect,
+    );
+    for (final entry in controlRects.entries) {
+      expect(tester.getRect(find.byKey(entry.key)), entry.value);
+    }
+  });
+
+  testWidgets(
+    'contact menu stays inside a compact viewport and dismisses outside',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const LeonePortfolioApp());
+      await _finishOpening(tester);
+
+      final button = find.byKey(const Key('header-contact-button'));
+      expect(tester.getSize(button), const Size(48, 48));
+      await tester.tap(button);
+      await tester.pumpAndSettle();
+
+      final buttonRect = tester.getRect(button);
+      for (final id in const ['whatsapp', 'calendly', 'linkedin', 'github']) {
+        final rect = tester.getRect(find.byKey(Key('header-contact-item-$id')));
+        expect(rect.left, greaterThanOrEqualTo(8));
+        expect(rect.right, lessThanOrEqualTo(382));
+        expect(rect.top, greaterThan(buttonRect.bottom));
+      }
+
+      await tester.tapAt(const Offset(16, 500));
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('header-contact-item-whatsapp')),
+        findsNothing,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('returns to the top when the header mark is tapped', (
     tester,
