@@ -5,6 +5,7 @@ import 'package:url_launcher/link.dart';
 import '../../brand/leone_brand.dart';
 import '../../l10n/l10n.dart';
 import '../shared/portfolio_section_heading.dart';
+import 'article_publication_metadata.dart';
 import 'identity_article_figures.dart';
 
 class ArticlesSection extends StatelessWidget {
@@ -38,57 +39,99 @@ class ArticlesSection extends StatelessWidget {
             onTap: onOpenArticles,
             child: Padding(
               padding: const EdgeInsets.all(24),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: LeoneBrandColors.editorialHighlight.withValues(
-                        alpha: .12,
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: const Icon(
-                      Icons.article_outlined,
-                      color: LeoneBrandColors.editorialHighlight,
-                    ),
-                  ),
-                  const SizedBox(width: 18),
-                  Expanded(
-                    child: Column(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final copy = _ArticleCardCopy(
+                    title: l10n.identityArticleTitle,
+                    summary: l10n.identityArticleSummary,
+                    publicationInfo: ArticlesPage.publicationInfo,
+                  );
+                  if (constraints.maxWidth < 520) {
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _ArticleStatusBadge(label: l10n.articlePublishedStatus),
-                        const SizedBox(height: 12),
-                        Text(
-                          l10n.identityArticleTitle,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            height: 1.2,
-                            fontWeight: FontWeight.w800,
-                          ),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _ArticleCardIcon(),
+                            Icon(Icons.arrow_forward_rounded),
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          l10n.identityArticleSummary,
-                          style: TextStyle(
-                            color: palette.mutedInk,
-                            height: 1.5,
-                          ),
-                        ),
+                        const SizedBox(height: 18),
+                        copy,
                       ],
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  const Icon(Icons.arrow_forward_rounded),
-                ],
+                    );
+                  }
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const _ArticleCardIcon(),
+                      const SizedBox(width: 18),
+                      Expanded(child: copy),
+                      const SizedBox(width: 12),
+                      const Icon(Icons.arrow_forward_rounded),
+                    ],
+                  );
+                },
               ),
             ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class _ArticleCardIcon extends StatelessWidget {
+  const _ArticleCardIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 48,
+      height: 48,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: LeoneBrandColors.editorialHighlight.withValues(alpha: .12),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: const Icon(
+        Icons.article_outlined,
+        color: LeoneBrandColors.editorialHighlight,
+      ),
+    );
+  }
+}
+
+class _ArticleCardCopy extends StatelessWidget {
+  const _ArticleCardCopy({
+    required this.title,
+    required this.summary,
+    required this.publicationInfo,
+  });
+
+  final String title;
+  final String summary;
+  final ArticlePublicationInfo publicationInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 20,
+            height: 1.2,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(summary, style: TextStyle(color: palette.mutedInk, height: 1.5)),
+        const SizedBox(height: 12),
+        ArticlePublicationLine(info: publicationInfo),
       ],
     );
   }
@@ -101,6 +144,10 @@ class ArticlesPage extends StatelessWidget {
 
   static final canonicalArticleUri = Uri.parse(
     'https://leo-daher.github.io/#/artigos/identidade-visual',
+  );
+
+  static final publicationInfo = ArticlePublicationInfo(
+    publishedAtUtc: DateTime.utc(2026, 9, 15, 13, 38, 29),
   );
 
   static Uri linkedinShareUri(String title) => Uri.https(
@@ -145,8 +192,6 @@ class ArticlesPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _ArticleStatusBadge(label: l10n.articlePublishedStatus),
-                  const SizedBox(height: 20),
                   Semantics(
                     header: true,
                     child: Text(
@@ -170,6 +215,8 @@ class ArticlesPage extends StatelessWidget {
                       height: 1.55,
                     ),
                   ),
+                  const SizedBox(height: 18),
+                  ArticlePublicationLine(info: publicationInfo),
                   const SizedBox(height: 38),
                   IdentityLogoFigure(
                     caption: l10n.identityArticleLogoCaption,
@@ -449,35 +496,6 @@ class _ShareBadge extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ArticleStatusBadge extends StatelessWidget {
-  const _ArticleStatusBadge({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
-      decoration: BoxDecoration(
-        color: LeoneBrandColors.interactive.withValues(alpha: .13),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(
-          color: LeoneBrandColors.interactive.withValues(alpha: .42),
-        ),
-      ),
-      child: Text(
-        label.toUpperCase(),
-        style: const TextStyle(
-          color: LeoneBrandColors.interactive,
-          fontSize: 10,
-          fontWeight: FontWeight.w900,
-          letterSpacing: .8,
         ),
       ),
     );
