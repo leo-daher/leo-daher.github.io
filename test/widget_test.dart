@@ -5,6 +5,7 @@ import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/features/certificates/certificate_catalog.dart';
 import 'package:leone_portfolio/features/certificates/certifications_section.dart';
 import 'package:leone_portfolio/features/clients/client_logo_cloud.dart';
+import 'package:leone_portfolio/features/contact/portfolio_contact_links.dart';
 import 'package:leone_portfolio/features/navigation/portfolio_fab_menu.dart';
 import 'package:leone_portfolio/l10n/app_localizations.dart';
 import 'package:leone_portfolio/main.dart';
@@ -104,22 +105,21 @@ void main() {
     expect(find.byKey(const Key('top-nav-contact')), findsNothing);
   });
 
-  testWidgets('routes the top CTA to apps and keeps Calendly in contact', (
+  testWidgets('top CTA opens direct contact and keeps Calendly available', (
     tester,
   ) async {
     await tester.pumpWidget(const LeonePortfolioApp());
     await _finishOpening(tester);
 
-    final viewApps = find.byKey(const Key('view-apps-button'));
-    expect(viewApps, findsOneWidget);
-    expect(find.bySemanticsLabel('View apps'), findsOneWidget);
-    expect(tester.getSize(viewApps).height, 48);
-
-    await tester.tap(viewApps);
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 900));
-    final appsHeadingY = tester.getTopLeft(find.text('Featured apps')).dy;
-    expect(appsHeadingY, inInclusiveRange(0, 180));
+    final contactButton = find.byKey(const Key('header-contact-button'));
+    final contactLink = tester.widget<Link>(
+      find.byKey(const Key('header-contact-link')),
+    );
+    expect(contactButton, findsOneWidget);
+    expect(find.bySemanticsLabel("Let's talk"), findsOneWidget);
+    expect(tester.getSize(contactButton).height, 48);
+    expect(contactLink.uri, PortfolioContactLinks.whatsApp);
+    expect(contactLink.target, LinkTarget.blank);
 
     await tester.drag(
       find.byKey(const Key('portfolio-scroll-view')),
@@ -129,10 +129,7 @@ void main() {
     final calendlyLink = tester.widget<Link>(
       find.byKey(const Key('contact-link-schedule')),
     );
-    expect(
-      calendlyLink.uri,
-      Uri.parse('https://calendly.com/leonedaher/30min'),
-    );
+    expect(calendlyLink.uri, PortfolioContactLinks.calendly);
     expect(calendlyLink.target, LinkTarget.blank);
   });
 

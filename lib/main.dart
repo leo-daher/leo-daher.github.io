@@ -11,6 +11,7 @@ import 'features/clients/client_logo_cloud.dart';
 import 'features/contact/contact_section.dart';
 import 'features/hero/portfolio_hero.dart';
 import 'features/navigation/portfolio_fab_menu.dart';
+import 'features/navigation/portfolio_header_actions.dart';
 import 'features/proof/portfolio_proof_strip.dart';
 import 'features/system/system_overview_section.dart';
 import 'ld_identity.dart';
@@ -22,8 +23,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PortfolioTelemetry.initialize(() => runApp(const LeonePortfolioApp()));
 }
-
-const _green = LeoneBrandColors.interactive;
 
 class LeonePortfolioApp extends StatefulWidget {
   const LeonePortfolioApp({super.key});
@@ -100,7 +99,10 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
       onGenerateRoute: (settings) {
         if (settings.name == ArticlesPage.routeName) {
           return MaterialPageRoute<void>(
-            builder: (_) => const ArticlesPage(),
+            builder: (_) => ArticlesPage(
+              onLocaleChanged: _setLocale,
+              onThemeModeChanged: _setThemeMode,
+            ),
             settings: settings,
           );
         }
@@ -456,154 +458,12 @@ class _TopBar extends StatelessWidget {
                   ),
                 ],
                 const Spacer(),
-                _LanguageToggle(onLocaleChanged: onLocaleChanged),
-                SizedBox(width: compactControls ? 4 : 10),
-                _ThemeToggle(onThemeModeChanged: onThemeModeChanged),
-                SizedBox(width: compactControls ? 4 : 10),
-                _ViewAppsButton(
+                PortfolioHeaderActions(
                   compact: compactControls,
-                  onPressed: () => onSelected(PortfolioDestination.apps),
+                  onLocaleChanged: onLocaleChanged,
+                  onThemeModeChanged: onThemeModeChanged,
                 ),
               ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _LanguageToggle extends StatelessWidget {
-  const _LanguageToggle({required this.onLocaleChanged});
-
-  final ValueChanged<Locale> onLocaleChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final palette = context.leonePalette;
-    final selectedLanguage = Localizations.localeOf(context).languageCode;
-    final englishSelected = selectedLanguage == 'en';
-    final targetLocale = Locale(englishSelected ? 'pt' : 'en');
-    final targetLanguage = englishSelected
-        ? l10n.portugueseLanguage
-        : l10n.englishLanguage;
-
-    return Semantics(
-      button: true,
-      label: '${l10n.languageSelectorLabel}: $targetLanguage',
-      child: Tooltip(
-        message: targetLanguage,
-        excludeFromSemantics: true,
-        child: TextButton(
-          key: const Key('language-toggle'),
-          onPressed: () => onLocaleChanged(targetLocale),
-          style: TextButton.styleFrom(
-            foregroundColor: palette.ink,
-            fixedSize: const Size(64, 48),
-            padding: EdgeInsets.zero,
-            shape: const StadiumBorder(),
-          ),
-          child: ExcludeSemantics(
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'EN',
-                    style: TextStyle(
-                      color: englishSelected ? palette.ink : palette.mutedInk,
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' / ',
-                    style: TextStyle(color: palette.mutedInk),
-                  ),
-                  TextSpan(
-                    text: 'PT',
-                    style: TextStyle(
-                      color: englishSelected ? palette.mutedInk : palette.ink,
-                    ),
-                  ),
-                ],
-              ),
-              style: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w800,
-                letterSpacing: .5,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ThemeToggle extends StatelessWidget {
-  const _ThemeToggle({required this.onThemeModeChanged});
-
-  final ValueChanged<ThemeMode> onThemeModeChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final lightMode = Theme.of(context).brightness == Brightness.light;
-    final targetMode = lightMode ? ThemeMode.dark : ThemeMode.light;
-    final label = lightMode
-        ? context.l10n.switchToDarkTheme
-        : context.l10n.switchToLightTheme;
-    return Semantics(
-      button: true,
-      label: label,
-      child: Tooltip(
-        message: label,
-        excludeFromSemantics: true,
-        child: IconButton(
-          key: const Key('theme-toggle'),
-          onPressed: () => onThemeModeChanged(targetMode),
-          icon: Icon(
-            lightMode ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ViewAppsButton extends StatelessWidget {
-  const _ViewAppsButton({required this.compact, required this.onPressed});
-
-  final bool compact;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final label = compact
-        ? context.l10n.viewAppsCompact
-        : context.l10n.viewApps;
-    return Semantics(
-      button: true,
-      label: label,
-      child: Tooltip(
-        message: label,
-        excludeFromSemantics: true,
-        child: TextButton.icon(
-          key: const Key('view-apps-button'),
-          onPressed: onPressed,
-          style: TextButton.styleFrom(
-            foregroundColor: _green,
-            minimumSize: const Size(0, 48),
-            padding: EdgeInsets.symmetric(horizontal: compact ? 12 : 16),
-            backgroundColor: _green.withValues(alpha: .10),
-            side: BorderSide(color: _green.withValues(alpha: .34)),
-            shape: const StadiumBorder(),
-          ),
-          icon: const Icon(Icons.keyboard_arrow_down_rounded, size: 17),
-          label: Text(
-            label.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w800,
-              letterSpacing: .8,
             ),
           ),
         ),

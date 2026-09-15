@@ -30,16 +30,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get switchToDarkTheme => 'Switch to dark theme';
 
   @override
-  String get hireMe => 'Hire me here';
+  String get hireMe => 'Let\'s talk';
 
   @override
-  String get hireMeCompact => 'Hire me';
-
-  @override
-  String get viewApps => 'View apps';
-
-  @override
-  String get viewAppsCompact => 'Apps';
+  String get hireMeCompact => 'Contact';
 
   @override
   String get dismissNavigationMenu => 'Dismiss navigation menu';
@@ -89,15 +83,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'A place to share processes, technical knowledge, and what I learn while building real products.';
 
   @override
-  String get articlesPageTitle => 'Articles';
+  String get relatedArticlesTitle => 'More to read';
 
   @override
-  String get articleNavigationSemantics => 'Quick navigation between articles';
-
-  @override
-  String currentArticle(String title, String summary) {
-    return 'Current article: $title. $summary';
-  }
+  String get relatedArticlesSemantics => 'More articles to read';
 
   @override
   String openArticle(String title, String summary) {

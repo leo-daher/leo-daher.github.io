@@ -36,12 +36,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get hireMeCompact => 'Conversar';
 
   @override
-  String get viewApps => 'Ver apps';
-
-  @override
-  String get viewAppsCompact => 'Apps';
-
-  @override
   String get dismissNavigationMenu => 'Descartar menu de navegação';
 
   @override
@@ -89,15 +83,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Um espaço para compartilhar processos, conhecimento técnico e o que aprendo construindo produtos reais.';
 
   @override
-  String get articlesPageTitle => 'Artigos';
+  String get relatedArticlesTitle => 'Leia também';
 
   @override
-  String get articleNavigationSemantics => 'Navegação rápida entre artigos';
-
-  @override
-  String currentArticle(String title, String summary) {
-    return 'Artigo atual: $title. $summary';
-  }
+  String get relatedArticlesSemantics => 'Outros artigos para ler';
 
   @override
   String openArticle(String title, String summary) {
