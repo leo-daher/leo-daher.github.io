@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
+import '../../brand/leone_glass.dart';
 import '../../l10n/l10n.dart';
 import '../navigation/portfolio_page_transition.dart';
 import 'article_catalog.dart';
@@ -45,7 +46,7 @@ class ArticlePageLayout extends StatelessWidget {
           animation: routeAnimation,
           child: ColoredBox(
             key: const Key('article-page-transition-surface'),
-            color: palette.canvas,
+            color: context.usesLeoneGlass ? Colors.transparent : palette.canvas,
             child: SafeArea(
               top: false,
               child: SingleChildScrollView(

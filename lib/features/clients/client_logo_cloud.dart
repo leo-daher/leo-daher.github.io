@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../brand/leone_brand.dart';
+import '../../brand/leone_glass.dart';
 import '../../l10n/l10n.dart';
 import '../shared/portfolio_section_heading.dart';
 
@@ -261,38 +262,44 @@ class _ClientLogoTile extends StatelessWidget {
       key: Key('client-logo-${logo.id}'),
       label: logo.name,
       image: true,
-      child: Container(
-        width: width,
-        height: 78,
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: palette.outline),
-        ),
-        child: logo.showName
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(child: visual),
-                  const SizedBox(width: 10),
-                  Text(
-                    logo.name,
-                    style: TextStyle(
-                      color: palette.ink,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
+      child: LeoneGlassSurface(
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          width: width,
+          height: 78,
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          decoration: BoxDecoration(
+            color: context.usesLeoneGlass
+                ? palette.surface.withValues(alpha: .5)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: palette.outline),
+          ),
+          child: logo.showName
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(child: visual),
+                    const SizedBox(width: 10),
+                    Text(
+                      logo.name,
+                      style: TextStyle(
+                        color: palette.ink,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                )
+              : ClipRect(
+                  child: Center(
+                    child: Transform.translate(
+                      offset: logo.offset,
+                      child: Transform.scale(scale: logo.scale, child: visual),
                     ),
                   ),
-                ],
-              )
-            : ClipRect(
-                child: Center(
-                  child: Transform.translate(
-                    offset: logo.offset,
-                    child: Transform.scale(scale: logo.scale, child: visual),
-                  ),
                 ),
-              ),
+        ),
       ),
     );
   }

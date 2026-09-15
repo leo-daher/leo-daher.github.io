@@ -48,6 +48,13 @@ jobs:
           --dart-define=TELEMETRY_ENVIRONMENT=production
           --dart-define=PORTFOLIO_RELEASE=${{ github.sha }}
 
+      - name: Add direct entry points for hidden routes
+        run: |
+          mkdir -p build/web/ios/artigos/identidade-visual
+          cp build/web/index.html build/web/ios/index.html
+          cp build/web/index.html build/web/ios/artigos/identidade-visual/index.html
+          cp build/web/index.html build/web/404.html
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

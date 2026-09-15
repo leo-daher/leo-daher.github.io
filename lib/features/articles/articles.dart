@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
+import '../../brand/leone_glass.dart';
 import '../../l10n/l10n.dart';
 import '../navigation/portfolio_top_bar.dart';
 import '../shared/portfolio_section_heading.dart';
@@ -32,52 +33,55 @@ class ArticlesSection extends StatelessWidget {
           copy: l10n.articlesCopy,
         ),
         const SizedBox(height: 30),
-        Material(
-          color: palette.surface.withValues(alpha: .72),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: palette.outline),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            key: const Key('open-articles-page'),
-            onTap: onOpenArticles,
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final copy = _ArticleCardCopy(
-                    title: identityArticle.title,
-                    summary: identityArticle.summary,
-                    publicationInfo: identityArticle.publicationInfo,
-                  );
-                  if (constraints.maxWidth < 520) {
-                    return Column(
+        LeoneGlassSurface(
+          borderRadius: BorderRadius.circular(24),
+          child: Material(
+            color: palette.surface.withValues(alpha: .72),
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: palette.outline),
+              borderRadius: BorderRadius.circular(24),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              key: const Key('open-articles-page'),
+              onTap: onOpenArticles,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final copy = _ArticleCardCopy(
+                      title: identityArticle.title,
+                      summary: identityArticle.summary,
+                      publicationInfo: identityArticle.publicationInfo,
+                    );
+                    if (constraints.maxWidth < 520) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _ArticleCardIcon(),
+                              Icon(Icons.arrow_forward_rounded),
+                            ],
+                          ),
+                          const SizedBox(height: 18),
+                          copy,
+                        ],
+                      );
+                    }
+                    return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _ArticleCardIcon(),
-                            Icon(Icons.arrow_forward_rounded),
-                          ],
-                        ),
-                        const SizedBox(height: 18),
-                        copy,
+                        const _ArticleCardIcon(),
+                        const SizedBox(width: 18),
+                        Expanded(child: copy),
+                        const SizedBox(width: 12),
+                        const Icon(Icons.arrow_forward_rounded),
                       ],
                     );
-                  }
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const _ArticleCardIcon(),
-                      const SizedBox(width: 18),
-                      Expanded(child: copy),
-                      const SizedBox(width: 12),
-                      const Icon(Icons.arrow_forward_rounded),
-                    ],
-                  );
-                },
+                  },
+                ),
               ),
             ),
           ),

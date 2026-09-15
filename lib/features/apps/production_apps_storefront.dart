@@ -3,7 +3,9 @@ import 'dart:math' as math;
 import 'package:material_ui/material_ui.dart';
 
 import '../../brand/leone_brand.dart';
+import '../../brand/leone_glass.dart';
 import '../shared/portfolio_section_heading.dart';
+import '../navigation/portfolio_top_bar.dart';
 import 'production_app_models.dart';
 import 'production_apps_section.dart';
 
@@ -61,23 +63,31 @@ class ProductionAppsStorefront extends StatelessWidget {
   }
 
   void _openCatalog(BuildContext context) {
+    final usesGlass = context.usesLeoneGlass;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => ProductionAppsCatalogPage(
-          content: content,
-          caseContent: caseContent,
-          items: items,
-          apps: apps,
-        ),
+        builder: (_) {
+          final page = ProductionAppsCatalogPage(
+            content: content,
+            caseContent: caseContent,
+            items: items,
+            apps: apps,
+          );
+          return usesGlass ? LeoneGlassExperience(child: page) : page;
+        },
       ),
     );
   }
 
   void _openDetails(BuildContext context, ProductionAppStorefrontItem item) {
     final app = apps.singleWhere((app) => app.id == item.appCaseId);
+    final usesGlass = context.usesLeoneGlass;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => ProductionAppDetailPage(content: caseContent, app: app),
+        builder: (_) {
+          final page = ProductionAppDetailPage(content: caseContent, app: app);
+          return usesGlass ? LeoneGlassExperience(child: page) : page;
+        },
       ),
     );
   }
@@ -138,12 +148,18 @@ class ProductionAppsCatalogPage extends StatelessWidget {
                         final app = apps.singleWhere(
                           (app) => app.id == item.appCaseId,
                         );
+                        final usesGlass = context.usesLeoneGlass;
                         Navigator.of(context).push(
                           MaterialPageRoute<void>(
-                            builder: (_) => ProductionAppDetailPage(
-                              content: caseContent,
-                              app: app,
-                            ),
+                            builder: (_) {
+                              final page = ProductionAppDetailPage(
+                                content: caseContent,
+                                app: app,
+                              );
+                              return usesGlass
+                                  ? LeoneGlassExperience(child: page)
+                                  : page;
+                            },
                           ),
                         );
                       },
@@ -207,14 +223,22 @@ class _StorePageAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.leonePalette;
+    final usesGlass = context.usesLeoneGlass;
     return SliverAppBar(
       key: const Key('store-page-app-bar'),
       pinned: true,
       elevation: 0,
-      scrolledUnderElevation: 3,
-      shadowColor: Colors.black.withValues(alpha: .32),
+      scrolledUnderElevation: usesGlass ? 0 : 3,
+      shadowColor: usesGlass
+          ? Colors.transparent
+          : Colors.black.withValues(alpha: .32),
       surfaceTintColor: Colors.transparent,
-      backgroundColor: palette.canvas,
+      backgroundColor: usesGlass
+          ? regularLiquidGlassBackground(context, palette)
+          : palette.canvas,
+      flexibleSpace: usesGlass
+          ? const PortfolioRegularLiquidGlassBackdrop()
+          : null,
       foregroundColor: palette.ink,
       title: Text(
         title,
@@ -359,76 +383,79 @@ class _AppStoreTile extends StatelessWidget {
     return Semantics(
       button: true,
       label: '$openDetailsLabel: ${item.name}',
-      child: Material(
-        key: Key('app-store-tile-${item.id}'),
-        color: wide
-            ? palette.surfaceRaised.withValues(alpha: .58)
-            : Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: wide ? BorderSide(color: palette.outline) : BorderSide.none,
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: wide ? 18 : 0,
-              vertical: wide ? 20 : 16,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _CatalogAppIcon(item: item, size: wide ? 76 : 68),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: palette.ink,
-                          fontSize: wide ? 17 : 16,
-                          height: 1.2,
-                          fontWeight: FontWeight.w700,
+      child: LeoneGlassSurface(
+        borderRadius: BorderRadius.circular(20),
+        child: Material(
+          key: Key('app-store-tile-${item.id}'),
+          color: wide
+              ? palette.surfaceRaised.withValues(alpha: .58)
+              : Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: wide ? BorderSide(color: palette.outline) : BorderSide.none,
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: wide ? 18 : 0,
+                vertical: wide ? 20 : 16,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _CatalogAppIcon(item: item, size: wide ? 76 : 68),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: palette.ink,
+                            fontSize: wide ? 17 : 16,
+                            height: 1.2,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        item.summary,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: palette.mutedInk,
-                          fontSize: 12.5,
-                          height: 1.4,
+                        const SizedBox(height: 5),
+                        Text(
+                          item.summary,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: palette.mutedInk,
+                            fontSize: 12.5,
+                            height: 1.4,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        item.metric,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: accent,
-                          fontSize: 11,
-                          height: 1.25,
-                          fontWeight: FontWeight.w600,
+                        const SizedBox(height: 8),
+                        Text(
+                          item.metric,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: accent,
+                            fontSize: 11,
+                            height: 1.25,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.chevron_right_rounded,
-                  color: palette.mutedInk,
-                  size: 22,
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: palette.mutedInk,
+                    size: 22,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

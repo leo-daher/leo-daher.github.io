@@ -62,6 +62,24 @@ class LeonePalette extends ThemeExtension<LeonePalette> {
     outline: Color(0x1A171721),
   );
 
+  static const glassDark = LeonePalette(
+    canvas: LeoneBrandColors.canvas,
+    surface: Color(0x991C1B2A),
+    surfaceRaised: Color(0xB82B2940),
+    ink: LeoneBrandColors.ink,
+    mutedInk: Color(0xFFC0BDCB),
+    outline: Color(0x30FFFFFF),
+  );
+
+  static const glassLight = LeonePalette(
+    canvas: Color(0xFFF7F7FB),
+    surface: Color(0xA8FFFFFF),
+    surfaceRaised: Color(0xC7FFFFFF),
+    ink: Color(0xFF171721),
+    mutedInk: Color(0xFF545361),
+    outline: Color(0x24171721),
+  );
+
   final Color canvas;
   final Color surface;
   final Color surfaceRaised;
@@ -165,12 +183,23 @@ abstract final class LeoneBrandTheme {
   static ThemeData light() =>
       _build(brightness: Brightness.light, palette: LeonePalette.light);
 
+  static ThemeData glass(Brightness brightness) => _build(
+    brightness: brightness,
+    palette: brightness == Brightness.light
+        ? LeonePalette.glassLight
+        : LeonePalette.glassDark,
+    transparentScaffold: true,
+  );
+
   static ThemeData _build({
     required Brightness brightness,
     required LeonePalette palette,
+    bool transparentScaffold = false,
   }) => ThemeData(
     useMaterial3: true,
-    scaffoldBackgroundColor: palette.canvas,
+    scaffoldBackgroundColor: transparentScaffold
+        ? Colors.transparent
+        : palette.canvas,
     colorScheme: ColorScheme.fromSeed(
       seedColor: LeoneBrandColors.interactive,
       brightness: brightness,

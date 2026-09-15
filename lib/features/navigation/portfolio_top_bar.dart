@@ -31,8 +31,8 @@ class PortfolioSliverTopBar extends StatelessWidget {
       scrolledUnderElevation: 0,
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
-      backgroundColor: _topBarBackground(context, palette),
-      flexibleSpace: const _RegularLiquidGlassBackdrop(),
+      backgroundColor: regularLiquidGlassBackground(context, palette),
+      flexibleSpace: const PortfolioRegularLiquidGlassBackdrop(),
       foregroundColor: palette.ink,
       titleSpacing: 0,
       title: PortfolioTopBarContent(
@@ -72,8 +72,8 @@ class PortfolioPageTopBar extends StatelessWidget
       scrolledUnderElevation: 0,
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
-      backgroundColor: _topBarBackground(context, palette),
-      flexibleSpace: const _RegularLiquidGlassBackdrop(),
+      backgroundColor: regularLiquidGlassBackground(context, palette),
+      flexibleSpace: const PortfolioRegularLiquidGlassBackdrop(),
       foregroundColor: palette.ink,
       titleSpacing: 0,
       title: PortfolioTopBarContent(
@@ -88,7 +88,10 @@ class PortfolioPageTopBar extends StatelessWidget
 const _regularLiquidGlassOpacity = .68;
 const _regularLiquidGlassBlurSigma = 24.0;
 
-WidgetStateColor _topBarBackground(BuildContext context, LeonePalette palette) {
+WidgetStateColor regularLiquidGlassBackground(
+  BuildContext context,
+  LeonePalette palette,
+) {
   final highContrast = MediaQuery.highContrastOf(context);
   return WidgetStateColor.resolveWith(
     (states) => states.contains(WidgetState.scrolledUnder) && !highContrast
@@ -97,8 +100,8 @@ WidgetStateColor _topBarBackground(BuildContext context, LeonePalette palette) {
   );
 }
 
-class _RegularLiquidGlassBackdrop extends StatelessWidget {
-  const _RegularLiquidGlassBackdrop();
+class PortfolioRegularLiquidGlassBackdrop extends StatelessWidget {
+  const PortfolioRegularLiquidGlassBackdrop({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,10 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'brand/leone_brand.dart';
+import 'brand/leone_glass.dart';
 import 'features/articles/articles.dart';
 import 'features/apps/production_apps.dart';
 import 'features/certificates/certifications_section.dart';
@@ -20,11 +22,14 @@ import 'telemetry/portfolio_telemetry.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  usePathUrlStrategy();
   await PortfolioTelemetry.initialize(() => runApp(const LeonePortfolioApp()));
 }
 
 class LeonePortfolioApp extends StatefulWidget {
-  const LeonePortfolioApp({super.key});
+  const LeonePortfolioApp({super.key, this.initialRoute});
+
+  final String? initialRoute;
 
   @override
   State<LeonePortfolioApp> createState() => _LeonePortfolioAppState();
@@ -93,31 +98,68 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
         ...GlobalMaterialLocalizations.delegates,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateRoute: (settings) {
-        if (settings.name == ArticlesPage.routeName) {
-          final accessibilityFeatures =
-              WidgetsBinding.instance.platformDispatcher.accessibilityFeatures;
-          final reduceMotion =
-              accessibilityFeatures.disableAnimations ||
-              accessibilityFeatures.reduceMotion;
-          return _PortfolioArticleRoute(
-            pageBuilder: (_, _, _) => ArticlesPage(
-              onLocaleChanged: _setLocale,
-              onThemeModeChanged: _setThemeMode,
-            ),
-            settings: settings,
-            reduceMotion: reduceMotion,
-          );
-        }
-        return null;
+      initialRoute: widget.initialRoute,
+      onGenerateInitialRoutes: (initialRouteName) {
+        final initialRoute = _generateRoute(
+          RouteSettings(name: initialRouteName),
+        );
+        return [
+          initialRoute ?? _generateRoute(const RouteSettings(name: '/'))!,
+        ];
       },
-      home: _PortfolioEntry(
-        onLocaleChanged: _setLocale,
-        onThemeModeChanged: _setThemeMode,
-      ),
+      onGenerateRoute: _generateRoute,
     );
   }
+
+  Route<void>? _generateRoute(RouteSettings settings) {
+    final routeName = settings.name?.replaceFirst(RegExp(r'/$'), '');
+    if (routeName == null || routeName.isEmpty) {
+      return MaterialPageRoute<void>(
+        settings: settings,
+        builder: (_) => _PortfolioEntry(
+          onLocaleChanged: _setLocale,
+          onThemeModeChanged: _setThemeMode,
+        ),
+      );
+    }
+
+    final isGlassHome = routeName == _iosRouteName;
+    final isGlassArticle = routeName == _iosArticleRouteName;
+    if (isGlassHome) {
+      return MaterialPageRoute<void>(
+        settings: settings,
+        builder: (_) => LeoneGlassExperience(
+          child: _PortfolioEntry(
+            onLocaleChanged: _setLocale,
+            onThemeModeChanged: _setThemeMode,
+          ),
+        ),
+      );
+    }
+    if (routeName == ArticlesPage.routeName || isGlassArticle) {
+      final accessibilityFeatures =
+          WidgetsBinding.instance.platformDispatcher.accessibilityFeatures;
+      final reduceMotion =
+          accessibilityFeatures.disableAnimations ||
+          accessibilityFeatures.reduceMotion;
+      return _PortfolioArticleRoute(
+        pageBuilder: (_, _, _) {
+          final page = ArticlesPage(
+            onLocaleChanged: _setLocale,
+            onThemeModeChanged: _setThemeMode,
+          );
+          return isGlassArticle ? LeoneGlassExperience(child: page) : page;
+        },
+        settings: settings,
+        reduceMotion: reduceMotion,
+      );
+    }
+    return null;
+  }
 }
+
+const _iosRouteName = '/ios';
+const _iosArticleRouteName = '/ios/artigos/identidade-visual';
 
 class _PortfolioArticleRoute extends PageRouteBuilder<void> {
   _PortfolioArticleRoute({
@@ -355,8 +397,11 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               child: _SectionFrame(
                 key: _articlesSectionKey,
                 child: ArticlesSection(
-                  onOpenArticles: () =>
-                      Navigator.of(context).pushNamed(ArticlesPage.routeName),
+                  onOpenArticles: () => Navigator.of(context).pushNamed(
+                    context.usesLeoneGlass
+                        ? _iosArticleRouteName
+                        : ArticlesPage.routeName,
+                  ),
                 ),
               ),
             ),
