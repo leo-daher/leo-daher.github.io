@@ -48,9 +48,10 @@ jobs:
           --dart-define=TELEMETRY_ENVIRONMENT=production
           --dart-define=PORTFOLIO_RELEASE=${{ github.sha }}
 
-      - name: Add direct entry points for hidden routes
+      - name: Add direct route entry points
         run: |
-          mkdir -p build/web/ios/artigos/identidade-visual
+          mkdir -p build/web/artigos/identidade-visual build/web/ios/artigos/identidade-visual
+          cp build/web/index.html build/web/artigos/identidade-visual/index.html
           cp build/web/index.html build/web/ios/index.html
           cp build/web/index.html build/web/ios/artigos/identidade-visual/index.html
           cp build/web/index.html build/web/404.html
