@@ -137,12 +137,15 @@ class _CertificateHighlights extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
       final compact = constraints.maxWidth < 620;
-      final cardWidth = compact ? 270.0 : (constraints.maxWidth - 48) / 4;
+      final cardWidth = compact
+          ? (constraints.maxWidth * .82).clamp(238.0, 270.0)
+          : (constraints.maxWidth - 48) / 4;
+      final cardHeight = compact ? 144.0 : 250.0;
       final cards = [
         for (final certificate in certificates)
           SizedBox(
             width: cardWidth,
-            height: 250,
+            height: cardHeight,
             child: _CertificateHighlightCard(
               certificate: certificate,
               onTap: () => onOpenPreview(certificate),
@@ -150,14 +153,18 @@ class _CertificateHighlights extends StatelessWidget {
           ),
         SizedBox(
           width: cardWidth,
-          height: 250,
-          child: _ViewAllCertificatesCard(onTap: onOpenRegister),
+          height: cardHeight,
+          child: _ViewAllCertificatesCard(
+            compact: compact,
+            onTap: onOpenRegister,
+          ),
         ),
       ];
       if (compact) {
         return SingleChildScrollView(
           key: const Key('certificate-highlights-scroll'),
           scrollDirection: Axis.horizontal,
+          clipBehavior: Clip.none,
           padding: const EdgeInsets.only(bottom: 4),
           child: Row(
             children: [
@@ -216,13 +223,6 @@ class _CertificateHighlightCard extends StatelessWidget {
                           height: 1.2,
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        l10n.certificateFor(certificate.holder),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: palette.mutedInk, fontSize: 11),
-                      ),
                       const SizedBox(height: 8),
                       _CertificateHighlightTags(
                         technologies: certificate.technologies.take(2).toList(),
@@ -271,8 +271,9 @@ class _CertificateHighlightTags extends StatelessWidget {
 }
 
 class _ViewAllCertificatesCard extends StatelessWidget {
-  const _ViewAllCertificatesCard({required this.onTap});
+  const _ViewAllCertificatesCard({required this.compact, required this.onTap});
 
+  final bool compact;
   final VoidCallback onTap;
 
   @override
@@ -287,36 +288,80 @@ class _ViewAllCertificatesCard extends StatelessWidget {
           key: const Key('certificates-view-all-card'),
           onTap: onTap,
           borderRadius: BorderRadius.circular(20),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.arrow_forward_rounded,
-                  color: LeoneBrandColors.interactive,
-                  size: 28,
-                ),
-                const SizedBox(height: 18),
-                Text(
-                  context.l10n.viewAllCertificates,
-                  style: TextStyle(
-                    color: palette.ink,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
+          child: compact
+              ? Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.arrow_forward_rounded,
+                        color: LeoneBrandColors.interactive,
+                        size: 24,
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context.l10n.viewAllCertificates,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: palette.ink,
+                                fontSize: 17,
+                                height: 1.15,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              context.l10n.certificateRegisterCopy,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: palette.mutedInk,
+                                fontSize: 12,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.arrow_forward_rounded,
+                        color: LeoneBrandColors.interactive,
+                        size: 28,
+                      ),
+                      const SizedBox(height: 18),
+                      Text(
+                        context.l10n.viewAllCertificates,
+                        style: TextStyle(
+                          color: palette.ink,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        context.l10n.certificateRegisterCopy,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: palette.mutedInk, height: 1.35),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  context.l10n.certificateRegisterCopy,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: palette.mutedInk, height: 1.35),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );
@@ -930,7 +975,6 @@ class _CertificatePreviewDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final palette = context.leonePalette;
     return Dialog(
       key: const Key('certificate-preview-dialog'),
       child: ConstrainedBox(
@@ -954,11 +998,6 @@ class _CertificatePreviewDialog extends StatelessWidget {
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
                           ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          l10n.certificateFor(certificate.holder),
-                          style: TextStyle(color: palette.mutedInk),
                         ),
                         const SizedBox(height: 10),
                         _CertificateTechnologyTags(
