@@ -150,6 +150,12 @@ abstract final class LeoneBrandMotion {
   static const fabMenuExpand = Duration(milliseconds: 360);
   static const fabMenuCollapse = Duration(milliseconds: 260);
   static const Curve fabMenuSpatialCurve = Cubic(0.2, 0, 0, 1);
+
+  // Material 3 timing for a full-width horizontal page surface. The header
+  // stays outside the moving surface.
+  static const pageTransitionForward = Durations.medium3;
+  static const pageTransitionReverse = Durations.medium2;
+  static const Curve pageTransitionCurve = Easing.emphasizedDecelerate;
 }
 
 abstract final class LeoneBrandTheme {
