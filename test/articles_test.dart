@@ -1,7 +1,11 @@
+import 'dart:ui' show SemanticsRole, Tristate;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
+import 'package:leone_portfolio/features/articles/article_catalog.dart';
+import 'package:leone_portfolio/features/articles/article_page_layout.dart';
 import 'package:leone_portfolio/features/articles/article_publication_metadata.dart';
 import 'package:leone_portfolio/features/articles/articles.dart';
 import 'package:leone_portfolio/l10n/app_localizations.dart';
@@ -34,12 +38,18 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('articles-page')), findsOneWidget);
+    expect(tester.widget<AppBar>(find.byType(AppBar)).title, isNull);
     expect(find.text('PUBLISHED'), findsNothing);
     expect(find.byKey(const Key('article-published-at')), findsOneWidget);
     expect(find.byKey(const Key('article-last-edited-at')), findsNothing);
     expect(find.text('Published Sep 15, 2026 · 10:38 AM BRT'), findsOneWidget);
     expect(
-      find.text("How I designed this portfolio's logo and visual identity"),
+      find.descendant(
+        of: find.byKey(const Key('article-reading-column')),
+        matching: find.text(
+          "How I designed this portfolio's logo and visual identity",
+        ),
+      ),
       findsOneWidget,
     );
     expect(find.text('The initials and the frame'), findsOneWidget);
@@ -169,7 +179,214 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('article-share-badges')), findsOneWidget);
+    expect(find.byKey(const Key('article-navigation-inline')), findsOneWidget);
+    expect(find.byKey(const Key('article-navigation-sidebar')), findsNothing);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('wide article page keeps quick navigation on the right', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(_localizedApp(const ArticlesPage()));
+    await tester.pumpAndSettle();
+
+    final mainRect = tester.getRect(
+      find.byKey(const Key('article-main-scroll')),
+    );
+    final sidebarRect = tester.getRect(
+      find.byKey(const Key('article-navigation-sidebar')),
+    );
+    final articleSize = tester.getSize(
+      find.byKey(const Key('article-reading-column')),
+    );
+
+    expect(find.byKey(const Key('article-navigation-inline')), findsNothing);
+    expect(sidebarRect.width, 288);
+    expect(sidebarRect.left - mainRect.right, 32);
+    expect(sidebarRect.right, lessThanOrEqualTo(1440 - 24));
+    expect(articleSize.width, lessThanOrEqualTo(920));
+
+    await tester.drag(
+      find.byKey(const Key('article-main-scroll')),
+      const Offset(0, -1800),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      tester.getRect(find.byKey(const Key('article-navigation-sidebar'))),
+      sidebarRect,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('article navigation switches layout at the desktop breakpoint', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    tester.view.physicalSize = const Size(1199, 900);
+    await tester.pumpWidget(_localizedApp(const ArticlesPage()));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('article-navigation-inline')), findsOneWidget);
+    expect(find.byKey(const Key('article-navigation-sidebar')), findsNothing);
+    final narrowScroll = tester.widget<SingleChildScrollView>(
+      find.byKey(const Key('article-main-scroll')),
+    );
+    await tester.drag(
+      find.byKey(const Key('article-main-scroll')),
+      const Offset(0, -600),
+    );
+    await tester.pumpAndSettle();
+    final offsetBeforeResize = narrowScroll.controller!.offset;
+    expect(offsetBeforeResize, greaterThan(0));
+
+    tester.view.physicalSize = const Size(1200, 900);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('article-navigation-inline')), findsNothing);
+    expect(find.byKey(const Key('article-navigation-sidebar')), findsOneWidget);
+    final desktopScroll = tester.widget<SingleChildScrollView>(
+      find.byKey(const Key('article-main-scroll')),
+    );
+    expect(desktopScroll.controller, same(narrowScroll.controller));
+    expect(desktopScroll.controller!.offset, offsetBeforeResize);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('article layout respects lateral safe-area insets', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const MediaQuery(
+          data: MediaQueryData(padding: EdgeInsets.only(left: 48, right: 64)),
+          child: ArticlesPage(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final articleRect = tester.getRect(
+      find.byKey(const Key('article-reading-column')),
+    );
+    final sidebarRect = tester.getRect(
+      find.byKey(const Key('article-navigation-sidebar')),
+    );
+    expect(articleRect.left, greaterThanOrEqualTo(48));
+    expect(sidebarRect.right, lessThanOrEqualTo(1440 - 64));
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+    'article navigation truncates copy but keeps complete semantics',
+    (tester) async {
+      tester.view.physicalSize = const Size(320, 900);
+      tester.view.devicePixelRatio = 1;
+      tester.platformDispatcher.textScaleFactorTestValue = 2;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      final semantics = tester.ensureSemantics();
+
+      const title = 'A deliberately long article title for a compact card';
+      const summary =
+          'A complete summary that remains available to assistive technology '
+          'even when the visual copy is shortened.';
+      final entry = _articleEntry(id: 'long', title: title, summary: summary);
+
+      await tester.pumpWidget(
+        _localizedApp(
+          Scaffold(
+            body: ArticleQuickNavigation(
+              entries: [entry],
+              currentArticleId: entry.id,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final titleText = tester.widget<Text>(
+        find.byKey(const Key('article-navigation-title-long')),
+      );
+      final summaryText = tester.widget<Text>(
+        find.byKey(const Key('article-navigation-summary-long')),
+      );
+      final cardSize = tester.getSize(
+        find.byKey(const Key('article-navigation-long')),
+      );
+      final selectedArticle = tester.getSemantics(
+        find.bySemanticsLabel('Current article: $title. $summary'),
+      );
+      final navigation = tester.getSemantics(
+        find.bySemanticsLabel('Quick navigation between articles'),
+      );
+
+      expect(titleText.maxLines, 2);
+      expect(titleText.overflow, TextOverflow.ellipsis);
+      expect(summaryText.maxLines, 2);
+      expect(summaryText.overflow, TextOverflow.ellipsis);
+      expect(cardSize.height, lessThan(300));
+      expect(selectedArticle.label, contains(title));
+      expect(selectedArticle.label, contains(summary));
+      expect(selectedArticle.flagsCollection.isSelected, Tristate.isTrue);
+      expect(
+        selectedArticle.getSemanticsData().hasAction(SemanticsAction.tap),
+        isFalse,
+      );
+      expect(navigation.getSemanticsData().role, SemanticsRole.navigation);
+      expect(tester.takeException(), isNull);
+      semantics.dispose();
+    },
+  );
+
+  testWidgets('article navigation opens another catalog entry', (tester) async {
+    final current = _articleEntry(id: 'current', title: 'Current');
+    final other = _articleEntry(
+      id: 'other',
+      routeName: '/articles/other',
+      title: 'Another article',
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: LeoneBrandTheme.dark(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routes: {
+          other.routeName: (_) => const Scaffold(key: Key('other-article')),
+        },
+        home: Scaffold(
+          body: ArticleQuickNavigation(
+            entries: [current, other],
+            currentArticleId: current.id,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final currentInkWell = tester.widget<InkWell>(
+      find.descendant(
+        of: find.byKey(const Key('article-navigation-current')),
+        matching: find.byType(InkWell),
+      ),
+    );
+    expect(currentInkWell.onTap, isNull);
+
+    await tester.tap(find.byKey(const Key('article-navigation-other')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('other-article')), findsOneWidget);
   });
 
   testWidgets('article metadata reveals the optional last edition', (
@@ -302,3 +519,21 @@ Widget _localizedApp(Widget child, {Locale locale = const Locale('en')}) =>
       supportedLocales: AppLocalizations.supportedLocales,
       home: child,
     );
+
+ArticleEntry _articleEntry({
+  required String id,
+  String? routeName,
+  required String title,
+  String summary = 'A concise article summary.',
+}) => ArticleEntry(
+  id: id,
+  routeName: routeName ?? '/articles/$id',
+  canonicalUri: Uri.parse('https://example.com/articles/$id'),
+  title: title,
+  summary: summary,
+  publicationInfo: ArticlePublicationInfo(
+    publishedAtUtc: DateTime.utc(2026, 9, 15, 13, 38),
+  ),
+  lightThumbnailAsset: 'assets/brand/ld-mark.svg',
+  darkThumbnailAsset: 'assets/brand/ld-mark-inverse.svg',
+);
