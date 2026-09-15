@@ -1067,6 +1067,21 @@ void main() {
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
+
+    final highlightScroll = tester.widget<SingleChildScrollView>(
+      find.byKey(const Key('certificate-highlights-scroll')),
+    );
+    expect(highlightScroll.clipBehavior, Clip.none);
+    expect(
+      tester
+          .getSize(
+            find.byKey(const Key('certificate-highlight-card-mobile-first')),
+          )
+          .height,
+      144,
+    );
+    expect(find.text('Certificate issued to Leone Souza'), findsNothing);
+
     await tester.drag(
       find.byKey(const Key('certificate-highlights-scroll')),
       const Offset(-900, 0),
@@ -1103,6 +1118,7 @@ void main() {
     await tester.tap(secondCard);
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('certificate-preview-dialog')), findsOneWidget);
+    expect(find.text('Certificate issued to Leone Souza'), findsNothing);
     await _closeDialog(tester);
     await _closeDialog(tester);
     expect(tester.takeException(), isNull);
