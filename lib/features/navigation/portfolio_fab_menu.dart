@@ -5,6 +5,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 
 import '../../brand/leone_brand.dart';
+import '../../brand/leone_glass.dart';
 import '../../ld_identity.dart';
 import '../../l10n/l10n.dart';
 
@@ -458,8 +459,10 @@ class _StaggeredFabMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final palette = context.leonePalette;
+    final usesGlass = context.usesLeoneGlass;
     final labelStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
-      color: scheme.onPrimaryContainer,
+      color: usesGlass ? palette.ink : scheme.onPrimaryContainer,
       fontWeight: FontWeight.w700,
     );
     return AnimatedBuilder(
@@ -497,32 +500,45 @@ class _StaggeredFabMenuItem extends StatelessWidget {
         customSemanticsActions: isLast
             ? {CustomSemanticsAction(label: closeMenuLabel): onClose}
             : null,
-        child: Material(
-          key: action.key,
-          color: scheme.primaryContainer,
-          shadowColor: Colors.black.withValues(alpha: .42),
-          surfaceTintColor: scheme.surfaceTint,
-          elevation: 6,
-          shape: const StadiumBorder(),
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            focusNode: focusNode,
-            onTap: onPressed,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      action.icon,
-                      size: 24,
-                      color: scheme.onPrimaryContainer,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(label, style: labelStyle),
-                  ],
+        child: LeoneGlassSurface(
+          borderRadius: BorderRadius.circular(999),
+          child: Material(
+            key: action.key,
+            color: usesGlass
+                ? palette.surfaceRaised.withValues(alpha: .78)
+                : scheme.primaryContainer,
+            shadowColor: usesGlass
+                ? Colors.transparent
+                : Colors.black.withValues(alpha: .42),
+            surfaceTintColor: Colors.transparent,
+            elevation: usesGlass ? 0 : 6,
+            shape: StadiumBorder(
+              side: usesGlass
+                  ? BorderSide(color: palette.outline)
+                  : BorderSide.none,
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              focusNode: focusNode,
+              onTap: onPressed,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        action.icon,
+                        size: 24,
+                        color: usesGlass
+                            ? palette.ink
+                            : scheme.onPrimaryContainer,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(label, style: labelStyle),
+                    ],
+                  ),
                 ),
               ),
             ),

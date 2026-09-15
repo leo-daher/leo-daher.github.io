@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
+import '../../brand/leone_glass.dart';
 import '../../l10n/l10n.dart';
 import '../../telemetry/portfolio_telemetry.dart';
 import '../shared/portfolio_section_heading.dart';
@@ -138,96 +139,99 @@ class _ContactCard extends StatelessWidget {
         link: true,
         button: true,
         label: '${destination.label}. ${destination.supportingText}',
-        child: Material(
-          color: destination.emphasized
-              ? LeoneBrandColors.interactive.withValues(alpha: .1)
-              : palette.surface.withValues(alpha: .72),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: destination.emphasized
-                  ? LeoneBrandColors.interactive.withValues(alpha: .38)
-                  : palette.outline,
+        child: LeoneGlassSurface(
+          borderRadius: BorderRadius.circular(22),
+          child: Material(
+            color: destination.emphasized
+                ? LeoneBrandColors.interactive.withValues(alpha: .1)
+                : palette.surface.withValues(alpha: .72),
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: destination.emphasized
+                    ? LeoneBrandColors.interactive.withValues(alpha: .38)
+                    : palette.outline,
+              ),
+              borderRadius: BorderRadius.circular(22),
             ),
-            borderRadius: BorderRadius.circular(22),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            onTap: followLink == null
-                ? null
-                : () {
-                    PortfolioTelemetry.contactIntent(
-                      destination.analyticsId,
-                      destination.uri,
-                      isLead: destination.isLead,
-                    );
-                    followLink();
-                  },
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 132),
-              child: Padding(
-                padding: const EdgeInsets.all(22),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 44,
-                      height: 44,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: accent.withValues(alpha: .1),
-                        borderRadius: BorderRadius.circular(14),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: followLink == null
+                  ? null
+                  : () {
+                      PortfolioTelemetry.contactIntent(
+                        destination.analyticsId,
+                        destination.uri,
+                        isLead: destination.isLead,
+                      );
+                      followLink();
+                    },
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 132),
+                child: Padding(
+                  padding: const EdgeInsets.all(22),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: accent.withValues(alpha: .1),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: destination.iconAsset == null
+                            ? Icon(destination.icon!, color: accent, size: 22)
+                            : SvgPicture.asset(
+                                destination.iconAsset!,
+                                key: Key(
+                                  'contact-icon-${destination.analyticsId}',
+                                ),
+                                width: 22,
+                                height: 22,
+                                colorFilter: ColorFilter.mode(
+                                  accent,
+                                  BlendMode.srcIn,
+                                ),
+                                excludeFromSemantics: true,
+                              ),
                       ),
-                      child: destination.iconAsset == null
-                          ? Icon(destination.icon!, color: accent, size: 22)
-                          : SvgPicture.asset(
-                              destination.iconAsset!,
-                              key: Key(
-                                'contact-icon-${destination.analyticsId}',
-                              ),
-                              width: 22,
-                              height: 22,
-                              colorFilter: ColorFilter.mode(
-                                accent,
-                                BlendMode.srcIn,
-                              ),
-                              excludeFromSemantics: true,
-                            ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  destination.label,
-                                  style: const TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w800,
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    destination.label,
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w800,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Icon(
-                                Icons.arrow_outward_rounded,
-                                color: accent,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            destination.supportingText,
-                            style: TextStyle(
-                              color: palette.mutedInk,
-                              height: 1.45,
+                                Icon(
+                                  Icons.arrow_outward_rounded,
+                                  color: accent,
+                                  size: 18,
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 8),
+                            Text(
+                              destination.supportingText,
+                              style: TextStyle(
+                                color: palette.mutedInk,
+                                height: 1.45,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

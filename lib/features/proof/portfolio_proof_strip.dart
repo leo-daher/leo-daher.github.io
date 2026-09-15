@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../../brand/leone_brand.dart';
+import '../../brand/leone_glass.dart';
 import '../../l10n/l10n.dart';
 
 class PortfolioProofStrip extends StatelessWidget {
@@ -24,32 +25,35 @@ class PortfolioProofStrip extends StatelessWidget {
           container: true,
           label: items.map((item) => '${item.value}, ${item.label}').join('. '),
           child: ExcludeSemantics(
-            child: Container(
-              key: const Key('portfolio-proof-strip'),
-              width: double.infinity,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: palette.surface.withValues(alpha: .62),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: palette.outline),
-              ),
-              child: LayoutBuilder(
-                builder: (context, innerConstraints) {
-                  final tileWidth =
-                      (innerConstraints.maxWidth - gap * (columns - 1)) /
-                      columns;
-                  return Wrap(
-                    spacing: gap,
-                    runSpacing: gap,
-                    children: [
-                      for (final item in items)
-                        SizedBox(
-                          width: tileWidth,
-                          child: _ProofTile(item: item),
-                        ),
-                    ],
-                  );
-                },
+            child: LeoneGlassSurface(
+              borderRadius: BorderRadius.circular(24),
+              child: Container(
+                key: const Key('portfolio-proof-strip'),
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: palette.surface.withValues(alpha: .62),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: palette.outline),
+                ),
+                child: LayoutBuilder(
+                  builder: (context, innerConstraints) {
+                    final tileWidth =
+                        (innerConstraints.maxWidth - gap * (columns - 1)) /
+                        columns;
+                    return Wrap(
+                      spacing: gap,
+                      runSpacing: gap,
+                      children: [
+                        for (final item in items)
+                          SizedBox(
+                            width: tileWidth,
+                            child: _ProofTile(item: item),
+                          ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),

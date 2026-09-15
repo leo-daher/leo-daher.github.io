@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../../brand/leone_brand.dart';
+import '../../brand/leone_glass.dart';
 import '../../ld_identity.dart';
 import '../../l10n/l10n.dart';
 
@@ -23,97 +24,103 @@ class PortfolioHero extends StatelessWidget {
         final nameSize = compact ? 68.0 : 108.0;
         final roleSize = compact ? 30.0 : 48.0;
         const accent = _green;
-        return Container(
-          key: const Key('portfolio-hero'),
-          height: compact ? 620 : 880,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            color: palette.canvas,
-            borderRadius: BorderRadius.circular(compact ? 28 : 40),
-            border: Border.all(color: palette.outline),
-          ),
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Positioned.fill(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 600),
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      center: const Alignment(0, .28),
-                      radius: compact ? .78 : .66,
-                      colors: [
-                        accent.withValues(alpha: .16),
-                        _coral.withValues(alpha: .035),
-                        Colors.transparent,
-                      ],
-                      stops: const [0, .43, 1],
+        final radius = BorderRadius.circular(compact ? 28 : 40);
+        return LeoneGlassSurface(
+          borderRadius: radius,
+          child: Container(
+            key: const Key('portfolio-hero'),
+            height: compact ? 620 : 880,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: context.usesLeoneGlass
+                  ? palette.surface.withValues(alpha: .58)
+                  : palette.canvas,
+              borderRadius: radius,
+              border: Border.all(color: palette.outline),
+            ),
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Positioned.fill(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 600),
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        center: const Alignment(0, .28),
+                        radius: compact ? .78 : .66,
+                        colors: [
+                          accent.withValues(alpha: .16),
+                          _coral.withValues(alpha: .035),
+                          Colors.transparent,
+                        ],
+                        stops: const [0, .43, 1],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: CustomPaint(
-                    painter: _HeroStagePainter(accent: accent),
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: CustomPaint(
+                      painter: _HeroStagePainter(accent: accent),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  compact ? 18 : 42,
-                  compact ? 32 : 44,
-                  compact ? 18 : 42,
-                  compact ? 18 : 28,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    compact ? 18 : 42,
+                    compact ? 32 : 44,
+                    compact ? 18 : 42,
+                    compact ? 18 : 28,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.yearsBuildingSoftware,
+                        style: TextStyle(
+                          color: accent,
+                          fontSize: compact ? 10 : 12,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.6,
+                        ),
+                      ),
+                      SizedBox(height: compact ? 14 : 18),
+                      Text(
+                        'Leone',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: nameSize,
+                          height: .88,
+                          letterSpacing: compact ? -4.4 : -7.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      SizedBox(height: compact ? 22 : 28),
+                      Text(
+                        l10n.mobileEngineer,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: roleSize,
+                          height: 1.03,
+                          letterSpacing: compact ? -1.2 : -2.1,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: compact ? 24 : 30),
+                      Expanded(
+                        child: _BrandedViewportFrame(
+                          autoPlay: autoPlay,
+                          showDesktopAccessories: compact,
+                          alignment: compact
+                              ? Alignment.topCenter
+                              : Alignment.center,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.yearsBuildingSoftware,
-                      style: TextStyle(
-                        color: accent,
-                        fontSize: compact ? 10 : 12,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1.6,
-                      ),
-                    ),
-                    SizedBox(height: compact ? 14 : 18),
-                    Text(
-                      'Leone',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: nameSize,
-                        height: .88,
-                        letterSpacing: compact ? -4.4 : -7.5,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    SizedBox(height: compact ? 22 : 28),
-                    Text(
-                      l10n.mobileEngineer,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: roleSize,
-                        height: 1.03,
-                        letterSpacing: compact ? -1.2 : -2.1,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(height: compact ? 24 : 30),
-                    Expanded(
-                      child: _BrandedViewportFrame(
-                        autoPlay: autoPlay,
-                        showDesktopAccessories: compact,
-                        alignment: compact
-                            ? Alignment.topCenter
-                            : Alignment.center,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

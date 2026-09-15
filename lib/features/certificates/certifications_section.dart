@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/link.dart';
 
 import '../../brand/leone_brand.dart';
+import '../../brand/leone_glass.dart';
 import '../../l10n/l10n.dart';
 import '../../telemetry/portfolio_telemetry.dart';
 import '../shared/portfolio_section_heading.dart';
@@ -186,56 +187,59 @@ class _CertificateHighlightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.leonePalette;
     final l10n = context.l10n;
-    return Material(
-      color: palette.surface.withValues(alpha: .72),
+    return LeoneGlassSurface(
       borderRadius: BorderRadius.circular(20),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        key: Key('certificate-highlight-card-${certificate.id}'),
-        onTap: onTap,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      certificate.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: palette.ink,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        height: 1.2,
+      child: Material(
+        color: palette.surface.withValues(alpha: .72),
+        borderRadius: BorderRadius.circular(20),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          key: Key('certificate-highlight-card-${certificate.id}'),
+          onTap: onTap,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        certificate.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: palette.ink,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          height: 1.2,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      l10n.certificateFor(certificate.holder),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: palette.mutedInk, fontSize: 11),
-                    ),
-                    const SizedBox(height: 8),
-                    _CertificateHighlightTags(
-                      technologies: certificate.technologies.take(2).toList(),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      l10n.issuedBy(certificate.issuer),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: palette.mutedInk, fontSize: 11),
-                    ),
-                  ],
+                      const SizedBox(height: 6),
+                      Text(
+                        l10n.certificateFor(certificate.holder),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: palette.mutedInk, fontSize: 11),
+                      ),
+                      const SizedBox(height: 8),
+                      _CertificateHighlightTags(
+                        technologies: certificate.technologies.take(2).toList(),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        l10n.issuedBy(certificate.issuer),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: palette.mutedInk, fontSize: 11),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -274,41 +278,44 @@ class _ViewAllCertificatesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.leonePalette;
-    return Material(
-      color: LeoneBrandColors.interactive.withValues(alpha: .12),
+    return LeoneGlassSurface(
       borderRadius: BorderRadius.circular(20),
-      child: InkWell(
-        key: const Key('certificates-view-all-card'),
-        onTap: onTap,
+      child: Material(
+        color: LeoneBrandColors.interactive.withValues(alpha: .12),
         borderRadius: BorderRadius.circular(20),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.arrow_forward_rounded,
-                color: LeoneBrandColors.interactive,
-                size: 28,
-              ),
-              const SizedBox(height: 18),
-              Text(
-                context.l10n.viewAllCertificates,
-                style: TextStyle(
-                  color: palette.ink,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
+        child: InkWell(
+          key: const Key('certificates-view-all-card'),
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.arrow_forward_rounded,
+                  color: LeoneBrandColors.interactive,
+                  size: 28,
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                context.l10n.certificateRegisterCopy,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: palette.mutedInk, height: 1.35),
-              ),
-            ],
+                const SizedBox(height: 18),
+                Text(
+                  context.l10n.viewAllCertificates,
+                  style: TextStyle(
+                    color: palette.ink,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  context.l10n.certificateRegisterCopy,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: palette.mutedInk, height: 1.35),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -762,57 +769,60 @@ class _CertificateGalleryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final palette = context.leonePalette;
-    return Material(
-      color: palette.surface.withValues(alpha: .72),
+    return LeoneGlassSurface(
       borderRadius: BorderRadius.circular(20),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        key: Key('certificate-card-${certificate.id}'),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 26),
-                    child: Text(
-                      certificate.title,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: palette.ink,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        height: 1.2,
+      child: Material(
+        color: palette.surface.withValues(alpha: .72),
+        borderRadius: BorderRadius.circular(20),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          key: Key('certificate-card-${certificate.id}'),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(18),
+            child: Stack(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 26),
+                      child: Text(
+                        certificate.title,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: palette.ink,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          height: 1.2,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  _CertificateTechnologyTags(
-                    technologies: certificate.technologies,
-                  ),
-                  const Spacer(),
-                  Text(
-                    l10n.issuedBy(certificate.issuer),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: palette.mutedInk, fontSize: 12),
-                  ),
-                ],
-              ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Icon(
-                  Icons.arrow_outward_rounded,
-                  size: 18,
-                  color: palette.mutedInk,
+                    const SizedBox(height: 12),
+                    _CertificateTechnologyTags(
+                      technologies: certificate.technologies,
+                    ),
+                    const Spacer(),
+                    Text(
+                      l10n.issuedBy(certificate.issuer),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: palette.mutedInk, fontSize: 12),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Icon(
+                    Icons.arrow_outward_rounded,
+                    size: 18,
+                    color: palette.mutedInk,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
