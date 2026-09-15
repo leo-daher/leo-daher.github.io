@@ -260,11 +260,17 @@ abstract class AppLocalizations {
   /// **'Articles'**
   String get articlesPageTitle;
 
-  /// Status for a published article.
+  /// Article publication date and time.
   ///
   /// In en, this message translates to:
-  /// **'Published'**
-  String get articlePublishedStatus;
+  /// **'Published {date} · {time} {timeZone}'**
+  String articlePublishedAt(DateTime date, DateTime time, String timeZone);
+
+  /// Date and time of the most recent article edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Last edited {date} · {time} {timeZone}'**
+  String articleLastEditedAt(DateTime date, DateTime time, String timeZone);
 
   /// Title of the visual identity article.
   ///

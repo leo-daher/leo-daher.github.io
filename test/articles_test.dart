@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
+import 'package:leone_portfolio/features/articles/article_publication_metadata.dart';
 import 'package:leone_portfolio/features/articles/articles.dart';
 import 'package:leone_portfolio/l10n/app_localizations.dart';
 import 'package:leone_portfolio/main.dart';
@@ -11,6 +12,21 @@ import 'package:url_launcher/link.dart';
 void main() {
   setUp(() => SharedPreferences.setMockInitialValues({}));
 
+  test('article metadata requires ordered UTC timestamps', () {
+    expect(
+      () =>
+          ArticlePublicationInfo(publishedAtUtc: DateTime(2026, 9, 15, 10, 38)),
+      throwsArgumentError,
+    );
+    expect(
+      () => ArticlePublicationInfo(
+        publishedAtUtc: DateTime.utc(2026, 9, 15, 13, 38),
+        lastEditedAtUtc: DateTime.utc(2026, 9, 15, 13, 37),
+      ),
+      throwsArgumentError,
+    );
+  });
+
   testWidgets('article page publishes the complete identity story', (
     tester,
   ) async {
@@ -18,7 +34,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('articles-page')), findsOneWidget);
-    expect(find.text('PUBLISHED'), findsOneWidget);
+    expect(find.text('PUBLISHED'), findsNothing);
+    expect(find.byKey(const Key('article-published-at')), findsOneWidget);
+    expect(find.byKey(const Key('article-last-edited-at')), findsNothing);
+    expect(find.text('Published Sep 15, 2026 · 10:38 AM BRT'), findsOneWidget);
     expect(
       find.text("How I designed this portfolio's logo and visual identity"),
       findsOneWidget,
@@ -45,7 +64,18 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('PUBLICADO'), findsOneWidget);
+    expect(find.text('PUBLICADO'), findsNothing);
+    expect(find.byKey(const Key('article-published-at')), findsOneWidget);
+    expect(find.byKey(const Key('article-last-edited-at')), findsNothing);
+    final published = tester.widget<Text>(
+      find.descendant(
+        of: find.byKey(const Key('article-published-at')),
+        matching: find.byType(Text),
+      ),
+    );
+    expect(published.data, startsWith('Publicado em 15'));
+    expect(published.data, contains('set.'));
+    expect(published.data, contains('2026 · 10:38 BRT'));
     expect(find.textContaining('L.D.'), findsWidgets);
     expect(find.textContaining('Material Design 3'), findsOneWidget);
     expect(find.textContaining('microcorte'), findsWidgets);
@@ -139,6 +169,89 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('article-share-badges')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('article metadata reveals the optional last edition', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _localizedApp(
+        Scaffold(
+          body: ArticlePublicationLine(
+            info: ArticlePublicationInfo(
+              publishedAtUtc: DateTime.utc(2026, 9, 14, 21, 19),
+              lastEditedAtUtc: DateTime.utc(2026, 9, 16, 13, 5),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.byKey(const Key('article-metadata')), findsOneWidget);
+    expect(find.byKey(const Key('article-published-at')), findsOneWidget);
+    expect(find.byKey(const Key('article-last-edited-at')), findsOneWidget);
+    expect(find.textContaining('Published Sep 14, 2026'), findsOneWidget);
+    expect(find.textContaining('Last edited Sep 16, 2026'), findsOneWidget);
+    expect(find.textContaining('10:05 AM BRT'), findsOneWidget);
+  });
+
+  testWidgets('article metadata omits an unchanged edition timestamp', (
+    tester,
+  ) async {
+    final timestamp = DateTime.utc(2026, 9, 15, 13, 38);
+    await tester.pumpWidget(
+      _localizedApp(
+        Scaffold(
+          body: ArticlePublicationLine(
+            info: ArticlePublicationInfo(
+              publishedAtUtc: timestamp,
+              lastEditedAtUtc: timestamp,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.byKey(const Key('article-published-at')), findsOneWidget);
+    expect(find.byKey(const Key('article-last-edited-at')), findsNothing);
+  });
+
+  testWidgets('article card metadata fits a narrow viewport with large text', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(320, 900);
+    tester.view.devicePixelRatio = 1;
+    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+
+    await tester.pumpWidget(
+      _localizedApp(
+        Scaffold(
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: ArticlesSection(onOpenArticles: () {}),
+          ),
+        ),
+        locale: const Locale('pt'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('article-metadata')));
+    await tester.pumpAndSettle();
+
+    final metadataRect = tester.getRect(
+      find.byKey(const Key('article-metadata')),
+    );
+    expect(metadataRect.left, greaterThanOrEqualTo(0));
+    expect(metadataRect.right, lessThanOrEqualTo(320));
+    expect(
+      tester.getSize(find.byKey(const Key('open-articles-page'))).height,
+      lessThan(1800),
+    );
+    expect(find.text('PUBLICADO'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 

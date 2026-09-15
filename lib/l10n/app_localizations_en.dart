@@ -92,7 +92,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get articlesPageTitle => 'Articles';
 
   @override
-  String get articlePublishedStatus => 'Published';
+  String articlePublishedAt(DateTime date, DateTime time, String timeZone) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+    final intl.DateFormat timeDateFormat = intl.DateFormat.jm(localeName);
+    final String timeString = timeDateFormat.format(time);
+
+    return 'Published $dateString · $timeString $timeZone';
+  }
+
+  @override
+  String articleLastEditedAt(DateTime date, DateTime time, String timeZone) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+    final intl.DateFormat timeDateFormat = intl.DateFormat.jm(localeName);
+    final String timeString = timeDateFormat.format(time);
+
+    return 'Last edited $dateString · $timeString $timeZone';
+  }
 
   @override
   String get identityArticleTitle =>
