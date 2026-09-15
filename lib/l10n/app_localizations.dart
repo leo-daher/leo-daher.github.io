@@ -260,53 +260,209 @@ abstract class AppLocalizations {
   /// **'Articles'**
   String get articlesPageTitle;
 
-  /// Status for an article that is not published yet.
+  /// Status for a published article.
   ///
   /// In en, this message translates to:
-  /// **'In preparation'**
-  String get articleDraftStatus;
+  /// **'Published'**
+  String get articlePublishedStatus;
 
-  /// Title of the planned visual identity article.
+  /// Title of the visual identity article.
   ///
   /// In en, this message translates to:
-  /// **'How I developed this portfolio\'s logo and visual identity'**
+  /// **'How I designed this portfolio\'s logo and visual identity'**
   String get identityArticleTitle;
 
-  /// Summary of the planned visual identity article.
+  /// Summary of the visual identity article.
   ///
   /// In en, this message translates to:
   /// **'The process behind the LD symbol, its visual language, and the idea of turning the brand itself into an interface.'**
   String get identityArticleSummary;
 
-  /// Heading for the planned article outline.
+  /// Opening paragraph of the visual identity article.
   ///
   /// In en, this message translates to:
-  /// **'What this article will explore'**
-  String get identityArticlePlanTitle;
+  /// **'The logo combines my initials — L.D. — with the outline of a screen. I wanted to connect the symbol to mobile development without literally drawing a phone. The monogram therefore works both as a signature and as an interface frame.'**
+  String get identityArticleIntro;
 
-  /// Planned article topic.
+  /// Caption for the complete LD logo.
   ///
   /// In en, this message translates to:
-  /// **'The strategy and meaning behind the brand.'**
-  String get identityArticleTopicStrategy;
+  /// **'The complete mark brings together the initials, the frame, and the action dot.'**
+  String get identityArticleLogoCaption;
 
-  /// Planned article topic.
+  /// Accessible description of the complete LD logo.
   ///
   /// In en, this message translates to:
-  /// **'The LD symbol construction and its geometric decisions.'**
-  String get identityArticleTopicSymbol;
+  /// **'LD logo formed by the letters L and D, the outline of a screen, and an orange dot in the bottom-right corner.'**
+  String get identityArticleLogoSemantics;
 
-  /// Planned article topic.
+  /// Eyebrow for the logo construction section.
   ///
   /// In en, this message translates to:
-  /// **'How the identity adapts and becomes a functional interface.'**
-  String get identityArticleTopicMotion;
+  /// **'CONSTRUCTION'**
+  String get identityArticleStructureEyebrow;
 
-  /// Planned article topic.
+  /// Title of the logo construction section.
   ///
   /// In en, this message translates to:
-  /// **'Color, typography, components, and product consistency.'**
-  String get identityArticleTopicSystem;
+  /// **'The initials and the frame'**
+  String get identityArticleStructureTitle;
+
+  /// Logo construction explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'The L forms the left edge and the base. The D completes the top and the curved right side, creating the outline of a screen. At the lower junction, a small diagonal cut prevents both strokes from reading as a single line and preserves the visual separation between the L and the D.'**
+  String get identityArticleStructureBody;
+
+  /// Caption for the exploded logo view.
+  ///
+  /// In en, this message translates to:
+  /// **'Exploded view of the L, the D, the diagonal cut, and the orange dot.'**
+  String get identityArticleExplodedCaption;
+
+  /// Accessible description of the exploded logo view.
+  ///
+  /// In en, this message translates to:
+  /// **'Exploded view of the logo with the L separated on the left, the D separated on the right, the diagonal cut highlighted at the base, and the orange dot moved away from the frame.'**
+  String get identityArticleExplodedSemantics;
+
+  /// Label for the L in the exploded logo view.
+  ///
+  /// In en, this message translates to:
+  /// **'L · structure'**
+  String get identityArticleLLabel;
+
+  /// Label for the D in the exploded logo view.
+  ///
+  /// In en, this message translates to:
+  /// **'D · screen frame'**
+  String get identityArticleDLabel;
+
+  /// Label for the diagonal cut in the exploded logo view.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagonal cut · separation'**
+  String get identityArticleCutLabel;
+
+  /// Label for the orange dot in the exploded logo view.
+  ///
+  /// In en, this message translates to:
+  /// **'Dot · L.D. and action'**
+  String get identityArticleDotLabel;
+
+  /// Eyebrow for the FAB section.
+  ///
+  /// In en, this message translates to:
+  /// **'MATERIAL DESIGN 3'**
+  String get identityArticleFabEyebrow;
+
+  /// Title of the FAB section.
+  ///
+  /// In en, this message translates to:
+  /// **'The dot that becomes a button'**
+  String get identityArticleFabTitle;
+
+  /// Explanation of the orange dot and the FAB.
+  ///
+  /// In en, this message translates to:
+  /// **'The coral dot — a vibrant orange — serves two purposes. In the signature, it is the dot in L.D. Inside the screen formed by the letters, it occupies the position of a floating action button (FAB), one of Material Design 3\'s most recognizable components.'**
+  String get identityArticleFabBody;
+
+  /// Explanation of the FAB function and color roles.
+  ///
+  /// In en, this message translates to:
+  /// **'The relationship is not merely visual. When the site finishes opening, this same element becomes the button that provides access to navigation. Orange is reserved for action and transformation; the other vibrant colors appear as interface accents.'**
+  String get identityArticleFabColorBody;
+
+  /// Caption for the FAB comparison.
+  ///
+  /// In en, this message translates to:
+  /// **'From the signature dot to the functional FAB in the bottom-right corner.'**
+  String get identityArticleFabCaption;
+
+  /// Accessible description of the FAB comparison.
+  ///
+  /// In en, this message translates to:
+  /// **'Comparison between the orange dot inside the logo and the functional FAB with a menu icon.'**
+  String get identityArticleFabSemantics;
+
+  /// Label for the static brand-dot stage.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand dot'**
+  String get identityArticleBrandDotStage;
+
+  /// Label for the functional FAB stage.
+  ///
+  /// In en, this message translates to:
+  /// **'Functional FAB'**
+  String get identityArticleFunctionalFabStage;
+
+  /// Eyebrow for the opening motion section.
+  ///
+  /// In en, this message translates to:
+  /// **'MOTION'**
+  String get identityArticleMotionEyebrow;
+
+  /// Title of the opening motion section.
+  ///
+  /// In en, this message translates to:
+  /// **'When the logo becomes the page'**
+  String get identityArticleMotionTitle;
+
+  /// Explanation of the responsive opening motion.
+  ///
+  /// In en, this message translates to:
+  /// **'When the site opens, the logo appears centered. The application measures the viewport — the area available within the screen or window — and reconstructs the frame to match its proportions. The four edges extend toward the four sides while the dot travels to the bottom-right corner.'**
+  String get identityArticleMotionBody;
+
+  /// Explanation of the transition from logo to interface.
+  ///
+  /// In en, this message translates to:
+  /// **'The frame briefly matches the viewport and then moves beyond its bounds. At that point, the interface already positioned behind it is revealed, and the dot assumes the form and function of the FAB. The effect is direct: the visitor enters the logo, and the brand becomes the surface of the site.'**
+  String get identityArticleMotionEffectBody;
+
+  /// Caption for the opening sequence.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening sequence: centered logo, expansion, viewport, and interface with the FAB.'**
+  String get identityArticleMotionCaption;
+
+  /// Accessible description of the opening sequence.
+  ///
+  /// In en, this message translates to:
+  /// **'Four stages of the site opening: centered logo, expanding frame, frame matching the viewport, and interface revealed with the FAB in the bottom-right corner.'**
+  String get identityArticleMotionSemantics;
+
+  /// Label for the logo stage of the opening sequence.
+  ///
+  /// In en, this message translates to:
+  /// **'Logo'**
+  String get identityArticleOpeningLogoStage;
+
+  /// Label for the expansion stage of the opening sequence.
+  ///
+  /// In en, this message translates to:
+  /// **'Expansion'**
+  String get identityArticleOpeningExpansionStage;
+
+  /// Label for the viewport stage of the opening sequence.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewport'**
+  String get identityArticleOpeningViewportStage;
+
+  /// Label for the interface stage of the opening sequence.
+  ///
+  /// In en, this message translates to:
+  /// **'Interface'**
+  String get identityArticleOpeningInterfaceStage;
+
+  /// Closing paragraph of the visual identity article.
+  ///
+  /// In en, this message translates to:
+  /// **'The construction can be summarized in three functions: the L provides structure, the D forms the surface, and the dot concentrates the action. The result is a symbol that works as a signature when static and as an interface when the page opens.'**
+  String get identityArticleConclusion;
 
   /// Sharing group title.
   ///
@@ -317,7 +473,7 @@ abstract class AppLocalizations {
   /// Sharing group supporting copy.
   ///
   /// In en, this message translates to:
-  /// **'The sharing shortcuts are ready for when the article is published.'**
+  /// **'Share this article through your preferred channel.'**
   String get shareArticleCopy;
 
   /// Accessible prefix for social sharing controls.

@@ -5,6 +5,7 @@ import 'package:url_launcher/link.dart';
 import '../../brand/leone_brand.dart';
 import '../../l10n/l10n.dart';
 import '../shared/portfolio_section_heading.dart';
+import 'identity_article_figures.dart';
 
 class ArticlesSection extends StatelessWidget {
   const ArticlesSection({super.key, required this.onOpenArticles});
@@ -60,7 +61,7 @@ class ArticlesSection extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _DraftBadge(label: l10n.articleDraftStatus),
+                        _ArticleStatusBadge(label: l10n.articlePublishedStatus),
                         const SizedBox(height: 12),
                         Text(
                           l10n.identityArticleTitle,
@@ -144,7 +145,7 @@ class ArticlesPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _DraftBadge(label: l10n.articleDraftStatus),
+                  _ArticleStatusBadge(label: l10n.articlePublishedStatus),
                   const SizedBox(height: 20),
                   Semantics(
                     header: true,
@@ -169,9 +170,71 @@ class ArticlesPage extends StatelessWidget {
                       height: 1.55,
                     ),
                   ),
-                  const SizedBox(height: 36),
-                  const _ArticlePlanCard(),
-                  const SizedBox(height: 36),
+                  const SizedBox(height: 38),
+                  IdentityLogoFigure(
+                    caption: l10n.identityArticleLogoCaption,
+                    semanticLabel: l10n.identityArticleLogoSemantics,
+                  ),
+                  const SizedBox(height: 30),
+                  _ArticleBodyText(l10n.identityArticleIntro, prominent: true),
+                  const SizedBox(height: 68),
+                  _ArticleSectionHeading(
+                    eyebrow: l10n.identityArticleStructureEyebrow,
+                    title: l10n.identityArticleStructureTitle,
+                  ),
+                  const SizedBox(height: 18),
+                  _ArticleBodyText(l10n.identityArticleStructureBody),
+                  const SizedBox(height: 28),
+                  IdentityExplodedFigure(
+                    caption: l10n.identityArticleExplodedCaption,
+                    semanticLabel: l10n.identityArticleExplodedSemantics,
+                    lLabel: l10n.identityArticleLLabel,
+                    dLabel: l10n.identityArticleDLabel,
+                    cutLabel: l10n.identityArticleCutLabel,
+                    dotLabel: l10n.identityArticleDotLabel,
+                  ),
+                  const SizedBox(height: 68),
+                  _ArticleSectionHeading(
+                    eyebrow: l10n.identityArticleFabEyebrow,
+                    title: l10n.identityArticleFabTitle,
+                  ),
+                  const SizedBox(height: 18),
+                  _ArticleBodyText(l10n.identityArticleFabBody),
+                  const SizedBox(height: 16),
+                  _ArticleBodyText(l10n.identityArticleFabColorBody),
+                  const SizedBox(height: 28),
+                  IdentityFabFigure(
+                    caption: l10n.identityArticleFabCaption,
+                    semanticLabel: l10n.identityArticleFabSemantics,
+                    brandDotLabel: l10n.identityArticleBrandDotStage,
+                    functionalFabLabel: l10n.identityArticleFunctionalFabStage,
+                  ),
+                  const SizedBox(height: 68),
+                  _ArticleSectionHeading(
+                    eyebrow: l10n.identityArticleMotionEyebrow,
+                    title: l10n.identityArticleMotionTitle,
+                  ),
+                  const SizedBox(height: 18),
+                  _ArticleBodyText(l10n.identityArticleMotionBody),
+                  const SizedBox(height: 16),
+                  _ArticleBodyText(l10n.identityArticleMotionEffectBody),
+                  const SizedBox(height: 28),
+                  IdentityOpeningSequenceFigure(
+                    caption: l10n.identityArticleMotionCaption,
+                    semanticLabel: l10n.identityArticleMotionSemantics,
+                    logoLabel: l10n.identityArticleOpeningLogoStage,
+                    expansionLabel: l10n.identityArticleOpeningExpansionStage,
+                    viewportLabel: l10n.identityArticleOpeningViewportStage,
+                    interfaceLabel: l10n.identityArticleOpeningInterfaceStage,
+                  ),
+                  const SizedBox(height: 52),
+                  Divider(color: palette.outline),
+                  const SizedBox(height: 28),
+                  _ArticleBodyText(
+                    l10n.identityArticleConclusion,
+                    prominent: true,
+                  ),
+                  const SizedBox(height: 56),
                   Text(
                     l10n.shareArticleTitle,
                     style: const TextStyle(
@@ -197,60 +260,65 @@ class ArticlesPage extends StatelessWidget {
   }
 }
 
-class _ArticlePlanCard extends StatelessWidget {
-  const _ArticlePlanCard();
+class _ArticleSectionHeading extends StatelessWidget {
+  const _ArticleSectionHeading({required this.eyebrow, required this.title});
+
+  final String eyebrow;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final palette = context.leonePalette;
-    final topics = [
-      l10n.identityArticleTopicStrategy,
-      l10n.identityArticleTopicSymbol,
-      l10n.identityArticleTopicMotion,
-      l10n.identityArticleTopicSystem,
-    ];
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: palette.surfaceRaised,
-        border: Border.all(color: palette.outline),
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.identityArticlePlanTitle,
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          eyebrow,
+          style: const TextStyle(
+            color: LeoneBrandColors.interactive,
+            fontSize: 11,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.4,
           ),
-          const SizedBox(height: 16),
-          for (final topic in topics)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 2),
-                    child: Icon(
-                      Icons.check_circle_outline_rounded,
-                      size: 18,
-                      color: LeoneBrandColors.interactive,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      topic,
-                      style: TextStyle(color: palette.mutedInk, height: 1.4),
-                    ),
-                  ),
-                ],
-              ),
+        ),
+        const SizedBox(height: 10),
+        Semantics(
+          header: true,
+          child: Text(
+            title,
+            style: TextStyle(
+              color: palette.ink,
+              fontSize: 32,
+              height: 1.08,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -1,
             ),
-        ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ArticleBodyText extends StatelessWidget {
+  const _ArticleBodyText(this.copy, {this.prominent = false});
+
+  final String copy;
+  final bool prominent;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 760),
+      child: Text(
+        copy,
+        style: TextStyle(
+          color: prominent ? palette.ink : palette.mutedInk,
+          fontSize: prominent ? 19 : 17,
+          height: prominent ? 1.62 : 1.72,
+          fontWeight: prominent ? FontWeight.w500 : FontWeight.w400,
+        ),
       ),
     );
   }
@@ -330,7 +398,9 @@ class _ShareBadge extends StatelessWidget {
       builder: (context, followLink) => Semantics(
         link: true,
         button: true,
+        excludeSemantics: true,
         label: '${context.l10n.shareOn} $label',
+        onTap: followLink,
         child: Material(
           color: background,
           shape: const StadiumBorder(),
@@ -358,6 +428,7 @@ class _ShareBadge extends StatelessWidget {
                     else
                       Text(
                         textMark!,
+                        textScaler: TextScaler.noScaling,
                         style: TextStyle(
                           color: foreground,
                           fontSize: 18,
@@ -384,8 +455,8 @@ class _ShareBadge extends StatelessWidget {
   }
 }
 
-class _DraftBadge extends StatelessWidget {
-  const _DraftBadge({required this.label});
+class _ArticleStatusBadge extends StatelessWidget {
+  const _ArticleStatusBadge({required this.label});
 
   final String label;
 
@@ -394,16 +465,16 @@ class _DraftBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
       decoration: BoxDecoration(
-        color: LeoneBrandColors.editorialWarm.withValues(alpha: .13),
+        color: LeoneBrandColors.interactive.withValues(alpha: .13),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(
-          color: LeoneBrandColors.editorialWarm.withValues(alpha: .42),
+          color: LeoneBrandColors.interactive.withValues(alpha: .42),
         ),
       ),
       child: Text(
         label.toUpperCase(),
         style: const TextStyle(
-          color: LeoneBrandColors.editorialWarm,
+          color: LeoneBrandColors.interactive,
           fontSize: 10,
           fontWeight: FontWeight.w900,
           letterSpacing: .8,

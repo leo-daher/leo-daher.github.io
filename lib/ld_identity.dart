@@ -17,12 +17,14 @@ class LdFloatingActionGlyph extends StatelessWidget {
     this.radius = ldFloatingActionRadius,
     this.color = ldFloatingActionColor,
     this.elevation = LeoneBrandGeometry.fabElevation,
+    this.child,
   });
 
   final double size;
   final double radius;
   final Color color;
   final double elevation;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class LdFloatingActionGlyph extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius),
         ),
+        child: child == null ? null : Center(child: child),
       ),
     );
   }
@@ -178,6 +181,63 @@ class _LdOpeningTransitionState extends State<LdOpeningTransition>
           ),
         ),
       ),
+    );
+  }
+}
+
+/// A still frame rendered from the same geometry used by the opening motion.
+///
+/// This keeps editorial diagrams and tests tied to the live identity instead of
+/// stretching a square logo asset to approximate the responsive transition.
+class LdOpeningSnapshot extends StatelessWidget {
+  const LdOpeningSnapshot({
+    super.key,
+    required this.progress,
+    this.viewPadding,
+    this.fabChild,
+  });
+
+  final double progress;
+  final EdgeInsets? viewPadding;
+  final Widget? fabChild;
+
+  @override
+  Widget build(BuildContext context) {
+    final resolvedViewPadding =
+        viewPadding ?? MediaQuery.viewPaddingOf(context);
+    final brightness = Theme.of(context).brightness;
+    final normalizedProgress = progress.clamp(0.0, 1.0).toDouble();
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final viewport = Size(constraints.maxWidth, constraints.maxHeight);
+        final fab = _LdOpeningFabPlacement.resolve(
+          viewport,
+          resolvedViewPadding,
+          normalizedProgress,
+        );
+        return Stack(
+          children: [
+            CustomPaint(
+              painter: _LdOpeningPainter(
+                progress: normalizedProgress,
+                viewPadding: resolvedViewPadding,
+                brightness: brightness,
+              ),
+              size: viewport,
+            ),
+            Positioned(
+              left: fab.center.dx - fab.size / 2,
+              top: fab.center.dy - fab.size / 2,
+              child: LdFloatingActionGlyph(
+                size: fab.size,
+                radius: fab.radius,
+                color: ldFloatingActionColor.withValues(alpha: fab.opacity),
+                child: fabChild,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
