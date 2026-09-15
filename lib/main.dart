@@ -98,15 +98,18 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
       supportedLocales: AppLocalizations.supportedLocales,
       onGenerateRoute: (settings) {
         if (settings.name == ArticlesPage.routeName) {
-          return PageRouteBuilder<void>(
+          final accessibilityFeatures =
+              WidgetsBinding.instance.platformDispatcher.accessibilityFeatures;
+          final reduceMotion =
+              accessibilityFeatures.disableAnimations ||
+              accessibilityFeatures.reduceMotion;
+          return _PortfolioArticleRoute(
             pageBuilder: (_, _, _) => ArticlesPage(
               onLocaleChanged: _setLocale,
               onThemeModeChanged: _setThemeMode,
             ),
             settings: settings,
-            transitionDuration: Duration.zero,
-            reverseTransitionDuration: Duration.zero,
-            transitionsBuilder: (_, _, _, child) => child,
+            reduceMotion: reduceMotion,
           );
         }
         return null;
@@ -117,6 +120,28 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
       ),
     );
   }
+}
+
+class _PortfolioArticleRoute extends PageRouteBuilder<void> {
+  _PortfolioArticleRoute({
+    required super.pageBuilder,
+    required super.settings,
+    required bool reduceMotion,
+  }) : super(
+         transitionDuration: reduceMotion
+             ? Duration.zero
+             : LeoneBrandMotion.pageTransitionForward,
+         reverseTransitionDuration: reduceMotion
+             ? Duration.zero
+             : LeoneBrandMotion.pageTransitionReverse,
+         transitionsBuilder: (_, _, _, child) => child,
+       );
+
+  // The previous route stays still while the article surface moves above it.
+  // This prevents the shared header on the home route from receiving the
+  // platform's secondary page transition.
+  @override
+  bool canTransitionFrom(TransitionRoute<dynamic> previousRoute) => false;
 }
 
 class _PortfolioEntry extends StatefulWidget {

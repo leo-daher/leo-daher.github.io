@@ -188,7 +188,7 @@ void main() {
     expect(calendlyLink.target, LinkTarget.blank);
   });
 
-  testWidgets('top header keeps its geometry when the article replaces home', (
+  testWidgets('article moves horizontally while the top header stays fixed', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(1440, 1000);
@@ -215,25 +215,119 @@ void main() {
     final navigator = tester.state<NavigatorState>(find.byType(Navigator));
     navigator.pushNamed(ArticlesPage.routeName);
     await tester.pump();
+    await tester.pump();
 
     expect(find.byKey(const Key('articles-page')), findsOneWidget);
     final route = ModalRoute.of(
       tester.element(find.byKey(const Key('articles-page'))),
     )!;
-    expect(route.transitionDuration, Duration.zero);
-    expect(route.reverseTransitionDuration, Duration.zero);
+    expect(route.transitionDuration, LeoneBrandMotion.pageTransitionForward);
     expect(
-      tester.getRect(find.byKey(const Key('portfolio-top-bar-content'))),
-      contentRect,
+      route.reverseTransitionDuration,
+      LeoneBrandMotion.pageTransitionReverse,
     );
-    expect(
-      tester.getRect(find.byKey(const Key('article-back-button'))),
-      markRect,
+
+    final articleHeader = find.byKey(const Key('portfolio-page-app-bar'));
+    final articleHeaderContent = find.descendant(
+      of: articleHeader,
+      matching: find.byKey(const Key('portfolio-top-bar-content')),
     );
+    final articleBackButton = find.descendant(
+      of: articleHeader,
+      matching: find.byKey(const Key('article-back-button')),
+    );
+    final articleControls = {
+      for (final key in controlRects.keys)
+        key: find.descendant(of: articleHeader, matching: find.byKey(key)),
+    };
+    final movingSurface = find.byKey(
+      const Key('article-page-transition-surface'),
+    );
+
+    final startX = tester.getTopLeft(movingSurface).dx;
+    expect(startX, closeTo(1440, .01));
+    expect(tester.getRect(articleHeaderContent), contentRect);
+    expect(tester.getRect(articleBackButton), markRect);
     for (final entry in controlRects.entries) {
-      expect(tester.getRect(find.byKey(entry.key)), entry.value);
+      expect(tester.getRect(articleControls[entry.key]!), entry.value);
     }
+    expect(tester.getRect(find.byKey(const Key('ld-topbar-mark'))), markRect);
+
+    await tester.pump(const Duration(milliseconds: 175));
+
+    final middleX = tester.getTopLeft(movingSurface).dx;
+    expect(middleX, greaterThan(0));
+    expect(middleX, lessThan(startX));
+    expect(tester.getRect(articleHeaderContent), contentRect);
+    expect(tester.getRect(articleBackButton), markRect);
+    for (final entry in controlRects.entries) {
+      expect(tester.getRect(articleControls[entry.key]!), entry.value);
+    }
+    expect(tester.getRect(find.byKey(const Key('ld-topbar-mark'))), markRect);
+
+    await tester.pump(const Duration(milliseconds: 175));
+
+    expect(tester.getTopLeft(movingSurface).dx, closeTo(0, .01));
+    expect(tester.getRect(articleHeaderContent), contentRect);
+    expect(tester.getRect(articleBackButton), markRect);
+
+    await tester.tap(articleBackButton);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 150));
+
+    final reverseMiddleX = tester.getTopLeft(movingSurface).dx;
+    expect(reverseMiddleX, greaterThan(0));
+    expect(reverseMiddleX, lessThan(startX));
+    expect(tester.getRect(articleHeaderContent), contentRect);
+    expect(tester.getRect(articleBackButton), markRect);
+
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('articles-page')), findsNothing);
+    expect(tester.getRect(find.byKey(const Key('ld-topbar-mark'))), markRect);
   });
+
+  for (final reducedMotion in const [
+    ('disabled animations', FakeAccessibilityFeatures(disableAnimations: true)),
+    ('reduced motion', FakeAccessibilityFeatures(reduceMotion: true)),
+  ]) {
+    testWidgets('article skips page motion with ${reducedMotion.$1}', (
+      tester,
+    ) async {
+      tester.platformDispatcher.accessibilityFeaturesTestValue =
+          reducedMotion.$2;
+      addTearDown(
+        tester.platformDispatcher.clearAccessibilityFeaturesTestValue,
+      );
+
+      tester.view.physicalSize = const Size(1440, 1000);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const LeonePortfolioApp());
+      await _finishOpening(tester);
+
+      final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+      navigator.pushNamed(ArticlesPage.routeName);
+      await tester.pump();
+      await tester.pump();
+
+      final page = find.byKey(const Key('articles-page'));
+      expect(page, findsOneWidget);
+      final route = ModalRoute.of(tester.element(page))!;
+      expect(route.transitionDuration, Duration.zero);
+      expect(route.reverseTransitionDuration, Duration.zero);
+      expect(
+        tester
+            .getTopLeft(
+              find.byKey(const Key('article-page-transition-surface')),
+            )
+            .dx,
+        closeTo(0, .01),
+      );
+    });
+  }
 
   testWidgets(
     'contact menu stays inside a compact viewport and dismisses outside',
