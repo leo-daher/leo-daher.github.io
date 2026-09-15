@@ -28,11 +28,11 @@ class PortfolioSliverTopBar extends StatelessWidget {
       automaticallyImplyLeading: false,
       toolbarHeight: PortfolioTopBarContent.height,
       elevation: 0,
-      scrolledUnderElevation: 3,
+      scrolledUnderElevation: 0,
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
-      backgroundColor: _topBarBackground(palette),
-      flexibleSpace: const _FrostedTopBarBackdrop(),
+      backgroundColor: _topBarBackground(context, palette),
+      flexibleSpace: const _RegularLiquidGlassBackdrop(),
       foregroundColor: palette.ink,
       titleSpacing: 0,
       title: PortfolioTopBarContent(
@@ -69,11 +69,11 @@ class PortfolioPageTopBar extends StatelessWidget
       automaticallyImplyLeading: false,
       toolbarHeight: PortfolioTopBarContent.height,
       elevation: 0,
-      scrolledUnderElevation: 3,
+      scrolledUnderElevation: 0,
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
-      backgroundColor: _topBarBackground(palette),
-      flexibleSpace: const _FrostedTopBarBackdrop(),
+      backgroundColor: _topBarBackground(context, palette),
+      flexibleSpace: const _RegularLiquidGlassBackdrop(),
       foregroundColor: palette.ink,
       titleSpacing: 0,
       title: PortfolioTopBarContent(
@@ -85,21 +85,33 @@ class PortfolioPageTopBar extends StatelessWidget
   }
 }
 
-WidgetStateColor _topBarBackground(LeonePalette palette) =>
-    WidgetStateColor.resolveWith(
-      (states) => states.contains(WidgetState.scrolledUnder)
-          ? palette.canvas.withValues(alpha: .72)
-          : palette.canvas,
-    );
+const _regularLiquidGlassOpacity = .68;
+const _regularLiquidGlassBlurSigma = 24.0;
 
-class _FrostedTopBarBackdrop extends StatelessWidget {
-  const _FrostedTopBarBackdrop();
+WidgetStateColor _topBarBackground(BuildContext context, LeonePalette palette) {
+  final highContrast = MediaQuery.highContrastOf(context);
+  return WidgetStateColor.resolveWith(
+    (states) => states.contains(WidgetState.scrolledUnder) && !highContrast
+        ? palette.canvas.withValues(alpha: _regularLiquidGlassOpacity)
+        : palette.canvas,
+  );
+}
+
+class _RegularLiquidGlassBackdrop extends StatelessWidget {
+  const _RegularLiquidGlassBackdrop();
 
   @override
   Widget build(BuildContext context) {
+    if (MediaQuery.highContrastOf(context)) {
+      return const SizedBox.expand();
+    }
+
     return ClipRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+        filter: ImageFilter.blur(
+          sigmaX: _regularLiquidGlassBlurSigma,
+          sigmaY: _regularLiquidGlassBlurSigma,
+        ),
         child: const SizedBox.expand(),
       ),
     );

@@ -98,14 +98,14 @@ void main() {
     );
     expect(appBar.pinned, isTrue);
     expect(appBar.elevation, 0);
-    expect(appBar.scrolledUnderElevation, 3);
+    expect(appBar.scrolledUnderElevation, 0);
     expect(appBar.shadowColor, Colors.transparent);
     expect(appBar.surfaceTintColor, Colors.transparent);
     final backgroundColor = appBar.backgroundColor! as WidgetStateColor;
     final unscrolledColor = backgroundColor.resolve({});
     final scrolledColor = backgroundColor.resolve({WidgetState.scrolledUnder});
     expect(unscrolledColor, LeonePalette.dark.canvas);
-    expect(scrolledColor, LeonePalette.dark.canvas.withValues(alpha: .72));
+    expect(scrolledColor, LeonePalette.dark.canvas.withValues(alpha: .68));
     expect(scrolledColor, isNot(unscrolledColor));
     expect(find.byType(BackdropFilter), findsOneWidget);
     expect(find.byKey(const Key('top-nav-home')), findsNothing);
@@ -134,8 +134,24 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(renderedTopBar().color, scrolledColor);
-    expect(renderedTopBar().elevation, 3);
+    expect(renderedTopBar().elevation, 0);
     expect(renderedTopBar().shadowColor, Colors.transparent);
+
+    tester.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures(highContrast: true);
+    addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
+    await tester.pumpAndSettle();
+
+    final highContrastAppBar = tester.widget<SliverAppBar>(
+      find.byKey(const Key('portfolio-top-app-bar')),
+    );
+    final highContrastBackground =
+        highContrastAppBar.backgroundColor! as WidgetStateColor;
+    expect(
+      highContrastBackground.resolve({WidgetState.scrolledUnder}),
+      LeonePalette.dark.canvas,
+    );
+    expect(find.byType(BackdropFilter), findsNothing);
   });
 
   testWidgets('top CTA opens four contact options without assuming a channel', (
