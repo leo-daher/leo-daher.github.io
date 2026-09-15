@@ -92,41 +92,130 @@ class AppLocalizationsEn extends AppLocalizations {
   String get articlesPageTitle => 'Articles';
 
   @override
-  String get articleDraftStatus => 'In preparation';
+  String get articlePublishedStatus => 'Published';
 
   @override
   String get identityArticleTitle =>
-      'How I developed this portfolio\'s logo and visual identity';
+      'How I designed this portfolio\'s logo and visual identity';
 
   @override
   String get identityArticleSummary =>
       'The process behind the LD symbol, its visual language, and the idea of turning the brand itself into an interface.';
 
   @override
-  String get identityArticlePlanTitle => 'What this article will explore';
+  String get identityArticleIntro =>
+      'The logo combines my initials — L.D. — with the outline of a screen. I wanted to connect the symbol to mobile development without literally drawing a phone. The monogram therefore works both as a signature and as an interface frame.';
 
   @override
-  String get identityArticleTopicStrategy =>
-      'The strategy and meaning behind the brand.';
+  String get identityArticleLogoCaption =>
+      'The complete mark brings together the initials, the frame, and the action dot.';
 
   @override
-  String get identityArticleTopicSymbol =>
-      'The LD symbol construction and its geometric decisions.';
+  String get identityArticleLogoSemantics =>
+      'LD logo formed by the letters L and D, the outline of a screen, and an orange dot in the bottom-right corner.';
 
   @override
-  String get identityArticleTopicMotion =>
-      'How the identity adapts and becomes a functional interface.';
+  String get identityArticleStructureEyebrow => 'CONSTRUCTION';
 
   @override
-  String get identityArticleTopicSystem =>
-      'Color, typography, components, and product consistency.';
+  String get identityArticleStructureTitle => 'The initials and the frame';
+
+  @override
+  String get identityArticleStructureBody =>
+      'The L forms the left edge and the base. The D completes the top and the curved right side, creating the outline of a screen. At the lower junction, a small diagonal cut prevents both strokes from reading as a single line and preserves the visual separation between the L and the D.';
+
+  @override
+  String get identityArticleExplodedCaption =>
+      'Exploded view of the L, the D, the diagonal cut, and the orange dot.';
+
+  @override
+  String get identityArticleExplodedSemantics =>
+      'Exploded view of the logo with the L separated on the left, the D separated on the right, the diagonal cut highlighted at the base, and the orange dot moved away from the frame.';
+
+  @override
+  String get identityArticleLLabel => 'L · structure';
+
+  @override
+  String get identityArticleDLabel => 'D · screen frame';
+
+  @override
+  String get identityArticleCutLabel => 'Diagonal cut · separation';
+
+  @override
+  String get identityArticleDotLabel => 'Dot · L.D. and action';
+
+  @override
+  String get identityArticleFabEyebrow => 'MATERIAL DESIGN 3';
+
+  @override
+  String get identityArticleFabTitle => 'The dot that becomes a button';
+
+  @override
+  String get identityArticleFabBody =>
+      'The coral dot — a vibrant orange — serves two purposes. In the signature, it is the dot in L.D. Inside the screen formed by the letters, it occupies the position of a floating action button (FAB), one of Material Design 3\'s most recognizable components.';
+
+  @override
+  String get identityArticleFabColorBody =>
+      'The relationship is not merely visual. When the site finishes opening, this same element becomes the button that provides access to navigation. Orange is reserved for action and transformation; the other vibrant colors appear as interface accents.';
+
+  @override
+  String get identityArticleFabCaption =>
+      'From the signature dot to the functional FAB in the bottom-right corner.';
+
+  @override
+  String get identityArticleFabSemantics =>
+      'Comparison between the orange dot inside the logo and the functional FAB with a menu icon.';
+
+  @override
+  String get identityArticleBrandDotStage => 'Brand dot';
+
+  @override
+  String get identityArticleFunctionalFabStage => 'Functional FAB';
+
+  @override
+  String get identityArticleMotionEyebrow => 'MOTION';
+
+  @override
+  String get identityArticleMotionTitle => 'When the logo becomes the page';
+
+  @override
+  String get identityArticleMotionBody =>
+      'When the site opens, the logo appears centered. The application measures the viewport — the area available within the screen or window — and reconstructs the frame to match its proportions. The four edges extend toward the four sides while the dot travels to the bottom-right corner.';
+
+  @override
+  String get identityArticleMotionEffectBody =>
+      'The frame briefly matches the viewport and then moves beyond its bounds. At that point, the interface already positioned behind it is revealed, and the dot assumes the form and function of the FAB. The effect is direct: the visitor enters the logo, and the brand becomes the surface of the site.';
+
+  @override
+  String get identityArticleMotionCaption =>
+      'Opening sequence: centered logo, expansion, viewport, and interface with the FAB.';
+
+  @override
+  String get identityArticleMotionSemantics =>
+      'Four stages of the site opening: centered logo, expanding frame, frame matching the viewport, and interface revealed with the FAB in the bottom-right corner.';
+
+  @override
+  String get identityArticleOpeningLogoStage => 'Logo';
+
+  @override
+  String get identityArticleOpeningExpansionStage => 'Expansion';
+
+  @override
+  String get identityArticleOpeningViewportStage => 'Viewport';
+
+  @override
+  String get identityArticleOpeningInterfaceStage => 'Interface';
+
+  @override
+  String get identityArticleConclusion =>
+      'The construction can be summarized in three functions: the L provides structure, the D forms the surface, and the dot concentrates the action. The result is a symbol that works as a signature when static and as an interface when the page opens.';
 
   @override
   String get shareArticleTitle => 'Share article';
 
   @override
   String get shareArticleCopy =>
-      'The sharing shortcuts are ready for when the article is published.';
+      'Share this article through your preferred channel.';
 
   @override
   String get shareOn => 'Share on';

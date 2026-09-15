@@ -75,8 +75,9 @@ produto, interface e a capacidade de responder ao espaço disponível.
 O quadrado coral de cantos arredondados flutua no canto inferior direito. Na
 linguagem da marca ele é chamado de **squircle**; tecnicamente, a matriz atual é
 um retângulo arredondado por raios circulares, não uma superelipse matemática.
-Ele representa ação disponível, intenção e transformação de interface em
-produto utilizável.
+Na leitura das iniciais, ele funciona como o ponto de `L.D.`. Dentro do frame,
+ocupa a posição de um floating action button e representa ação disponível,
+intenção e transformação de interface em produto utilizável.
 
 Esses significados produzem três pilares verbais:
 
@@ -162,8 +163,8 @@ detecta categorias de hardware; ela responde às constraints disponíveis.
 ### Abertura da página
 
 1. O monograma nasce quadrado e centralizado.
-2. Permanece integralmente visível por `1000 ms`.
-3. Durante os `2100 ms` seguintes, o frame se reconstrói até coincidir com a
+2. Permanece integralmente visível por `700 ms`.
+3. Durante os `950 ms` seguintes, o frame se reconstrói até coincidir com a
    viewport real.
 4. Há uma passagem perceptível pelo retângulo exato da viewport: nesse instante,
    a marca forma a superfície usada por quem está vendo.
@@ -174,9 +175,9 @@ detecta categorias de hardware; ela responde às constraints disponíveis.
 
 | Fase | Regra |
 | --- | --- |
-| Permanência | `1000 ms` |
-| Transformação | `2100 ms` |
-| Total | `3100 ms` |
+| Permanência | `700 ms` |
+| Transformação | `950 ms` |
+| Total | `1650 ms` |
 | Curva espacial | `easeInOutCubic` |
 | FAB final | `56 × 56 dp`, raio `16 dp`, elevação `6 dp` |
 | Posição final | `16 dp` das bordas direita e inferior, somados às safe areas |
