@@ -99,11 +99,47 @@ void main() {
     expect(appBar.pinned, isTrue);
     expect(appBar.elevation, 0);
     expect(appBar.scrolledUnderElevation, 3);
+    expect(appBar.shadowColor, Colors.transparent);
+    expect(appBar.surfaceTintColor, Colors.transparent);
+    final backgroundColor = appBar.backgroundColor! as WidgetStateColor;
+    final unscrolledColor = backgroundColor.resolve({});
+    final scrolledColor = backgroundColor.resolve({WidgetState.scrolledUnder});
+    expect(unscrolledColor, LeonePalette.dark.canvas);
+    expect(
+      scrolledColor,
+      Theme.of(
+        tester.element(find.byKey(const Key('portfolio-home-page'))),
+      ).colorScheme.surfaceContainer,
+    );
+    expect(scrolledColor, isNot(unscrolledColor));
     expect(find.byKey(const Key('top-nav-home')), findsNothing);
     expect(find.byKey(const Key('top-nav-apps')), findsNothing);
     expect(find.byKey(const Key('top-nav-system')), findsNothing);
     expect(find.byKey(const Key('top-nav-clients')), findsNothing);
     expect(find.byKey(const Key('top-nav-contact')), findsNothing);
+
+    Material renderedTopBar() => tester.widget<Material>(
+      find
+          .descendant(
+            of: find.byKey(const Key('portfolio-top-app-bar')),
+            matching: find.byType(Material),
+          )
+          .first,
+    );
+
+    expect(renderedTopBar().color, unscrolledColor);
+    expect(renderedTopBar().elevation, 0);
+    expect(renderedTopBar().shadowColor, Colors.transparent);
+
+    await tester.drag(
+      find.byKey(const Key('portfolio-scroll-view')),
+      const Offset(0, -600),
+    );
+    await tester.pumpAndSettle();
+
+    expect(renderedTopBar().color, scrolledColor);
+    expect(renderedTopBar().elevation, 3);
+    expect(renderedTopBar().shadowColor, Colors.transparent);
   });
 
   testWidgets('top CTA opens four contact options without assuming a channel', (

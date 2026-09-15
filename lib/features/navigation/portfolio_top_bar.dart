@@ -27,9 +27,9 @@ class PortfolioSliverTopBar extends StatelessWidget {
       toolbarHeight: PortfolioTopBarContent.height,
       elevation: 0,
       scrolledUnderElevation: 3,
-      shadowColor: Colors.black.withValues(alpha: .34),
+      shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
-      backgroundColor: palette.canvas,
+      backgroundColor: _topBarBackground(context, palette),
       foregroundColor: palette.ink,
       titleSpacing: 0,
       title: PortfolioTopBarContent(
@@ -67,9 +67,9 @@ class PortfolioPageTopBar extends StatelessWidget
       toolbarHeight: PortfolioTopBarContent.height,
       elevation: 0,
       scrolledUnderElevation: 3,
-      shadowColor: Colors.black.withValues(alpha: .34),
+      shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
-      backgroundColor: palette.canvas,
+      backgroundColor: _topBarBackground(context, palette),
       foregroundColor: palette.ink,
       titleSpacing: 0,
       title: PortfolioTopBarContent(
@@ -80,6 +80,15 @@ class PortfolioPageTopBar extends StatelessWidget
     );
   }
 }
+
+WidgetStateColor _topBarBackground(
+  BuildContext context,
+  LeonePalette palette,
+) => WidgetStateColor.resolveWith(
+  (states) => states.contains(WidgetState.scrolledUnder)
+      ? Theme.of(context).colorScheme.surfaceContainer
+      : palette.canvas,
+);
 
 class PortfolioTopBarContent extends StatelessWidget {
   const PortfolioTopBarContent({
