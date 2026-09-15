@@ -5,6 +5,8 @@ import 'package:url_launcher/link.dart';
 import '../../brand/leone_brand.dart';
 import '../../l10n/l10n.dart';
 import '../shared/portfolio_section_heading.dart';
+import 'article_catalog.dart';
+import 'article_page_layout.dart';
 import 'article_publication_metadata.dart';
 import 'identity_article_figures.dart';
 
@@ -17,6 +19,9 @@ class ArticlesSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final palette = context.leonePalette;
+    final identityArticle = ArticleCatalog.localized(
+      l10n,
+    ).singleWhere((article) => article.id == ArticleCatalog.identityId);
     return Column(
       key: const Key('articles-section'),
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,9 +47,9 @@ class ArticlesSection extends StatelessWidget {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   final copy = _ArticleCardCopy(
-                    title: l10n.identityArticleTitle,
-                    summary: l10n.identityArticleSummary,
-                    publicationInfo: ArticlesPage.publicationInfo,
+                    title: identityArticle.title,
+                    summary: identityArticle.summary,
+                    publicationInfo: identityArticle.publicationInfo,
                   );
                   if (constraints.maxWidth < 520) {
                     return Column(
@@ -140,15 +145,12 @@ class _ArticleCardCopy extends StatelessWidget {
 class ArticlesPage extends StatelessWidget {
   const ArticlesPage({super.key});
 
-  static const routeName = '/artigos/identidade-visual';
+  static const routeName = ArticleCatalog.identityRouteName;
 
-  static final canonicalArticleUri = Uri.parse(
-    'https://leo-daher.github.io/#/artigos/identidade-visual',
-  );
+  static Uri get canonicalArticleUri => ArticleCatalog.identityCanonicalUri;
 
-  static final publicationInfo = ArticlePublicationInfo(
-    publishedAtUtc: DateTime.utc(2026, 9, 15, 13, 38, 29),
-  );
+  static ArticlePublicationInfo get publicationInfo =>
+      ArticleCatalog.identityPublicationInfo;
 
   static Uri linkedinShareUri(String title) => Uri.https(
     'www.linkedin.com',
@@ -175,133 +177,137 @@ class ArticlesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final articles = ArticleCatalog.localized(l10n);
+    final currentArticle = articles.singleWhere(
+      (article) => article.id == ArticleCatalog.identityId,
+    );
+
+    return ArticlePageLayout(
+      pageKey: const Key('articles-page'),
+      currentArticle: currentArticle,
+      articles: articles,
+      article: _IdentityArticleContent(article: currentArticle),
+    );
+  }
+}
+
+class _IdentityArticleContent extends StatelessWidget {
+  const _IdentityArticleContent({required this.article});
+
+  final ArticleEntry article;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final palette = context.leonePalette;
-    return Scaffold(
-      key: const Key('articles-page'),
-      appBar: AppBar(
-        title: Text(l10n.articlesPageTitle),
-        backgroundColor: palette.canvas,
-        surfaceTintColor: Colors.transparent,
-      ),
-      body: SelectionArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(24, 48, 24, 72),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 920),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Semantics(
-                    header: true,
-                    child: Text(
-                      l10n.identityArticleTitle,
-                      style: TextStyle(
-                        fontSize: MediaQuery.sizeOf(context).width < 620
-                            ? 38
-                            : 58,
-                        height: 1.02,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -2,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    l10n.identityArticleSummary,
-                    style: TextStyle(
-                      color: palette.mutedInk,
-                      fontSize: 19,
-                      height: 1.55,
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  ArticlePublicationLine(info: publicationInfo),
-                  const SizedBox(height: 38),
-                  IdentityLogoFigure(
-                    caption: l10n.identityArticleLogoCaption,
-                    semanticLabel: l10n.identityArticleLogoSemantics,
-                  ),
-                  const SizedBox(height: 30),
-                  _ArticleBodyText(l10n.identityArticleIntro, prominent: true),
-                  const SizedBox(height: 68),
-                  _ArticleSectionHeading(
-                    eyebrow: l10n.identityArticleStructureEyebrow,
-                    title: l10n.identityArticleStructureTitle,
-                  ),
-                  const SizedBox(height: 18),
-                  _ArticleBodyText(l10n.identityArticleStructureBody),
-                  const SizedBox(height: 28),
-                  IdentityExplodedFigure(
-                    caption: l10n.identityArticleExplodedCaption,
-                    semanticLabel: l10n.identityArticleExplodedSemantics,
-                    lLabel: l10n.identityArticleLLabel,
-                    dLabel: l10n.identityArticleDLabel,
-                    cutLabel: l10n.identityArticleCutLabel,
-                    dotLabel: l10n.identityArticleDotLabel,
-                  ),
-                  const SizedBox(height: 68),
-                  _ArticleSectionHeading(
-                    eyebrow: l10n.identityArticleFabEyebrow,
-                    title: l10n.identityArticleFabTitle,
-                  ),
-                  const SizedBox(height: 18),
-                  _ArticleBodyText(l10n.identityArticleFabBody),
-                  const SizedBox(height: 16),
-                  _ArticleBodyText(l10n.identityArticleFabColorBody),
-                  const SizedBox(height: 28),
-                  IdentityFabFigure(
-                    caption: l10n.identityArticleFabCaption,
-                    semanticLabel: l10n.identityArticleFabSemantics,
-                    brandDotLabel: l10n.identityArticleBrandDotStage,
-                    functionalFabLabel: l10n.identityArticleFunctionalFabStage,
-                  ),
-                  const SizedBox(height: 68),
-                  _ArticleSectionHeading(
-                    eyebrow: l10n.identityArticleMotionEyebrow,
-                    title: l10n.identityArticleMotionTitle,
-                  ),
-                  const SizedBox(height: 18),
-                  _ArticleBodyText(l10n.identityArticleMotionBody),
-                  const SizedBox(height: 16),
-                  _ArticleBodyText(l10n.identityArticleMotionEffectBody),
-                  const SizedBox(height: 28),
-                  IdentityOpeningSequenceFigure(
-                    caption: l10n.identityArticleMotionCaption,
-                    semanticLabel: l10n.identityArticleMotionSemantics,
-                    logoLabel: l10n.identityArticleOpeningLogoStage,
-                    expansionLabel: l10n.identityArticleOpeningExpansionStage,
-                    viewportLabel: l10n.identityArticleOpeningViewportStage,
-                    interfaceLabel: l10n.identityArticleOpeningInterfaceStage,
-                  ),
-                  const SizedBox(height: 52),
-                  Divider(color: palette.outline),
-                  const SizedBox(height: 28),
-                  _ArticleBodyText(
-                    l10n.identityArticleConclusion,
-                    prominent: true,
-                  ),
-                  const SizedBox(height: 56),
-                  Text(
-                    l10n.shareArticleTitle,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: .8,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    l10n.shareArticleCopy,
-                    style: TextStyle(color: palette.mutedInk, height: 1.5),
-                  ),
-                  const SizedBox(height: 18),
-                  _ShareBadges(title: l10n.identityArticleTitle),
-                ],
+
+    return SizedBox(
+      key: const Key('article-reading-column'),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Semantics(
+            header: true,
+            child: Text(
+              article.title,
+              style: TextStyle(
+                fontSize: MediaQuery.sizeOf(context).width < 620 ? 38 : 58,
+                height: 1.02,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -2,
               ),
             ),
           ),
-        ),
+          const SizedBox(height: 20),
+          Text(
+            article.summary,
+            style: TextStyle(
+              color: palette.mutedInk,
+              fontSize: 19,
+              height: 1.55,
+            ),
+          ),
+          const SizedBox(height: 18),
+          ArticlePublicationLine(info: article.publicationInfo),
+          const SizedBox(height: 38),
+          IdentityLogoFigure(
+            caption: l10n.identityArticleLogoCaption,
+            semanticLabel: l10n.identityArticleLogoSemantics,
+          ),
+          const SizedBox(height: 30),
+          _ArticleBodyText(l10n.identityArticleIntro, prominent: true),
+          const SizedBox(height: 68),
+          _ArticleSectionHeading(
+            eyebrow: l10n.identityArticleStructureEyebrow,
+            title: l10n.identityArticleStructureTitle,
+          ),
+          const SizedBox(height: 18),
+          _ArticleBodyText(l10n.identityArticleStructureBody),
+          const SizedBox(height: 28),
+          IdentityExplodedFigure(
+            caption: l10n.identityArticleExplodedCaption,
+            semanticLabel: l10n.identityArticleExplodedSemantics,
+            lLabel: l10n.identityArticleLLabel,
+            dLabel: l10n.identityArticleDLabel,
+            cutLabel: l10n.identityArticleCutLabel,
+            dotLabel: l10n.identityArticleDotLabel,
+          ),
+          const SizedBox(height: 68),
+          _ArticleSectionHeading(
+            eyebrow: l10n.identityArticleFabEyebrow,
+            title: l10n.identityArticleFabTitle,
+          ),
+          const SizedBox(height: 18),
+          _ArticleBodyText(l10n.identityArticleFabBody),
+          const SizedBox(height: 16),
+          _ArticleBodyText(l10n.identityArticleFabColorBody),
+          const SizedBox(height: 28),
+          IdentityFabFigure(
+            caption: l10n.identityArticleFabCaption,
+            semanticLabel: l10n.identityArticleFabSemantics,
+            brandDotLabel: l10n.identityArticleBrandDotStage,
+            functionalFabLabel: l10n.identityArticleFunctionalFabStage,
+          ),
+          const SizedBox(height: 68),
+          _ArticleSectionHeading(
+            eyebrow: l10n.identityArticleMotionEyebrow,
+            title: l10n.identityArticleMotionTitle,
+          ),
+          const SizedBox(height: 18),
+          _ArticleBodyText(l10n.identityArticleMotionBody),
+          const SizedBox(height: 16),
+          _ArticleBodyText(l10n.identityArticleMotionEffectBody),
+          const SizedBox(height: 28),
+          IdentityOpeningSequenceFigure(
+            caption: l10n.identityArticleMotionCaption,
+            semanticLabel: l10n.identityArticleMotionSemantics,
+            logoLabel: l10n.identityArticleOpeningLogoStage,
+            expansionLabel: l10n.identityArticleOpeningExpansionStage,
+            viewportLabel: l10n.identityArticleOpeningViewportStage,
+            interfaceLabel: l10n.identityArticleOpeningInterfaceStage,
+          ),
+          const SizedBox(height: 52),
+          Divider(color: palette.outline),
+          const SizedBox(height: 28),
+          _ArticleBodyText(l10n.identityArticleConclusion, prominent: true),
+          const SizedBox(height: 56),
+          Text(
+            l10n.shareArticleTitle,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+              letterSpacing: .8,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.shareArticleCopy,
+            style: TextStyle(color: palette.mutedInk, height: 1.5),
+          ),
+          const SizedBox(height: 18),
+          _ShareBadges(title: article.title),
+        ],
       ),
     );
   }

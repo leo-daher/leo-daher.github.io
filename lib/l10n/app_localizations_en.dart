@@ -92,6 +92,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get articlesPageTitle => 'Articles';
 
   @override
+  String get articleNavigationSemantics => 'Quick navigation between articles';
+
+  @override
+  String currentArticle(String title, String summary) {
+    return 'Current article: $title. $summary';
+  }
+
+  @override
+  String openArticle(String title, String summary) {
+    return 'Open article: $title. $summary';
+  }
+
+  @override
   String articlePublishedAt(DateTime date, DateTime time, String timeZone) {
     final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
     final String dateString = dateDateFormat.format(date);

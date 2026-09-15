@@ -254,11 +254,29 @@ abstract class AppLocalizations {
   /// **'A place to share processes, technical knowledge, and what I learn while building real products.'**
   String get articlesCopy;
 
-  /// Articles page app bar title.
+  /// Heading for quick article navigation.
   ///
   /// In en, this message translates to:
   /// **'Articles'**
   String get articlesPageTitle;
+
+  /// Accessible label for the article navigation region.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick navigation between articles'**
+  String get articleNavigationSemantics;
+
+  /// Accessible label for the selected article navigation card.
+  ///
+  /// In en, this message translates to:
+  /// **'Current article: {title}. {summary}'**
+  String currentArticle(String title, String summary);
+
+  /// Accessible label for an article navigation card.
+  ///
+  /// In en, this message translates to:
+  /// **'Open article: {title}. {summary}'**
+  String openArticle(String title, String summary);
 
   /// Article publication date and time.
   ///
