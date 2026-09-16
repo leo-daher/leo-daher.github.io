@@ -232,6 +232,14 @@ void main() {
       find.descendant(of: fixedTopBar, matching: find.byType(BackdropFilter)),
       findsOneWidget,
     );
+    expect(
+      tester
+          .widget<ColoredBox>(
+            find.descendant(of: fixedTopBar, matching: find.byType(ColoredBox)),
+          )
+          .color,
+      LeonePalette.glassDark.canvas.withValues(alpha: .578),
+    );
     expect(find.byKey(const Key('top-nav-home')), findsNothing);
     expect(find.byKey(const Key('top-nav-apps')), findsNothing);
     expect(find.byKey(const Key('top-nav-system')), findsNothing);
