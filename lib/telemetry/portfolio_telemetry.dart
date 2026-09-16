@@ -5,6 +5,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'google_analytics.dart';
 import 'portfolio_attribution.dart';
+import 'sentry_log_policy.dart';
 import 'telemetry_config.dart';
 
 class PortfolioTelemetry {
@@ -33,7 +34,9 @@ class PortfolioTelemetry {
           ..release = config.release.isEmpty ? null : config.release
           ..sendDefaultPii = false
           ..tracesSampleRate = 0.15
-          ..enableAutoSessionTracking = true;
+          ..enableAutoSessionTracking = true
+          ..enableLogs = true
+          ..reportSilentFlutterErrors = true;
       },
       appRunner: () {
         _recordAttribution();
@@ -56,6 +59,9 @@ class PortfolioTelemetry {
           ),
         ),
       );
+      if (shouldSendSentryLog(name)) {
+        Sentry.logger.info(name, attributes: sentryLogAttributes(parameters));
+      }
     }
   }
 
@@ -88,7 +94,6 @@ class PortfolioTelemetry {
     'destination': destination,
     'link_type': linkType,
     'link_domain': uri.host,
-    'link_url': uri.toString(),
   });
 
   static void contactIntent(String method, Uri uri, {required bool isLead}) {

@@ -31,8 +31,9 @@ Production supports two complementary dashboards:
 
 - Google Analytics 4 measures visits, acquisition, geography, devices, and
   portfolio interactions.
-- Sentry captures unhandled errors, affected sessions, releases, and sampled
-  performance traces.
+- Sentry captures unhandled and silent Flutter errors, affected sessions,
+  releases, sampled performance traces, breadcrumbs, and structured logs for
+  high-signal portfolio activity.
 
 Neither provider is enabled in local builds unless its configuration is
 supplied. To test both locally:
@@ -47,6 +48,12 @@ fvm flutter run -d chrome \
 For GitHub Pages, create the repository variable `GA_MEASUREMENT_ID` and the
 Actions secret `SENTRY_DSN`. The deploy workflow supplies the commit SHA as the
 Sentry release automatically.
+
+Sentry Logs is enabled in production. It records `portfolio_view`,
+`portfolio_attribution`, `select_outbound_link`, `contact_intent`,
+`generate_lead`, and `certificate_action` with typed, non-PII attributes.
+Frequent section, preference, and scroll activity remains available as error
+breadcrumbs without consuming one log entry per interaction.
 
 The custom GA4 events include `portfolio_view`, `portfolio_attribution`,
 `section_view`, `scroll_depth`, `change_preference`, `select_outbound_link`,
