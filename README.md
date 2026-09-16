@@ -48,14 +48,24 @@ For GitHub Pages, create the repository variable `GA_MEASUREMENT_ID` and the
 Actions secret `SENTRY_DSN`. The deploy workflow supplies the commit SHA as the
 Sentry release automatically.
 
-The custom GA4 events are `portfolio_view`, `portfolio_attribution`,
-`select_section`, `change_preference`, `select_outbound_link`, and
-`certificate_action`. Resume and application links can use `utm_source`,
-`utm_medium`, `utm_campaign`, `utm_content`, `utm_term`, or the short `ref`
-parameter. The portfolio records only sanitized, bounded parameter values;
-names, email addresses, full outbound URLs, and other personal data are
-excluded. Google Signals and ad-personalization signals are disabled; Sentry
-default PII collection is disabled.
+The custom GA4 events include `portfolio_view`, `portfolio_attribution`,
+`section_view`, `scroll_depth`, `change_preference`, `select_outbound_link`,
+`contact_intent`, `generate_lead`, and `certificate_action`. Resume,
+application, and social links can use `utm_source`, `utm_medium`,
+`utm_campaign`, `utm_content`, `utm_term`, or the short `ref` parameter. The
+portfolio records only sanitized, bounded parameter values; names, email
+addresses, full outbound URLs, and other personal data are excluded. Google
+Signals and ad-personalization signals are disabled; Sentry default PII
+collection is disabled.
+
+Short references and their meanings are registered in
+[`tracking/portfolio_ref_registry.csv`](tracking/portfolio_ref_registry.csv).
+CV links use `ref=cv-<UTC timestamp>` so each generated document can be
+identified; the Instagram link uses the stable `ref=ig` value. In GA4, inspect
+the `portfolio_attribution` event and its `attribution_ref` parameter. Register
+`attribution_ref` as an event-scoped custom dimension named `Portfolio ref` to
+use it in historical reports and Explorations. Sentry receives the same event
+as a breadcrumb for error context, but GA4 is the traffic-reporting source.
 
 ## Experience map
 

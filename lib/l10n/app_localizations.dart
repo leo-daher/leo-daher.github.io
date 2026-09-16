@@ -557,7 +557,7 @@ abstract class AppLocalizations {
   /// Markets represented by highlighted apps.
   ///
   /// In en, this message translates to:
-  /// **'LATAM · USA · EU'**
+  /// **'LATAM · North America · Europe'**
   String get proofMarketsValue;
 
   /// Market proof label.

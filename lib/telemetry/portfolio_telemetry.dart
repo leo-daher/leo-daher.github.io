@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'google_analytics.dart';
+import 'portfolio_attribution.dart';
 import 'telemetry_config.dart';
 
 class PortfolioTelemetry {
@@ -59,26 +60,7 @@ class PortfolioTelemetry {
   }
 
   static void _recordAttribution() {
-    final query = Uri.base.queryParameters;
-    const keys = {
-      'utm_source': 'attribution_source',
-      'utm_medium': 'attribution_medium',
-      'utm_campaign': 'attribution_campaign',
-      'utm_content': 'attribution_content',
-      'utm_term': 'attribution_term',
-      'ref': 'attribution_ref',
-    };
-    final attribution = <String, Object>{};
-    for (final entry in keys.entries) {
-      final value = query[entry.key]?.trim();
-      if (value == null || value.isEmpty) continue;
-      final safeValue = value.replaceAll(RegExp(r'[^A-Za-z0-9._-]'), '-');
-      if (safeValue.isNotEmpty) {
-        attribution[entry.value] = safeValue.length > 80
-            ? safeValue.substring(0, 80)
-            : safeValue;
-      }
-    }
+    final attribution = portfolioAttributionFromUri(Uri.base);
     if (attribution.isNotEmpty) event('portfolio_attribution', attribution);
   }
 
