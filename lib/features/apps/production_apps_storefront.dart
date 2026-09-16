@@ -12,6 +12,47 @@ import 'production_apps_section.dart';
 const _catalogWideMinWidth = 800.0;
 const _catalogGap = 12.0;
 
+abstract final class ProductionAppsRoutes {
+  static const catalog = '/apps';
+  static const _detailPrefix = '$catalog/';
+  static const supportedItemIds = {
+    'van-cranenbroek',
+    'lyzer-collect',
+    'lyzer-deliver',
+    'mag-venda-digital',
+  };
+
+  static String detail(String itemId) =>
+      '$_detailPrefix${Uri.encodeComponent(itemId)}';
+
+  static bool isCatalog(String? routeName) =>
+      _normalizedPath(routeName) == catalog;
+
+  static String? detailItemId(String? routeName) {
+    final path = _normalizedPath(routeName);
+    if (path == null || !path.startsWith(_detailPrefix)) return null;
+
+    final encodedId = path.substring(_detailPrefix.length);
+    if (encodedId.isEmpty || encodedId.contains('/')) return null;
+
+    try {
+      final itemId = Uri.decodeComponent(encodedId);
+      return RegExp(r'^[a-z0-9-]+$').hasMatch(itemId) ? itemId : null;
+    } on FormatException {
+      return null;
+    }
+  }
+
+  static String? _normalizedPath(String? routeName) {
+    if (routeName == null) return null;
+    final path = Uri.tryParse(routeName)?.path;
+    if (path == null || path.isEmpty) return null;
+    return path.length > 1 && path.endsWith('/')
+        ? path.substring(0, path.length - 1)
+        : path;
+  }
+}
+
 /// Compact home-page presentation inspired by mobile app marketplaces.
 ///
 /// Full case studies live behind normal Material routes so the home remains
@@ -20,16 +61,11 @@ class ProductionAppsStorefront extends StatelessWidget {
   const ProductionAppsStorefront({
     super.key,
     required this.content,
-    required this.caseContent,
     required this.items,
-    required this.apps,
-  }) : assert(items.length > 0),
-       assert(apps.length > 0);
+  }) : assert(items.length > 0);
 
   final ProductionAppsStorefrontContent content;
-  final ProductionAppsSectionContent caseContent;
   final List<ProductionAppStorefrontItem> items;
-  final List<ProductionAppCase> apps;
 
   @override
   Widget build(BuildContext context) {
@@ -46,48 +82,22 @@ class ProductionAppsStorefront extends StatelessWidget {
                 title: content.featuredTitle,
                 supportingText: content.featuredSupportingText,
                 actionLabel: content.viewAllLabel,
-                onAction: () => _openCatalog(context),
+                onAction: () =>
+                    Navigator.of(context)
+                        .pushNamed(ProductionAppsRoutes.catalog),
               ),
               const SizedBox(height: 22),
               _AdaptiveAppTiles(
                 key: const Key('featured-apps-list'),
                 items: items,
                 openDetailsLabel: content.openDetailsLabel,
-                onOpen: (item) => _openDetails(context, item),
+                onOpen: (item) =>
+                    Navigator.of(context)
+                        .pushNamed(ProductionAppsRoutes.detail(item.id)),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  void _openCatalog(BuildContext context) {
-    final usesGlass = context.usesLeoneGlass;
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) {
-          final page = ProductionAppsCatalogPage(
-            content: content,
-            caseContent: caseContent,
-            items: items,
-            apps: apps,
-          );
-          return usesGlass ? LeoneGlassExperience(child: page) : page;
-        },
-      ),
-    );
-  }
-
-  void _openDetails(BuildContext context, ProductionAppStorefrontItem item) {
-    final app = apps.singleWhere((app) => app.id == item.appCaseId);
-    final usesGlass = context.usesLeoneGlass;
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) {
-          final page = ProductionAppDetailPage(content: caseContent, app: app);
-          return usesGlass ? LeoneGlassExperience(child: page) : page;
-        },
       ),
     );
   }
@@ -97,15 +107,11 @@ class ProductionAppsCatalogPage extends StatelessWidget {
   const ProductionAppsCatalogPage({
     super.key,
     required this.content,
-    required this.caseContent,
     required this.items,
-    required this.apps,
   });
 
   final ProductionAppsStorefrontContent content;
-  final ProductionAppsSectionContent caseContent;
   final List<ProductionAppStorefrontItem> items;
-  final List<ProductionAppCase> apps;
 
   @override
   Widget build(BuildContext context) {
@@ -144,25 +150,9 @@ class ProductionAppsCatalogPage extends StatelessWidget {
                       key: const Key('all-apps-list'),
                       items: items,
                       openDetailsLabel: content.openDetailsLabel,
-                      onOpen: (item) {
-                        final app = apps.singleWhere(
-                          (app) => app.id == item.appCaseId,
-                        );
-                        final usesGlass = context.usesLeoneGlass;
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) {
-                              final page = ProductionAppDetailPage(
-                                content: caseContent,
-                                app: app,
-                              );
-                              return usesGlass
-                                  ? LeoneGlassExperience(child: page)
-                                  : page;
-                            },
-                          ),
-                        );
-                      },
+                      onOpen: (item) =>
+                          Navigator.of(context)
+                              .pushNamed(ProductionAppsRoutes.detail(item.id)),
                     ),
                   ),
                 ),

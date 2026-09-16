@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:leone_portfolio/brand/leone_brand.dart';
 import 'package:leone_portfolio/features/articles/articles.dart';
+import 'package:leone_portfolio/features/apps/production_apps.dart';
 import 'package:leone_portfolio/features/certificates/certificate_catalog.dart';
 import 'package:leone_portfolio/features/certificates/certifications_section.dart';
 import 'package:leone_portfolio/features/clients/client_logo_cloud.dart';
@@ -30,6 +31,61 @@ void main() {
     expect(find.byKey(const Key('portfolio-home-page')), findsOneWidget);
     expect(find.byKey(const Key('ld-opening-transition')), findsOneWidget);
   });
+
+  testWidgets(
+    'mobile app routes follow system back without replaying the opening',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const LeonePortfolioApp());
+      await _finishOpening(tester);
+
+      final homeScroll = find.byKey(const Key('portfolio-scroll-view'));
+      final homeScrollable = find.descendant(
+        of: homeScroll,
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        find.byKey(const Key('view-all-apps-button')),
+        500,
+        scrollable: homeScrollable,
+      );
+      await tester.tap(find.byKey(const Key('view-all-apps-button')));
+      await tester.pumpAndSettle();
+
+      final catalog = find.byKey(const Key('all-apps-scroll-view'));
+      expect(catalog, findsOneWidget);
+      expect(
+        ModalRoute.of(tester.element(catalog))?.settings.name,
+        ProductionAppsRoutes.catalog,
+      );
+
+      await tester.tap(find.byKey(const Key('app-store-tile-van-cranenbroek')));
+      await tester.pumpAndSettle();
+
+      final detail = find.byKey(
+        const Key('app-detail-scroll-view-van-cranenbroek'),
+      );
+      expect(detail, findsOneWidget);
+      expect(
+        ModalRoute.of(tester.element(detail))?.settings.name,
+        '/apps/van-cranenbroek',
+      );
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await tester.pumpAndSettle();
+      expect(catalog, findsOneWidget);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('portfolio-home-page')), findsOneWidget);
+      expect(find.byKey(const Key('ld-opening-transition')), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('renders a simplified hero fixed on the mobile focus', (
     tester,

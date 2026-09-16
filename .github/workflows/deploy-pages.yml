@@ -50,10 +50,19 @@ jobs:
 
       - name: Add direct route entry points
         run: |
-          mkdir -p build/web/artigos/identidade-visual build/web/ios/artigos/identidade-visual
-          cp build/web/index.html build/web/artigos/identidade-visual/index.html
-          cp build/web/index.html build/web/ios/index.html
-          cp build/web/index.html build/web/ios/artigos/identidade-visual/index.html
+          for route in \
+            artigos/identidade-visual \
+            ios \
+            ios/artigos/identidade-visual \
+            apps \
+            apps/van-cranenbroek \
+            apps/lyzer-collect \
+            apps/lyzer-deliver \
+            apps/mag-venda-digital
+          do
+            mkdir -p "build/web/$route"
+            cp build/web/index.html "build/web/$route/index.html"
+          done
           cp build/web/index.html build/web/404.html
 
       - name: Configure Pages

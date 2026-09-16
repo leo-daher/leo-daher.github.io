@@ -43,6 +43,14 @@ void main() {
         findsOneWidget,
       );
       expect(
+        ModalRoute.of(
+          tester.element(
+            find.byKey(const Key('app-detail-scroll-view-van-cranenbroek')),
+          ),
+        )?.settings.name,
+        '/apps/van-cranenbroek',
+      );
+      expect(
         find.byKey(const Key('production-app-card-van-cranenbroek')),
         findsOneWidget,
       );
@@ -67,6 +75,12 @@ void main() {
     expect(find.byKey(const Key('all-apps-scroll-view')), findsOneWidget);
     expect(find.byKey(const Key('all-apps-list')), findsOneWidget);
     expect(
+      ModalRoute.of(
+        tester.element(find.byKey(const Key('all-apps-scroll-view'))),
+      )?.settings.name,
+      ProductionAppsRoutes.catalog,
+    );
+    expect(
       find.byKey(const Key('app-store-tile-mag-venda-digital')),
       findsOneWidget,
     );
@@ -78,7 +92,33 @@ void main() {
       find.byKey(const Key('app-detail-scroll-view-mag-venda-digital')),
       findsOneWidget,
     );
+    expect(
+      ModalRoute.of(
+        tester.element(
+          find.byKey(const Key('app-detail-scroll-view-mag-venda-digital')),
+        ),
+      )?.settings.name,
+      '/apps/mag-venda-digital',
+    );
     expect(tester.takeException(), isNull);
+  });
+
+  test('recognizes catalog and app detail paths with URL suffixes', () {
+    final presentation = ProductionAppsPresentation.localized(
+      AppLocalizationsEn(),
+    );
+    expect(
+      presentation.storefrontItems.map((item) => item.id).toSet(),
+      ProductionAppsRoutes.supportedItemIds,
+    );
+    expect(ProductionAppsRoutes.isCatalog('/apps/'), isTrue);
+    expect(ProductionAppsRoutes.isCatalog('/apps?ref=menu'), isTrue);
+    expect(
+      ProductionAppsRoutes.detailItemId('/apps/lyzer-collect/?ref=home'),
+      'lyzer-collect',
+    );
+    expect(ProductionAppsRoutes.detailItemId('/apps/'), isNull);
+    expect(ProductionAppsRoutes.detailItemId('/apps/not/valid'), isNull);
   });
 
   testWidgets('uses a horizontal storefront on a wide desktop window', (
@@ -121,13 +161,36 @@ Future<void> _pumpStorefront(WidgetTester tester, {required Size size}) async {
   await tester.pumpWidget(
     MaterialApp(
       theme: LeoneBrandTheme.dark(),
+      onGenerateRoute: (settings) {
+        if (ProductionAppsRoutes.isCatalog(settings.name)) {
+          return MaterialPageRoute<void>(
+            settings: settings,
+            builder: (_) => ProductionAppsCatalogPage(
+              content: presentation.storefrontContent,
+              items: presentation.storefrontItems,
+            ),
+          );
+        }
+
+        final itemId = ProductionAppsRoutes.detailItemId(settings.name);
+        if (itemId == null) return null;
+        final item = presentation.storefrontItems.singleWhere(
+          (item) => item.id == itemId,
+        );
+        final app = presentation.apps.singleWhere(
+          (app) => app.id == item.appCaseId,
+        );
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) =>
+              ProductionAppDetailPage(content: presentation.content, app: app),
+        );
+      },
       home: Scaffold(
         body: SingleChildScrollView(
           child: ProductionAppsStorefront(
             content: presentation.storefrontContent,
-            caseContent: presentation.content,
             items: presentation.storefrontItems,
-            apps: presentation.apps,
           ),
         ),
       ),

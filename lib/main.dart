@@ -123,8 +123,8 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
   }
 
   Route<void>? _generateRoute(RouteSettings settings) {
-    final routeName = settings.name?.replaceFirst(RegExp(r'/$'), '');
-    if (routeName == null || routeName.isEmpty || routeName == _iosRouteName) {
+    final routeName = _normalizedRoutePath(settings.name);
+    if (routeName == null || routeName == '/' || routeName == _iosRouteName) {
       return MaterialPageRoute<void>(
         settings: settings,
         builder: (_) => LeoneGlassExperience(
@@ -133,6 +133,46 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
             onThemeModeChanged: _setThemeMode,
           ),
         ),
+      );
+    }
+    if (ProductionAppsRoutes.isCatalog(settings.name)) {
+      return MaterialPageRoute<void>(
+        settings: settings,
+        builder: (context) {
+          final presentation = ProductionAppsPresentation.localized(
+            context.l10n,
+          );
+          return LeoneGlassExperience(
+            child: ProductionAppsCatalogPage(
+              content: presentation.storefrontContent,
+              items: presentation.storefrontItems,
+            ),
+          );
+        },
+      );
+    }
+    final appItemId = ProductionAppsRoutes.detailItemId(settings.name);
+    if (appItemId != null &&
+        ProductionAppsRoutes.supportedItemIds.contains(appItemId)) {
+      return MaterialPageRoute<void>(
+        settings: settings,
+        builder: (context) {
+          final presentation = ProductionAppsPresentation.localized(
+            context.l10n,
+          );
+          final item = presentation.storefrontItems.singleWhere(
+            (item) => item.id == appItemId,
+          );
+          final app = presentation.apps.singleWhere(
+            (app) => app.id == item.appCaseId,
+          );
+          return LeoneGlassExperience(
+            child: ProductionAppDetailPage(
+              content: presentation.content,
+              app: app,
+            ),
+          );
+        },
       );
     }
     if (routeName == ArticlesPage.routeName ||
@@ -156,6 +196,15 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
     }
     return null;
   }
+}
+
+String? _normalizedRoutePath(String? routeName) {
+  if (routeName == null) return null;
+  final path = Uri.tryParse(routeName)?.path;
+  if (path == null || path.isEmpty) return '/';
+  return path.length > 1 && path.endsWith('/')
+      ? path.substring(0, path.length - 1)
+      : path;
 }
 
 const _iosRouteName = '/ios';
@@ -371,9 +420,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
             SliverToBoxAdapter(
               child: ProductionAppsStorefront(
                 content: appsPresentation.storefrontContent,
-                caseContent: appsPresentation.content,
                 items: appsPresentation.storefrontItems,
-                apps: appsPresentation.apps,
               ),
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 72)),
