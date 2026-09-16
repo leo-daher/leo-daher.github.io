@@ -152,7 +152,7 @@
   "@proofAppsValue": {"description": "Total mobile apps delivered across platforms."},
   "proofAppsLabel": "mobile apps in official stores",
   "@proofAppsLabel": {"description": "Total mobile apps published in official stores."},
-  "proofMarketsValue": "LATAM · USA · EU",
+  "proofMarketsValue": "LATAM · North America · Europe",
   "@proofMarketsValue": {"description": "Markets represented by highlighted apps."},
   "proofMarketsLabel": "products for real markets",
   "@proofMarketsLabel": {"description": "Market proof label."},
