@@ -53,6 +53,11 @@ void main() {
         500,
         scrollable: homeScrollable,
       );
+      final homeOffset = tester
+          .state<ScrollableState>(homeScrollable)
+          .position
+          .pixels;
+      expect(homeOffset, greaterThan(0));
       await tester.tap(find.byKey(const Key('view-all-apps-button')));
       await tester.pumpAndSettle();
 
@@ -83,6 +88,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('portfolio-home-page')), findsOneWidget);
       expect(find.byKey(const Key('ld-opening-transition')), findsNothing);
+      expect(
+        tester.state<ScrollableState>(homeScrollable).position.pixels,
+        closeTo(homeOffset, .01),
+      );
       expect(tester.takeException(), isNull);
     },
   );
@@ -133,6 +142,44 @@ void main() {
       expect(await tester.binding.handlePopRoute(), isFalse);
     },
   );
+
+  testWidgets('header back restores the previous home scroll position', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await _finishOpening(tester);
+
+    final homeScroll = find.byKey(const Key('portfolio-scroll-view'));
+    final homeScrollable = find.descendant(
+      of: homeScroll,
+      matching: find.byType(Scrollable),
+    );
+    await tester.drag(homeScroll, const Offset(0, -900));
+    await tester.pumpAndSettle();
+    final homeOffset = tester
+        .state<ScrollableState>(homeScrollable)
+        .position
+        .pixels;
+    expect(homeOffset, greaterThan(0));
+
+    tester
+        .state<NavigatorState>(find.byType(Navigator))
+        .pushNamed(ArticlesPage.routeName);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('article-back-button')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('portfolio-home-page')), findsOneWidget);
+    expect(
+      tester.state<ScrollableState>(homeScrollable).position.pixels,
+      closeTo(homeOffset, .01),
+    );
+  });
 
   testWidgets('direct app links return home before releasing system back', (
     tester,

@@ -45,10 +45,13 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
   bool _localeChosenInSession = false;
   bool _themeChosenInSession = false;
   bool _homeReady = false;
+  double _homeScrollOffset = 0;
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   final GlobalKey<_PortfolioHomePageState> _homePageKey =
       GlobalKey<_PortfolioHomePageState>();
-  final _navigationObserver = _PortfolioNavigationObserver();
+  late final _navigationObserver = _PortfolioNavigationObserver(
+    onReturnedToHome: _restoreHomeScrollPosition,
+  );
   late final PortfolioSeoRouteObserver _seoRouteObserver =
       PortfolioSeoRouteObserver(
         initialLanguageCode:
@@ -114,6 +117,17 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
   void _scrollHomeToTop() {
     PortfolioTelemetry.sectionSelected(PortfolioDestination.home.name);
     _homePageKey.currentState?.scrollToTop();
+  }
+
+  void _rememberHomeScrollPosition(double offset) {
+    _homeScrollOffset = offset;
+  }
+
+  void _restoreHomeScrollPosition() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _homePageKey.currentState?.restoreScrollPosition(_homeScrollOffset);
+    });
   }
 
   @override
@@ -186,6 +200,8 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
         maintainState: maintainState,
         pageBuilder: (_, _, _) => _PortfolioEntry(
           homePageKey: _homePageKey,
+          homeScrollOffset: () => _homeScrollOffset,
+          onHomeScrollOffsetChanged: _rememberHomeScrollPosition,
           skipOpening: skipHomeOpening,
           onReady: _markHomeReady,
           onLocaleChanged: _setLocale,
@@ -280,6 +296,9 @@ const _iosArticleRouteName = '/ios/artigos/identidade-visual';
 
 class _PortfolioNavigationObserver extends NavigatorObserver
     with ChangeNotifier {
+  _PortfolioNavigationObserver({required this.onReturnedToHome});
+
+  final VoidCallback onReturnedToHome;
   final List<Route<dynamic>> _routes = [];
   bool _notificationScheduled = false;
   bool _disposed = false;
@@ -297,6 +316,10 @@ class _PortfolioNavigationObserver extends NavigatorObserver
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
     if (_disposed || !_routes.remove(route)) return;
+    final previousPath = _normalizedRoutePath(previousRoute?.settings.name);
+    if (previousPath == '/' || previousPath == _iosRouteName) {
+      onReturnedToHome();
+    }
     notifyListeners();
   }
 
@@ -415,6 +438,8 @@ class _PortfolioNavigationFrameState extends State<_PortfolioNavigationFrame> {
 class _PortfolioEntry extends StatefulWidget {
   const _PortfolioEntry({
     required this.homePageKey,
+    required this.homeScrollOffset,
+    required this.onHomeScrollOffsetChanged,
     required this.skipOpening,
     required this.onReady,
     required this.onLocaleChanged,
@@ -422,6 +447,8 @@ class _PortfolioEntry extends StatefulWidget {
   });
 
   final GlobalKey<_PortfolioHomePageState> homePageKey;
+  final double Function() homeScrollOffset;
+  final ValueChanged<double> onHomeScrollOffsetChanged;
   final bool skipOpening;
   final VoidCallback onReady;
   final ValueChanged<Locale> onLocaleChanged;
@@ -461,6 +488,8 @@ class _PortfolioEntryState extends State<_PortfolioEntry> {
               key: const Key('portfolio-home-page'),
               child: PortfolioHomePage(
                 key: widget.homePageKey,
+                initialScrollOffset: widget.homeScrollOffset(),
+                onScrollOffsetChanged: widget.onHomeScrollOffsetChanged,
                 floatingActionButtonEnabled: !_showOpening,
                 heroAutoPlay: !_showOpening,
                 onLocaleChanged: widget.onLocaleChanged,
@@ -489,6 +518,8 @@ class _PortfolioEntryState extends State<_PortfolioEntry> {
 class PortfolioHomePage extends StatefulWidget {
   const PortfolioHomePage({
     super.key,
+    this.initialScrollOffset = 0,
+    required this.onScrollOffsetChanged,
     this.showFloatingActionButton = true,
     this.floatingActionButtonEnabled = true,
     this.heroAutoPlay = true,
@@ -496,6 +527,8 @@ class PortfolioHomePage extends StatefulWidget {
     required this.onThemeModeChanged,
   });
 
+  final double initialScrollOffset;
+  final ValueChanged<double> onScrollOffsetChanged;
   final bool showFloatingActionButton;
   final bool floatingActionButtonEnabled;
   final bool heroAutoPlay;
@@ -508,7 +541,7 @@ class PortfolioHomePage extends StatefulWidget {
 
 class _PortfolioHomePageState extends State<PortfolioHomePage> {
   static const _scrollDepthThresholds = [25, 50, 75, 90];
-  final ScrollController _scrollController = ScrollController();
+  late final ScrollController _scrollController;
   final Set<int> _reportedScrollDepths = {};
   bool _atTop = true;
   final GlobalKey _appsSectionKey = GlobalKey(
@@ -530,13 +563,18 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController(
+      initialScrollOffset: widget.initialScrollOffset,
+    );
+    _atTop = widget.initialScrollOffset <= .5;
     _scrollController.addListener(_handleScroll);
   }
 
   void _handleScroll() {
+    if (!_scrollController.hasClients) return;
+    widget.onScrollOffsetChanged(_scrollController.offset);
     _trackScrollDepth();
-    final atTop =
-        !_scrollController.hasClients || _scrollController.offset <= .5;
+    final atTop = _scrollController.offset <= .5;
     if (atTop != _atTop && mounted) setState(() => _atTop = atTop);
   }
 
@@ -569,6 +607,15 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       duration: const Duration(milliseconds: 480),
       curve: LeoneBrandMotion.pageTransitionCurve,
     );
+  }
+
+  void restoreScrollPosition(double offset) {
+    if (!_scrollController.hasClients) return;
+    final target = offset
+        .clamp(0.0, _scrollController.position.maxScrollExtent)
+        .toDouble();
+    if ((_scrollController.offset - target).abs() <= .5) return;
+    _scrollController.jumpTo(target);
   }
 
   void _navigateTo(PortfolioDestination destination) {
