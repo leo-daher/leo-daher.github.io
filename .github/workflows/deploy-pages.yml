@@ -54,6 +54,7 @@ jobs:
             artigos/identidade-visual \
             ios \
             ios/artigos/identidade-visual \
+            certificacoes \
             apps \
             apps/van-cranenbroek \
             apps/lyzer-collect \

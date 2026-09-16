@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +9,7 @@ import 'brand/leone_brand.dart';
 import 'brand/leone_glass.dart';
 import 'features/articles/articles.dart';
 import 'features/apps/production_apps.dart';
+import 'features/certificates/certificate_catalog.dart';
 import 'features/certificates/certifications_section.dart';
 import 'features/clients/client_logo_cloud.dart';
 import 'features/contact/contact_section.dart';
@@ -221,6 +224,16 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
             items: presentation.storefrontItems,
           );
         },
+      );
+    }
+    if (routeName == CertificateRegisterPage.routeName) {
+      return _planeRoute(
+        settings: settings,
+        pageBuilder: (_, _, _) => CertificateRegisterPage(
+          catalog: settings.arguments is CertificateCatalog
+              ? settings.arguments! as CertificateCatalog
+              : null,
+        ),
       );
     }
     final appItemId = ProductionAppsRoutes.detailItemId(settings.name);
@@ -540,10 +553,13 @@ class PortfolioHomePage extends StatefulWidget {
 }
 
 class _PortfolioHomePageState extends State<PortfolioHomePage> {
+  static const _exitConfirmationDuration = Duration(seconds: 2);
   static const _scrollDepthThresholds = [25, 50, 75, 90];
   late final ScrollController _scrollController;
+  Timer? _exitConfirmationTimer;
   final Set<int> _reportedScrollDepths = {};
   bool _atTop = true;
+  bool _exitConfirmationArmed = false;
   final GlobalKey _appsSectionKey = GlobalKey(
     debugLabel: 'portfolio-apps-section',
   );
@@ -575,6 +591,10 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
     widget.onScrollOffsetChanged(_scrollController.offset);
     _trackScrollDepth();
     final atTop = _scrollController.offset <= .5;
+    if (!atTop && _exitConfirmationArmed) {
+      _exitConfirmationTimer?.cancel();
+      _exitConfirmationArmed = false;
+    }
     if (atTop != _atTop && mounted) setState(() => _atTop = atTop);
   }
 
@@ -595,6 +615,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
   @override
   void dispose() {
+    _exitConfirmationTimer?.cancel();
     _scrollController.removeListener(_handleScroll);
     _scrollController.dispose();
     super.dispose();
@@ -616,6 +637,25 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
         .toDouble();
     if ((_scrollController.offset - target).abs() <= .5) return;
     _scrollController.jumpTo(target);
+  }
+
+  void _armExitConfirmation() {
+    _exitConfirmationTimer?.cancel();
+    setState(() => _exitConfirmationArmed = true);
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        key: const Key('exit-hint-snackbar'),
+        behavior: SnackBarBehavior.floating,
+        duration: _exitConfirmationDuration,
+        content: Text(context.l10n.pressBackAgainToExit),
+      ),
+    );
+    _exitConfirmationTimer = Timer(_exitConfirmationDuration, () {
+      if (!mounted || !_exitConfirmationArmed) return;
+      setState(() => _exitConfirmationArmed = false);
+    });
   }
 
   void _navigateTo(PortfolioDestination destination) {
@@ -645,9 +685,14 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   Widget build(BuildContext context) {
     final appsPresentation = ProductionAppsPresentation.localized(context.l10n);
     return PopScope<void>(
-      canPop: _atTop,
+      canPop: _atTop && _exitConfirmationArmed,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && !_atTop) scrollToTop();
+        if (didPop) return;
+        if (!_atTop) {
+          scrollToTop();
+          return;
+        }
+        _armExitConfirmation();
       },
       child: PortfolioFabMenuScaffold(
         showFloatingActionButton: widget.showFloatingActionButton,

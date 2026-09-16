@@ -168,6 +168,7 @@
   "verifyCredential": "Validar credencial",
   "certificateFor": "Certificado emitido para {holder}",
   "closeDialog": "Fechar diálogo",
+  "pressBackAgainToExit": "Pressione voltar novamente para sair",
   "mappedCountries": "Países mapeados",
   "projects": "Projetos",
   "projectCount": "{count, plural, =1{1 projeto} other{{count} projetos}}",

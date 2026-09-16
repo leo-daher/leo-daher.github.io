@@ -139,6 +139,13 @@ void main() {
             .pixels,
         closeTo(0, .01),
       );
+      expect(find.byKey(const Key('exit-hint-snackbar')), findsNothing);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await tester.pump();
+      expect(find.byKey(const Key('exit-hint-snackbar')), findsOneWidget);
+      expect(find.text('Press back again to exit'), findsOneWidget);
+
       expect(await tester.binding.handlePopRoute(), isFalse);
     },
   );
@@ -206,6 +213,9 @@ void main() {
 
     expect(find.byKey(const Key('portfolio-home-page')), findsOneWidget);
     expect(find.byKey(const Key('ld-opening-transition')), findsNothing);
+    expect(await tester.binding.handlePopRoute(), isTrue);
+    await tester.pump();
+    expect(find.byKey(const Key('exit-hint-snackbar')), findsOneWidget);
     expect(await tester.binding.handlePopRoute(), isFalse);
   });
 
@@ -525,6 +535,11 @@ void main() {
       label: 'app detail',
       routeName: '/apps/van-cranenbroek',
       pageKey: Key('app-detail-scroll-view-van-cranenbroek'),
+    ),
+    (
+      label: 'certificate register',
+      routeName: CertificateRegisterPage.routeName,
+      pageKey: Key('certificate-register-page'),
     ),
   ]) {
     testWidgets('${routeCase.label} uses the same two-page motion as article', (
@@ -1193,6 +1208,10 @@ void main() {
         theme: LeoneBrandTheme.dark(),
         localizationsDelegates: const [AppLocalizations.delegate],
         supportedLocales: AppLocalizations.supportedLocales,
+        routes: {
+          CertificateRegisterPage.routeName: (_) =>
+              CertificateRegisterPage(catalog: catalog),
+        },
         home: Scaffold(
           body: SingleChildScrollView(
             child: CertificationsSection(catalog: catalog),
@@ -1222,6 +1241,14 @@ void main() {
 
     await tester.tap(find.byKey(const Key('certificates-view-all-card')));
     await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('certificate-register-page')), findsOneWidget);
+    expect(
+      ModalRoute.of(
+        tester.element(find.byKey(const Key('certificate-register-page'))),
+      )?.settings.name,
+      CertificateRegisterPage.routeName,
+    );
 
     expect(
       find.byKey(const Key('certificate-group-anthropic-academy')),
@@ -1281,7 +1308,6 @@ void main() {
     expect(find.byKey(const Key('certificate-preview-dialog')), findsOneWidget);
     expect(find.text('Verify credential'), findsOneWidget);
     await _closeDialog(tester);
-    await _closeDialog(tester);
     expect(tester.takeException(), isNull);
   });
 
@@ -1322,6 +1348,10 @@ void main() {
         theme: LeoneBrandTheme.dark(),
         localizationsDelegates: const [AppLocalizations.delegate],
         supportedLocales: AppLocalizations.supportedLocales,
+        routes: {
+          CertificateRegisterPage.routeName: (_) =>
+              CertificateRegisterPage(catalog: catalog),
+        },
         home: Scaffold(body: CertificationsSection(catalog: catalog)),
       ),
     );
@@ -1363,7 +1393,7 @@ void main() {
 
     await tester.drag(
       find.descendant(
-        of: find.byKey(const Key('certificate-register-dialog')),
+        of: find.byKey(const Key('certificate-register-page')),
         matching: find.byType(CustomScrollView),
       ),
       const Offset(0, -320),
@@ -1379,7 +1409,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('certificate-preview-dialog')), findsOneWidget);
     expect(find.text('Certificate issued to Leone Souza'), findsNothing);
-    await _closeDialog(tester);
     await _closeDialog(tester);
     expect(tester.takeException(), isNull);
   });

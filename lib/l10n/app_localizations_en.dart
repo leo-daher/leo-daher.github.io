@@ -596,6 +596,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get closeDialog => 'Close dialog';
 
   @override
+  String get pressBackAgainToExit => 'Press back again to exit';
+
+  @override
   String get mappedCountries => 'Mapped countries';
 
   @override

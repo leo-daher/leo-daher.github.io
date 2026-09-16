@@ -6,8 +6,42 @@ import '../../brand/leone_brand.dart';
 import '../../brand/leone_glass.dart';
 import '../../l10n/l10n.dart';
 import '../../telemetry/portfolio_telemetry.dart';
+import '../navigation/portfolio_top_bar.dart';
 import '../shared/portfolio_section_heading.dart';
 import 'certificate_catalog.dart';
+
+class CertificateRegisterPage extends StatefulWidget {
+  const CertificateRegisterPage({super.key, this.catalog});
+
+  static const routeName = '/certificacoes';
+
+  final CertificateCatalog? catalog;
+
+  @override
+  State<CertificateRegisterPage> createState() =>
+      _CertificateRegisterPageState();
+}
+
+class _CertificateRegisterPageState extends State<CertificateRegisterPage> {
+  late final Future<CertificateCatalog> _catalog = widget.catalog == null
+      ? CertificateCatalog.load()
+      : Future<CertificateCatalog>.value(widget.catalog);
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<CertificateCatalog>(
+    future: _catalog,
+    builder: (context, snapshot) {
+      if (!snapshot.hasData) {
+        return const Scaffold(
+          key: Key('certificate-register-page'),
+          backgroundColor: Colors.transparent,
+          body: Center(child: CircularProgressIndicator()),
+        );
+      }
+      return _CertificateRegisterPageContent(catalog: snapshot.requireData);
+    },
+  );
+}
 
 class CertificationsSection extends StatefulWidget {
   const CertificationsSection({super.key, this.catalog});
@@ -42,10 +76,8 @@ class _CertificationsContent extends StatelessWidget {
 
   void _openRegister(BuildContext context) {
     PortfolioTelemetry.certificateAction('open_register');
-    showDialog<void>(
-      context: context,
-      builder: (context) => _CertificateRegisterDialog(catalog: catalog),
-    );
+    Navigator.of(context)
+        .pushNamed(CertificateRegisterPage.routeName, arguments: catalog);
   }
 
   @override
@@ -368,18 +400,18 @@ class _ViewAllCertificatesCard extends StatelessWidget {
   }
 }
 
-class _CertificateRegisterDialog extends StatefulWidget {
-  const _CertificateRegisterDialog({required this.catalog});
+class _CertificateRegisterPageContent extends StatefulWidget {
+  const _CertificateRegisterPageContent({required this.catalog});
 
   final CertificateCatalog catalog;
 
   @override
-  State<_CertificateRegisterDialog> createState() =>
-      _CertificateRegisterDialogState();
+  State<_CertificateRegisterPageContent> createState() =>
+      _CertificateRegisterPageContentState();
 }
 
-class _CertificateRegisterDialogState
-    extends State<_CertificateRegisterDialog> {
+class _CertificateRegisterPageContentState
+    extends State<_CertificateRegisterPageContent> {
   final Set<String> _selectedTechnologies = {};
 
   List<CertificateYearGroup> get _filteredGroups => [
@@ -429,87 +461,86 @@ class _CertificateRegisterDialogState
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final palette = context.leonePalette;
-    return Dialog(
-      key: const Key('certificate-register-dialog'),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1000, maxHeight: 760),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 22, 16, 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+    return Scaffold(
+      key: const Key('certificate-register-page'),
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        top: false,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1000),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                24,
+                PortfolioFixedTopBar.heightOf(context) + 32,
+                16,
+                16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.certificateRegister,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          l10n.certificateRegisterCopy,
-                          style: TextStyle(
-                            color: palette.mutedInk,
-                            height: 1.45,
-                          ),
-                        ),
-                      ],
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      l10n.certificateRegister,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
-                  IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    tooltip: l10n.closeDialog,
-                    icon: const Icon(Icons.close_rounded),
+                  const SizedBox(height: 6),
+                  Text(
+                    l10n.certificateRegisterCopy,
+                    style: TextStyle(color: palette.mutedInk, height: 1.45),
+                  ),
+                  const SizedBox(height: 18),
+                  _CertificateTechnologyFilters(
+                    technologies: widget.catalog.technologyTags,
+                    selectedTechnologies: _selectedTechnologies,
+                    onTechnologySelected: _toggleTechnology,
+                    onClear: _selectedTechnologies.isEmpty
+                        ? null
+                        : _clearFilters,
+                  ),
+                  const SizedBox(height: 18),
+                  Expanded(
+                    child: AnimatedSwitcher(
+                      duration: MediaQuery.disableAnimationsOf(context)
+                          ? Duration.zero
+                          : const Duration(milliseconds: 180),
+                      reverseDuration: MediaQuery.disableAnimationsOf(context)
+                          ? Duration.zero
+                          : const Duration(milliseconds: 140),
+                      transitionBuilder: (child, animation) => FadeTransition(
+                        opacity: animation,
+                        child: SlideTransition(
+                          position:
+                              Tween<Offset>(
+                                begin: const Offset(0, .025),
+                                end: Offset.zero,
+                              ).animate(
+                                CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.easeOutCubic,
+                                ),
+                              ),
+                          child: child,
+                        ),
+                      ),
+                      child: _CertificateFilterResults(
+                        key: ValueKey(
+                          'certificate-filter-results-$_resultsKey',
+                        ),
+                        groups: _filteredGroups,
+                        onOpenPreview: (certificate) =>
+                            _openPreview(context, certificate),
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 18),
-              _CertificateTechnologyFilters(
-                technologies: widget.catalog.technologyTags,
-                selectedTechnologies: _selectedTechnologies,
-                onTechnologySelected: _toggleTechnology,
-                onClear: _selectedTechnologies.isEmpty ? null : _clearFilters,
-              ),
-              const SizedBox(height: 18),
-              Expanded(
-                child: AnimatedSwitcher(
-                  duration: MediaQuery.disableAnimationsOf(context)
-                      ? Duration.zero
-                      : const Duration(milliseconds: 180),
-                  reverseDuration: MediaQuery.disableAnimationsOf(context)
-                      ? Duration.zero
-                      : const Duration(milliseconds: 140),
-                  transitionBuilder: (child, animation) => FadeTransition(
-                    opacity: animation,
-                    child: SlideTransition(
-                      position:
-                          Tween<Offset>(
-                            begin: const Offset(0, .025),
-                            end: Offset.zero,
-                          ).animate(
-                            CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeOutCubic,
-                            ),
-                          ),
-                      child: child,
-                    ),
-                  ),
-                  child: _CertificateFilterResults(
-                    key: ValueKey('certificate-filter-results-$_resultsKey'),
-                    groups: _filteredGroups,
-                    onOpenPreview: (certificate) =>
-                        _openPreview(context, certificate),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

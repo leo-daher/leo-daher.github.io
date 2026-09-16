@@ -1052,13 +1052,13 @@ abstract class AppLocalizations {
   /// **'View all certificates'**
   String get viewAllCertificates;
 
-  /// Certificate catalog dialog title.
+  /// Certificate catalog page title.
   ///
   /// In en, this message translates to:
   /// **'Certificate register'**
   String get certificateRegister;
 
-  /// Certificate catalog dialog supporting copy.
+  /// Certificate catalog page supporting copy.
   ///
   /// In en, this message translates to:
   /// **'Browse credentials by year and select one to view the official record and verification options.'**
@@ -1105,6 +1105,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close dialog'**
   String get closeDialog;
+
+  /// Hint shown after the first system back attempt from the top of the home page.
+  ///
+  /// In en, this message translates to:
+  /// **'Press back again to exit'**
+  String get pressBackAgainToExit;
 
   /// Country list title.
   ///
