@@ -104,10 +104,16 @@ void main() {
     final backgroundColor = appBar.backgroundColor! as WidgetStateColor;
     final unscrolledColor = backgroundColor.resolve({});
     final scrolledColor = backgroundColor.resolve({WidgetState.scrolledUnder});
-    expect(unscrolledColor, LeonePalette.dark.canvas);
-    expect(scrolledColor, LeonePalette.dark.canvas.withValues(alpha: .68));
+    expect(unscrolledColor, LeonePalette.glassDark.canvas);
+    expect(scrolledColor, LeonePalette.glassDark.canvas.withValues(alpha: .68));
     expect(scrolledColor, isNot(unscrolledColor));
-    expect(find.byType(BackdropFilter), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('portfolio-top-app-bar')),
+        matching: find.byType(BackdropFilter),
+      ),
+      findsOneWidget,
+    );
     expect(find.byKey(const Key('top-nav-home')), findsNothing);
     expect(find.byKey(const Key('top-nav-apps')), findsNothing);
     expect(find.byKey(const Key('top-nav-system')), findsNothing);
@@ -149,7 +155,7 @@ void main() {
         highContrastAppBar.backgroundColor! as WidgetStateColor;
     expect(
       highContrastBackground.resolve({WidgetState.scrolledUnder}),
-      LeonePalette.dark.canvas,
+      LeonePalette.glassDark.canvas,
     );
     expect(find.byType(BackdropFilter), findsNothing);
   });

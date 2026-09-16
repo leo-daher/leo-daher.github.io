@@ -1,3 +1,7 @@
+import 'dart:math' as math;
+import 'dart:ui' as ui;
+
+import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/link.dart';
@@ -139,14 +143,41 @@ class PortfolioContactButton extends StatefulWidget {
   State<PortfolioContactButton> createState() => _PortfolioContactButtonState();
 }
 
-class _PortfolioContactButtonState extends State<PortfolioContactButton> {
+class _PortfolioContactButtonState extends State<PortfolioContactButton>
+    with SingleTickerProviderStateMixin {
   final MenuController _menuController = MenuController();
   final FocusNode _buttonFocusNode = FocusNode(
     debugLabel: 'Portfolio contact menu',
   );
+  final FocusScopeNode _menuFocus = FocusScopeNode(
+    debugLabel: 'Contact destinations',
+    traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop,
+  );
+  final List<FocusNode> _itemFocus = List.generate(4, (_) => FocusNode());
+  late final AnimationController _motion = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 420),
+    reverseDuration: const Duration(milliseconds: 260),
+  )..addStatusListener(_onMotionStatus);
+  VoidCallback? _hideOverlay;
+  bool _expanded = false;
+  int _initialFocus = 0;
+
+  bool get _reduceMotion =>
+      MediaQuery.disableAnimationsOf(context) ||
+      WidgetsBinding
+          .instance
+          .platformDispatcher
+          .accessibilityFeatures
+          .reduceMotion;
 
   @override
   void dispose() {
+    _motion.dispose();
+    _menuFocus.dispose();
+    for (final node in _itemFocus) {
+      node.dispose();
+    }
     _buttonFocusNode.dispose();
     super.dispose();
   }
@@ -154,10 +185,6 @@ class _PortfolioContactButtonState extends State<PortfolioContactButton> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final palette = context.leonePalette;
-    final menuWidth = (MediaQuery.sizeOf(context).width - 16)
-        .clamp(0, 264)
-        .toDouble();
     final destinations = [
       _ContactMenuDestination(
         id: 'whatsapp',
@@ -187,104 +214,96 @@ class _PortfolioContactButtonState extends State<PortfolioContactButton> {
       ),
     ];
 
-    return MenuAnchor(
+    return RawMenuAnchor(
       key: const Key('header-contact-menu'),
       controller: _menuController,
       childFocusNode: _buttonFocusNode,
-      alignmentOffset: Offset(-menuWidth, 8),
-      reservedPadding: const EdgeInsets.all(8),
-      crossAxisUnconstrained: false,
       useRootOverlay: true,
-      onOpen: _refreshMenuState,
-      onClose: _refreshMenuState,
-      style: MenuStyle(
-        alignment: AlignmentDirectional.bottomEnd,
-        backgroundColor: WidgetStatePropertyAll(palette.surfaceRaised),
-        surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
-        shadowColor: WidgetStatePropertyAll(
-          Colors.black.withValues(alpha: .30),
-        ),
-        elevation: const WidgetStatePropertyAll(8),
-        padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
-        fixedSize: WidgetStatePropertyAll(Size.fromWidth(menuWidth)),
-        side: WidgetStatePropertyAll(BorderSide(color: palette.outline)),
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        ),
-      ),
-      menuChildren: [
-        for (final destination in destinations)
-          _PortfolioContactMenuLink(
-            destination: destination,
-            menuController: _menuController,
-          ),
-      ],
+      onOpenRequested: _openMenu,
+      onCloseRequested: _closeMenu,
+      overlayBuilder: (context, info) =>
+          _buildMenu(context, info, destinations),
       builder: (context, controller, _) {
-        final expanded = controller.isOpen;
+        final expanded = _expanded;
         final visibleLabel = widget.compact ? l10n.hireMeCompact : l10n.hireMe;
-        return Semantics(
-          button: true,
-          label: l10n.contactMenuLabel,
-          expanded: expanded,
-          value: expanded ? l10n.expanded : l10n.collapsed,
-          onTap: _toggleMenu,
-          child: ExcludeSemantics(
-            child: Tooltip(
-              message: l10n.contactMenuLabel,
-              excludeFromSemantics: true,
-              child: widget.compact
-                  ? IconButton(
-                      key: const Key('header-contact-button'),
-                      focusNode: _buttonFocusNode,
-                      onPressed: _toggleMenu,
-                      style: IconButton.styleFrom(
-                        foregroundColor: LeoneBrandColors.interactive,
-                        fixedSize: const Size(48, 48),
-                        backgroundColor: LeoneBrandColors.interactive
-                            .withValues(alpha: .10),
-                        side: BorderSide(
-                          color: LeoneBrandColors.interactive.withValues(
-                            alpha: .34,
+        return CallbackShortcuts(
+          bindings: {
+            const SingleActivator(LogicalKeyboardKey.arrowDown): () =>
+                _openFromKeyboard(0),
+            const SingleActivator(LogicalKeyboardKey.arrowUp): () =>
+                _openFromKeyboard(_itemFocus.length - 1),
+            const SingleActivator(LogicalKeyboardKey.escape):
+                _menuController.close,
+          },
+          child: Semantics(
+            button: true,
+            label: l10n.contactMenuLabel,
+            expanded: expanded,
+            value: expanded ? l10n.expanded : l10n.collapsed,
+            onTap: _toggleMenu,
+            child: ExcludeSemantics(
+              child: Tooltip(
+                message: l10n.contactMenuLabel,
+                excludeFromSemantics: true,
+                child: widget.compact
+                    ? IconButton(
+                        key: const Key('header-contact-button'),
+                        focusNode: _buttonFocusNode,
+                        onPressed: _toggleMenu,
+                        style: IconButton.styleFrom(
+                          foregroundColor: LeoneBrandColors.interactive,
+                          fixedSize: const Size(48, 48),
+                          backgroundColor: LeoneBrandColors.interactive
+                              .withValues(alpha: expanded ? .22 : .10),
+                          side: BorderSide(
+                            color: LeoneBrandColors.interactive.withValues(
+                              alpha: .34,
+                            ),
+                          ),
+                        ),
+                        icon: Icon(
+                          expanded ? Icons.close_rounded : Icons.forum_outlined,
+                          size: 20,
+                        ),
+                      )
+                    : TextButton.icon(
+                        key: const Key('header-contact-button'),
+                        focusNode: _buttonFocusNode,
+                        onPressed: _toggleMenu,
+                        style: TextButton.styleFrom(
+                          foregroundColor: LeoneBrandColors.interactive,
+                          minimumSize: const Size(0, 48),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          backgroundColor: LeoneBrandColors.interactive
+                              .withValues(alpha: expanded ? .22 : .10),
+                          side: BorderSide(
+                            color: LeoneBrandColors.interactive.withValues(
+                              alpha: .34,
+                            ),
+                          ),
+                          shape: const StadiumBorder(),
+                        ),
+                        icon: AnimatedRotation(
+                          turns: expanded ? .5 : 0,
+                          duration: _reduceMotion
+                              ? Duration.zero
+                              : const Duration(milliseconds: 260),
+                          curve: Curves.easeInOutCubic,
+                          child: const Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            size: 18,
+                          ),
+                        ),
+                        label: Text(
+                          visibleLabel.toUpperCase(),
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: .8,
                           ),
                         ),
                       ),
-                      icon: Icon(
-                        expanded ? Icons.close_rounded : Icons.forum_outlined,
-                        size: 20,
-                      ),
-                    )
-                  : TextButton.icon(
-                      key: const Key('header-contact-button'),
-                      focusNode: _buttonFocusNode,
-                      onPressed: _toggleMenu,
-                      style: TextButton.styleFrom(
-                        foregroundColor: LeoneBrandColors.interactive,
-                        minimumSize: const Size(0, 48),
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        backgroundColor: LeoneBrandColors.interactive
-                            .withValues(alpha: .10),
-                        side: BorderSide(
-                          color: LeoneBrandColors.interactive.withValues(
-                            alpha: .34,
-                          ),
-                        ),
-                        shape: const StadiumBorder(),
-                      ),
-                      icon: Icon(
-                        expanded
-                            ? Icons.keyboard_arrow_up_rounded
-                            : Icons.keyboard_arrow_down_rounded,
-                        size: 18,
-                      ),
-                      label: Text(
-                        visibleLabel.toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: .8,
-                        ),
-                      ),
-                    ),
+              ),
             ),
           ),
         );
@@ -293,15 +312,253 @@ class _PortfolioContactButtonState extends State<PortfolioContactButton> {
   }
 
   void _toggleMenu() {
-    if (_menuController.isOpen) {
+    if (_expanded) {
       _menuController.close();
+    } else {
+      _initialFocus = 0;
+      _menuController.open();
+    }
+  }
+
+  void _openFromKeyboard(int index) {
+    _initialFocus = index;
+    if (_expanded && _motion.isCompleted) {
+      _itemFocus[index].requestFocus();
     } else {
       _menuController.open();
     }
   }
 
-  void _refreshMenuState() {
-    if (mounted) setState(() {});
+  void _openMenu(Offset? position, VoidCallback showOverlay) {
+    _hideOverlay = null;
+    setState(() => _expanded = true);
+    showOverlay();
+    if (_reduceMotion) {
+      _motion.value = 1;
+    } else {
+      _motion.forward();
+    }
+  }
+
+  void _closeMenu(VoidCallback hideOverlay) {
+    if (!_expanded) return;
+    setState(() => _expanded = false);
+    if (_menuFocus.hasFocus) _buttonFocusNode.requestFocus();
+    _hideOverlay = hideOverlay;
+    if (_reduceMotion || _motion.isDismissed) {
+      _motion.value = 0;
+      _finishClosing();
+    } else {
+      _motion.reverse();
+    }
+  }
+
+  void _onMotionStatus(AnimationStatus status) {
+    if (status == AnimationStatus.dismissed) _finishClosing();
+    if (status == AnimationStatus.completed) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _expanded) _itemFocus[_initialFocus].requestFocus();
+      });
+    }
+  }
+
+  void _finishClosing() {
+    final hide = _hideOverlay;
+    _hideOverlay = null;
+    hide?.call();
+  }
+
+  Widget _buildMenu(
+    BuildContext context,
+    RawMenuOverlayInfo info,
+    List<_ContactMenuDestination> destinations,
+  ) {
+    final width = math.min(288.0, math.max(0.0, info.overlaySize.width - 16));
+    // Allow large system text without clipping the contact labels vertically.
+    final labelStyle = Theme.of(context).textTheme.labelLarge!;
+    final rowHeight = math.max(
+      52.0,
+      MediaQuery.textScalerOf(context).scale(labelStyle.fontSize ?? 14) *
+              (labelStyle.height ?? 1.43) +
+          24,
+    );
+    final fullHeight = rowHeight * destinations.length + 16;
+    final height = math.min(
+      fullHeight,
+      math.max(0.0, info.overlaySize.height - 16),
+    );
+    final left = (info.anchorRect.right - width)
+        .clamp(8.0, math.max(8.0, info.overlaySize.width - width - 8))
+        .toDouble();
+    final top = (info.anchorRect.bottom + 10)
+        .clamp(8.0, math.max(8.0, info.overlaySize.height - height - 8))
+        .toDouble();
+    final target = Rect.fromLTWH(left, top, width, height);
+    final palette = context.leonePalette;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final highContrast = MediaQuery.highContrastOf(context);
+    final tint = dark ? const Color(0xFF262433) : const Color(0xFFF8F7FC);
+
+    return AnimatedBuilder(
+      animation: _motion,
+      builder: (context, _) {
+        final progress = Curves.easeOutCubic.transform(_motion.value);
+        final rect = Rect.lerp(info.anchorRect, target, progress)!;
+        final radius = BorderRadius.circular(24 + 4 * progress);
+        final reveal = const Interval(
+          .18,
+          .85,
+          curve: Curves.easeOut,
+        ).transform(_motion.value);
+        return Positioned.fromRect(
+          rect: rect,
+          child: TapRegion(
+            groupId: info.tapRegionGroupId,
+            onTapOutside: (_) => _menuController.close(),
+            child: IgnorePointer(
+              ignoring: !_expanded || _motion.value < .5,
+              child: ExcludeSemantics(
+                excluding: !_expanded || reveal == 0,
+                child: ExcludeFocus(
+                  excluding: !_expanded,
+                  child: Semantics(
+                    scopesRoute: true,
+                    explicitChildNodes: true,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: radius,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(
+                              alpha: (dark ? .32 : .14) * progress,
+                            ),
+                            blurRadius: 32,
+                            offset: const Offset(0, 12),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        key: const Key('header-contact-glass-surface'),
+                        borderRadius: radius,
+                        child: BackdropFilter(
+                          enabled: !highContrast,
+                          filter: ui.ImageFilter.blur(sigmaX: 28, sigmaY: 28),
+                          child: DecoratedBox(
+                            key: const Key('header-contact-glass-tint'),
+                            decoration: BoxDecoration(
+                              color: tint.withValues(
+                                alpha: highContrast ? 1 : (dark ? .90 : .86),
+                              ),
+                              borderRadius: radius,
+                              border: Border.all(
+                                color: highContrast
+                                    ? palette.ink
+                                    : Colors.white.withValues(
+                                        alpha: dark ? .24 : .88,
+                                      ),
+                              ),
+                              gradient: highContrast
+                                  ? null
+                                  : LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Color.alphaBlend(
+                                          Colors.white.withValues(
+                                            alpha: dark ? .09 : .32,
+                                          ),
+                                          tint.withValues(
+                                            alpha: dark ? .90 : .86,
+                                          ),
+                                        ),
+                                        tint.withValues(
+                                          alpha: dark ? .90 : .86,
+                                        ),
+                                      ],
+                                    ),
+                            ),
+                            child: OverflowBox(
+                              alignment: Alignment.topRight,
+                              minWidth: width,
+                              maxWidth: width,
+                              minHeight: height,
+                              maxHeight: height,
+                              child: Opacity(
+                                opacity: reveal,
+                                child: FocusScope(
+                                  node: _menuFocus,
+                                  child: CallbackShortcuts(
+                                    bindings: {
+                                      const SingleActivator(
+                                        LogicalKeyboardKey.escape,
+                                      ): _menuController.close,
+                                      const SingleActivator(
+                                        LogicalKeyboardKey.arrowDown,
+                                      ): () =>
+                                          _moveFocus(1),
+                                      const SingleActivator(
+                                        LogicalKeyboardKey.arrowUp,
+                                      ): () =>
+                                          _moveFocus(-1),
+                                      const SingleActivator(
+                                        LogicalKeyboardKey.home,
+                                      ): () =>
+                                          _itemFocus.first.requestFocus(),
+                                      const SingleActivator(
+                                        LogicalKeyboardKey.end,
+                                      ): () =>
+                                          _itemFocus.last.requestFocus(),
+                                    },
+                                    child: Material(
+                                      type: MaterialType.transparency,
+                                      child: SingleChildScrollView(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            for (
+                                              var index = 0;
+                                              index < destinations.length;
+                                              index++
+                                            )
+                                              SizedBox(
+                                                height: rowHeight,
+                                                child:
+                                                    _PortfolioContactMenuLink(
+                                                      destination:
+                                                          destinations[index],
+                                                      menuController:
+                                                          _menuController,
+                                                      focusNode:
+                                                          _itemFocus[index],
+                                                    ),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _moveFocus(int delta) {
+    final current = _itemFocus.indexWhere((node) => node.hasFocus);
+    _itemFocus[(current + delta) % _itemFocus.length].requestFocus();
   }
 }
 
@@ -327,10 +584,12 @@ class _PortfolioContactMenuLink extends StatelessWidget {
   const _PortfolioContactMenuLink({
     required this.destination,
     required this.menuController,
+    required this.focusNode,
   });
 
   final _ContactMenuDestination destination;
   final MenuController menuController;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -357,9 +616,9 @@ class _PortfolioContactMenuLink extends StatelessWidget {
           label: destination.label,
           onTap: openLink,
           child: ExcludeSemantics(
-            child: MenuItemButton(
+            child: TextButton(
               key: Key('header-contact-item-${destination.id}'),
-              closeOnActivate: false,
+              focusNode: focusNode,
               onPressed: openLink,
               style: ButtonStyle(
                 foregroundColor: WidgetStatePropertyAll(palette.ink),
@@ -373,20 +632,30 @@ class _PortfolioContactMenuLink extends StatelessWidget {
                   ),
                 ),
               ),
-              leadingIcon: destination.iconAsset == null
-                  ? Icon(destination.icon, color: accent, size: 21)
-                  : SvgPicture.asset(
-                      destination.iconAsset!,
-                      width: 20,
-                      height: 20,
-                      colorFilter: ColorFilter.mode(accent, BlendMode.srcIn),
-                      excludeFromSemantics: true,
+              child: Row(
+                children: [
+                  destination.iconAsset == null
+                      ? Icon(destination.icon, color: accent, size: 21)
+                      : SvgPicture.asset(
+                          destination.iconAsset!,
+                          width: 20,
+                          height: 20,
+                          colorFilter: ColorFilter.mode(
+                            accent,
+                            BlendMode.srcIn,
+                          ),
+                          excludeFromSemantics: true,
+                        ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      destination.label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
-              child: Text(
-                destination.label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ],
               ),
             ),
           ),
