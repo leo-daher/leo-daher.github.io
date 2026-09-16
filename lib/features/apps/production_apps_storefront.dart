@@ -117,24 +117,34 @@ class ProductionAppsCatalogPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.leonePalette;
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SelectionArea(
         child: CustomScrollView(
           key: const Key('all-apps-scroll-view'),
           slivers: [
-            _StorePageAppBar(title: content.allAppsTitle),
+            SliverToBoxAdapter(
+              child: SizedBox(height: PortfolioFixedTopBar.heightOf(context)),
+            ),
             SliverToBoxAdapter(
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 1240),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(24, 32, 24, 14),
-                    child: Text(
-                      content.allAppsSupportingText,
-                      style: TextStyle(
-                        color: palette.mutedInk,
-                        fontSize: 15,
-                        height: 1.55,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PortfolioSectionHeading(title: content.allAppsTitle),
+                        const SizedBox(height: 12),
+                        Text(
+                          content.allAppsSupportingText,
+                          style: TextStyle(
+                            color: palette.mutedInk,
+                            fontSize: 15,
+                            height: 1.55,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -178,11 +188,14 @@ class ProductionAppDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SelectionArea(
         child: CustomScrollView(
           key: Key('app-detail-scroll-view-${app.id}'),
           slivers: [
-            _StorePageAppBar(title: app.name),
+            SliverToBoxAdapter(
+              child: SizedBox(height: PortfolioFixedTopBar.heightOf(context)),
+            ),
             SliverToBoxAdapter(
               child: Center(
                 child: ConstrainedBox(
@@ -200,41 +213,6 @@ class ProductionAppDetailPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _StorePageAppBar extends StatelessWidget {
-  const _StorePageAppBar({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.leonePalette;
-    final usesGlass = context.usesLeoneGlass;
-    return SliverAppBar(
-      key: const Key('store-page-app-bar'),
-      pinned: true,
-      elevation: 0,
-      scrolledUnderElevation: usesGlass ? 0 : 3,
-      shadowColor: usesGlass
-          ? Colors.transparent
-          : Colors.black.withValues(alpha: .32),
-      surfaceTintColor: Colors.transparent,
-      backgroundColor: usesGlass
-          ? regularLiquidGlassBackground(context, palette)
-          : palette.canvas,
-      flexibleSpace: usesGlass
-          ? const PortfolioRegularLiquidGlassBackdrop()
-          : null,
-      foregroundColor: palette.ink,
-      title: Text(
-        title,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
       ),
     );
   }

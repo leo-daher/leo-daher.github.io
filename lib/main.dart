@@ -12,6 +12,7 @@ import 'features/clients/client_logo_cloud.dart';
 import 'features/contact/contact_section.dart';
 import 'features/hero/portfolio_hero.dart';
 import 'features/navigation/portfolio_fab_menu.dart';
+import 'features/navigation/portfolio_page_transition.dart';
 import 'features/navigation/portfolio_top_bar.dart';
 import 'features/proof/portfolio_proof_strip.dart';
 import 'features/system/system_overview_section.dart';
@@ -43,6 +44,11 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
   ThemeMode _themeMode = ThemeMode.dark;
   bool _localeChosenInSession = false;
   bool _themeChosenInSession = false;
+  bool _homeReady = false;
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  final GlobalKey<_PortfolioHomePageState> _homePageKey =
+      GlobalKey<_PortfolioHomePageState>();
+  final _navigationObserver = _PortfolioNavigationObserver();
   late final PortfolioSeoRouteObserver _seoRouteObserver =
       PortfolioSeoRouteObserver(
         initialLanguageCode:
@@ -53,6 +59,12 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
   void initState() {
     super.initState();
     _restorePreferences();
+  }
+
+  @override
+  void dispose() {
+    _navigationObserver.dispose();
+    super.dispose();
   }
 
   Future<void> _restorePreferences() async {
@@ -94,6 +106,16 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
     await preferences.setString(_themePreferenceKey, themeMode.name);
   }
 
+  void _markHomeReady() {
+    if (_homeReady || !mounted) return;
+    setState(() => _homeReady = true);
+  }
+
+  void _scrollHomeToTop() {
+    PortfolioTelemetry.sectionSelected(PortfolioDestination.home.name);
+    _homePageKey.currentState?.scrollToTop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -108,12 +130,42 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
         ...GlobalMaterialLocalizations.delegates,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      navigatorObservers: [_seoRouteObserver],
+      navigatorKey: _navigatorKey,
+      navigatorObservers: [_seoRouteObserver, _navigationObserver],
+      builder: (context, navigator) => LeoneGlassExperience(
+        child: _PortfolioNavigationFrame(
+          navigator: navigator!,
+          navigatorKey: _navigatorKey,
+          navigationObserver: _navigationObserver,
+          showHeader: _homeReady || _navigationObserver.canNavigateBack,
+          onHomePressed: _scrollHomeToTop,
+          onLocaleChanged: _setLocale,
+          onThemeModeChanged: _setThemeMode,
+        ),
+      ),
       initialRoute: widget.initialRoute,
       onGenerateInitialRoutes: (initialRouteName) {
-        final initialRoute = _generateRoute(
-          RouteSettings(name: initialRouteName),
-        );
+        final routeSettings = RouteSettings(name: initialRouteName);
+        final initialRoute = _generateRoute(routeSettings);
+        final routeName = _normalizedRoutePath(initialRouteName);
+        final startsAwayFromHome =
+            initialRoute != null &&
+            routeName != null &&
+            routeName != '/' &&
+            routeName != _iosRouteName;
+        if (startsAwayFromHome) {
+          final homeRouteName = routeName.startsWith('/ios/')
+              ? _iosRouteName
+              : '/';
+          return [
+            _generateRoute(
+              RouteSettings(name: homeRouteName),
+              skipHomeOpening: true,
+              maintainState: false,
+            )!,
+            initialRoute,
+          ];
+        }
         return [
           initialRoute ?? _generateRoute(const RouteSettings(name: '/'))!,
         ];
@@ -122,31 +174,37 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
     );
   }
 
-  Route<void>? _generateRoute(RouteSettings settings) {
+  Route<void>? _generateRoute(
+    RouteSettings settings, {
+    bool skipHomeOpening = false,
+    bool maintainState = true,
+  }) {
     final routeName = _normalizedRoutePath(settings.name);
     if (routeName == null || routeName == '/' || routeName == _iosRouteName) {
-      return MaterialPageRoute<void>(
+      return PortfolioPlanePageRoute<void>(
         settings: settings,
-        builder: (_) => LeoneGlassExperience(
-          child: _PortfolioEntry(
-            onLocaleChanged: _setLocale,
-            onThemeModeChanged: _setThemeMode,
-          ),
+        reduceMotion: _reduceMotion,
+        maintainState: maintainState,
+        pageBuilder: (_, _, _) => _PortfolioEntry(
+          homePageKey: _homePageKey,
+          skipOpening: skipHomeOpening,
+          onReady: _markHomeReady,
+          onLocaleChanged: _setLocale,
+          onThemeModeChanged: _setThemeMode,
         ),
       );
     }
     if (ProductionAppsRoutes.isCatalog(settings.name)) {
-      return MaterialPageRoute<void>(
+      return PortfolioPlanePageRoute<void>(
         settings: settings,
-        builder: (context) {
+        reduceMotion: _reduceMotion,
+        pageBuilder: (context, _, _) {
           final presentation = ProductionAppsPresentation.localized(
             context.l10n,
           );
-          return LeoneGlassExperience(
-            child: ProductionAppsCatalogPage(
-              content: presentation.storefrontContent,
-              items: presentation.storefrontItems,
-            ),
+          return ProductionAppsCatalogPage(
+            content: presentation.storefrontContent,
+            items: presentation.storefrontItems,
           );
         },
       );
@@ -154,9 +212,10 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
     final appItemId = ProductionAppsRoutes.detailItemId(settings.name);
     if (appItemId != null &&
         ProductionAppsRoutes.supportedItemIds.contains(appItemId)) {
-      return MaterialPageRoute<void>(
+      return PortfolioPlanePageRoute<void>(
         settings: settings,
-        builder: (context) {
+        reduceMotion: _reduceMotion,
+        pageBuilder: (context, _, _) {
           final presentation = ProductionAppsPresentation.localized(
             context.l10n,
           );
@@ -166,36 +225,36 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
           final app = presentation.apps.singleWhere(
             (app) => app.id == item.appCaseId,
           );
-          return LeoneGlassExperience(
-            child: ProductionAppDetailPage(
-              content: presentation.content,
-              app: app,
-            ),
+          return ProductionAppDetailPage(
+            content: presentation.content,
+            app: app,
           );
         },
       );
     }
     if (routeName == ArticlesPage.routeName ||
         routeName == _iosArticleRouteName) {
-      final accessibilityFeatures =
-          WidgetsBinding.instance.platformDispatcher.accessibilityFeatures;
-      final reduceMotion =
-          accessibilityFeatures.disableAnimations ||
-          accessibilityFeatures.reduceMotion;
-      return _PortfolioArticleRoute(
+      return PortfolioPlanePageRoute<void>(
+        settings: settings,
+        reduceMotion: _reduceMotion,
         pageBuilder: (_, _, _) {
-          final page = ArticlesPage(
+          return ArticlesPage(
+            useEmbeddedTopBar: false,
             onLocaleChanged: _setLocale,
             onThemeModeChanged: _setThemeMode,
           );
-          return LeoneGlassExperience(child: page);
         },
-        settings: settings,
-        reduceMotion: reduceMotion,
       );
     }
     return null;
   }
+}
+
+bool get _reduceMotion {
+  final accessibilityFeatures =
+      WidgetsBinding.instance.platformDispatcher.accessibilityFeatures;
+  return accessibilityFeatures.disableAnimations ||
+      accessibilityFeatures.reduceMotion;
 }
 
 String? _normalizedRoutePath(String? routeName) {
@@ -210,34 +269,160 @@ String? _normalizedRoutePath(String? routeName) {
 const _iosRouteName = '/ios';
 const _iosArticleRouteName = '/ios/artigos/identidade-visual';
 
-class _PortfolioArticleRoute extends PageRouteBuilder<void> {
-  _PortfolioArticleRoute({
-    required super.pageBuilder,
-    required super.settings,
-    required bool reduceMotion,
-  }) : super(
-         transitionDuration: reduceMotion
-             ? Duration.zero
-             : LeoneBrandMotion.pageTransitionForward,
-         reverseTransitionDuration: reduceMotion
-             ? Duration.zero
-             : LeoneBrandMotion.pageTransitionReverse,
-         transitionsBuilder: (_, _, _, child) => child,
-       );
+class _PortfolioNavigationObserver extends NavigatorObserver
+    with ChangeNotifier {
+  final List<Route<dynamic>> _routes = [];
+  bool _notificationScheduled = false;
+  bool _disposed = false;
 
-  // The previous route stays still while the article surface moves above it.
-  // This prevents the shared header on the home route from receiving the
-  // platform's secondary page transition.
+  bool get canNavigateBack => _routes.length > 1;
+
   @override
-  bool canTransitionFrom(TransitionRoute<dynamic> previousRoute) => false;
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPush(route, previousRoute);
+    _routes.add(route);
+    _scheduleNotification();
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPop(route, previousRoute);
+    if (route is TransitionRoute<dynamic>) {
+      route.completed.then((_) => _removePoppedRoute(route));
+    } else {
+      _removePoppedRoute(route);
+    }
+  }
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didRemove(route, previousRoute);
+    _routes.remove(route);
+    _scheduleNotification();
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    final oldIndex = oldRoute == null ? -1 : _routes.indexOf(oldRoute);
+    if (oldIndex >= 0 && newRoute != null) {
+      _routes[oldIndex] = newRoute;
+    } else {
+      if (oldRoute != null) _routes.remove(oldRoute);
+      if (newRoute != null) _routes.add(newRoute);
+    }
+    _scheduleNotification();
+  }
+
+  void _scheduleNotification() {
+    if (_disposed || _notificationScheduled) return;
+    _notificationScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _notificationScheduled = false;
+      if (_disposed) return;
+      notifyListeners();
+    });
+  }
+
+  void _removePoppedRoute(Route<dynamic> route) {
+    if (_disposed || !_routes.remove(route)) return;
+    _scheduleNotification();
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
 }
 
-class _PortfolioEntry extends StatefulWidget {
-  const _PortfolioEntry({
+class _PortfolioNavigationFrame extends StatefulWidget {
+  const _PortfolioNavigationFrame({
+    required this.navigator,
+    required this.navigatorKey,
+    required this.navigationObserver,
+    required this.showHeader,
+    required this.onHomePressed,
     required this.onLocaleChanged,
     required this.onThemeModeChanged,
   });
 
+  final Widget navigator;
+  final GlobalKey<NavigatorState> navigatorKey;
+  final _PortfolioNavigationObserver navigationObserver;
+  final bool showHeader;
+  final VoidCallback onHomePressed;
+  final ValueChanged<Locale> onLocaleChanged;
+  final ValueChanged<ThemeMode> onThemeModeChanged;
+
+  @override
+  State<_PortfolioNavigationFrame> createState() =>
+      _PortfolioNavigationFrameState();
+}
+
+class _PortfolioNavigationFrameState extends State<_PortfolioNavigationFrame> {
+  late final OverlayEntry _frameEntry = OverlayEntry(builder: _buildFrame);
+
+  @override
+  void didUpdateWidget(covariant _PortfolioNavigationFrame oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _frameEntry.markNeedsBuild();
+  }
+
+  @override
+  void dispose() {
+    _frameEntry.remove();
+    _frameEntry.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Overlay(initialEntries: [_frameEntry]);
+  }
+
+  Widget _buildFrame(BuildContext context) {
+    return AnimatedBuilder(
+      animation: widget.navigationObserver,
+      builder: (context, _) {
+        final canNavigateBack = widget.navigationObserver.canNavigateBack;
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            widget.navigator,
+            if (widget.showHeader || canNavigateBack)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: PortfolioFixedTopBar(
+                  canNavigateBack: canNavigateBack,
+                  onHomePressed: widget.onHomePressed,
+                  onBackPressed: () =>
+                      widget.navigatorKey.currentState?.maybePop(),
+                  onLocaleChanged: widget.onLocaleChanged,
+                  onThemeModeChanged: widget.onThemeModeChanged,
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _PortfolioEntry extends StatefulWidget {
+  const _PortfolioEntry({
+    required this.homePageKey,
+    required this.skipOpening,
+    required this.onReady,
+    required this.onLocaleChanged,
+    required this.onThemeModeChanged,
+  });
+
+  final GlobalKey<_PortfolioHomePageState> homePageKey;
+  final bool skipOpening;
+  final VoidCallback onReady;
   final ValueChanged<Locale> onLocaleChanged;
   final ValueChanged<ThemeMode> onThemeModeChanged;
 
@@ -246,14 +431,21 @@ class _PortfolioEntry extends StatefulWidget {
 }
 
 class _PortfolioEntryState extends State<_PortfolioEntry> {
-  bool _homeMounted = false;
-  bool _showOpening = true;
+  late bool _homeMounted;
+  late bool _showOpening;
 
   @override
   void initState() {
     super.initState();
+    _homeMounted = widget.skipOpening;
+    _showOpening = !widget.skipOpening;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) setState(() => _homeMounted = true);
+      if (!mounted) return;
+      if (widget.skipOpening) {
+        widget.onReady();
+      } else {
+        setState(() => _homeMounted = true);
+      }
     });
   }
 
@@ -264,12 +456,15 @@ class _PortfolioEntryState extends State<_PortfolioEntry> {
         if (_homeMounted)
           ExcludeSemantics(
             excluding: _showOpening,
-            child: PortfolioHomePage(
+            child: KeyedSubtree(
               key: const Key('portfolio-home-page'),
-              floatingActionButtonEnabled: !_showOpening,
-              heroAutoPlay: !_showOpening,
-              onLocaleChanged: widget.onLocaleChanged,
-              onThemeModeChanged: widget.onThemeModeChanged,
+              child: PortfolioHomePage(
+                key: widget.homePageKey,
+                floatingActionButtonEnabled: !_showOpening,
+                heroAutoPlay: !_showOpening,
+                onLocaleChanged: widget.onLocaleChanged,
+                onThemeModeChanged: widget.onThemeModeChanged,
+              ),
             ),
           ),
         if (_showOpening)
@@ -278,6 +473,7 @@ class _PortfolioEntryState extends State<_PortfolioEntry> {
             onCompleted: () {
               if (!mounted) return;
               setState(() => _showOpening = false);
+              widget.onReady();
               PortfolioTelemetry.portfolioViewed(
                 locale: Localizations.localeOf(context).languageCode,
                 theme: Theme.of(context).brightness.name,
@@ -313,6 +509,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   static const _scrollDepthThresholds = [25, 50, 75, 90];
   final ScrollController _scrollController = ScrollController();
   final Set<int> _reportedScrollDepths = {};
+  bool _atTop = true;
   final GlobalKey _appsSectionKey = GlobalKey(
     debugLabel: 'portfolio-apps-section',
   );
@@ -332,7 +529,14 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_trackScrollDepth);
+    _scrollController.addListener(_handleScroll);
+  }
+
+  void _handleScroll() {
+    _trackScrollDepth();
+    final atTop =
+        !_scrollController.hasClients || _scrollController.offset <= .5;
+    if (atTop != _atTop && mounted) setState(() => _atTop = atTop);
   }
 
   void _trackScrollDepth() {
@@ -352,20 +556,24 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
   @override
   void dispose() {
-    _scrollController.removeListener(_trackScrollDepth);
+    _scrollController.removeListener(_handleScroll);
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void scrollToTop() {
+    if (!_scrollController.hasClients) return;
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 480),
+      curve: LeoneBrandMotion.pageTransitionCurve,
+    );
   }
 
   void _navigateTo(PortfolioDestination destination) {
     PortfolioTelemetry.sectionSelected(destination.name);
     if (destination == PortfolioDestination.home) {
-      if (!_scrollController.hasClients) return;
-      _scrollController.animateTo(
-        0,
-        duration: const Duration(milliseconds: 720),
-        curve: Curves.easeInOutCubic,
-      );
+      scrollToTop();
       return;
     }
 
@@ -388,77 +596,81 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   @override
   Widget build(BuildContext context) {
     final appsPresentation = ProductionAppsPresentation.localized(context.l10n);
-    return PortfolioFabMenuScaffold(
-      showFloatingActionButton: widget.showFloatingActionButton,
-      floatingActionButtonEnabled: widget.floatingActionButtonEnabled,
-      onSelected: _navigateTo,
-      body: SelectionArea(
-        child: CustomScrollView(
-          key: const Key('portfolio-scroll-view'),
-          controller: _scrollController,
-          slivers: [
-            PortfolioSliverTopBar(
-              onLocaleChanged: widget.onLocaleChanged,
-              onThemeModeChanged: widget.onThemeModeChanged,
-              onHomePressed: () => _navigateTo(PortfolioDestination.home),
-            ),
-            SliverToBoxAdapter(
-              child: _SectionFrame(
-                maxWidth: 1440,
-                padding: const EdgeInsets.fromLTRB(24, 30, 24, 0),
-                child: PortfolioHero(autoPlay: widget.heroAutoPlay),
+    return PopScope<void>(
+      canPop: _atTop,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && !_atTop) scrollToTop();
+      },
+      child: PortfolioFabMenuScaffold(
+        showFloatingActionButton: widget.showFloatingActionButton,
+        floatingActionButtonEnabled: widget.floatingActionButtonEnabled,
+        onSelected: _navigateTo,
+        body: SelectionArea(
+          child: CustomScrollView(
+            key: const Key('portfolio-scroll-view'),
+            controller: _scrollController,
+            slivers: [
+              SliverToBoxAdapter(
+                child: SizedBox(height: PortfolioFixedTopBar.heightOf(context)),
               ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
-            const SliverToBoxAdapter(
-              child: _SectionFrame(child: PortfolioProofStrip()),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 92)),
-            SliverToBoxAdapter(
-              child: SizedBox(key: _appsSectionKey, height: 1),
-            ),
-            SliverToBoxAdapter(
-              child: ProductionAppsStorefront(
-                content: appsPresentation.storefrontContent,
-                items: appsPresentation.storefrontItems,
-              ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 72)),
-            SliverToBoxAdapter(
-              child: _SectionFrame(
-                key: _systemSectionKey,
-                child: const SystemOverviewSection(),
-              ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 92)),
-            SliverToBoxAdapter(
-              child: _SectionFrame(
-                key: _clientsSectionKey,
-                child: const ClientLogoCloud(),
-              ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 92)),
-            SliverToBoxAdapter(child: const CertificationsSection()),
-            const SliverToBoxAdapter(child: SizedBox(height: 92)),
-            SliverToBoxAdapter(
-              child: _SectionFrame(
-                key: _articlesSectionKey,
-                child: ArticlesSection(
-                  onOpenArticles: () =>
-                      Navigator.of(context).pushNamed(ArticlesPage.routeName),
+              SliverToBoxAdapter(
+                child: _SectionFrame(
+                  maxWidth: 1440,
+                  padding: const EdgeInsets.fromLTRB(24, 30, 24, 0),
+                  child: PortfolioHero(autoPlay: widget.heroAutoPlay),
                 ),
               ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 92)),
-            SliverToBoxAdapter(
-              child: _SectionFrame(
-                key: _contactSectionKey,
-                child: const ContactSection(),
+              const SliverToBoxAdapter(child: SizedBox(height: 32)),
+              const SliverToBoxAdapter(
+                child: _SectionFrame(child: PortfolioProofStrip()),
               ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 72)),
-            const SliverToBoxAdapter(child: _Footer()),
-          ],
+              const SliverToBoxAdapter(child: SizedBox(height: 92)),
+              SliverToBoxAdapter(
+                child: SizedBox(key: _appsSectionKey, height: 1),
+              ),
+              SliverToBoxAdapter(
+                child: ProductionAppsStorefront(
+                  content: appsPresentation.storefrontContent,
+                  items: appsPresentation.storefrontItems,
+                ),
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 72)),
+              SliverToBoxAdapter(
+                child: _SectionFrame(
+                  key: _systemSectionKey,
+                  child: const SystemOverviewSection(),
+                ),
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 92)),
+              SliverToBoxAdapter(
+                child: _SectionFrame(
+                  key: _clientsSectionKey,
+                  child: const ClientLogoCloud(),
+                ),
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 92)),
+              SliverToBoxAdapter(child: const CertificationsSection()),
+              const SliverToBoxAdapter(child: SizedBox(height: 92)),
+              SliverToBoxAdapter(
+                child: _SectionFrame(
+                  key: _articlesSectionKey,
+                  child: ArticlesSection(
+                    onOpenArticles: () =>
+                        Navigator.of(context).pushNamed(ArticlesPage.routeName),
+                  ),
+                ),
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 92)),
+              SliverToBoxAdapter(
+                child: _SectionFrame(
+                  key: _contactSectionKey,
+                  child: const ContactSection(),
+                ),
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 72)),
+              const SliverToBoxAdapter(child: _Footer()),
+            ],
+          ),
         ),
       ),
     );

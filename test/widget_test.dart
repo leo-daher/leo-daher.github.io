@@ -87,6 +87,81 @@ void main() {
     },
   );
 
+  testWidgets(
+    'system back scrolls home to the top before leaving the portfolio',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const LeonePortfolioApp());
+      await _finishOpening(tester);
+
+      final homeScroll = find.byKey(const Key('portfolio-scroll-view'));
+      await tester.drag(homeScroll, const Offset(0, -700));
+      await tester.pumpAndSettle();
+      expect(
+        tester
+            .state<ScrollableState>(
+              find.descendant(
+                of: homeScroll,
+                matching: find.byType(Scrollable),
+              ),
+            )
+            .position
+            .pixels,
+        greaterThan(0),
+      );
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('portfolio-home-page')), findsOneWidget);
+      expect(
+        tester
+            .state<ScrollableState>(
+              find.descendant(
+                of: homeScroll,
+                matching: find.byType(Scrollable),
+              ),
+            )
+            .position
+            .pixels,
+        closeTo(0, .01),
+      );
+      expect(await tester.binding.handlePopRoute(), isFalse);
+    },
+  );
+
+  testWidgets('direct app links return home before releasing system back', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      const LeonePortfolioApp(initialRoute: '/apps/mag-venda-digital'),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('app-detail-scroll-view-mag-venda-digital')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('article-back-button')), findsOneWidget);
+    expect(find.byKey(const Key('ld-opening-transition')), findsNothing);
+
+    expect(await tester.binding.handlePopRoute(), isTrue);
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('portfolio-home-page')), findsOneWidget);
+    expect(find.byKey(const Key('ld-opening-transition')), findsNothing);
+    expect(await tester.binding.handlePopRoute(), isFalse);
+  });
+
   testWidgets('renders a simplified hero fixed on the mobile focus', (
     tester,
   ) async {
@@ -149,25 +224,12 @@ void main() {
     await tester.pumpWidget(const LeonePortfolioApp());
     await _finishOpening(tester);
 
-    final appBar = tester.widget<SliverAppBar>(
-      find.byKey(const Key('portfolio-top-app-bar')),
-    );
-    expect(appBar.pinned, isTrue);
-    expect(appBar.elevation, 0);
-    expect(appBar.scrolledUnderElevation, 0);
-    expect(appBar.shadowColor, Colors.transparent);
-    expect(appBar.surfaceTintColor, Colors.transparent);
-    final backgroundColor = appBar.backgroundColor! as WidgetStateColor;
-    final unscrolledColor = backgroundColor.resolve({});
-    final scrolledColor = backgroundColor.resolve({WidgetState.scrolledUnder});
-    expect(unscrolledColor, LeonePalette.glassDark.canvas);
-    expect(scrolledColor, LeonePalette.glassDark.canvas.withValues(alpha: .68));
-    expect(scrolledColor, isNot(unscrolledColor));
+    final fixedTopBar = find.byKey(const Key('portfolio-fixed-top-bar'));
+    final initialRect = tester.getRect(fixedTopBar);
+    expect(initialRect.top, 0);
+    expect(initialRect.height, 72);
     expect(
-      find.descendant(
-        of: find.byKey(const Key('portfolio-top-app-bar')),
-        matching: find.byType(BackdropFilter),
-      ),
+      find.descendant(of: fixedTopBar, matching: find.byType(BackdropFilter)),
       findsOneWidget,
     );
     expect(find.byKey(const Key('top-nav-home')), findsNothing);
@@ -176,44 +238,27 @@ void main() {
     expect(find.byKey(const Key('top-nav-clients')), findsNothing);
     expect(find.byKey(const Key('top-nav-contact')), findsNothing);
 
-    Material renderedTopBar() => tester.widget<Material>(
-      find
-          .descendant(
-            of: find.byKey(const Key('portfolio-top-app-bar')),
-            matching: find.byType(Material),
-          )
-          .first,
-    );
-
-    expect(renderedTopBar().color, unscrolledColor);
-    expect(renderedTopBar().elevation, 0);
-    expect(renderedTopBar().shadowColor, Colors.transparent);
-
     await tester.drag(
       find.byKey(const Key('portfolio-scroll-view')),
       const Offset(0, -600),
     );
     await tester.pumpAndSettle();
 
-    expect(renderedTopBar().color, scrolledColor);
-    expect(renderedTopBar().elevation, 0);
-    expect(renderedTopBar().shadowColor, Colors.transparent);
+    expect(tester.getRect(fixedTopBar), initialRect);
 
     tester.platformDispatcher.accessibilityFeaturesTestValue =
         const FakeAccessibilityFeatures(highContrast: true);
     addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
     await tester.pumpAndSettle();
 
-    final highContrastAppBar = tester.widget<SliverAppBar>(
-      find.byKey(const Key('portfolio-top-app-bar')),
+    final highContrastBackground = tester.widget<ColoredBox>(
+      find.descendant(of: fixedTopBar, matching: find.byType(ColoredBox)),
     );
-    final highContrastBackground =
-        highContrastAppBar.backgroundColor! as WidgetStateColor;
+    expect(highContrastBackground.color, LeonePalette.glassDark.canvas);
     expect(
-      highContrastBackground.resolve({WidgetState.scrolledUnder}),
-      LeonePalette.glassDark.canvas,
+      find.descendant(of: fixedTopBar, matching: find.byType(BackdropFilter)),
+      findsNothing,
     );
-    expect(find.byType(BackdropFilter), findsNothing);
   });
 
   testWidgets('top CTA opens four contact options without assuming a channel', (
@@ -309,8 +354,13 @@ void main() {
     await tester.pumpWidget(const LeonePortfolioApp());
     await _finishOpening(tester);
 
+    final fixedHeader = find.byKey(const Key('portfolio-fixed-top-bar'));
+    final headerRect = tester.getRect(fixedHeader);
     final contentRect = tester.getRect(
-      find.byKey(const Key('portfolio-top-bar-content')),
+      find.descendant(
+        of: fixedHeader,
+        matching: find.byKey(const Key('portfolio-top-bar-content')),
+      ),
     );
     final markRect = tester.getRect(find.byKey(const Key('ld-topbar-mark')));
     final controlRects = {
@@ -337,48 +387,52 @@ void main() {
       LeoneBrandMotion.pageTransitionReverse,
     );
 
-    final articleHeader = find.byKey(const Key('portfolio-page-app-bar'));
-    final articleHeaderContent = find.descendant(
-      of: articleHeader,
-      matching: find.byKey(const Key('portfolio-top-bar-content')),
-    );
-    final articleBackButton = find.descendant(
-      of: articleHeader,
-      matching: find.byKey(const Key('article-back-button')),
-    );
-    final articleControls = {
-      for (final key in controlRects.keys)
-        key: find.descendant(of: articleHeader, matching: find.byKey(key)),
-    };
+    final articleBackButton = find.byKey(const Key('article-back-button'));
     final movingSurface = find.byKey(
       const Key('article-page-transition-surface'),
+    );
+    final homePage = find.byKey(
+      const Key('portfolio-home-page'),
+      skipOffstage: false,
     );
 
     final startX = tester.getTopLeft(movingSurface).dx;
     expect(startX, closeTo(1440, .01));
-    expect(tester.getRect(articleHeaderContent), contentRect);
+    expect(find.byKey(const Key('portfolio-page-app-bar')), findsNothing);
+    expect(tester.getRect(fixedHeader), headerRect);
     expect(tester.getRect(articleBackButton), markRect);
     for (final entry in controlRects.entries) {
-      expect(tester.getRect(articleControls[entry.key]!), entry.value);
+      expect(tester.getRect(find.byKey(entry.key)), entry.value);
     }
-    expect(tester.getRect(find.byKey(const Key('ld-topbar-mark'))), markRect);
+    expect(tester.getTopLeft(homePage).dx, closeTo(0, .01));
 
     await tester.pump(const Duration(milliseconds: 175));
 
     final middleX = tester.getTopLeft(movingSurface).dx;
+    final homeMiddleX = tester.getTopLeft(homePage).dx;
     expect(middleX, greaterThan(0));
     expect(middleX, lessThan(startX));
-    expect(tester.getRect(articleHeaderContent), contentRect);
+    expect(homeMiddleX, greaterThan(-1440));
+    expect(homeMiddleX, lessThan(0));
+    expect(tester.getRect(fixedHeader), headerRect);
+    expect(
+      tester.getRect(
+        find.descendant(
+          of: fixedHeader,
+          matching: find.byKey(const Key('portfolio-top-bar-content')),
+        ),
+      ),
+      contentRect,
+    );
     expect(tester.getRect(articleBackButton), markRect);
     for (final entry in controlRects.entries) {
-      expect(tester.getRect(articleControls[entry.key]!), entry.value);
+      expect(tester.getRect(find.byKey(entry.key)), entry.value);
     }
-    expect(tester.getRect(find.byKey(const Key('ld-topbar-mark'))), markRect);
 
     await tester.pump(const Duration(milliseconds: 175));
 
     expect(tester.getTopLeft(movingSurface).dx, closeTo(0, .01));
-    expect(tester.getRect(articleHeaderContent), contentRect);
+    expect(tester.getRect(fixedHeader), headerRect);
     expect(tester.getRect(articleBackButton), markRect);
 
     await tester.tap(articleBackButton);
@@ -386,14 +440,18 @@ void main() {
     await tester.pump(const Duration(milliseconds: 150));
 
     final reverseMiddleX = tester.getTopLeft(movingSurface).dx;
+    final homeReverseMiddleX = tester.getTopLeft(homePage).dx;
     expect(reverseMiddleX, greaterThan(0));
     expect(reverseMiddleX, lessThan(startX));
-    expect(tester.getRect(articleHeaderContent), contentRect);
+    expect(homeReverseMiddleX, greaterThan(-1440));
+    expect(homeReverseMiddleX, lessThan(0));
+    expect(tester.getRect(fixedHeader), headerRect);
     expect(tester.getRect(articleBackButton), markRect);
 
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('articles-page')), findsNothing);
+    expect(tester.getRect(fixedHeader), headerRect);
     expect(tester.getRect(find.byKey(const Key('ld-topbar-mark'))), markRect);
   });
 

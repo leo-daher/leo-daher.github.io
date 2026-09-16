@@ -54,12 +54,7 @@ void main() {
         find.byKey(const Key('production-app-card-van-cranenbroek')),
         findsOneWidget,
       );
-      expect(
-        tester
-            .widget<SliverAppBar>(find.byKey(const Key('store-page-app-bar')))
-            .pinned,
-        isTrue,
-      );
+      expect(find.byKey(const Key('store-page-app-bar')), findsNothing);
       expect(tester.takeException(), isNull);
     },
   );

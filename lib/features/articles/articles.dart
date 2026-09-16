@@ -149,10 +149,12 @@ class _ArticleCardCopy extends StatelessWidget {
 class ArticlesPage extends StatelessWidget {
   const ArticlesPage({
     super.key,
+    this.useEmbeddedTopBar = true,
     required this.onLocaleChanged,
     required this.onThemeModeChanged,
   });
 
+  final bool useEmbeddedTopBar;
   final ValueChanged<Locale> onLocaleChanged;
   final ValueChanged<ThemeMode> onThemeModeChanged;
 
@@ -198,11 +200,13 @@ class ArticlesPage extends StatelessWidget {
       currentArticle: currentArticle,
       articles: articles,
       article: _IdentityArticleContent(article: currentArticle),
-      appBar: PortfolioPageTopBar(
-        onBackPressed: () => Navigator.of(context).maybePop(),
-        onLocaleChanged: onLocaleChanged,
-        onThemeModeChanged: onThemeModeChanged,
-      ),
+      appBar: useEmbeddedTopBar
+          ? PortfolioPageTopBar(
+              onBackPressed: () => Navigator.of(context).maybePop(),
+              onLocaleChanged: onLocaleChanged,
+              onThemeModeChanged: onThemeModeChanged,
+            )
+          : null,
     );
   }
 }

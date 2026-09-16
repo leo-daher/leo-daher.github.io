@@ -85,6 +85,64 @@ class PortfolioPageTopBar extends StatelessWidget
   }
 }
 
+/// The single navigation surface shared by every portfolio page.
+///
+/// It lives above the Navigator, so route motion and future Hero flights never
+/// recreate or move the bar itself.
+class PortfolioFixedTopBar extends StatelessWidget {
+  const PortfolioFixedTopBar({
+    super.key,
+    required this.canNavigateBack,
+    required this.onHomePressed,
+    required this.onBackPressed,
+    required this.onLocaleChanged,
+    required this.onThemeModeChanged,
+  });
+
+  final bool canNavigateBack;
+  final VoidCallback onHomePressed;
+  final VoidCallback onBackPressed;
+  final ValueChanged<Locale> onLocaleChanged;
+  final ValueChanged<ThemeMode> onThemeModeChanged;
+
+  static double heightOf(BuildContext context) =>
+      MediaQuery.paddingOf(context).top + PortfolioTopBarContent.height;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.leonePalette;
+    final topInset = MediaQuery.paddingOf(context).top;
+    final highContrast = MediaQuery.highContrastOf(context);
+    return SizedBox(
+      key: const Key('portfolio-fixed-top-bar'),
+      height: topInset + PortfolioTopBarContent.height,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (!highContrast) const PortfolioRegularLiquidGlassBackdrop(),
+          ColoredBox(
+            color: highContrast
+                ? palette.canvas
+                : palette.canvas.withValues(alpha: _regularLiquidGlassOpacity),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: topInset),
+            child: Material(
+              type: MaterialType.transparency,
+              child: PortfolioTopBarContent(
+                onHomePressed: canNavigateBack ? null : onHomePressed,
+                onBackPressed: canNavigateBack ? onBackPressed : null,
+                onLocaleChanged: onLocaleChanged,
+                onThemeModeChanged: onThemeModeChanged,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 const _regularLiquidGlassOpacity = .68;
 const _regularLiquidGlassBlurSigma = 24.0;
 

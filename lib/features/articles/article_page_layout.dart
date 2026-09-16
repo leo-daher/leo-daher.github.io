@@ -7,7 +7,7 @@ import 'package:url_launcher/link.dart';
 import '../../brand/leone_brand.dart';
 import '../../brand/leone_glass.dart';
 import '../../l10n/l10n.dart';
-import '../navigation/portfolio_page_transition.dart';
+import '../navigation/portfolio_top_bar.dart';
 import 'article_catalog.dart';
 
 class ArticlePageLayout extends StatelessWidget {
@@ -33,53 +33,48 @@ class ArticlePageLayout extends StatelessWidget {
         .where((article) => article.id != currentArticle.id)
         .toList(growable: false);
 
-    final routeAnimation =
-        ModalRoute.of(context)?.animation ?? kAlwaysCompleteAnimation;
-
     return Scaffold(
       key: pageKey,
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
       appBar: appBar,
       body: ClipRect(
-        child: PortfolioPageTransition(
-          animation: routeAnimation,
-          child: ColoredBox(
-            key: const Key('article-page-transition-surface'),
-            color: context.usesLeoneGlass ? Colors.transparent : palette.canvas,
-            child: SafeArea(
-              top: false,
-              child: SingleChildScrollView(
-                key: const Key('article-main-scroll'),
-                padding: EdgeInsets.fromLTRB(
-                  24,
-                  MediaQuery.paddingOf(context).top +
-                      (appBar?.preferredSize.height ?? 0) +
-                      32,
-                  24,
-                  72,
-                ),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 920),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SelectionArea(child: article),
-                        if (relatedArticles.isNotEmpty) ...[
-                          const SizedBox(height: 64),
-                          Divider(
-                            key: const Key('related-articles-divider'),
-                            color: palette.outline,
-                          ),
-                          const SizedBox(height: 24),
-                          RelatedArticlesNavigation(
-                            key: const Key('related-articles-section'),
-                            entries: relatedArticles,
-                          ),
-                        ],
+        child: ColoredBox(
+          key: const Key('article-page-transition-surface'),
+          color: context.usesLeoneGlass ? Colors.transparent : palette.canvas,
+          child: SafeArea(
+            top: false,
+            child: SingleChildScrollView(
+              key: const Key('article-main-scroll'),
+              padding: EdgeInsets.fromLTRB(
+                24,
+                MediaQuery.paddingOf(context).top +
+                    (appBar?.preferredSize.height ??
+                        PortfolioTopBarContent.height) +
+                    32,
+                24,
+                72,
+              ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 920),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SelectionArea(child: article),
+                      if (relatedArticles.isNotEmpty) ...[
+                        const SizedBox(height: 64),
+                        Divider(
+                          key: const Key('related-articles-divider'),
+                          color: palette.outline,
+                        ),
+                        const SizedBox(height: 24),
+                        RelatedArticlesNavigation(
+                          key: const Key('related-articles-section'),
+                          entries: relatedArticles,
+                        ),
                       ],
-                    ),
+                    ],
                   ),
                 ),
               ),
