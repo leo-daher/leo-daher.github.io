@@ -181,9 +181,8 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
   }) {
     final routeName = _normalizedRoutePath(settings.name);
     if (routeName == null || routeName == '/' || routeName == _iosRouteName) {
-      return PortfolioPlanePageRoute<void>(
+      return _planeRoute(
         settings: settings,
-        reduceMotion: _reduceMotion,
         maintainState: maintainState,
         pageBuilder: (_, _, _) => _PortfolioEntry(
           homePageKey: _homePageKey,
@@ -195,9 +194,8 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
       );
     }
     if (ProductionAppsRoutes.isCatalog(settings.name)) {
-      return PortfolioPlanePageRoute<void>(
+      return _planeRoute(
         settings: settings,
-        reduceMotion: _reduceMotion,
         pageBuilder: (context, _, _) {
           final presentation = ProductionAppsPresentation.localized(
             context.l10n,
@@ -212,9 +210,8 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
     final appItemId = ProductionAppsRoutes.detailItemId(settings.name);
     if (appItemId != null &&
         ProductionAppsRoutes.supportedItemIds.contains(appItemId)) {
-      return PortfolioPlanePageRoute<void>(
+      return _planeRoute(
         settings: settings,
-        reduceMotion: _reduceMotion,
         pageBuilder: (context, _, _) {
           final presentation = ProductionAppsPresentation.localized(
             context.l10n,
@@ -234,9 +231,8 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
     }
     if (routeName == ArticlesPage.routeName ||
         routeName == _iosArticleRouteName) {
-      return PortfolioPlanePageRoute<void>(
+      return _planeRoute(
         settings: settings,
-        reduceMotion: _reduceMotion,
         pageBuilder: (_, _, _) {
           return ArticlesPage(
             useEmbeddedTopBar: false,
@@ -247,6 +243,19 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
       );
     }
     return null;
+  }
+
+  PortfolioPlanePageRoute<void> _planeRoute({
+    required RouteSettings settings,
+    required RoutePageBuilder pageBuilder,
+    bool maintainState = true,
+  }) {
+    return PortfolioPlanePageRoute<void>(
+      settings: settings,
+      pageBuilder: pageBuilder,
+      reduceMotion: _reduceMotion,
+      maintainState: maintainState,
+    );
   }
 }
 
@@ -287,11 +296,8 @@ class _PortfolioNavigationObserver extends NavigatorObserver
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
-    if (route is TransitionRoute<dynamic>) {
-      route.completed.then((_) => _removePoppedRoute(route));
-    } else {
-      _removePoppedRoute(route);
-    }
+    if (_disposed || !_routes.remove(route)) return;
+    notifyListeners();
   }
 
   @override
@@ -322,11 +328,6 @@ class _PortfolioNavigationObserver extends NavigatorObserver
       if (_disposed) return;
       notifyListeners();
     });
-  }
-
-  void _removePoppedRoute(Route<dynamic> route) {
-    if (_disposed || !_routes.remove(route)) return;
-    _scheduleNotification();
   }
 
   @override

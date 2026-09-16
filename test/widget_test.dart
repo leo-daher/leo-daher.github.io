@@ -437,6 +437,10 @@ void main() {
 
     await tester.tap(articleBackButton);
     await tester.pump();
+
+    expect(articleBackButton, findsNothing);
+    expect(tester.getRect(find.byKey(const Key('ld-topbar-mark'))), markRect);
+
     await tester.pump(const Duration(milliseconds: 150));
 
     final reverseMiddleX = tester.getTopLeft(movingSurface).dx;
@@ -446,7 +450,8 @@ void main() {
     expect(homeReverseMiddleX, greaterThan(-1440));
     expect(homeReverseMiddleX, lessThan(0));
     expect(tester.getRect(fixedHeader), headerRect);
-    expect(tester.getRect(articleBackButton), markRect);
+    expect(articleBackButton, findsNothing);
+    expect(tester.getRect(find.byKey(const Key('ld-topbar-mark'))), markRect);
 
     await tester.pumpAndSettle();
 
@@ -454,6 +459,86 @@ void main() {
     expect(tester.getRect(fixedHeader), headerRect);
     expect(tester.getRect(find.byKey(const Key('ld-topbar-mark'))), markRect);
   });
+
+  for (final routeCase in const [
+    (
+      label: 'app catalog',
+      routeName: ProductionAppsRoutes.catalog,
+      pageKey: Key('all-apps-scroll-view'),
+    ),
+    (
+      label: 'app detail',
+      routeName: '/apps/van-cranenbroek',
+      pageKey: Key('app-detail-scroll-view-van-cranenbroek'),
+    ),
+  ]) {
+    testWidgets('${routeCase.label} uses the same two-page motion as article', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(1440, 1000);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const LeonePortfolioApp());
+      await _finishOpening(tester);
+
+      final fixedHeader = find.byKey(const Key('portfolio-fixed-top-bar'));
+      final headerRect = tester.getRect(fixedHeader);
+      final markRect = tester.getRect(find.byKey(const Key('ld-topbar-mark')));
+      final homePage = find.byKey(
+        const Key('portfolio-home-page'),
+        skipOffstage: false,
+      );
+
+      final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+      navigator.pushNamed(routeCase.routeName);
+      await tester.pump();
+      await tester.pump();
+
+      final page = find.byKey(routeCase.pageKey, skipOffstage: false);
+      final backButton = find.byKey(const Key('article-back-button'));
+      expect(tester.getTopLeft(page).dx, closeTo(1440, .01));
+      expect(tester.getTopLeft(homePage).dx, closeTo(0, .01));
+      expect(tester.getRect(fixedHeader), headerRect);
+      expect(tester.getRect(backButton), markRect);
+
+      await tester.pump(const Duration(milliseconds: 175));
+
+      final pageMiddleX = tester.getTopLeft(page).dx;
+      final homeMiddleX = tester.getTopLeft(homePage).dx;
+      expect(pageMiddleX, greaterThan(0));
+      expect(pageMiddleX, lessThan(1440));
+      expect(homeMiddleX, greaterThan(-1440));
+      expect(homeMiddleX, lessThan(0));
+      expect(tester.getRect(fixedHeader), headerRect);
+
+      await tester.pump(const Duration(milliseconds: 175));
+      expect(tester.getTopLeft(page).dx, closeTo(0, .01));
+
+      await tester.tap(backButton);
+      await tester.pump();
+
+      expect(backButton, findsNothing);
+      expect(tester.getRect(find.byKey(const Key('ld-topbar-mark'))), markRect);
+
+      await tester.pump(const Duration(milliseconds: 150));
+
+      final pageReverseMiddleX = tester.getTopLeft(page).dx;
+      final homeReverseMiddleX = tester.getTopLeft(homePage).dx;
+      expect(pageReverseMiddleX, greaterThan(0));
+      expect(pageReverseMiddleX, lessThan(1440));
+      expect(homeReverseMiddleX, greaterThan(-1440));
+      expect(homeReverseMiddleX, lessThan(0));
+      expect(tester.getRect(fixedHeader), headerRect);
+
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(routeCase.pageKey), findsNothing);
+      expect(find.byKey(const Key('ld-topbar-mark')), findsOneWidget);
+      expect(tester.getRect(fixedHeader), headerRect);
+    });
+  }
 
   for (final reducedMotion in const [
     ('disabled animations', FakeAccessibilityFeatures(disableAnimations: true)),
