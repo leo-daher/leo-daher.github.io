@@ -110,7 +110,10 @@ class _PortfolioFabMenuScaffoldState extends State<PortfolioFabMenuScaffold>
               : null,
           body: Stack(
             children: [
-              widget.body,
+              _PortfolioMenuPageFilter(
+                animation: _menuController,
+                child: widget.body,
+              ),
               Positioned.fill(
                 child: _PortfolioMenuBackdrop(
                   animation: _menuController,
@@ -364,6 +367,39 @@ class _PortfolioFabMenuState extends State<_PortfolioFabMenu> {
   }
 }
 
+/// Filter the page itself instead of reading back the entire painted scene.
+/// Keep the child and layer mounted across openings; no filtering at rest.
+class _PortfolioMenuPageFilter extends StatelessWidget {
+  const _PortfolioMenuPageFilter({
+    required this.animation,
+    required this.child,
+  });
+
+  final Animation<double> animation;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animation,
+      child: child,
+      builder: (context, child) {
+        final sigma =
+            LeoneBrandGeometry.fabMenuBackdropSigma *
+            Curves.easeOutCubic.transform(animation.value);
+        return ClipRect(
+          child: ImageFiltered(
+            key: const Key('portfolio-menu-page-filter'),
+            enabled: !animation.isDismissed,
+            imageFilter: ui.ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+}
+
 class _PortfolioMenuBackdrop extends StatelessWidget {
   const _PortfolioMenuBackdrop({
     required this.animation,
@@ -385,23 +421,18 @@ class _PortfolioMenuBackdrop extends StatelessWidget {
         if (animation.isDismissed && !expanded) {
           return const SizedBox.shrink();
         }
-        final progress = Curves.easeOutCubic.transform(animation.value);
-        final sigma = LeoneBrandGeometry.fabMenuBackdropSigma * progress;
         return IgnorePointer(
           ignoring: !expanded,
           child: ExcludeSemantics(
             excluding: !expanded,
-            child: ClipRect(
-              child: BackdropFilter(
-                key: const Key('portfolio-menu-backdrop'),
-                filter: ui.ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
-                child: ModalBarrier(
-                  key: const Key('portfolio-menu-backdrop-barrier'),
-                  color: Colors.transparent,
-                  dismissible: expanded,
-                  semanticsLabel: semanticsLabel,
-                  onDismiss: expanded ? onDismiss : null,
-                ),
+            child: SizedBox.expand(
+              key: const Key('portfolio-menu-backdrop'),
+              child: ModalBarrier(
+                key: const Key('portfolio-menu-backdrop-barrier'),
+                color: Colors.transparent,
+                dismissible: expanded,
+                semanticsLabel: semanticsLabel,
+                onDismiss: expanded ? onDismiss : null,
               ),
             ),
           ),
@@ -461,9 +492,33 @@ class _StaggeredFabMenuItem extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final palette = context.leonePalette;
     final usesGlass = context.usesLeoneGlass;
+    final hasGlassClip = usesGlass && !MediaQuery.highContrastOf(context);
+    final pillRadius = BorderRadius.circular(999);
     final labelStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
       color: usesGlass ? palette.ink : scheme.onPrimaryContainer,
       fontWeight: FontWeight.w700,
+    );
+    final itemContent = InkWell(
+      focusNode: focusNode,
+      onTap: onPressed,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                action.icon,
+                size: 24,
+                color: usesGlass ? palette.ink : scheme.onPrimaryContainer,
+              ),
+              const SizedBox(width: 8),
+              Text(label, style: labelStyle),
+            ],
+          ),
+        ),
+      ),
     );
     return AnimatedBuilder(
       animation: animation,
@@ -501,7 +556,7 @@ class _StaggeredFabMenuItem extends StatelessWidget {
             ? {CustomSemanticsAction(label: closeMenuLabel): onClose}
             : null,
         child: LeoneGlassSurface(
-          borderRadius: BorderRadius.circular(999),
+          borderRadius: pillRadius,
           child: Material(
             key: action.key,
             color: usesGlass
@@ -512,36 +567,27 @@ class _StaggeredFabMenuItem extends StatelessWidget {
                 : Colors.black.withValues(alpha: .42),
             surfaceTintColor: Colors.transparent,
             elevation: usesGlass ? 0 : 6,
-            shape: StadiumBorder(
-              side: usesGlass
-                  ? BorderSide(color: palette.outline)
-                  : BorderSide.none,
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              focusNode: focusNode,
-              onTap: onPressed,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        action.icon,
-                        size: 24,
-                        color: usesGlass
-                            ? palette.ink
-                            : scheme.onPrimaryContainer,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(label, style: labelStyle),
-                    ],
+            // The glass surface already clips the fill and ink to the pill.
+            // A shapeless Material avoids a second generic path/physical shape.
+            // Keep Material's own clip when glass is disabled (e.g. contrast).
+            shape: hasGlassClip
+                ? null
+                : StadiumBorder(
+                    side: usesGlass
+                        ? BorderSide(color: palette.outline)
+                        : BorderSide.none,
                   ),
-                ),
-              ),
-            ),
+            clipBehavior: hasGlassClip ? Clip.none : Clip.antiAlias,
+            child: hasGlassClip
+                ? DecoratedBox(
+                    position: DecorationPosition.foreground,
+                    decoration: BoxDecoration(
+                      borderRadius: pillRadius,
+                      border: Border.all(color: palette.outline),
+                    ),
+                    child: itemContent,
+                  )
+                : itemContent,
           ),
         ),
       ),

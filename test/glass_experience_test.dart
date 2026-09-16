@@ -9,7 +9,7 @@ import 'package:url_launcher/link.dart';
 void main() {
   setUp(() => SharedPreferences.setMockInitialValues({}));
 
-  testWidgets('serves the hidden ios route with the glass visual system', (
+  testWidgets('keeps the ios route as a compatible glass alias', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(1440, 1000);
@@ -34,7 +34,7 @@ void main() {
     expect(find.byType(LeoneGlassSurface), findsWidgets);
   });
 
-  testWidgets('keeps the public home free of links to the hidden route', (
+  testWidgets('uses glass on the public home with canonical public links', (
     tester,
   ) async {
     await tester.pumpWidget(const LeonePortfolioApp());
@@ -42,10 +42,57 @@ void main() {
     await tester.pump(const Duration(seconds: 2));
     await tester.pumpAndSettle();
 
-    expect(find.byKey(const Key('ios-glass-background')), findsNothing);
+    final home = find.byKey(const Key('portfolio-home-page'));
+    expect(tester.element(home).usesLeoneGlass, isTrue);
+    expect(tester.element(home).leonePalette, LeonePalette.glassDark);
+    expect(find.byKey(const Key('ios-glass-background')), findsOneWidget);
     for (final link in tester.widgetList<Link>(find.byType(Link))) {
       expect(link.uri?.path.startsWith('/ios') ?? false, isFalse);
     }
+  });
+
+  testWidgets('restores language and light mode on the default glass home', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'portfolio_locale': 'pt',
+      'portfolio_theme': 'light',
+    });
+    await tester.pumpWidget(const LeonePortfolioApp());
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
+
+    final home = tester.element(find.byKey(const Key('portfolio-home-page')));
+    expect(home.usesLeoneGlass, isTrue);
+    expect(home.leonePalette, LeonePalette.glassLight);
+    expect(Theme.of(home).brightness, Brightness.light);
+    expect(Localizations.localeOf(home), const Locale('pt'));
+  });
+
+  testWidgets('serves the canonical article in glass with saved preferences', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'portfolio_locale': 'pt',
+      'portfolio_theme': 'light',
+    });
+    await tester.pumpWidget(
+      const LeonePortfolioApp(initialRoute: '/artigos/identidade-visual'),
+    );
+    await tester.pumpAndSettle();
+
+    final article = tester.element(find.byKey(const Key('articles-page')));
+    expect(article.usesLeoneGlass, isTrue);
+    expect(article.leonePalette, LeonePalette.glassLight);
+    expect(Localizations.localeOf(article), const Locale('pt'));
+    expect(ModalRoute.of(article)?.settings.name, '/artigos/identidade-visual');
+    expect(find.byKey(const Key('ios-glass-background')), findsOneWidget);
+    expect(find.byKey(const Key('portfolio-home-page')), findsNothing);
+    final transitionSurface = tester.widget<ColoredBox>(
+      find.byKey(const Key('article-page-transition-surface')),
+    );
+    expect(transitionSurface.color, Colors.transparent);
   });
 
   testWidgets('keeps the glass treatment on the ios article route', (

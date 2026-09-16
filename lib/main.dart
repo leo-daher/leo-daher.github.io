@@ -124,19 +124,7 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
 
   Route<void>? _generateRoute(RouteSettings settings) {
     final routeName = settings.name?.replaceFirst(RegExp(r'/$'), '');
-    if (routeName == null || routeName.isEmpty) {
-      return MaterialPageRoute<void>(
-        settings: settings,
-        builder: (_) => _PortfolioEntry(
-          onLocaleChanged: _setLocale,
-          onThemeModeChanged: _setThemeMode,
-        ),
-      );
-    }
-
-    final isGlassHome = routeName == _iosRouteName;
-    final isGlassArticle = routeName == _iosArticleRouteName;
-    if (isGlassHome) {
+    if (routeName == null || routeName.isEmpty || routeName == _iosRouteName) {
       return MaterialPageRoute<void>(
         settings: settings,
         builder: (_) => LeoneGlassExperience(
@@ -147,7 +135,8 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
         ),
       );
     }
-    if (routeName == ArticlesPage.routeName || isGlassArticle) {
+    if (routeName == ArticlesPage.routeName ||
+        routeName == _iosArticleRouteName) {
       final accessibilityFeatures =
           WidgetsBinding.instance.platformDispatcher.accessibilityFeatures;
       final reduceMotion =
@@ -159,7 +148,7 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
             onLocaleChanged: _setLocale,
             onThemeModeChanged: _setThemeMode,
           );
-          return isGlassArticle ? LeoneGlassExperience(child: page) : page;
+          return LeoneGlassExperience(child: page);
         },
         settings: settings,
         reduceMotion: reduceMotion,
@@ -408,11 +397,8 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               child: _SectionFrame(
                 key: _articlesSectionKey,
                 child: ArticlesSection(
-                  onOpenArticles: () => Navigator.of(context).pushNamed(
-                    context.usesLeoneGlass
-                        ? _iosArticleRouteName
-                        : ArticlesPage.routeName,
-                  ),
+                  onOpenArticles: () =>
+                      Navigator.of(context).pushNamed(ArticlesPage.routeName),
                 ),
               ),
             ),

@@ -27,8 +27,8 @@ extension LeoneVisualStyleContext on BuildContext {
       Theme.of(this).extension<LeoneVisualStyle>()?.usesGlass ?? false;
 }
 
-/// Applies the alternative Apple-inspired material system without changing
-/// the public portfolio theme.
+/// Applies the portfolio's Apple-inspired materials while preserving the
+/// current light or dark preference.
 class LeoneGlassExperience extends StatelessWidget {
   const LeoneGlassExperience({super.key, required this.child});
 
