@@ -123,12 +123,19 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('portfolio-proof-strip')), findsOneWidget);
-    expect(find.text('LATAM · North America · Europe'), findsOneWidget);
+    expect(find.text('LATAM\nUSA\nEUROPE'), findsOneWidget);
+    expect(find.text('products for real markets'), findsNothing);
     final appsRect = tester.getRect(find.text('16 Apps published'));
-    final marketsRect = tester.getRect(
-      find.text('LATAM · North America · Europe'),
-    );
+    final marketsRect = tester.getRect(find.text('LATAM\nUSA\nEUROPE'));
     expect(appsRect.right, lessThan(marketsRect.left));
+    expect(marketsRect.height, greaterThan(appsRect.height * 2));
+    expect(
+      tester
+          .widget<Text>(find.byKey(const Key('proof-apps-value')))
+          .style
+          ?.fontWeight,
+      FontWeight.w400,
+    );
     expect(
       tester.getSize(find.byKey(const Key('portfolio-proof-strip'))).width,
       closeTo(342, .01),

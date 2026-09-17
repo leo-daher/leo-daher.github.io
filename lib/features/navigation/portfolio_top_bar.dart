@@ -143,8 +143,8 @@ class PortfolioFixedTopBar extends StatelessWidget {
   }
 }
 
-// 15% less opaque than the previous .68 treatment.
-const _regularLiquidGlassOpacity = .578;
+// 35% transparent, while preserving the glass blur behind the bar.
+const _regularLiquidGlassOpacity = .65;
 const _regularLiquidGlassBlurSigma = 24.0;
 
 WidgetStateColor regularLiquidGlassBackground(

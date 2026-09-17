@@ -11,8 +11,17 @@ class PortfolioProofStrip extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final items = <_ProofItem>[
-      _ProofItem(value: l10n.proofAppsValue, label: l10n.proofAppsLabel),
-      _ProofItem(value: l10n.proofMarketsValue, label: l10n.proofMarketsLabel),
+      _ProofItem(
+        value: l10n.proofAppsValue,
+        label: l10n.proofAppsLabel,
+        valueKey: const Key('proof-apps-value'),
+        valueFontWeight: FontWeight.w400,
+      ),
+      _ProofItem(
+        value: l10n.proofMarketsValue,
+        valueKey: const Key('proof-markets-value'),
+        valueMaxLines: 3,
+      ),
     ];
     final palette = context.leonePalette;
 
@@ -23,7 +32,13 @@ class PortfolioProofStrip extends StatelessWidget {
 
         return Semantics(
           container: true,
-          label: items.map((item) => '${item.value}, ${item.label}').join('. '),
+          label: items
+              .map(
+                (item) => item.label == null
+                    ? item.value.replaceAll('\n', ', ')
+                    : '${item.value}, ${item.label}',
+              )
+              .join('. '),
           child: ExcludeSemantics(
             child: LeoneGlassSurface(
               borderRadius: BorderRadius.circular(24),
@@ -64,10 +79,19 @@ class PortfolioProofStrip extends StatelessWidget {
 }
 
 class _ProofItem {
-  const _ProofItem({required this.value, required this.label});
+  const _ProofItem({
+    required this.value,
+    required this.valueKey,
+    this.label,
+    this.valueMaxLines = 1,
+    this.valueFontWeight = FontWeight.w900,
+  });
 
   final String value;
-  final String label;
+  final Key valueKey;
+  final String? label;
+  final int valueMaxLines;
+  final FontWeight valueFontWeight;
 }
 
 class _ProofTile extends StatelessWidget {
@@ -93,28 +117,31 @@ class _ProofTile extends StatelessWidget {
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerLeft,
             child: Text(
+              key: item.valueKey,
               item.value,
-              maxLines: 1,
-              style: const TextStyle(
+              maxLines: item.valueMaxLines,
+              style: TextStyle(
                 color: LeoneBrandColors.interactive,
                 fontSize: 17,
-                fontWeight: FontWeight.w900,
+                fontWeight: item.valueFontWeight,
                 letterSpacing: -.2,
               ),
             ),
           ),
-          const SizedBox(height: 6),
-          Text(
-            item.label,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: palette.mutedInk,
-              fontSize: 11,
-              height: 1.25,
-              fontWeight: FontWeight.w600,
+          if (item.label != null) ...[
+            const SizedBox(height: 6),
+            Text(
+              item.label!,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: palette.mutedInk,
+                fontSize: 11,
+                height: 1.25,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );

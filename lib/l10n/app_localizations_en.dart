@@ -276,10 +276,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get proofAppsLabel => 'mobile apps in official stores';
 
   @override
-  String get proofMarketsValue => 'LATAM · North America · Europe';
-
-  @override
-  String get proofMarketsLabel => 'products for real markets';
+  String get proofMarketsValue => 'LATAM\nUSA\nEUROPE';
 
   @override
   String get productionAppsSemanticLabel =>
