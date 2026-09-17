@@ -295,7 +295,7 @@ void main() {
             find.descendant(of: fixedTopBar, matching: find.byType(ColoredBox)),
           )
           .color,
-      LeonePalette.glassDark.canvas.withValues(alpha: .35),
+      LeonePalette.glassDark.canvas.withValues(alpha: .25),
     );
     expect(find.byKey(const Key('top-nav-home')), findsNothing);
     expect(find.byKey(const Key('top-nav-apps')), findsNothing);
