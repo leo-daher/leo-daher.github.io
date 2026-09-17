@@ -380,11 +380,11 @@
   "@magRecognitionTitle": {
     "description": "Public team recognition for the MAG Venda Digital case."
   },
-  "magRecognitionText": "Implemented facial-recognition authentication and identity verification in Venda Digital using the SERPRO API available at the time. The post below documents the team delivery, with Leone Crespo Daher de Souza among its members.",
+  "magRecognitionText": "The Venda Digital team delivered facial-recognition authentication and identity verification using the SERPRO API available at the time. The post below documents this collective delivery.",
   "@magRecognitionText": {
     "description": "Public team recognition for the MAG Venda Digital case."
   },
-  "magRecognitionImageLabel": "Post by Luis Henrique Fontes Oliveira recognizing the Venda Digital team and naming Leone Crespo Daher de Souza.",
+  "magRecognitionImageLabel": "Post by Luis Henrique Fontes Oliveira recognizing the team behind the facial-recognition delivery in Venda Digital.",
   "@magRecognitionImageLabel": {
     "description": "Public team recognition for the MAG Venda Digital case."
   }

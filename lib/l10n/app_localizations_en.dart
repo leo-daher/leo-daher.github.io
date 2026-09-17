@@ -679,9 +679,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get magRecognitionText =>
-      'Implemented facial-recognition authentication and identity verification in Venda Digital using the SERPRO API available at the time. The post below documents the team delivery, with Leone Crespo Daher de Souza among its members.';
+      'The Venda Digital team delivered facial-recognition authentication and identity verification using the SERPRO API available at the time. The post below documents this collective delivery.';
 
   @override
   String get magRecognitionImageLabel =>
-      'Post by Luis Henrique Fontes Oliveira recognizing the Venda Digital team and naming Leone Crespo Daher de Souza.';
+      'Post by Luis Henrique Fontes Oliveira recognizing the team behind the facial-recognition delivery in Venda Digital.';
 }

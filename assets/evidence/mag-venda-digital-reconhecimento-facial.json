@@ -8,13 +8,13 @@
   "portfolio": {
     "pt": {
       "title": "Autenticação e validação de identidade",
-      "text": "Implementei autenticação e validação de identidade por reconhecimento facial no Venda Digital utilizando a API do SERPRO disponível à época. A publicação abaixo registra a entrega da equipe, da qual Leone Crespo Daher de Souza fez parte.",
-      "imageLabel": "Publicação de Luis Henrique Fontes Oliveira reconhecendo a equipe Venda Digital e citando Leone Crespo Daher de Souza."
+      "text": "A equipe do Venda Digital entregou autenticação e validação de identidade por reconhecimento facial utilizando a API do SERPRO disponível à época. A publicação abaixo registra essa entrega coletiva.",
+      "imageLabel": "Publicação de Luis Henrique Fontes Oliveira reconhecendo a equipe responsável pela entrega de reconhecimento facial no Venda Digital."
     },
     "en": {
       "title": "Authentication and identity verification",
-      "text": "Implemented facial-recognition authentication and identity verification in Venda Digital using the SERPRO API available at the time. The post below documents the team delivery, with Leone Crespo Daher de Souza among its members.",
-      "imageLabel": "Post by Luis Henrique Fontes Oliveira recognizing the Venda Digital team and naming Leone Crespo Daher de Souza."
+      "text": "The Venda Digital team delivered facial-recognition authentication and identity verification using the SERPRO API available at the time. The post below documents this collective delivery.",
+      "imageLabel": "Post by Luis Henrique Fontes Oliveira recognizing the team behind the facial-recognition delivery in Venda Digital."
     }
   }
 }

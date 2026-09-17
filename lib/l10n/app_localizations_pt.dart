@@ -678,9 +678,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get magRecognitionText =>
-      'Implementei autenticação e validação de identidade por reconhecimento facial no Venda Digital utilizando a API do SERPRO disponível à época. A publicação abaixo registra a entrega da equipe, da qual Leone Crespo Daher de Souza fez parte.';
+      'A equipe do Venda Digital entregou autenticação e validação de identidade por reconhecimento facial utilizando a API do SERPRO disponível à época. A publicação abaixo registra essa entrega coletiva.';
 
   @override
   String get magRecognitionImageLabel =>
-      'Publicação de Luis Henrique Fontes Oliveira reconhecendo a equipe Venda Digital e citando Leone Crespo Daher de Souza.';
+      'Publicação de Luis Henrique Fontes Oliveira reconhecendo a equipe responsável pela entrega de reconhecimento facial no Venda Digital.';
 }

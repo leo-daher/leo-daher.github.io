@@ -65,7 +65,9 @@ void main() {
       await tester.tap(find.text(evidence.title));
       await tester.pumpAndSettle();
       expect(find.text(evidence.text), findsOneWidget);
-      expect(evidence.text, contains('Leone Crespo Daher de Souza'));
+      expect(evidence.text, isNot(contains('Leone Crespo Daher de Souza')));
+      expect(evidence.text, isNot(contains('Implementei')));
+      expect(evidence.text, isNot(contains('Implemented')));
       expect(evidence.text, contains('Venda Digital'));
       expect(evidence.text, contains('SERPRO'));
       expect(mag.stack, contains('SERPRO API'));
