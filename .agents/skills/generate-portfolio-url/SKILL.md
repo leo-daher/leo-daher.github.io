@@ -20,7 +20,8 @@ Examples:
 - `https://leo-daher.github.io/?utm_source=resume&utm_medium=pdf&utm_campaign=flutter-2026`
 - `https://leo-daher.github.io/?utm_source=application&utm_medium=pdf&utm_campaign=mobile-engineer-2026&ref=mobile-v2`
 - `https://leo-daher.github.io/?ref=cv-20260916T144658237Z`
-- `https://leo-daher.github.io/?ref=ig`
+- `https://leo-daher.github.io/ig`
+- `https://leo-daher.github.io/in`
 
 ## Reference registry
 
@@ -37,9 +38,12 @@ For every newly generated CV or resume URL:
 4. Append one unique row to the registry with the final URL and its meaning.
 5. Use the exact registered URL in the delivered artifact.
 
-Use the stable `ref=ig` value for the portfolio link published on Instagram.
-Keep a single registry row for stable channel references instead of adding one
-row per click or publication.
+Use the stable short paths `https://leo-daher.github.io/ig` for Instagram and
+`https://leo-daher.github.io/in` for LinkedIn. Their static entry points
+redirect to the home page with `ref=ig` and `ref=in`, respectively, so the
+public links stay clean while telemetry receives the reference. Keep a single
+registry row for each stable channel reference instead of adding one row per
+click or publication.
 
 ## Rules
 
