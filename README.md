@@ -68,11 +68,14 @@ collection is disabled.
 Short references and their meanings are registered in
 [`tracking/portfolio_ref_registry.csv`](tracking/portfolio_ref_registry.csv).
 CV links use `ref=cv-<UTC timestamp>` so each generated document can be
-identified; the Instagram link uses the stable `ref=ig` value. In GA4, inspect
-the `portfolio_attribution` event and its `attribution_ref` parameter. Register
+identified. Social profiles use the clean short links `/ig` for Instagram and
+`/in` for LinkedIn; each entry point redirects to the home page with its stable
+reference so attribution remains intact. In GA4, inspect the
+`portfolio_attribution` event and its `attribution_ref` parameter. Register
 `attribution_ref` as an event-scoped custom dimension named `Portfolio ref` to
 use it in historical reports and Explorations. Sentry receives the same event
-as a breadcrumb for error context, but GA4 is the traffic-reporting source.
+as a structured log and breadcrumb, while GA4 remains the traffic-reporting
+source.
 
 ## Experience map
 
