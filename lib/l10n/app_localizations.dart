@@ -542,22 +542,28 @@ abstract class AppLocalizations {
   /// **'mobile  ·  desktop  ·  web'**
   String get surfaceList;
 
-  /// Total mobile apps delivered across platforms.
+  /// Latitudde / Conkord deliveries, counting each app identifier per platform.
   ///
   /// In en, this message translates to:
-  /// **'16 Apps published'**
+  /// **'14'**
   String get proofAppsValue;
 
-  /// Total mobile apps published in official stores.
+  /// Mobile delivery label; does not imply public store publication.
   ///
   /// In en, this message translates to:
-  /// **'mobile apps in official stores'**
+  /// **'apps delivered\nAndroid and iOS'**
   String get proofAppsLabel;
+
+  /// Label for international project experience.
+  ///
+  /// In en, this message translates to:
+  /// **'INTERNATIONAL EXPERIENCE'**
+  String get proofMarketsLabel;
 
   /// Markets represented by highlighted apps.
   ///
   /// In en, this message translates to:
-  /// **'LATAM\nUSA\nEUROPE'**
+  /// **'Latin America · USA · Europe'**
   String get proofMarketsValue;
 
   /// Accessible production apps section label.

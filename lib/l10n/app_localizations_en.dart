@@ -270,13 +270,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get surfaceList => 'mobile  ·  desktop  ·  web';
 
   @override
-  String get proofAppsValue => '16 Apps published';
+  String get proofAppsValue => '14';
 
   @override
-  String get proofAppsLabel => 'mobile apps in official stores';
+  String get proofAppsLabel => 'apps delivered\nAndroid and iOS';
 
   @override
-  String get proofMarketsValue => 'LATAM\nUSA\nEUROPE';
+  String get proofMarketsLabel => 'INTERNATIONAL EXPERIENCE';
+
+  @override
+  String get proofMarketsValue => 'Latin America · USA · Europe';
 
   @override
   String get productionAppsSemanticLabel =>

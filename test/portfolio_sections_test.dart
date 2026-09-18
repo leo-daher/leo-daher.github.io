@@ -106,12 +106,11 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('proof strip reflows into two columns on mobile', (tester) async {
+  testWidgets('proof strip stacks on mobile without clipping', (tester) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-
     await tester.pumpWidget(
       _localizedScaffold(
         const Padding(
@@ -121,25 +120,12 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-
-    expect(find.byKey(const Key('portfolio-proof-strip')), findsOneWidget);
-    expect(find.text('LATAM\nUSA\nEUROPE'), findsOneWidget);
-    expect(find.text('products for real markets'), findsNothing);
-    final appsRect = tester.getRect(find.text('16 Apps published'));
-    final marketsRect = tester.getRect(find.text('LATAM\nUSA\nEUROPE'));
-    expect(appsRect.right, lessThan(marketsRect.left));
-    expect(marketsRect.height, greaterThan(appsRect.height * 2));
-    expect(
-      tester
-          .widget<Text>(find.byKey(const Key('proof-apps-value')))
-          .style
-          ?.fontWeight,
-      FontWeight.w400,
+    final apps = tester.getRect(find.byKey(const Key('proof-apps-value')));
+    final markets = tester.getRect(
+      find.byKey(const Key('proof-markets-value')),
     );
-    expect(
-      tester.getSize(find.byKey(const Key('portfolio-proof-strip'))).width,
-      closeTo(342, .01),
-    );
+    expect(markets.top, greaterThan(apps.bottom));
+    expect(markets.right, lessThanOrEqualTo(366));
     expect(tester.takeException(), isNull);
   });
 

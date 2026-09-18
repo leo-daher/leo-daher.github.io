@@ -1,149 +1,113 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../../brand/leone_brand.dart';
-import '../../brand/leone_glass.dart';
 import '../../l10n/l10n.dart';
 
+/// A quiet editorial bridge between the introduction and the featured work.
 class PortfolioProofStrip extends StatelessWidget {
   const PortfolioProofStrip({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final items = <_ProofItem>[
-      _ProofItem(
-        value: l10n.proofAppsValue,
-        label: l10n.proofAppsLabel,
-        valueKey: const Key('proof-apps-value'),
-        valueFontWeight: FontWeight.w400,
-      ),
-      _ProofItem(
-        value: l10n.proofMarketsValue,
-        valueKey: const Key('proof-markets-value'),
-        valueMaxLines: 3,
-      ),
-    ];
     final palette = context.leonePalette;
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columns = constraints.maxWidth >= 860 ? 4 : 2;
-        const gap = 10.0;
-
-        return Semantics(
-          container: true,
-          label: items
-              .map(
-                (item) => item.label == null
-                    ? item.value.replaceAll('\n', ', ')
-                    : '${item.value}, ${item.label}',
-              )
-              .join('. '),
-          child: ExcludeSemantics(
-            child: LeoneGlassSurface(
-              borderRadius: BorderRadius.circular(24),
-              child: Container(
-                key: const Key('portfolio-proof-strip'),
-                width: double.infinity,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: palette.surface.withValues(alpha: .62),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: palette.outline),
-                ),
-                child: LayoutBuilder(
-                  builder: (context, innerConstraints) {
-                    final tileWidth =
-                        (innerConstraints.maxWidth - gap * (columns - 1)) /
-                        columns;
-                    return Wrap(
-                      spacing: gap,
-                      runSpacing: gap,
-                      children: [
-                        for (final item in items)
-                          SizedBox(
-                            width: tileWidth,
-                            child: _ProofTile(item: item),
-                          ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _ProofItem {
-  const _ProofItem({
-    required this.value,
-    required this.valueKey,
-    this.label,
-    this.valueMaxLines = 1,
-    this.valueFontWeight = FontWeight.w900,
-  });
-
-  final String value;
-  final Key valueKey;
-  final String? label;
-  final int valueMaxLines;
-  final FontWeight valueFontWeight;
-}
-
-class _ProofTile extends StatelessWidget {
-  const _ProofTile({required this.item});
-
-  final _ProofItem item;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.leonePalette;
-    return Container(
-      constraints: const BoxConstraints(minHeight: 96),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(
-        color: palette.canvas.withValues(alpha: .5),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.centerLeft,
-            child: Text(
-              key: item.valueKey,
-              item.value,
-              maxLines: item.valueMaxLines,
+        final compact = constraints.maxWidth < 640;
+        final apps = Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              l10n.proofAppsValue,
+              key: const Key('proof-apps-value'),
               style: TextStyle(
                 color: LeoneBrandColors.interactive,
-                fontSize: 17,
-                fontWeight: item.valueFontWeight,
-                letterSpacing: -.2,
-              ),
-            ),
-          ),
-          if (item.label != null) ...[
-            const SizedBox(height: 6),
-            Text(
-              item.label!,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: palette.mutedInk,
-                fontSize: 11,
-                height: 1.25,
+                fontSize: compact ? 56 : 72,
+                height: 1,
+                letterSpacing: -3,
                 fontWeight: FontWeight.w600,
               ),
             ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Text(
+                l10n.proofAppsLabel,
+                style: TextStyle(
+                  color: palette.ink,
+                  fontSize: compact ? 16 : 18,
+                  height: 1.45,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
           ],
-        ],
-      ),
+        );
+        final markets = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.proofMarketsLabel,
+              style: TextStyle(
+                color: palette.mutedInk,
+                fontSize: 11,
+                letterSpacing: 1.5,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              l10n.proofMarketsValue,
+              key: const Key('proof-markets-value'),
+              style: TextStyle(
+                color: palette.ink,
+                fontSize: compact ? 19 : 22,
+                height: 1.45,
+                letterSpacing: -.4,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        );
+
+        return Container(
+          key: const Key('portfolio-proof-strip'),
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(
+            horizontal: compact ? 8 : 32,
+            vertical: compact ? 24 : 32,
+          ),
+          decoration: BoxDecoration(
+            border: Border.symmetric(
+              horizontal: BorderSide(color: palette.outline),
+            ),
+          ),
+          child: compact
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    apps,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24),
+                      child: Divider(height: 1, color: palette.outline),
+                    ),
+                    markets,
+                  ],
+                )
+              : Row(
+                  children: [
+                    Expanded(child: apps),
+                    Container(
+                      width: 1,
+                      height: 64,
+                      margin: const EdgeInsets.symmetric(horizontal: 32),
+                      color: palette.outline,
+                    ),
+                    Expanded(child: markets),
+                  ],
+                ),
+        );
+      },
     );
   }
 }
