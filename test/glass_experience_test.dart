@@ -26,7 +26,7 @@ void main() {
     expect(home, findsOneWidget);
     expect(find.byKey(const Key('ios-glass-background')), findsOneWidget);
     expect(tester.element(home).usesLeoneGlass, isTrue);
-    expect(tester.element(home).leonePalette, LeonePalette.glassDark);
+    expect(tester.element(home).leonePalette, LeonePalette.glassLight);
     expect(
       Theme.of(tester.element(home)).scaffoldBackgroundColor,
       Colors.transparent,
@@ -44,7 +44,7 @@ void main() {
 
     final home = find.byKey(const Key('portfolio-home-page'));
     expect(tester.element(home).usesLeoneGlass, isTrue);
-    expect(tester.element(home).leonePalette, LeonePalette.glassDark);
+    expect(tester.element(home).leonePalette, LeonePalette.glassLight);
     expect(find.byKey(const Key('ios-glass-background')), findsOneWidget);
     for (final link in tester.widgetList<Link>(find.byType(Link))) {
       expect(link.uri?.path.startsWith('/ios') ?? false, isFalse);

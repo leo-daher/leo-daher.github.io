@@ -251,24 +251,51 @@ void main() {
     expect(find.text('AI Automation Engineer'), findsNothing);
   });
 
-  testWidgets('starts in dark mode and persists the theme choice', (
-    tester,
-  ) async {
-    await tester.pumpWidget(const LeonePortfolioApp());
-    await _finishOpening(tester);
+  testWidgets(
+    'starts with the system dark theme and persists the switch choice',
+    (tester) async {
+      tester.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
+      addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
+      await tester.pumpWidget(const LeonePortfolioApp());
+      await _finishOpening(tester);
 
-    final home = find.byKey(const Key('portfolio-home-page'));
-    expect(Theme.of(tester.element(home)).brightness, Brightness.dark);
-    expect(find.bySemanticsLabel('Switch to light theme'), findsOneWidget);
+      final home = find.byKey(const Key('portfolio-home-page'));
+      expect(Theme.of(tester.element(home)).brightness, Brightness.dark);
+      expect(find.bySemanticsLabel('Switch to light theme'), findsOneWidget);
 
-    await tester.tap(find.byKey(const Key('theme-toggle')));
-    await tester.pumpAndSettle();
-    expect(Theme.of(tester.element(home)).brightness, Brightness.light);
-    expect(find.bySemanticsLabel('Switch to dark theme'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('theme-toggle')));
+      await tester.pumpAndSettle();
+      expect(Theme.of(tester.element(home)).brightness, Brightness.light);
+      expect(find.bySemanticsLabel('Switch to dark theme'), findsOneWidget);
 
-    final preferences = await SharedPreferences.getInstance();
-    expect(preferences.getString('portfolio_theme'), 'light');
-  });
+      final preferences = await SharedPreferences.getInstance();
+      expect(preferences.getString('portfolio_theme'), 'light');
+    },
+  );
+
+  for (final brightness in Brightness.values) {
+    testWidgets('remembers the first system theme: ${brightness.name}', (
+      tester,
+    ) async {
+      tester.platformDispatcher.platformBrightnessTestValue = brightness;
+      addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
+      await tester.pumpWidget(const LeonePortfolioApp());
+      await _finishOpening(tester);
+      final preferences = await SharedPreferences.getInstance();
+      expect(preferences.getString('portfolio_theme'), brightness.name);
+
+      tester.platformDispatcher.platformBrightnessTestValue =
+          brightness == Brightness.dark ? Brightness.light : Brightness.dark;
+      await tester.pumpAndSettle();
+      final home = find.byKey(const Key('portfolio-home-page'));
+      expect(Theme.of(tester.element(home)).brightness, brightness);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpWidget(const LeonePortfolioApp());
+      await _finishOpening(tester);
+      expect(Theme.of(tester.element(home)).brightness, brightness);
+    });
+  }
 
   testWidgets('keeps the top app bar pinned without a section navbar', (
     tester,
@@ -295,7 +322,7 @@ void main() {
             find.descendant(of: fixedTopBar, matching: find.byType(ColoredBox)),
           )
           .color,
-      LeonePalette.glassDark.canvas.withValues(alpha: .25),
+      LeonePalette.glassLight.canvas.withValues(alpha: .25),
     );
     expect(find.byKey(const Key('top-nav-home')), findsNothing);
     expect(find.byKey(const Key('top-nav-apps')), findsNothing);
@@ -319,7 +346,7 @@ void main() {
     final highContrastBackground = tester.widget<ColoredBox>(
       find.descendant(of: fixedTopBar, matching: find.byType(ColoredBox)),
     );
-    expect(highContrastBackground.color, LeonePalette.glassDark.canvas);
+    expect(highContrastBackground.color, LeonePalette.glassLight.canvas);
     expect(
       find.descendant(of: fixedTopBar, matching: find.byType(BackdropFilter)),
       findsNothing,

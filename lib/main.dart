@@ -44,7 +44,7 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
   static const _localePreferenceKey = 'portfolio_locale';
   static const _themePreferenceKey = 'portfolio_theme';
   Locale? _locale;
-  ThemeMode _themeMode = ThemeMode.dark;
+  late ThemeMode _themeMode;
   bool _localeChosenInSession = false;
   bool _themeChosenInSession = false;
   bool _homeReady = false;
@@ -64,6 +64,11 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
   @override
   void initState() {
     super.initState();
+    _themeMode =
+        WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+            Brightness.dark
+        ? ThemeMode.dark
+        : ThemeMode.light;
     _restorePreferences();
   }
 
@@ -88,6 +93,11 @@ class _LeonePortfolioAppState extends State<LeonePortfolioApp> {
         _themeMode = ThemeMode.values.byName(savedTheme!);
       }
     });
+    if (!_themeChosenInSession &&
+        savedTheme != 'light' &&
+        savedTheme != 'dark') {
+      await preferences.setString(_themePreferenceKey, _themeMode.name);
+    }
     if (languageCode == 'en' || languageCode == 'pt') {
       _seoRouteObserver.setLanguageCode(languageCode!);
     }
