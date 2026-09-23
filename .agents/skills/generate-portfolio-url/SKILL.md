@@ -36,7 +36,7 @@ For every newly generated CV or resume URL:
    and `Z` markers.
 3. Use that value as the URL's `ref` parameter.
 4. Append one unique row to the registry with the final URL and its meaning.
-5. Use the exact registered URL in the delivered artifact.
+5. Use the exact registered URL as the hyperlink destination in the delivered artifact.
 
 Use the stable short paths `https://leo-daher.github.io/ig` for Instagram and
 `https://leo-daher.github.io/in` for LinkedIn. Their static entry points
@@ -50,9 +50,10 @@ click or publication.
 - Keep values lowercase, ASCII, short, and hyphen-separated, except for the
   canonical uppercase `T` and `Z` markers in CV timestamps.
 - Do not put names, email addresses, phone numbers, recruiter identities, or other personal data in the URL.
-- Keep the URL intact when embedding it in a PDF; do not replace the query string with a shortened or stripped link.
+- In resumes and PDFs, show `https://leo-daher.github.io/` as the visible link text and keep the complete registered URL, including `?ref=...`, only in the underlying hyperlink destination.
+- Do not strip the query string from the hyperlink relationship or expose it in the visible text.
 - Use a stable campaign identifier for each resume version so Analytics can compare results.
-- Before delivering the PDF, verify that the URL returns the portfolio and that the final PDF contains the exact tracked URL.
+- Before delivering the PDF, verify separately that the visible text is the clean canonical URL and that the clickable annotation targets the exact registered URL.
 - Never reuse a timestamp-based CV reference for a different generated file.
 
 The portfolio sends sanitized attribution values to the existing GA4/Sentry telemetry as `portfolio_attribution`. GA4 also uses standard UTM parameters for acquisition reporting. Do not add new tracking providers as part of ordinary URL generation.
