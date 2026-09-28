@@ -22,7 +22,7 @@ void main() {
       expect(
         catalog.technologyTags,
         containsAll(const [
-          '.NET 8',
+          'C# / .NET 8',
           'AI',
           'ASP.NET Core',
           'Agents',
@@ -47,7 +47,7 @@ void main() {
       );
       expect(
         aspNetCertificate.technologies,
-        orderedEquals(['ASP.NET Core', '.NET 8', 'C#', 'REST APIs']),
+        orderedEquals(['ASP.NET Core', 'C# / .NET 8', 'REST APIs']),
       );
       expect(
         catalog.certificates.map((certificate) => certificate.technologies),

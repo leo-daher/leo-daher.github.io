@@ -295,7 +295,7 @@
       "course_url": "https://www.udemy.com/course/build-rest-apis-with-aspnet-core-web-api-entity-framework/",
       "verified_on": "2026-07-22",
       "verification_status": "verified",
-      "technologies": ["ASP.NET Core", ".NET 8", "C#", "REST APIs"],
+      "technologies": ["ASP.NET Core", "C# / .NET 8", "REST APIs"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/udemy-build-asp-net-core-web-api-scratch-to-finish-net8-api.pdf",
