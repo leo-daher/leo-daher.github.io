@@ -14,7 +14,7 @@
       "course_url": "https://anthropic.skilljar.com/ai-capabilities-and-limitations",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["AI", "LLMs"],
+      "technologies": ["AI"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-ai-capabilities-and-limitations.pdf",
@@ -42,7 +42,7 @@
       "course_url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["AI", "LLMs"],
+      "technologies": ["AI"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-ai-fluency-framework-and-foundations.pdf",
@@ -98,7 +98,7 @@
       "course_url": "https://anthropic.skilljar.com/introduction-to-agent-skills",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["Agent Skills", "Claude"],
+      "technologies": ["AI", "Agents"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-introduction-to-agent-skills.pdf",
@@ -126,7 +126,7 @@
       "course_url": "https://anthropic.skilljar.com/introduction-to-subagents",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["Subagents", "Claude"],
+      "technologies": ["AI", "Agents"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-introduction-to-subagents.pdf",
@@ -154,7 +154,7 @@
       "course_url": "https://anthropic.skilljar.com/introduction-to-model-context-protocol",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["MCP", "Claude"],
+      "technologies": ["MCP", "AI"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-introduction-to-model-context-protocol.pdf",
@@ -182,7 +182,7 @@
       "course_url": "https://anthropic.skilljar.com/claude-101",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["Claude", "LLMs"],
+      "technologies": ["AI"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-claude-101.pdf",
@@ -210,7 +210,7 @@
       "course_url": "https://anthropic.skilljar.com/claude-code-101",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["Claude", "AI Agents"],
+      "technologies": ["AI", "Agents", "Claude Code"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-claude-code-101.pdf",
@@ -238,7 +238,7 @@
       "course_url": "https://anthropic.skilljar.com/claude-code-in-action",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["Claude", "AI Agents"],
+      "technologies": ["AI", "Agents", "Claude Code"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-claude-code-in-action.pdf",
@@ -266,7 +266,7 @@
       "course_url": "https://anthropic.skilljar.com/claude-platform-101",
       "verified_on": "2026-07-20",
       "verification_status": "verified",
-      "technologies": ["Claude", "LLMs"],
+      "technologies": ["AI"],
       "artifacts": {
         "pdf": {
           "path": "assets/certificates/originals/anthropic-claude-platform-101.pdf",
