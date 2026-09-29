@@ -342,6 +342,7 @@
     },
     {
       "id": "isf-acd7e9a9",
+      "useOnResume": false,
       "credential_id": "ACD7E9A9",
       "provider": "isf",
       "issuer": "Universidade Federal do Rio de Janeiro",
