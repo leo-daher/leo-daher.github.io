@@ -5,6 +5,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'google_analytics.dart';
 import 'portfolio_attribution.dart';
+import 'portfolio_ref_cleanup.dart';
 import 'sentry_log_policy.dart';
 import 'telemetry_config.dart';
 
@@ -66,8 +67,10 @@ class PortfolioTelemetry {
   }
 
   static void _recordAttribution() {
-    final attribution = portfolioAttributionFromUri(Uri.base);
+    final uri = Uri.base;
+    final attribution = portfolioAttributionFromUri(uri);
     if (attribution.isNotEmpty) event('portfolio_attribution', attribution);
+    unawaited(persistAndCleanPortfolioRef(uri));
   }
 
   static void portfolioViewed({

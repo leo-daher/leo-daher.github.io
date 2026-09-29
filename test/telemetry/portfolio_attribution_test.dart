@@ -39,5 +39,14 @@ void main() {
 
       expect(attribution, isEmpty);
     });
+
+    test('extracts the sanitized ref for browser persistence', () {
+      expect(
+        portfolioAttributionRefFromUri(
+          Uri.parse('https://leo-daher.github.io/?ref=cv%202026'),
+        ),
+        'cv-2026',
+      );
+    });
   });
 }

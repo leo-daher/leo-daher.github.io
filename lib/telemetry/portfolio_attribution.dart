@@ -24,3 +24,9 @@ Map<String, Object> portfolioAttributionFromUri(Uri uri) {
 
   return attribution;
 }
+
+String? portfolioAttributionRefFromUri(Uri uri) {
+  final attribution = portfolioAttributionFromUri(uri);
+  final ref = attribution['attribution_ref'];
+  return ref is String ? ref : null;
+}
