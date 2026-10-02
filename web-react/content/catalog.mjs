@@ -95,7 +95,7 @@ function personSchema(profile, t) {
     "@id": `${profile.url}#person`,
     name: profile.name,
     url: profile.url,
-    jobTitle: [t("mobileEngineer"), t("aiAutomationEngineer")],
+    jobTitle: [t("softwareEngineer"), t("aiAutomationEngineer")],
     sameAs: profile.sameAs,
     knowsAbout: profile.skills,
   };
@@ -206,7 +206,7 @@ function profileDocument(profile, locale, t, url, interpretation) {
   const path = localPath("/", locale);
   const lines = [
     `# ${profile.name}`,
-    `> ${t("mobileEngineer")} · ${t("aiAutomationEngineer")}`,
+    `> ${t("softwareEngineer")} · ${t("aiAutomationEngineer")}`,
     t("mobileSupporting"),
     t("aiSupporting"),
     `## ${words.overview}`,
@@ -602,7 +602,7 @@ export async function loadPortfolioContent({
     roles: Object.fromEntries(
       locales.map((locale) => [
         locale,
-        [copy[locale].mobileEngineer, copy[locale].aiAutomationEngineer],
+        [copy[locale].softwareEngineer, copy[locale].aiAutomationEngineer],
       ]),
     ),
     description: Object.fromEntries(

@@ -22,9 +22,7 @@ test("home preserves original content, geometry and loaded public assets", async
   await expect(
     page.getByRole("heading", { name: "Leone", exact: true }),
   ).toBeVisible();
-  await expect(page.locator(".hero-role")).toHaveText(
-    "Engenheiro de Software Mobile",
-  );
+  await expect(page.locator(".hero-role")).toHaveText("Engenheiro de Software");
   await expect(page.locator(".app-store-tile")).toHaveCount(4);
   await expect(page.locator(".certificate-highlight")).toHaveCount(3);
   await expect(page.locator(".client-tile")).toHaveCount(15);
@@ -54,19 +52,60 @@ test("language and theme change immediately and persist after reload", async ({
 }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Escolher idioma: English" }).click();
-  await expect(page.locator(".hero-role")).toHaveText(
-    "Mobile Software Engineer",
-  );
+  await expect(page.locator(".hero-role")).toHaveText("Software Engineer");
   await page.getByRole("button", { name: "Switch to light theme" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   // Remove the setup script by using a separate page in the same context.
   const other = await page.context().newPage();
   await other.goto("/");
-  await expect(other.locator(".hero-role")).toHaveText(
-    "Mobile Software Engineer",
-  );
+  await expect(other.locator(".hero-role")).toHaveText("Software Engineer");
   await expect(other.locator("html")).toHaveAttribute("data-theme", "light");
   await other.close();
+});
+test("language switches keep header controls fixed and can be reversed at the same pointer position", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(page.locator(".hero-role")).toHaveText("Engenheiro de Software");
+  await page.evaluate(() => document.fonts.ready);
+  const controls = page.locator(
+    ".brand-home, .language-toggle, .theme-toggle, .contact-trigger",
+  );
+  const bounds = () =>
+    controls.evaluateAll((elements) =>
+      elements.map((element) => {
+        const { x, y, width, height } = element.getBoundingClientRect();
+        return { x, y, width, height };
+      }),
+    );
+  for (const width of [1440, 768, 540, 539, 520, 519, 440, 439, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const theme of ["dark", "light"]) {
+      if ((await page.locator("html").getAttribute("data-theme")) !== theme)
+        await page.locator(".theme-toggle").click();
+      const before = await bounds();
+      const toggle = before[1];
+      const pointer = { x: toggle.x + toggle.width / 2, y: toggle.y + 24 };
+      await page.mouse.click(pointer.x, pointer.y);
+      await expect(page.locator("html")).toHaveAttribute("lang", "en");
+      const after = await bounds();
+      for (let index = 0; index < before.length; index++) {
+        for (const property of ["x", "y", "width", "height"])
+          expect(
+            Math.abs(after[index][property] - before[index][property]),
+            `${width}px ${theme}: control ${index} ${property}`,
+          ).toBeLessThan(0.5);
+      }
+      await page.mouse.click(pointer.x, pointer.y);
+      await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+      expect(await bounds()).toEqual(before);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+    }
+  }
 });
 test("FAB supports keyboard, outside dismiss and section navigation", async ({
   page,

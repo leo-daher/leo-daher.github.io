@@ -248,12 +248,19 @@ main {
   font-weight: 800;
   letter-spacing: 1.8px;
   margin-left: 12px;
+  white-space: nowrap;
 }
 .header-actions {
   margin-left: auto;
   display: flex;
   gap: 10px;
   align-items: center;
+  flex-shrink: 0;
+}
+.topbar-inner > .brand-home,
+.header-actions > button,
+.contact-menu-anchor {
+  flex-shrink: 0;
 }
 .language-toggle {
   width: 64px;
@@ -271,9 +278,11 @@ main {
   position: relative;
 }
 .contact-trigger {
+  width: 180px;
   height: 40px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 0 18px;
   border: 1px solid #9a7bff61;
@@ -284,6 +293,7 @@ main {
   font-weight: 800;
   font-size: 10px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 .contact-trigger:hover {
   background: #9a7bff26;
@@ -1011,7 +1021,7 @@ main {
     grid-template-columns: 1fr;
   }
 }
-@media (max-width: 519px) {
+@media (max-width: 539px) {
   .brand-name {
     display: none;
   }
