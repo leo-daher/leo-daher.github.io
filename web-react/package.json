@@ -1,0 +1,43 @@
+{
+  "name": "leone-portfolio-react",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173",
+    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir .prerender && node scripts/static-routes.mjs",
+    "start": "node server.mjs",
+    "preview": "node server.mjs",
+    "test": "playwright test",
+    "check": "eslint . && tsc --project jsconfig.json --noEmit && prettier --check src content scripts tests *.mjs *.js index.html package.json jsconfig.json README.md",
+    "validate": "npm run check && npm run build && npm run test:agents && npm test",
+    "format": "prettier --write src content scripts tests *.mjs *.js index.html package.json jsconfig.json README.md",
+    "test:agents": "node --test tests/agents.test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/node": "2.1.0",
+    "@modelcontextprotocol/server": "2.2.0",
+    "@sentry/react": "^10.75.3",
+    "liquid-glass-react": "1.1.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@eslint/js": "^10.0.1",
+    "@modelcontextprotocol/client": "2.2.0",
+    "@playwright/test": "1.63.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "6.1.1",
+    "eslint": "^10.11.0",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.9",
+    "typescript": "^5.9.3",
+    "vite": "8.3.1"
+  }
+}

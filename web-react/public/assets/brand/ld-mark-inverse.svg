@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Leone Daher — LD</title>
+  <desc id="desc">Monograma LD claro para fundos escuros</desc>
+  <defs>
+    <mask id="join-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <rect width="256" height="256" fill="white"/>
+      <path d="M176 240 188 224" stroke="black" stroke-width="4" stroke-linecap="round"/>
+    </mask>
+  </defs>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" mask="url(#join-cut)">
+    <path d="M24 50V196Q24 232 60 232H180" stroke="#F3F6F5" stroke-width="14"/>
+    <path d="M50 24H186Q232 24 232 70V186Q232 232 186 232H180" stroke="#CFC7F4" stroke-width="14"/>
+  </g>
+  <rect x="155" y="155" width="48" height="48" rx="17" fill="#FF6B55"/>
+</svg>

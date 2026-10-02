@@ -24,47 +24,39 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          flutter-version: 3.47.3
-          channel: stable
-          cache: true
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web-react/package-lock.json
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Install React portfolio dependencies
+        working-directory: web-react
+        run: npm ci
 
-      - name: Analyze source
-        run: flutter analyze
+      - name: Check and build React portfolio
+        working-directory: web-react
+        run: npm run check && npm run build
 
-      - name: Run tests
-        run: flutter test
+      - name: Install browser for React portfolio tests
+        working-directory: web-react
+        run: npx playwright install --with-deps chromium
 
-      - name: Build web release
-        run: >-
-          flutter build web --release --base-href /
-          --dart-define=GA_MEASUREMENT_ID=${{ vars.GA_MEASUREMENT_ID }}
-          --dart-define=SENTRY_DSN=${{ secrets.SENTRY_DSN }}
-          --dart-define=TELEMETRY_ENVIRONMENT=production
-          --dart-define=PORTFOLIO_RELEASE=${{ github.sha }}
+      - name: Test React portfolio
+        working-directory: web-react
+        run: npm run test:agents && npm test
 
-      - name: Add direct route entry points
-        run: |
-          for route in \
-            artigos/identidade-visual \
-            ios \
-            ios/artigos/identidade-visual \
-            certificacoes \
-            apps \
-            apps/van-cranenbroek \
-            apps/lyzer-collect \
-            apps/lyzer-deliver \
-            apps/mag-venda-digital
-          do
-            mkdir -p "build/web/$route"
-            cp build/web/index.html "build/web/$route/index.html"
-          done
-          cp build/web/index.html build/web/404.html
+      - name: Build public React portfolio
+        working-directory: web-react
+        env:
+          SITE_ORIGIN: https://leo-daher.github.io
+          VITE_BASE_PATH: /
+          VITE_GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
+          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          VITE_TELEMETRY_ENVIRONMENT: production
+          VITE_PORTFOLIO_RELEASE: ${{ github.sha }}
+        run: npm run build
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -72,7 +64,7 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build/web
+          path: web-react/dist
 
       - name: Deploy to GitHub Pages
         id: deployment

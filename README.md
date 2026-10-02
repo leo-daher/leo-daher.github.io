@@ -1,22 +1,45 @@
 # Leone Daher Portfolio
 
-Adaptive Flutter portfolio for Leone Daher's mobile engineering, connected
-systems and AI automation work.
+React portfolio for Leone Daher's mobile engineering, connected systems and
+AI automation work. The public GitHub Pages deployment serves the approved
+React version from `web-react/`, including static HTML, Portuguese/English
+Markdown, structured data, and `llms.txt` for automated readers.
+
+See [`web-react/README.md`](web-react/README.md) for the current application,
+Node server, read-only MCP endpoint, and validation. The original Flutter
+implementation remains in this repository.
 
 ## Brand
 
 The canonical LD identity, including strategy, geometry, color, motion, voice
 and accessibility rules, lives in
-[`assets/brand/identity.md`](assets/brand/identity.md). Runtime design tokens
-live in [`lib/brand/leone_brand.dart`](lib/brand/leone_brand.dart).
+[`assets/brand/identity.md`](assets/brand/identity.md). React design tokens
+live in [`web-react/src/styles.css`](web-react/src/styles.css); the original
+Flutter tokens remain in [`lib/brand/leone_brand.dart`](lib/brand/leone_brand.dart).
 
-## Run
+## Run React
+
+```bash
+cd web-react
+npm ci
+SITE_ORIGIN=http://127.0.0.1:4173 npm run build
+npm start
+```
+
+## Validate React
+
+```bash
+cd web-react
+npm run validate
+```
+
+## Run original Flutter implementation
 
 ```bash
 fvm flutter run -d web-server --web-hostname 127.0.0.1 --web-port 8080
 ```
 
-## Validate
+## Validate original Flutter implementation
 
 ```bash
 fvm dart format lib test
@@ -36,7 +59,9 @@ Production supports two complementary dashboards:
   high-signal portfolio activity.
 
 Neither provider is enabled in local builds unless its configuration is
-supplied. To test both locally:
+supplied. React reads `VITE_GA_MEASUREMENT_ID`, `VITE_SENTRY_DSN`,
+`VITE_TELEMETRY_ENVIRONMENT`, and `VITE_PORTFOLIO_RELEASE` during its build.
+To test the original Flutter integration locally:
 
 ```bash
 fvm flutter run -d chrome \
@@ -45,9 +70,9 @@ fvm flutter run -d chrome \
   --dart-define=TELEMETRY_ENVIRONMENT=development
 ```
 
-For GitHub Pages, create the repository variable `GA_MEASUREMENT_ID` and the
-Actions secret `SENTRY_DSN`. The deploy workflow supplies the commit SHA as the
-Sentry release automatically.
+For GitHub Pages, the existing repository variable `GA_MEASUREMENT_ID` and
+Actions secret `SENTRY_DSN` are supplied to the React build. The deploy
+workflow supplies the commit SHA as the Sentry release automatically.
 
 Sentry Logs is enabled in production. It records `portfolio_view`,
 `portfolio_attribution`, `select_outbound_link`, `contact_intent`,

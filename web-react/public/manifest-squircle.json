@@ -1,0 +1,36 @@
+{
+    "name": "Leone Daher — Mobile Software Engineer",
+    "short_name": "Leone Daher",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#08080D",
+    "theme_color": "#08080D",
+    "description": "Mobile, Flutter, Python e automação com IA.",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-squircle-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/Icon-squircle-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/Icon-squircle-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-squircle-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
