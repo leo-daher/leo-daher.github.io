@@ -2,7 +2,7 @@
 
 Clone da interface atual do portfólio Flutter, com React e um servidor Node.js. Mantém a marca LD, fontes e assets originais, conteúdo em português e inglês, temas, animação de abertura, frame adaptativo, navegação, apps, certificados e artigo.
 
-A barra superior usa transparência e blur uniforme em toda a superfície, sem refração, dispersão de cores ou efeitos nas bordas. Os controles ficam em uma camada separada. Transparência reduzida e alto contraste usam uma superfície opaca. A biblioteca `liquid-glass-react` permanece instalada para uma futura revisão do efeito, sem ser montada na página atual.
+A barra superior reproduz a aparência da demonstração [Liquid Glass](https://liquid-glass.maxrovensky.com/) observada no Safari: blur uniforme de 14,88 px, saturação de 140%, raio de 32 px, reflexo contínuo e contorno fino. O blur cobre toda a superfície, sem máscaras internas, refração ou dispersão de cores. Tint e sombra acompanham o tema; os controles ficam em uma camada separada. Transparência reduzida e alto contraste usam uma superfície opaca. A implementação usa CSS para preservar esse visual também nos demais navegadores; a biblioteca `liquid-glass-react` permanece instalada, sem ser montada na página atual.
 
 ## Executar
 
@@ -50,14 +50,14 @@ Os testes de agentes iniciam um servidor isolado, consultam HTML sem JavaScript,
 - `public/assets`: cópia dos assets públicos selecionados do portfólio; certificados PDF continuam arquivados no projeto original.
 - `src/features`: telas e interações portadas da versão Flutter.
 - A contagem de 14 apps, contribuições profissionais e métricas das lojas seguem o conteúdo original. As consultas das lojas continuam datadas de julho de 2026.
-- Preferências usam as mesmas chaves `portfolio_locale` e `portfolio_theme`. Referências `ref` são sanitizadas, registradas na sessão e removidas da URL visível.
+- A troca de idioma mantém as chaves `portfolio_locale` e `portfolio_theme`, mas o idioma exibido sempre acompanha a URL; somente o tema é restaurado como preferência. Referências `ref` são sanitizadas, registradas na sessão e removidas da URL visível.
 - A publicação mantém as configurações existentes de GA4 e Sentry. As referências de aquisição são sanitizadas e removidas da URL visível; prévias locais não enviam telemetria por padrão.
 
 A implementação Flutter e a alternativa `web-astro` permanecem separadas. Alterações futuras no conteúdo original devem ser sincronizadas com este clone.
 
 ## Consulta por agentes
 
-A construção gera o conteúdo visível das páginas em HTML, antes de carregar o JavaScript. O cliente React preserva temas, preferências, animações e interações. Páginas em `/en/` oferecem URLs em inglês. Metadados canônicos, alternates por idioma, Schema.org e versões em Markdown acompanham o conteúdo.
+A construção gera o conteúdo visível das páginas em HTML, antes de carregar o JavaScript. O cliente React preserva temas, preferências, animações e interações. A raiz `/` e seus caminhos oferecem inglês por padrão; português usa `/pt/`. A URL define o idioma, independentemente do navegador ou de uma preferência anterior. Links antigos em `/en/` redirecionam aos caminhos ingleses na raiz, preservando parâmetros e fragmentos no navegador. Metadados canônicos, alternates por idioma, Schema.org e versões em Markdown acompanham o conteúdo.
 
 - `/llms.txt`: guia bilíngue conciso com navegação, fontes e limites das evidências, conforme a proposta [llms.txt](https://llmstxt.org/).
 - `/llms-full.txt`: texto público completo nos dois idiomas.
@@ -77,7 +77,7 @@ Ferramentas públicas, somente de leitura:
 - `search_portfolio`: busca com trechos e links das fontes.
 - `read_portfolio_document`: case, perfil, certificados ou artigo completo.
 
-As três aceitam `locale: "pt" | "en"`. Há também 16 recursos Markdown, um por documento/idioma. O servidor não envia mensagens, faz candidaturas, consulta arquivos privados ou executa ações externas.
+As três aceitam `locale: "pt" | "en"`; quando omitido, usam inglês. Há também 16 recursos Markdown, um por documento/idioma. O servidor não envia mensagens, faz candidaturas, consulta arquivos privados ou executa ações externas.
 
 `SITE_ORIGIN` define a origem canônica usada nos links, sem subpasta. `VITE_BASE_PATH` define a subpasta na construção. Consulte `.env.example`; as variáveis são fornecidas ao processo Node/construção. O servidor valida Host e Origin no MCP, limita o corpo a 64 KiB e usa `MCP_ALLOWED_HOSTS`/`MCP_ALLOWED_ORIGINS` para destinos adicionais explícitos. Conteúdo público não exige credenciais. Para acesso remoto, hospede Node atrás de HTTPS.
 

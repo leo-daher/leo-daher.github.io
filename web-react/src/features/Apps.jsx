@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { assetUrl, usePortfolio } from "../context.jsx";
+import { assetUrl, routeHref, usePortfolio } from "../context.jsx";
 import { SectionHeading } from "../components/SectionHeading.jsx";
 import { Icon } from "../components/Icon.jsx";
 import "./apps.css";
@@ -17,10 +17,6 @@ function internalLink(event, path, navigate) {
     event.preventDefault();
     navigate(path);
   }
-}
-
-function appHref(id) {
-  return `${import.meta.env.BASE_URL}apps/${encodeURIComponent(id)}`;
 }
 
 function AppIcons({ images, catalog = false }) {
@@ -44,11 +40,11 @@ function AppIcons({ images, catalog = false }) {
 }
 
 function AppTile({ item }) {
-  const { t, navigate } = usePortfolio();
+  const { t, navigate, locale } = usePortfolio();
   const path = `/apps/${item.id}`;
   return (
     <a
-      href={appHref(item.id)}
+      href={routeHref(path, locale)}
       className="app-store-tile"
       style={{ "--app-accent": item.accent }}
       aria-label={`${t("openAppDetails")}: ${item.name}`}
@@ -82,7 +78,7 @@ function AppGrid() {
 }
 
 export function AppsSection() {
-  const { t, navigate } = usePortfolio();
+  const { t, navigate, locale } = usePortfolio();
   return (
     <section
       className="apps-storefront section-frame"
@@ -92,7 +88,7 @@ export function AppsSection() {
         <SectionHeading title={t("featuredAppsTitle")} />
         <a
           className="apps-view-all"
-          href={`${import.meta.env.BASE_URL}apps`}
+          href={routeHref("/apps", locale)}
           onClick={(event) => internalLink(event, "/apps", navigate)}
         >
           {t("viewAllApps")}
@@ -347,7 +343,7 @@ function CaseDetails({ app }) {
 }
 
 export function AppDetailPage({ id }) {
-  const { t, navigate } = usePortfolio();
+  const { t, navigate, locale } = usePortfolio();
   const item = APP_ITEMS.find((entry) => entry.id === id);
   const app = APP_CASES[item?.caseId || id];
   if (!app) {
@@ -356,7 +352,7 @@ export function AppDetailPage({ id }) {
         <SectionHeading title={t("allAppsTitle")} />
         <a
           className="apps-view-all"
-          href={`${import.meta.env.BASE_URL}apps`}
+          href={routeHref("/apps", locale)}
           onClick={(event) => internalLink(event, "/apps", navigate)}
         >
           {t("viewAllApps")}

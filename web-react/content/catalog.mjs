@@ -3,7 +3,7 @@ import { APP_ITEMS, APP_CASES } from "../src/data/apps.js";
 
 const webRoot = new URL("../", import.meta.url);
 const schemaContext = "https://schema.org";
-const locales = ["pt", "en"];
+const locales = ["en", "pt"];
 const readPublicJson = async (path) =>
   JSON.parse(await readFile(new URL(path, webRoot), "utf8"));
 const inline = (text) => text.replace(/\s+/g, " ").trim();
@@ -14,7 +14,7 @@ const label = (text) =>
     .replaceAll("]", "\\]");
 const link = (text, href) => `[${label(text)}](${href})`;
 const localPath = (path, locale) =>
-  locale === "pt" ? path : `/en${path === "/" ? "/" : path}`;
+  locale === "pt" ? `/pt${path === "/" ? "/" : path}` : path;
 const languageCode = (locale) => (locale === "pt" ? "pt-BR" : "en");
 
 export function normalizeBasePath(basePath = "/") {
@@ -599,6 +599,7 @@ export async function loadPortfolioContent({
     name: pt.appTitle.split(" — ")[0],
     url: url("/"),
     locales,
+    defaultLocale: "en",
     roles: Object.fromEntries(
       locales.map((locale) => [
         locale,

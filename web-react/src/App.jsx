@@ -4,6 +4,7 @@ import {
   assetUrl,
   basePath,
   contactLinks,
+  routeHref,
 } from "./context.jsx";
 import pt from "./data/pt.json";
 import en from "./data/en.json";
@@ -33,10 +34,11 @@ function stored(key, fallback) {
     return fallback;
   }
 }
-function stripEnglishPrefix(path) {
-  return path === "/en" || path.startsWith("/en/")
-    ? path.slice(3) || "/"
-    : path;
+function stripLocalePrefix(path) {
+  return /^\/(?:pt|en)(?:\/|$)/.test(path) ? path.slice(3) || "/" : path;
+}
+function routeLocale(path) {
+  return /^\/pt(?:\/|$)/.test(path) ? "pt" : "en";
 }
 function browserPath() {
   let path = window.location.pathname;
@@ -45,10 +47,14 @@ function browserPath() {
   return path;
 }
 function relativePath() {
-  return stripEnglishPrefix(browserPath()).replace(/\/$/, "") || "/";
+  return stripLocalePrefix(browserPath()).replace(/\/$/, "") || "/";
 }
 function localizedPath(path, locale) {
-  return basePath + (locale === "en" ? "en/" : "") + path.replace(/^\//, "");
+  return (
+    basePath +
+    (locale === "pt" ? "pt/" : "") +
+    stripLocalePrefix(path).replace(/^[/\\]+/, "")
+  );
 }
 const isHome = (p) => p === "/" || p === "/ios";
 let metadataRequest;
@@ -72,12 +78,12 @@ function loadPortfolioMetadata() {
   return metadataRequest;
 }
 function metadataPath(path, locale) {
-  let logicalPath = stripEnglishPrefix(path).replace(/\/$/, "") || "/";
+  let logicalPath = stripLocalePrefix(path).replace(/\/$/, "") || "/";
   if (["/ios", "/in", "/ig"].includes(logicalPath)) logicalPath = "/";
   if (logicalPath === "/ios/artigos/identidade-visual")
     logicalPath = "/artigos/identidade-visual";
-  return locale === "en"
-    ? `/en${logicalPath === "/" ? "/" : logicalPath}`
+  return locale === "pt"
+    ? `/pt${logicalPath === "/" ? "/" : logicalPath}`
     : logicalPath;
 }
 function headElement(tag, selector, attributes) {
@@ -258,14 +264,22 @@ function Home({ active }) {
   );
 }
 function ErrorPage({ error }) {
+  const { locale } = useCurrent();
+  const portuguese = locale === "pt";
   return (
     <section className="section-frame error-page">
       <h1>
         {error
-          ? "Não foi possível abrir o portfólio."
-          : "Página não encontrada."}
+          ? portuguese
+            ? "Não foi possível abrir o portfólio."
+            : "Unable to open the portfolio."
+          : portuguese
+            ? "Página não encontrada."
+            : "Page not found."}
       </h1>
-      <a href={basePath}>Voltar ao início</a>
+      <a href={routeHref("/", locale)}>
+        {portuguese ? "Voltar ao início" : "Back to home"}
+      </a>
     </section>
   );
 }
@@ -291,7 +305,7 @@ export default function App({
   const inBrowser = !staticRender && typeof window !== "undefined";
   const [path, setPath] = useState(
       () =>
-        stripEnglishPrefix(
+        stripLocalePrefix(
           (initialPath ?? (inBrowser ? relativePath() : "/")).split(
             /[?#]/,
             1,
@@ -299,17 +313,9 @@ export default function App({
         ).replace(/\/$/, "") || "/",
     ),
     [locale, setLocaleState] = useState(() =>
-      inBrowser && stripEnglishPrefix(browserPath()) !== browserPath()
-        ? "en"
-        : inBrowser
-          ? stored(
-              "portfolio_locale",
-              initialLocale ??
-                (navigator.language.startsWith("pt") ? "pt" : "en"),
-            )
-          : initialLocale === "en"
-            ? "en"
-            : "pt",
+      inBrowser
+        ? routeLocale(browserPath())
+        : (initialLocale ?? routeLocale(initialPath ?? "/")),
     ),
     [theme, setThemeState] = useState(() =>
       inBrowser
@@ -373,9 +379,11 @@ export default function App({
   };
   const navigate = useCallback(
     (to, { replace = false } = {}) => {
-      const [next, hash] = to.split("#");
+      const url = new URL(to, "https://portfolio.invalid/");
+      const next = url.pathname;
+      const hash = url.hash.slice(1);
       if (hash) sectionSelected(hash);
-      const dest = stripEnglishPrefix(next || "/").replace(/\/$/, "") || "/";
+      const dest = stripLocalePrefix(next || "/").replace(/\/$/, "") || "/";
       if (isHome(pathRef.current) && isHome(dest) && hash) {
         document.getElementById(hash)?.scrollIntoView({
           behavior: reduceMotion ? "instant" : "smooth",
@@ -385,7 +393,7 @@ export default function App({
       }
       positions.current.set(pathRef.current, window.scrollY);
       if (isHome(pathRef.current)) homeScroll.current = window.scrollY;
-      const target = localizedPath(dest, locale) + (hash ? "#" + hash : "");
+      const target = localizedPath(dest, locale) + url.search + url.hash;
       window.history[replace ? "replaceState" : "pushState"](
         { portfolio: true },
         "",
@@ -409,8 +417,7 @@ export default function App({
     if (!inBrowser) return;
     function pop() {
       const next = relativePath();
-      if (stripEnglishPrefix(browserPath()) !== browserPath())
-        setLocaleState("en");
+      setLocaleState(routeLocale(browserPath()));
       pathRef.current = next;
       setPath(next);
       routeFocus.current = true;
@@ -438,12 +445,12 @@ export default function App({
       const u = new URL(a.href);
       if (u.origin !== location.origin || !u.pathname.startsWith(basePath))
         return;
-      const rel = stripEnglishPrefix(
+      const rel = stripLocalePrefix(
         basePath === "/" ? u.pathname : "/" + u.pathname.slice(basePath.length),
       );
       if (/\.[a-z0-9]+$/i.test(rel)) return;
       e.preventDefault();
-      navigate(rel + u.hash);
+      navigate(rel + u.search + u.hash);
     }
     window.addEventListener("popstate", pop);
     document.addEventListener("click", links);
@@ -452,6 +459,16 @@ export default function App({
       document.removeEventListener("click", links);
     };
   }, [inBrowser, navigate]);
+  useEffect(() => {
+    if (!inBrowser || !/^\/en(?:\/|$)/.test(browserPath())) return;
+    const url = new URL(window.location.href);
+    url.pathname = localizedPath(relativePath(), "en");
+    history.replaceState(
+      history.state,
+      "",
+      url.pathname + url.search + url.hash,
+    );
+  }, [inBrowser]);
   useEffect(() => {
     if (!inBrowser) return;
     document.documentElement.lang = locale === "pt" ? "pt-BR" : "en";
@@ -542,6 +559,15 @@ export default function App({
             href: translation.url,
           });
         }
+        const defaultDocument = documents.find(
+          (item) => item.id === current.id && item.locale === "en",
+        );
+        if (defaultDocument)
+          headElement("link", 'link[rel="alternate"][hreflang="x-default"]', {
+            rel: "alternate",
+            hreflang: "x-default",
+            href: defaultDocument.url,
+          });
       })
       .catch(() => {
         /* Keep the rendered metadata; the next navigation can retry loading it. */

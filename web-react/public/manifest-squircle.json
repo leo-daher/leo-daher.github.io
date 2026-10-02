@@ -1,11 +1,12 @@
 {
-    "name": "Leone Daher — Mobile Software Engineer",
+    "name": "Leone Daher — Software Engineer",
     "short_name": "Leone Daher",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#08080D",
     "theme_color": "#08080D",
-    "description": "Mobile, Flutter, Python e automação com IA.",
+    "description": "Mobile, Flutter, Python and AI automation.",
+    "lang": "en",
     "prefer_related_applications": false,
     "icons": [
         {

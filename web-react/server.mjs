@@ -96,7 +96,8 @@ const server = http.createServer(async (req, res) => {
     );
   }
   if (prefix && (pathname === "/" || pathname === prefix)) {
-    res.writeHead(302, { Location: `${prefix}/` });
+    const query = new URL(req.url, "http://localhost").search;
+    res.writeHead(302, { Location: `${prefix}/${query}` });
     return res.end();
   }
   if (prefix && !pathname.startsWith(`${prefix}/`)) {
@@ -104,6 +105,16 @@ const server = http.createServer(async (req, res) => {
     return res.end("Not found");
   }
   const localPath = prefix ? pathname.slice(prefix.length) : pathname;
+  if (/^\/en(?:\/|$)/.test(localPath)) {
+    const url = new URL(req.url, "http://localhost");
+    const destination = new URL("http://localhost/");
+    destination.pathname = `${prefix}/${localPath.slice(3).replace(/^[/\\]+/, "")}`;
+    destination.search = url.search;
+    res.writeHead(308, {
+      Location: destination.pathname.replace(/^\/+/, "/") + destination.search,
+    });
+    return res.end();
+  }
   const normalized = localPath.replace(/\/$/, "") || "/";
   const file = path.resolve(root, `.${localPath}`);
   if (file !== root && !file.startsWith(root + path.sep)) {

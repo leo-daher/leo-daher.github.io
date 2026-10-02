@@ -84,7 +84,9 @@ function safeRoute(pathname, base = "/") {
   if (base !== "/" && path.startsWith(base))
     path = "/" + path.slice(base.length);
   path = path.replace(/\/$/, "") || "/";
-  const localePrefix = /^\/en(?:\/|$)/.test(path) ? "/en" : "";
+  const localePrefix = /^\/(?:pt|en)(?:\/|$)/.test(path)
+    ? path.slice(0, 3)
+    : "";
   const logical = localePrefix ? path.slice(3) || "/" : path;
   const known = [
     "/",

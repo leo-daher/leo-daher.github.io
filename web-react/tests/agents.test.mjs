@@ -61,6 +61,12 @@ test("all localized pages expose real content, canonical metadata and matching M
       new RegExp(`<html lang="${doc.locale === "pt" ? "pt-BR" : "en"}"`),
     );
     assert.ok(html.includes(doc.url));
+    const defaultDocument = catalog.documents.find(
+      (item) => item.id === doc.id && item.locale === "en",
+    );
+    assert.ok(
+      html.includes(`hreflang="x-default" href="${defaultDocument.url}"`),
+    );
     const schemaText = html.match(
       /<script id="portfolio-structured-data" type="application\/ld\+json">(.*?)<\/script>/s,
     )?.[1];
@@ -80,6 +86,41 @@ test("all localized pages expose real content, canonical metadata and matching M
     assert.ok(
       response.headers.get("link").includes(new URL(doc.markdownUrl).pathname),
     );
+  }
+});
+
+test("legacy English routes redirect locally and retain campaign parameters", async () => {
+  for (const path of [
+    "/en/",
+    "/en/apps/lyzer-collect/",
+    "/en/ios/artigos/identidade-visual/",
+    "/en/index.md",
+  ]) {
+    const response = await fetch(`${origin}${prefix}${path}?preview=agents`, {
+      redirect: "manual",
+    });
+    assert.equal(response.status, 308);
+    assert.equal(
+      response.headers.get("location"),
+      `${prefix}${path.slice(3)}?preview=agents`,
+    );
+    assert.equal(
+      (await fetch(`${origin}${response.headers.get("location")}`)).status,
+      200,
+    );
+  }
+  for (const path of [
+    "/en//example.com",
+    "/en/%5C%5Cexample.com",
+    "/en/a/%2e%2e/%2fexample.com",
+  ]) {
+    const response = await fetch(`${origin}${prefix}${path}`, {
+      redirect: "manual",
+    });
+    const target = response.headers.get("location");
+    assert.equal(response.status, 308);
+    assert.ok(target.startsWith("/") && !target.startsWith("//"), target);
+    assert.equal(new URL(target, origin).origin, origin);
   }
 });
 
@@ -107,8 +148,11 @@ test("agent guide, sitemap and public data expose bounded facts and working disc
       .excludes.includes("MAG Venda Digital"),
   );
   assert.match(JSON.stringify(json.profile.metrics), /2026-07/);
-  const enHome = await (await fetch(`${origin}${prefix}/en/`)).text();
-  assert.ok(enHome.includes(`href="${prefix}/en/apps/van-cranenbroek"`));
+  const enHome = await (await fetch(`${origin}${prefix}/`)).text();
+  assert.ok(enHome.includes(`href="${prefix}/apps/van-cranenbroek"`));
+  const ptHome = await (await fetch(`${origin}${prefix}/pt/`)).text();
+  assert.ok(ptHome.includes(`href="${prefix}/pt/apps/van-cranenbroek"`));
+  assert.match(ptHome, /<html lang="pt-BR"/);
   const alias = await fetch(
     `${origin}${prefix}/en/ios/artigos/identidade-visual/`,
   );
@@ -140,6 +184,35 @@ test("official MCP client discovers read-only tools and reads/searches source-ba
     });
     assert.equal(overview.structuredContent.profile.name, "Leone Daher");
     assert.equal(overview.structuredContent.documents.length, 8);
+    const defaults = await client.callTool({
+      name: "get_portfolio_overview",
+      arguments: {},
+    });
+    assert.equal(defaults.structuredContent.documents.length, 8);
+    assert.ok(
+      defaults.structuredContent.documents.every(
+        (document) => document.locale === "en",
+      ),
+    );
+    const defaultSearch = await client.callTool({
+      name: "search_portfolio",
+      arguments: { query: "offline Flutter" },
+    });
+    assert.ok(
+      defaultSearch.structuredContent.matches.some(
+        (document) => document.id === "lyzer-collect",
+      ),
+    );
+    assert.ok(
+      defaultSearch.structuredContent.matches.every(
+        (document) => document.locale === "en",
+      ),
+    );
+    const defaultDocument = await client.callTool({
+      name: "read_portfolio_document",
+      arguments: { id: "profile" },
+    });
+    assert.equal(defaultDocument.structuredContent.locale, "en");
     const found = await client.callTool({
       name: "search_portfolio",
       arguments: { query: "offline Flutter", locale: "en" },
@@ -199,7 +272,7 @@ test("public migration preserves social previews, install icons and social redir
     assert.ok(image, doc.path);
     assert.equal((await fetch(local(decode(image)))).status, 200);
   }
-  for (const locale of ["", "/en"]) {
+  for (const locale of ["", "/pt"]) {
     for (const channel of ["in", "ig"]) {
       const html = await (
         await fetch(`${origin}${prefix}${locale}/${channel}/`)

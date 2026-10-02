@@ -4,6 +4,8 @@ React portfolio for Leone Daher's mobile engineering, connected systems and
 AI automation work. The public GitHub Pages deployment serves the approved
 React version from `web-react/`, including static HTML, Portuguese/English
 Markdown, structured data, and `llms.txt` for automated readers.
+English is served at `/`, Portuguese at `/pt/`, and legacy `/en/` links
+redirect to the English pages.
 
 See [`web-react/README.md`](web-react/README.md) for the current application,
 Node server, read-only MCP endpoint, and validation. The original Flutter

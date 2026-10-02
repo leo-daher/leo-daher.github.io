@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { assetUrl, usePortfolio } from "../context.jsx";
+import { assetUrl, routeHref, usePortfolio } from "../context.jsx";
 import { SectionHeading } from "../components/SectionHeading.jsx";
 import { Icon } from "../components/Icon.jsx";
 import "./certificates.css";
@@ -70,8 +70,6 @@ const format = (value, replacements) =>
     (text, [key, replacement]) => text.replaceAll(`{${key}}`, replacement),
     value,
   );
-const routeHref = (path) =>
-  `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
 function TechnologyTags({ technologies, compact = false }) {
   const { t } = usePortfolio();
@@ -220,7 +218,7 @@ function CatalogStatus({ failed, retry }) {
 }
 
 export function CertificatesSection() {
-  const { t, navigate } = usePortfolio();
+  const { t, navigate, locale } = usePortfolio();
   const { certificates, failed, retry } = useCertificates();
   const [preview, setPreview] = useState(null);
   const featured = useMemo(() => {
@@ -266,7 +264,7 @@ export function CertificatesSection() {
           ))}
           <a
             className="certificate-view-all"
-            href={routeHref("/certificacoes")}
+            href={routeHref("/certificacoes", locale)}
             onClick={(event) => {
               if (
                 !event.metaKey &&

@@ -33,14 +33,14 @@ function llmsIndex(content, basePath, siteOrigin) {
   const url = (path) => publicUrl(path, basePath, siteOrigin);
   const lines = [
     `# ${profile.name}`,
-    "> Public portfolio covering mobile engineering, connected systems, AI automation, selected published apps, verified course records, and an article about the LD visual identity. Portuguese and English documents are available.",
+    "> Public portfolio covering mobile engineering, connected systems, AI automation, selected published apps, verified course records, and an article about the LD visual identity. English is the default at the root; Portuguese documents are available under /pt/.",
     "The Markdown versions mirror the public portfolio copy and selected public evidence. Cases describe contribution within teams; store listings are product evidence. The contact section gives the public professional channels.",
     ...profile.limitations.en,
     `Português: os documentos abaixo reproduzem o conteúdo público do portfólio. Os ${profile.metrics.find((metric) => metric.id === "app-deliveries").value} apps pertencem ao inventário Latitudde/Conkord, sem somar MAG. Métricas de loja foram consultadas em julho de 2026; cursos não substituem experiência profissional.`,
   ];
   for (const [locale, heading] of [
-    ["pt", "Português"],
     ["en", "English"],
+    ["pt", "Português"],
   ]) {
     lines.push(`## ${heading}`);
     lines.push(
@@ -97,7 +97,7 @@ function sitemap(content, basePath, siteOrigin) {
       (other) =>
         `    <xhtml:link rel="alternate" hreflang="${other.locale === "pt" ? "pt-BR" : "en"}" href="${xmlEscape(url(other))}" />`,
     );
-    const primary = translations.find((other) => other.locale === "pt");
+    const primary = translations.find((other) => other.locale === "en");
     if (primary)
       alternates.push(
         `    <xhtml:link rel="alternate" hreflang="x-default" href="${xmlEscape(url(primary))}" />`,

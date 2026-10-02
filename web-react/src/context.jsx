@@ -7,6 +7,9 @@ export const basePath = import.meta.env.BASE_URL;
 export function assetUrl(path) {
   return `${basePath}${path.replace(/^\//, "")}`;
 }
+export function routeHref(path, locale = "en") {
+  return `${basePath}${locale === "pt" ? "pt/" : ""}${path.replace(/^\//, "")}`;
+}
 export const contactLinks = {
   linkedin: "https://www.linkedin.com/in/leonedaher/",
   whatsapp: "https://wa.me/5521999997667",

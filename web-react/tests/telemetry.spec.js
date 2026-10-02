@@ -81,7 +81,7 @@ test("SSR and unconfigured telemetry perform no service initialization", async (
     { encoding: "utf8" },
   );
   expect(result.trim()).toBe("SSR safe");
-  await page.goto(origin);
+  await page.goto(origin + "/pt/");
   const disabled = await page.evaluate(async (url) => {
     const { createPortfolioTelemetry } = await import(
       url + "/src/telemetry.js"
@@ -114,7 +114,7 @@ test("StrictMode captures ref once, persists legacy keys and sends bounded campa
 }) => {
   await page.goto(
     origin +
-      "/?ref=cv%20safe&utm_source=resume&utm_campaign=alice%40example.com&email=private%40example.com#apps",
+      "/pt/?ref=cv%20safe&utm_source=resume&utm_campaign=alice%40example.com&email=private%40example.com#apps",
   );
   await expect
     .poll(async () => (await events(page, "portfolio_view")).length)
@@ -169,7 +169,7 @@ test("StrictMode captures ref once, persists legacy keys and sends bounded campa
 test("preferences, menu, scroll, contacts, store links and certificate actions retain their event semantics", async ({
   page,
 }) => {
-  await page.goto(origin);
+  await page.goto(origin + "/pt/");
   await expect(page.locator(".certificate-highlight")).toHaveCount(3);
   await page.locator(".language-toggle").click();
   await page.locator(".theme-toggle").click();
@@ -356,7 +356,7 @@ test("Sentry policy retains only approved interaction logs and scrubs error payl
   const attribution = logItems.find(
     (item) => item.body === "portfolio_attribution",
   );
-  expect(view.attributes.locale).toMatchObject({ type: "string", value: "pt" });
+  expect(view.attributes.locale).toMatchObject({ type: "string", value: "en" });
   expect(view.attributes.theme).toMatchObject({
     type: "string",
     value: "dark",

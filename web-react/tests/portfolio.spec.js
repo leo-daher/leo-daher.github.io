@@ -13,12 +13,55 @@ test.beforeEach(async ({ page }) => {
     localStorage.setItem("portfolio_theme", "dark");
   });
 });
+test("URL selects English at root and Portuguese under pt despite browser and stored preferences", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    locale: "pt-BR",
+    reducedMotion: "reduce",
+    colorScheme: "dark",
+  });
+  await context.addInitScript(() =>
+    localStorage.setItem("portfolio_locale", "pt"),
+  );
+  const page = await context.newPage();
+  await page.goto("http://127.0.0.1:4173/");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.locator(".hero-role")).toHaveText("Software Engineer");
+  await expect(page.locator(".app-store-tile").first()).toHaveAttribute(
+    "href",
+    "/apps/van-cranenbroek",
+  );
+  await page.goto("http://127.0.0.1:4173/pt/?preview=locale#apps");
+  await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+  await expect(page.locator(".hero-role")).toHaveText("Engenheiro de Software");
+  const app = page.locator(".app-store-tile").first();
+  await expect(app).toHaveAttribute("href", "/pt/apps/van-cranenbroek");
+  const other = await context.newPage();
+  await other.goto(await app.evaluate((anchor) => anchor.href));
+  await expect(other.locator("html")).toHaveAttribute("lang", "pt-BR");
+  await expect(other.locator(".app-detail-page")).toBeVisible();
+  await other.close();
+  await page.locator(".language-toggle").click();
+  await expect(page).toHaveURL("http://127.0.0.1:4173/?preview=locale#apps");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await page.locator(".language-toggle").click();
+  await expect(page).toHaveURL("http://127.0.0.1:4173/pt/?preview=locale#apps");
+  await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+  await expect(page.locator('link[hreflang="x-default"]')).toHaveAttribute(
+    "href",
+    /https?:\/\/[^/]+\/$/,
+  );
+  await context.close();
+});
 test("home preserves original content, geometry and loaded public assets", async ({
   page,
 }) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/");
+  await page.goto("/pt/");
   await expect(
     page.getByRole("heading", { name: "Leone", exact: true }),
   ).toBeVisible();
@@ -50,7 +93,7 @@ test("home preserves original content, geometry and loaded public assets", async
 test("language and theme change immediately and persist after reload", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/pt/");
   await page.getByRole("button", { name: "Escolher idioma: English" }).click();
   await expect(page.locator(".hero-role")).toHaveText("Software Engineer");
   await page.getByRole("button", { name: "Switch to light theme" }).click();
@@ -65,7 +108,7 @@ test("language and theme change immediately and persist after reload", async ({
 test("language switches keep header controls fixed and can be reversed at the same pointer position", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/pt/");
   await expect(page.locator(".hero-role")).toHaveText("Engenheiro de Software");
   await page.evaluate(() => document.fonts.ready);
   const controls = page.locator(
@@ -110,7 +153,7 @@ test("language switches keep header controls fixed and can be reversed at the sa
 test("FAB supports keyboard, outside dismiss and section navigation", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/pt/");
   const toggle = page.locator(".fab-toggle");
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
@@ -132,7 +175,7 @@ test("FAB supports keyboard, outside dismiss and section navigation", async ({
 test("header contact menu exposes original destinations and dismisses on Escape", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/pt/");
   const trigger = page.locator(".contact-trigger");
   await trigger.focus();
   await trigger.press("ArrowDown");
@@ -152,7 +195,7 @@ test("every app detail opens directly, retains screenshots, official links and e
   page,
 }) => {
   for (const id of apps) {
-    const response = await page.goto("/apps/" + id);
+    const response = await page.goto("/pt/apps/" + id);
     expect(response.status()).toBe(200);
     await expect(page.locator(".app-detail-page")).toBeVisible();
     await expect(
@@ -177,7 +220,7 @@ test("every app detail opens directly, retains screenshots, official links and e
 test("home scroll is restored after viewing an app and using back", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/pt/");
   await page.locator(".app-store-tile").first().scrollIntoViewIfNeeded();
   const before = await page.evaluate(() => scrollY);
   await page.locator(".app-store-tile").first().click();
@@ -191,7 +234,7 @@ test("home scroll is restored after viewing an app and using back", async ({
 test("certificates retain 13 records, OR filters, official preview and focus restore", async ({
   page,
 }) => {
-  await page.goto("/certificacoes");
+  await page.goto("/pt/certificacoes");
   await expect(page.locator(".certificate-gallery-card")).toHaveCount(13);
   const mobile = page.viewportSize().width < 621;
   if (mobile)
@@ -234,7 +277,7 @@ test("article and iOS alias preserve complete copy, figures and sharing", async 
     "/artigos/identidade-visual",
     "/ios/artigos/identidade-visual",
   ]) {
-    await page.goto(path);
+    await page.goto("/pt" + path);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
       "Como desenvolvi a logo e a identidade visual deste portfólio",
     );
@@ -255,14 +298,14 @@ test("article and iOS alias preserve complete copy, figures and sharing", async 
 test("attribution is captured and short ref is removed from the visible URL", async ({
   page,
 }) => {
-  await page.goto("/?ref=cv-test&utm_source=resume");
+  await page.goto("/pt/?ref=cv-test&utm_source=resume");
   await expect(page).toHaveURL(/\?utm_source=resume$/);
   expect(
     await page.evaluate(() =>
       JSON.parse(sessionStorage.getItem("portfolio_attribution")),
     ),
   ).toEqual({ ref: "cv-test", utm_source: "resume" });
-  await page.goto("/in?ref=legacy");
+  await page.goto("/pt/in?ref=legacy");
   await expect(page).toHaveURL(/\/$/);
   expect(
     await page.evaluate(
@@ -280,7 +323,7 @@ test("all primary pages have one main landmark and pass accessibility checks", a
     "/certificacoes",
     "/artigos/identidade-visual",
   ]) {
-    await page.goto(path);
+    await page.goto("/pt" + path);
     if (path === "/certificacoes")
       await expect(page.locator(".certificate-gallery-card")).toHaveCount(13);
     await expect(page.getByRole("main")).toHaveCount(1);
@@ -300,7 +343,7 @@ test("opening finishes and morph remains responsive with motion enabled", async 
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await page.goto("/pt/", { waitUntil: "domcontentloaded" });
   await expect(page.locator(".opening")).toHaveCount(1);
   await expect(page.locator(".opening")).toHaveCount(0, { timeout: 4000 });
   await expect(page.locator(".viewport-frame")).toHaveAttribute(
@@ -330,17 +373,17 @@ test("Node serves known deep links and rejects missing files and unsupported met
 test("section deep links work and the closed FAB does not block page content", async ({
   page,
 }) => {
-  await page.goto("/#apps");
+  await page.goto("/pt/#apps");
   await expect(page.locator("#apps")).toBeInViewport();
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/pt/");
   expect(
     await page.evaluate(
       () => document.elementFromPoint(218, 488)?.closest(".fab-group") === null,
     ),
   ).toBe(true);
   await page.setViewportSize({ width: 1280, height: 250 });
-  await page.goto("/");
+  await page.goto("/pt/");
   await page.locator(".contact-trigger").click();
   await expect(page.getByRole("menu")).toBeVisible();
   const popup = await page.getByRole("menu").boundingBox();
@@ -351,7 +394,7 @@ test("tablet and narrow layouts match responsive geometry without overflow", asy
 }) => {
   for (const width of [320, 650, 768, 1100]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/");
+    await page.goto("/pt/");
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -383,23 +426,29 @@ test("English article metadata follows language changes and legacy aliases survi
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/en/ios/artigos/identidade-visual/?preview=agents#main");
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
-    "href",
-    /\/en\/artigos\/identidade-visual\/$/,
-  );
-  await expect(
-    page.locator('link[rel="alternate"][type="text/markdown"]'),
-  ).toHaveAttribute("href", /\/en\/artigos\/identidade-visual\/index.md$/);
-  await page
-    .getByRole("button", { name: "Choose language: Português" })
-    .click();
-  await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
   await expect(page).toHaveURL(
     /\/ios\/artigos\/identidade-visual\/?\?preview=agents#main$/,
   );
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
-    /(?<!\/en)\/artigos\/identidade-visual\/$/,
+    /https?:\/\/[^/]+\/artigos\/identidade-visual\/$/,
+  );
+  await expect(
+    page.locator('link[rel="alternate"][type="text/markdown"]'),
+  ).toHaveAttribute(
+    "href",
+    /https?:\/\/[^/]+\/artigos\/identidade-visual\/index.md$/,
+  );
+  await page
+    .getByRole("button", { name: "Choose language: Português" })
+    .click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+  await expect(page).toHaveURL(
+    /\/pt\/ios\/artigos\/identidade-visual\/?\?preview=agents#main$/,
+  );
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    /\/pt\/artigos\/identidade-visual\/$/,
   );
   await page.getByRole("button", { name: "Escolher idioma: English" }).click();
   const response = await page.reload();
@@ -417,12 +466,12 @@ test("project and certificates remain readable with JavaScript disabled", async 
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto("http://127.0.0.1:4173/en/apps/lyzer-collect/");
+  await page.goto("http://127.0.0.1:4173/apps/lyzer-collect/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "Lyzer Collect",
   );
   await expect(page.locator("main")).toContainText("Flutter");
-  await page.goto("http://127.0.0.1:4173/en/certificacoes/");
+  await page.goto("http://127.0.0.1:4173/pt/certificacoes/");
   await expect(page.locator(".certificate-card")).toHaveCount(13);
   await expect(page.locator("main")).toContainText("Anthropic");
   await context.close();

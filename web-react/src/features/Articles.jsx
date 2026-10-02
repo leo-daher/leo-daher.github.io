@@ -1,14 +1,11 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { assetUrl, usePortfolio } from "../context.jsx";
+import { assetUrl, routeHref, usePortfolio } from "../context.jsx";
 import { SectionHeading } from "../components/SectionHeading.jsx";
 import { Icon } from "../components/Icon.jsx";
 import "./articles.css";
 
 const articlePath = "/artigos/identidade-visual";
-const canonicalUrl = "https://leo-daher.github.io/artigos/identidade-visual/";
 const publicationDate = new Date("2026-09-15T13:38:29Z");
-const routeHref = (path) =>
-  `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const lerp = (start, end, progress) => start + (end - start) * progress;
 
@@ -81,7 +78,7 @@ function ArticleCardIcon() {
 }
 
 export function ArticlesSection() {
-  const { t, navigate } = usePortfolio();
+  const { t, navigate, locale } = usePortfolio();
   return (
     <section
       className="section-frame articles-section"
@@ -95,7 +92,7 @@ export function ArticlesSection() {
       />
       <a
         className="article-home-card"
-        href={routeHref(articlePath)}
+        href={routeHref(articlePath, locale)}
         onClick={(event) => {
           if (
             !event.metaKey &&
@@ -589,7 +586,11 @@ function ArticleSectionHeading({ eyebrow, title }) {
 }
 
 function ShareArticle() {
-  const { t } = usePortfolio();
+  const { t, locale } = usePortfolio();
+  const canonicalUrl = new URL(
+    routeHref(`${articlePath}/`, locale),
+    "https://leo-daher.github.io",
+  ).href;
   const title = t("identityArticleTitle");
   const shareUrl = (base, params) => `${base}?${new URLSearchParams(params)}`;
   const links = [

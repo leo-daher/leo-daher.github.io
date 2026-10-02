@@ -196,10 +196,20 @@ main {
   height: calc(72px + env(safe-area-inset-top));
   padding-top: env(safe-area-inset-top);
   z-index: 50;
-  --glass-fill: #14132066;
+  --glass-fill: #00000033;
+  --glass-shadow: #00000040;
+  --glass-edge: #ffffff26;
+  --glass-reflection-low: #ffffff03;
+  --glass-reflection-high: #ffffff0d;
+  --glass-highlight: #ffffff26;
 }
 :root[data-theme="light"] .topbar {
-  --glass-fill: #ffffff80;
+  --glass-fill: #ffffff26;
+  --glass-shadow: #3530471a;
+  --glass-edge: #ffffff80;
+  --glass-reflection-low: #ffffff08;
+  --glass-reflection-high: #ffffff18;
+  --glass-highlight: #ffffff80;
 }
 .glass-material {
   position: absolute;
@@ -217,8 +227,24 @@ main {
   inset: 0;
   border-radius: inherit;
   background: var(--glass-fill);
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
+  /* Demo Safari: overLight 12px + blurAmount 0.09 × 32 = 14.88px. */
+  -webkit-backdrop-filter: blur(14.88px) saturate(140%);
+  backdrop-filter: blur(14.88px) saturate(140%);
+  box-shadow: 0 16px 70px var(--glass-shadow);
+}
+.glass-reflection {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--glass-edge);
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    var(--glass-reflection-low) 33%,
+    var(--glass-reflection-high) 66%,
+    transparent 100%
+  );
+  box-shadow: inset 0 1px 3px var(--glass-highlight);
 }
 .topbar.invisible {
   visibility: hidden;
@@ -1195,6 +1221,10 @@ body::before {
     background: var(--canvas);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+    box-shadow: none;
+  }
+  .glass-reflection {
+    display: none;
   }
 }
 @media (forced-colors: active) {
@@ -1203,5 +1233,9 @@ body::before {
     background: Canvas;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+    box-shadow: none;
+  }
+  .glass-reflection {
+    display: none;
   }
 }

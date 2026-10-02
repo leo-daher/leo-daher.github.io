@@ -20,7 +20,7 @@ const publicUrl = (path) =>
   new URL(`${basePath}${path.replace(/^\//, "")}`, siteOrigin).href;
 
 function pageHtml(document, path = document.path) {
-  const localizedPath = path.replace(/^\/en(?=\/|$)/, "") || "/";
+  const localizedPath = path.replace(/^\/pt(?=\/|$)/, "") || "/";
   const translations = catalog.documents.filter(
     (item) => item.id === document.id,
   );
@@ -47,22 +47,13 @@ function pageHtml(document, path = document.path) {
       (item) =>
         `<link rel="alternate" hreflang="${item.locale === "pt" ? "pt-BR" : "en"}" href="${escape(item.url)}" />`,
     ),
+    `<link rel="alternate" hreflang="x-default" href="${escape(translations.find((item) => item.locale === "en").url)}" />`,
     `<script id="portfolio-structured-data" type="application/ld+json">${JSON.stringify(document.schema).replaceAll("<", "\\u003c")}</script>`,
   ].join("\n");
-  let markup = renderRoute(localizedPath, {
+  const markup = renderRoute(localizedPath, {
     locale: document.locale,
     certificates,
   });
-  if (document.locale === "en") {
-    markup = markup.replace(/href="([^"]*)"/g, (attribute, href) => {
-      if (!href.startsWith(basePath) || /\.[a-z0-9]+(?:[?#]|$)/i.test(href))
-        return attribute;
-      const route = href.slice(basePath.length);
-      if (route.startsWith("en/") || route.startsWith("assets/"))
-        return attribute;
-      return `href="${basePath}en/${route}"`;
-    });
-  }
   return template
     .replace(
       /<html[^>]*>/,
@@ -83,11 +74,11 @@ for (const document of catalog.documents) {
 }
 for (const alias of [
   "ios",
-  "en/ios",
+  "pt/ios",
   "ios/artigos/identidade-visual",
-  "en/ios/artigos/identidade-visual",
+  "pt/ios/artigos/identidade-visual",
 ]) {
-  const locale = alias.startsWith("en/") ? "en" : "pt";
+  const locale = alias.startsWith("pt/") ? "pt" : "en";
   const id = alias.includes("artigos") ? "visual-identity" : "profile";
   const document = catalog.documents.find(
     (item) => item.id === id && item.locale === locale,
@@ -95,25 +86,55 @@ for (const alias of [
   await mkdir(`dist/${alias}`, { recursive: true });
   await writeFile(`dist/${alias}/index.html`, pageHtml(document));
 }
-for (const locale of ["pt", "en"]) {
+function redirectHtml(target, canonical, locale = "en", ref) {
+  return `<!doctype html>
+<html lang="${locale === "pt" ? "pt-BR" : "en"}"><head>
+<meta charset="UTF-8" />
+<meta name="robots" content="noindex" />
+<meta http-equiv="refresh" content="0;url=${escape(target)}" />
+<link rel="canonical" href="${escape(canonical)}" />
+<title>Leone Daher — Portfolio</title>
+<script>const destination=new URL(${JSON.stringify(target).replaceAll("<", "\\u003c")},window.location.href);destination.search=window.location.search;${ref ? `destination.searchParams.set("ref",${JSON.stringify(ref)});` : ""}destination.hash=window.location.hash;window.location.replace(destination.pathname+destination.search+destination.hash);</script>
+</head><body><a href="${escape(target)}">${locale === "pt" ? "Continuar para o portfólio" : "Continue to the portfolio"}</a></body></html>`;
+}
+for (const locale of ["en", "pt"]) {
   for (const channel of ["in", "ig"]) {
-    const localizedRoot = locale === "en" ? "en/" : "";
+    const localizedRoot = locale === "pt" ? "pt/" : "";
     const route = `${localizedRoot}${channel}`;
     const target = `${basePath}${localizedRoot}?ref=${channel}`;
     await mkdir(`dist/${route}`, { recursive: true });
     await writeFile(
       `dist/${route}/index.html`,
-      `<!doctype html>
-<html lang="${locale === "pt" ? "pt-BR" : "en"}"><head>
-<meta charset="UTF-8" />
-<meta name="robots" content="noindex" />
-<meta http-equiv="refresh" content="0;url=${escape(target)}" />
-<link rel="canonical" href="${escape(publicUrl(`/${localizedRoot}`))}" />
-<title>Leone Daher — Portfolio</title>
-<script>window.location.replace(${JSON.stringify(target).replaceAll("<", "\\u003c")});</script>
-</head><body><a href="${escape(target)}">${locale === "pt" ? "Continuar para o portfólio" : "Continue to the portfolio"}</a></body></html>`,
+      redirectHtml(target, publicUrl(`/${localizedRoot}`), locale, channel),
     );
   }
+}
+for (const document of catalog.documents.filter(
+  (item) => item.locale === "en",
+)) {
+  const route = `en${document.path === "/" ? "" : document.path}`;
+  await mkdir(`dist/${route}`, { recursive: true });
+  await writeFile(
+    `dist/${route}/index.html`,
+    redirectHtml(new URL(document.url).pathname, document.url),
+  );
+  await writeFile(`dist/${route}/index.md`, document.markdown);
+}
+for (const alias of ["ios", "ios/artigos/identidade-visual", "in", "ig"]) {
+  await mkdir(`dist/en/${alias}`, { recursive: true });
+  const canonical = catalog.documents.find(
+    (item) =>
+      item.locale === "en" &&
+      item.id === (alias.includes("artigos") ? "visual-identity" : "profile"),
+  ).url;
+  const channel = ["in", "ig"].includes(alias) ? alias : undefined;
+  const target = channel
+    ? `${basePath}?ref=${channel}`
+    : `${basePath}${alias}/`;
+  await writeFile(
+    `dist/en/${alias}/index.html`,
+    redirectHtml(target, canonical, "en", channel),
+  );
 }
 await writeFile(
   "dist/404.html",
