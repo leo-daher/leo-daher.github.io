@@ -21,14 +21,7 @@ void main() {
       expect(catalog.groupsByYear[3].certificates, hasLength(1));
       expect(
         catalog.technologyTags,
-        containsAll(const [
-          'C# / .NET 8',
-          'AI',
-          'ASP.NET Core',
-          'Agents',
-          'Flutter',
-          'MCP',
-        ]),
+        containsAll(const ['C# / .NET', 'AI', 'Agents', 'Flutter', 'MCP']),
       );
       final aspNetCertificate = catalog.certificates.singleWhere(
         (certificate) =>
@@ -47,7 +40,7 @@ void main() {
       );
       expect(
         aspNetCertificate.technologies,
-        orderedEquals(['ASP.NET Core', 'C# / .NET 8', 'REST APIs']),
+        orderedEquals(['C# / .NET', 'REST APIs']),
       );
       expect(
         catalog.certificates.map((certificate) => certificate.technologies),
