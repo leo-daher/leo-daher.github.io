@@ -87,6 +87,7 @@ export const APP_CASES = {
       "Android",
       "iOS",
       "Proprietary GetX engine",
+      "Private Flutter design system",
       "Offline-first",
       "Barcode",
       ".NET BFF",

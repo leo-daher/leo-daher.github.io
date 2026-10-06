@@ -47,10 +47,19 @@ export const APP_STORIES = {
         ],
       },
       {
-        title: "Fluxos de picking e leitura de códigos de barras",
+        title: "Câmera e leitura de códigos de barras: a primeira versão",
         paragraphs: [
-          "No desenvolvimento dos fluxos de picking, trabalhei com leitura de códigos de barras e com uma engine proprietária de gerenciamento de estado baseada em GetX. A leitura faz parte de uma sequência operacional maior: a informação capturada precisa ser utilizada no fluxo, apresentada ao operador e integrada ao estado do pedido.",
-          "Trabalhar sobre uma engine existente também significa evoluir o aplicativo dentro dos padrões do produto. Meu papel foi desenvolver os fluxos sobre essa base, mantendo a relação entre interface, regras da operação e dados. Essa base compartilhada dá continuidade ao desenvolvimento dos diferentes fluxos da suíte.",
+          "Implementei a V1 da câmera para leitura de códigos de barras nos fluxos de picking do Collect. Essa experiência conecta a captura pelo celular à preparação do pedido: o operador aponta a câmera para o produto, e o código reconhecido segue para o fluxo que identifica o item e acompanha sua coleta.",
+          "A implementação Flutter da leitura utiliza o pacote camera para controlar a câmera e fornecer as imagens, junto com google_mlkit_barcode_scanning para reconhecer os códigos com Google ML Kit. O scanner é organizado em um serviço e um widget dentro da engine compartilhada, separando a captura e a detecção da lógica específica de preparação de pedidos no Collect.",
+          "No fluxo de picking, a leitura alimenta a validação do código, a busca do produto no pedido e o tratamento de situações como um item já coletado ou um código que não pertence àquele pedido. Essa ligação entre câmera e operação transforma a leitura em uma etapa da jornada do operador, com um resultado que precisa ser compreendido e tratado pela interface.",
+        ],
+      },
+      {
+        title: "Engine e design system em dois pacotes Flutter privados",
+        paragraphs: [
+          "Collect e Deliver compartilham dois pacotes Flutter privados, mantidos em repositórios próprios: engine e design_system. Trabalhei com essa base comum no desenvolvimento dos fluxos dos aplicativos. A separação permite reutilizar infraestrutura e componentes visuais entre produtos que têm jornadas diferentes, mantendo padrões comuns para a suíte Lyzer.",
+          "A engine proprietária se apoia em GetX e reúne mais do que gerenciamento de estado: inclui classes base de controllers, navegação, serviços, acesso a dados e funcionalidades reutilizáveis, como o scanner. Já o design system concentra temas, cores, tipografia e componentes de interface, organizados segundo Atomic Design. Cada pacote tem uma responsabilidade própria na construção dos apps.",
+          "Os aplicativos consomem os dois pacotes como dependências Git privadas. Na prática, isso conecta os fluxos específicos do Collect a uma infraestrutura compartilhada com o Deliver, enquanto a interface utiliza os mesmos fundamentos visuais e componentes. Minha atuação nesses fluxos precisava considerar tanto as regras da preparação de pedidos quanto as convenções dessa base comum.",
         ],
       },
       {
@@ -84,10 +93,11 @@ export const APP_STORIES = {
         ],
       },
       {
-        title: "Fluxos de entrega sobre uma base compartilhada",
+        title: "Engine e design system compartilhados entre os apps",
         paragraphs: [
-          "Os fluxos foram desenvolvidos sobre uma engine proprietária baseada em GetX, utilizada como base de gerenciamento de estado. Minha experiência envolveu construir e evoluir comportamentos do aplicativo dentro dessa estrutura. Essa atuação aproveitava os padrões existentes do produto ao conectar a interface aos dados e às regras da operação.",
-          "A suíte também inclui integrações de leitura de códigos de barras e sincronização offline. Collect e Deliver compartilham esse contexto técnico, mas têm papéis próprios na jornada logística. Trabalhar nos dois produtos trouxe uma visão do caminho entre preparação e entrega e de como as informações precisam circular entre o aplicativo e os sistemas relacionados.",
+          "O Deliver e o Collect compartilham dois pacotes Flutter privados: engine e design_system, consumidos como dependências Git a partir de repositórios próprios. Trabalhei na construção e evolução dos fluxos dentro dessa estrutura, conectando a interface aos dados e às regras da operação de entrega.",
+          "A engine proprietária é baseada em GetX e reúne gerenciamento de estado, controllers, navegação, serviços e funcionalidades reutilizáveis. O design system fornece os temas e componentes visuais, com uma organização baseada em Atomic Design. Essa divisão mantém a infraestrutura e a linguagem visual compartilhadas, ao mesmo tempo que cada aplicativo implementa sua própria jornada operacional.",
+          "Trabalhar nos dois produtos trouxe uma visão do caminho entre preparação e entrega e de como as informações circulam entre os aplicativos e os serviços. Essa experiência envolve utilizar e evoluir fluxos sobre uma base comum, considerando também o efeito que os padrões compartilhados têm na consistência e na manutenção da suíte.",
         ],
       },
       {
@@ -197,10 +207,19 @@ export const APP_STORIES = {
         ],
       },
       {
-        title: "Picking flows and barcode scanning",
+        title: "Camera and barcode scanning: the first version",
         paragraphs: [
-          "In developing picking flows, I worked with barcode scanning and a proprietary GetX-based state management engine. Scanning belongs to a larger operational sequence: captured information needs to be used in the flow, presented to the operator and integrated with the order's state.",
-          "Working on an existing engine also means evolving the application within the product's conventions. My role was to develop flows on that foundation, maintaining the relationship between the interface, operational rules and data. That shared foundation supports continued development of the suite's different flows.",
+          "I implemented V1 of the camera-based barcode reader for Collect's picking flows. This experience connects capture on a phone with order preparation: the operator points the camera at a product, and the recognized code enters the flow that identifies the item and tracks its collection.",
+          "The Flutter scanning implementation uses the camera package to control the camera and supply images, alongside google_mlkit_barcode_scanning to recognize codes with Google ML Kit. The scanner is organized as a service and a widget in the shared engine, separating capture and detection from Collect's order-preparation logic.",
+          "Within the picking flow, scanning feeds code validation, product lookup in the order and handling of situations such as an already collected item or a code that does not belong to that order. This connection between camera and operation makes scanning a step in the operator's journey, with a result that the interface needs to explain and handle.",
+        ],
+      },
+      {
+        title: "Engine and design system in two private Flutter packages",
+        paragraphs: [
+          "Collect and Deliver share two private Flutter packages, maintained in their own repositories: engine and design_system. I worked with this common foundation when developing application flows. The separation supports reuse of infrastructure and visual components across products with different journeys, while maintaining shared conventions for the Lyzer suite.",
+          "The proprietary engine builds on GetX and goes beyond state management: it includes base controller classes, navigation, services, data access and reusable capabilities such as the scanner. The design system concentrates themes, colors, typography and interface components, organized according to Atomic Design. Each package has a distinct responsibility in building the applications.",
+          "The applications consume both packages as private Git dependencies. In practice, this connects Collect-specific flows with infrastructure shared with Deliver, while the interface uses the same visual foundations and components. My work on these flows needed to account for both order-preparation rules and the conventions of that shared foundation.",
         ],
       },
       {
@@ -234,10 +253,11 @@ export const APP_STORIES = {
         ],
       },
       {
-        title: "Delivery flows on a shared foundation",
+        title: "Engine and design system shared across the apps",
         paragraphs: [
-          "The flows were developed on a proprietary GetX-based engine used for state management. My experience involved building and evolving application behavior within that structure. This work followed the product's existing conventions while connecting the interface with data and operational rules.",
-          "The suite also includes barcode-scanning integrations and offline synchronization. Collect and Deliver share this technical context while serving different roles in the logistics journey. Working across both products provided a view of the path from preparation to delivery and of how information needs to move between the application and related systems.",
+          "Deliver and Collect share two private Flutter packages: engine and design_system, consumed as Git dependencies from their own repositories. I worked on building and evolving flows within this structure, connecting the interface with data and delivery-operation rules.",
+          "The proprietary engine is based on GetX and brings together state management, controllers, navigation, services and reusable capabilities. The design system provides themes and visual components organized using Atomic Design. This division keeps infrastructure and visual language shared while each application implements its own operational journey.",
+          "Working across both products provided a view of the path from preparation to delivery and of how information moves between applications and services. That experience involves developing flows on a common foundation, considering how shared conventions affect the suite's consistency and maintainability.",
         ],
       },
       {
