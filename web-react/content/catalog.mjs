@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { APP_ITEMS, APP_CASES } from "../src/data/apps.js";
+import { APP_STORIES } from "../src/data/app-stories.js";
 
 const webRoot = new URL("../", import.meta.url);
 const schemaContext = "https://schema.org";
@@ -336,6 +337,10 @@ function appDocument(
     t(`${app.prefix}Role`),
     `## ${t("appContributionLabel")}`,
     t(`${app.prefix}Contribution`),
+    ...APP_STORIES[locale][item.id].flatMap((section) => [
+      `## ${section.title}`,
+      ...section.paragraphs,
+    ]),
     `## ${t("appStackLabel")}`,
     app.stack.join(" · "),
     `## ${t("appStoreProofLabel")}`,
@@ -674,6 +679,7 @@ export async function loadPortfolioContent({
       "src/data/pt.json",
       "src/data/en.json",
       "src/data/apps.js",
+      "src/data/app-stories.js",
       "src/context.jsx",
       "src/features/Articles.jsx",
       "public/assets/certificates/catalog.json",

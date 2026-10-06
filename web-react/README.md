@@ -47,6 +47,7 @@ Os testes de agentes iniciam um servidor isolado, consultam HTML sem JavaScript,
 ## Fontes e atualização
 
 - `src/data/pt.json` e `en.json`: textos exportados dos arquivos `lib/l10n/app_*.arb` originais.
+- `src/data/app-stories.js`: relatos completos dos quatro apps em português e inglês, selecionados a partir das experiências e evidências da base profissional. As páginas individuais e as exportações públicas em Markdown reutilizam o mesmo texto; os resumos da home permanecem compactos.
 - `public/assets`: cópia dos assets públicos selecionados do portfólio; certificados PDF continuam arquivados no projeto original.
 - `src/features`: telas e interações portadas da versão Flutter.
 - A contagem de 14 apps, contribuições profissionais e métricas das lojas seguem o conteúdo original. As consultas das lojas continuam datadas de julho de 2026.

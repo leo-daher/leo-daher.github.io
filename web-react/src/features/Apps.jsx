@@ -5,6 +5,7 @@ import { Icon } from "../components/Icon.jsx";
 import "./apps.css";
 
 import { APP_ITEMS, APP_CASES } from "../data/apps.js";
+import { APP_STORIES } from "../data/app-stories.js";
 
 function internalLink(event, path, navigate) {
   if (
@@ -271,16 +272,18 @@ function StoreProof({ proof, appName }) {
   );
 }
 
-function CaseHeading({ app }) {
+function CaseHeading({ app, item }) {
   const { t } = usePortfolio();
   return (
     <header className="app-case-heading">
       <p className="app-case-context">{t(`${app.prefix}Context`)}</p>
       <div className="app-case-title-row">
-        <AppIcons images={app.icons} />
-        <h1>{app.name}</h1>
+        <AppIcons images={item?.icons || app.icons} />
+        <h1>{item?.name || app.name}</h1>
       </div>
-      <p className="app-case-summary">{t(`${app.prefix}Summary`)}</p>
+      <p className="app-case-summary">
+        {t(item?.summary || `${app.prefix}Summary`)}
+      </p>
     </header>
   );
 }
@@ -342,6 +345,28 @@ function CaseDetails({ app }) {
   );
 }
 
+function CaseStory({ id }) {
+  const { locale } = usePortfolio();
+  const sections = APP_STORIES[locale][id];
+  if (!sections) return null;
+  return (
+    <div className="app-case-story">
+      {sections.map((section, index) => (
+        <section
+          className="app-case-story-section"
+          aria-labelledby={`case-story-${index}`}
+          key={section.title}
+        >
+          <h2 id={`case-story-${index}`}>{section.title}</h2>
+          {section.paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </section>
+      ))}
+    </div>
+  );
+}
+
 export function AppDetailPage({ id }) {
   const { t, navigate, locale } = usePortfolio();
   const item = APP_ITEMS.find((entry) => entry.id === id);
@@ -366,18 +391,19 @@ export function AppDetailPage({ id }) {
       <article
         className="app-case"
         style={{ "--app-accent": app.accent }}
-        aria-label={`${app.name}. ${t(`${app.prefix}Summary`)}`}
+        aria-label={`${item?.name || app.name}. ${t(item?.summary || `${app.prefix}Summary`)}`}
       >
         <div className="app-case-mobile-heading">
-          <CaseHeading app={app} />
+          <CaseHeading app={app} item={item} />
         </div>
         <ScreenshotGallery app={app} />
         <div className="app-case-copy">
           <div className="app-case-desktop-heading">
-            <CaseHeading app={app} />
+            <CaseHeading app={app} item={item} />
           </div>
           <CaseDetails app={app} />
         </div>
+        <CaseStory id={item?.id || id} />
       </article>
     </section>
   );

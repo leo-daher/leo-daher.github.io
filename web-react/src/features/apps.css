@@ -330,6 +330,42 @@
   container-type: inline-size;
 }
 
+.app-case-story {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: 76ch;
+  min-width: 0;
+  margin: 16px auto 0;
+  padding-top: 32px;
+  border-top: 1px solid var(--outline);
+}
+
+.app-case-story-section + .app-case-story-section {
+  margin-top: 36px;
+}
+
+.app-case-story-section h2 {
+  margin: 0 0 16px;
+  color: var(--ink);
+  font-size: clamp(21px, 2.2vw, 26px);
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.35px;
+  text-wrap: balance;
+}
+
+.app-case-story-section p {
+  margin: 0;
+  color: color-mix(in srgb, var(--ink) 92%, transparent);
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-wrap: break-word;
+}
+
+.app-case-story-section p + p {
+  margin-top: 16px;
+}
+
 .app-case-role {
   margin: 0 0 7px;
   color: var(--app-accent);
