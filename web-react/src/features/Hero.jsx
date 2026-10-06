@@ -358,8 +358,10 @@ export function Hero({ active = true }) {
       </div>
       <div className="hero-content">
         <p className="hero-eyebrow">{t("yearsBuildingSoftware")}</p>
-        <h1>Leone</h1>
-        <p className="hero-role">{t("softwareEngineer")}</p>
+        <h1 className="hero-title">
+          <span className="hero-name">Leone Daher</span>
+          <span className="hero-role">{t("softwareEngineer")}</span>
+        </h1>
         <div ref={stage} className="hero-stage">
           <div
             className="viewport-frame"

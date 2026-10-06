@@ -27,11 +27,11 @@ function AppIcons({ images, catalog = false }) {
     >
       {images.slice(0, 2).map((image) => (
         <span className="app-icon-frame" key={image}>
-          <img
-            src={assetUrl(`/assets/apps/${image}`)}
-            alt=""
-            loading="lazy"
-            decoding="async"
+          <span
+            className="app-icon-image"
+            style={{
+              backgroundImage: `url("${assetUrl(`/assets/apps/${image}`)}")`,
+            }}
           />
         </span>
       ))}
@@ -108,7 +108,7 @@ export function AppsPage() {
   return (
     <section className="apps-catalog-page section-frame">
       <div className="apps-catalog-heading">
-        <SectionHeading title={t("allAppsTitle")} />
+        <SectionHeading level={1} title={t("allAppsTitle")} />
         <p>{t("allAppsSupportingText")}</p>
       </div>
       <AppGrid />
@@ -349,7 +349,7 @@ export function AppDetailPage({ id }) {
   if (!app) {
     return (
       <section className="apps-catalog-page section-frame">
-        <SectionHeading title={t("allAppsTitle")} />
+        <SectionHeading level={1} title={t("allAppsTitle")} />
         <a
           className="apps-view-all"
           href={routeHref("/apps", locale)}

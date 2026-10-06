@@ -3,12 +3,14 @@ export function SectionHeading({
   title,
   copy,
   copyBelowTitle = false,
+  level = 2,
 }) {
+  const Heading = level === 1 ? "h1" : "h2";
   return (
     <div className={`section-heading${copyBelowTitle ? " copy-below" : ""}`}>
       <div>
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-        <h2>{title}</h2>
+        <Heading>{title}</Heading>
         {copyBelowTitle && copy && <p className="heading-copy">{copy}</p>}
       </div>
       {!copyBelowTitle && copy && <p className="heading-copy">{copy}</p>}

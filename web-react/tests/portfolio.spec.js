@@ -63,7 +63,10 @@ test("home preserves original content, geometry and loaded public assets", async
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/pt/");
   await expect(
-    page.getByRole("heading", { name: "Leone", exact: true }),
+    page.getByRole("heading", {
+      name: "Leone Daher Engenheiro de Software",
+      exact: true,
+    }),
   ).toBeVisible();
   await expect(page.locator(".hero-role")).toHaveText("Engenheiro de Software");
   await expect(page.locator(".app-store-tile")).toHaveCount(4);
@@ -81,9 +84,23 @@ test("home preserves original content, geometry and loaded public assets", async
     ),
   ).toBe(true);
   expect(errors).toEqual([]);
-  for (const img of await page
-    .locator(".brand-home img,.client-tile img")
-    .all()) {
+  await expect(page.locator('img[alt=""]')).toHaveCount(0);
+  for (const mark of await page.locator(".brand-mark,.app-icon-image").all()) {
+    expect(
+      await mark.evaluate(async (element) => {
+        const url = getComputedStyle(element).backgroundImage.slice(5, -2);
+        const image = new Image();
+        image.src = url;
+        try {
+          await image.decode();
+          return image.naturalWidth > 0;
+        } catch {
+          return false;
+        }
+      }),
+    ).toBe(true);
+  }
+  for (const img of await page.locator(".client-tile img").all()) {
     await img.scrollIntoViewIfNeeded();
     await expect
       .poll(() => img.evaluate((e) => e.complete && e.naturalWidth > 0))

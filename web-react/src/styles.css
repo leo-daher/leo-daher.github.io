@@ -152,7 +152,7 @@ main {
 .section-heading > div {
   max-width: 650px;
 }
-.section-heading h2 {
+.section-heading :is(h1, h2) {
   font-size: 42px;
   line-height: 1.05;
   letter-spacing: -1.5px;
@@ -425,13 +425,18 @@ main {
   line-height: 1.5;
   margin-bottom: 18px;
 }
-.hero-content h1 {
+.hero-title {
+  text-align: center;
+}
+.hero-name {
+  display: block;
   font-size: 108px;
   line-height: 0.88;
   letter-spacing: -7.5px;
   font-weight: 800;
 }
 .hero-role {
+  display: block;
   font-size: 48px;
   line-height: 1.03;
   letter-spacing: -2.1px;
@@ -979,10 +984,10 @@ main {
     font-size: 10px;
     margin-bottom: 14px;
   }
-  .hero-content h1 {
-    font-size: 68px;
+  .hero-name {
+    font-size: clamp(43px, 9vw, 68px);
     line-height: 0.88;
-    letter-spacing: -4.4px;
+    letter-spacing: -0.065em;
   }
   .hero-role {
     font-size: 30px;
@@ -1035,7 +1040,7 @@ main {
   }
 }
 @media (max-width: 667px) {
-  .section-heading h2 {
+  .section-heading :is(h1, h2) {
     font-size: 32px;
     line-height: 1.05;
     letter-spacing: -1px;
@@ -1238,4 +1243,19 @@ body::before {
   .glass-reflection {
     display: none;
   }
+}
+
+/* Redundant brand marks remain decorative without empty image alternatives. */
+.brand-mark {
+  display: block;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.footer .brand-mark {
+  width: 28px;
+  height: 28px;
 }

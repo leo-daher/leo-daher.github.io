@@ -231,13 +231,12 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="section-frame">
-        <img
-          width="28"
-          height="28"
-          src={assetUrl(
-            `/assets/brand/ld-mark${theme === "dark" ? "-inverse" : ""}.svg`,
-          )}
-          alt=""
+        <span
+          className="brand-mark"
+          aria-hidden="true"
+          style={{
+            backgroundImage: `url("${assetUrl(`/assets/brand/ld-mark${theme === "dark" ? "-inverse" : ""}.svg`)}")`,
+          }}
         />
         <span>LEONE DAHER · 2026</span>
       </div>

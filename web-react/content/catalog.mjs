@@ -271,7 +271,7 @@ function appsDocument(locale, t, url, applications, interpretation) {
     id: "apps",
     locale,
     path,
-    title: t("allAppsTitle"),
+    title: t("seoAppsTitle"),
     description: t("allAppsSupportingText"),
     lines: [
       `# ${t("allAppsTitle")}`,
@@ -374,7 +374,7 @@ function appDocument(
     id: item.id,
     locale,
     path,
-    title: item.name,
+    title: `${item.name} — ${t("seoAppSuffix")}`,
     description: t(item.summary),
     lines,
     schema: { "@context": schemaContext, ...application },
@@ -412,7 +412,7 @@ function certificateDocument(records, locale, t, url, interpretation) {
     id: "certificates",
     locale,
     path,
-    title: t("certificateRegister"),
+    title: t("seoCertificatesTitle"),
     description: t("certificateRegisterCopy"),
     lines,
     schema: {
@@ -472,7 +472,7 @@ function articleDocument(locale, t, url, person, publishedAt) {
     id: "visual-identity",
     locale,
     path,
-    title: t("identityArticleTitle"),
+    title: t("seoIdentityTitle"),
     description: t("identityArticleSummary"),
     lines: [
       `# ${t("identityArticleTitle")}`,

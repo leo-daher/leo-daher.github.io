@@ -80,13 +80,12 @@ export function Header({ home, onBack, visible = true }) {
           title={home ? t("navHome") : locale === "pt" ? "Voltar" : "Back"}
         >
           {home ? (
-            <img
-              src={assetUrl(
-                `/assets/brand/ld-mark${theme === "dark" ? "-inverse" : ""}.svg`,
-              )}
-              width="34"
-              height="34"
-              alt=""
+            <span
+              className="brand-mark"
+              aria-hidden="true"
+              style={{
+                backgroundImage: `url("${assetUrl(`/assets/brand/ld-mark${theme === "dark" ? "-inverse" : ""}.svg`)}")`,
+              }}
             />
           ) : (
             <Icon name="arrow-left" />

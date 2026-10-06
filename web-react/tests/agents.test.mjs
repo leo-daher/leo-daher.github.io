@@ -74,6 +74,14 @@ test("all localized pages expose real content, canonical metadata and matching M
     assert.deepEqual(JSON.parse(schemaText), doc.schema);
     const body = html.slice(html.indexOf('<div id="root">'));
     assert.match(body, /<h[12]\b/);
+    assert.ok(doc.title.includes("Leone Daher"), doc.path);
+    if (doc.id === "profile" || doc.id === "apps") {
+      assert.match(body, /<h1\b/);
+      assert.ok(!body.includes('alt=""'), doc.path);
+    }
+    if (doc.id === "profile") {
+      assert.match(body, /<h1[^>]*>.*Leone Daher.*<\/h1>/s);
+    }
     if (doc.id === "certificates")
       assert.equal((body.match(/class="certificate-card /g) || []).length, 13);
     if (!["profile"].includes(doc.id))
