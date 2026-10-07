@@ -48,6 +48,8 @@ Os testes de agentes iniciam um servidor isolado, consultam HTML sem JavaScript,
 
 - `src/data/pt.json` e `en.json`: textos exportados dos arquivos `lib/l10n/app_*.arb` originais.
 - `src/data/app-stories.js`: relatos completos dos quatro apps em português e inglês, selecionados a partir das experiências e evidências da base profissional. As páginas individuais e as exportações públicas em Markdown reutilizam o mesmo texto; os resumos da home permanecem compactos.
+- `src/data/experiences.js`: 11 relatos profissionais selecionados da base compartilhada, com quatro destaques na home e a página `/experiencias`. A fonte e os limites editoriais estão em `content/professional-experience-sources.md`.
+- A home reúne Lyzer Collect e Deliver em um destaque com dois ícones, acesso individual aos cases e 1,1 mil+ downloads: soma dos patamares Google Play de julho de 2026 (1 mil+ e 100+). O catálogo de apps mantém os quatro produtos individuais; a soma não representa usuários únicos nem inclui App Store.
 - `public/assets`: cópia dos assets públicos selecionados do portfólio; certificados PDF continuam arquivados no projeto original.
 - `src/features`: telas e interações portadas da versão Flutter.
 - A contagem de 14 apps, contribuições profissionais e métricas das lojas seguem o conteúdo original. As consultas das lojas continuam datadas de julho de 2026.
@@ -78,7 +80,7 @@ Ferramentas públicas, somente de leitura:
 - `search_portfolio`: busca com trechos e links das fontes.
 - `read_portfolio_document`: case, perfil, certificados ou artigo completo.
 
-As três aceitam `locale: "pt" | "en"`; quando omitido, usam inglês. Há também 16 recursos Markdown, um por documento/idioma. O servidor não envia mensagens, faz candidaturas, consulta arquivos privados ou executa ações externas.
+As três aceitam `locale: "pt" | "en"`; quando omitido, usam inglês. Há também 18 recursos Markdown, um por documento/idioma. O servidor não envia mensagens, faz candidaturas, consulta arquivos privados ou executa ações externas.
 
 `SITE_ORIGIN` define a origem canônica usada nos links, sem subpasta. `VITE_BASE_PATH` define a subpasta na construção. Consulte `.env.example`; as variáveis são fornecidas ao processo Node/construção. O servidor valida Host e Origin no MCP, limita o corpo a 64 KiB e usa `MCP_ALLOWED_HOSTS`/`MCP_ALLOWED_ORIGINS` para destinos adicionais explícitos. Conteúdo público não exige credenciais. Para acesso remoto, hospede Node atrás de HTTPS.
 
@@ -97,6 +99,6 @@ VITE_BASE_PATH=/react/ npm run build
 npm start
 ```
 
-Todos os assets, links internos e pontos de entrada estáticos usam o caminho configurado. `/ios`, `/apps`, os quatro cases, `/certificacoes`, o artigo e os atalhos `/in` e `/ig` podem ser acessados diretamente ou recarregados.
+Todos os assets, links internos e pontos de entrada estáticos usam o caminho configurado. `/ios`, `/apps`, os quatro cases, `/experiencias`, `/certificacoes`, o artigo e os atalhos `/in` e `/ig` podem ser acessados diretamente ou recarregados.
 
 GitHub Pages hospeda os arquivos estáticos, incluindo HTML completo, Markdown e metadados. O endpoint MCP requer o processo Node em uma hospedagem de servidor; ele não é servido pelo GitHub Pages.

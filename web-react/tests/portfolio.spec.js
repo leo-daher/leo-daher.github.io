@@ -69,7 +69,14 @@ test("home preserves original content, geometry and loaded public assets", async
     }),
   ).toBeVisible();
   await expect(page.locator(".hero-role")).toHaveText("Engenheiro de Software");
-  await expect(page.locator(".app-store-tile")).toHaveCount(4);
+  await expect(page.locator(".app-store-tile")).toHaveCount(3);
+  await expect(page.locator(".app-store-tile--suite")).toContainText(
+    "Lyzer Collect + Deliver",
+  );
+  await expect(page.locator(".app-store-tile--suite")).toContainText(
+    "1,1 mil+ downloads",
+  );
+  await expect(page.locator(".experience-preview")).toHaveCount(4);
   await expect(page.locator(".certificate-highlight")).toHaveCount(3);
   await expect(page.locator(".client-tile")).toHaveCount(15);
   await expect(page.locator(".contact-card")).toHaveCount(4);
@@ -107,6 +114,51 @@ test("home preserves original content, geometry and loaded public assets", async
       .toBe(true);
   }
 });
+test("professional experience links open localized contributions and keep both Lyzer apps accessible", async ({
+  page,
+}) => {
+  await page.goto("/pt/");
+  const suite = page.locator(".app-store-tile--suite");
+  await expect(
+    suite.getByRole("link", { name: "Conhecer Collect", exact: true }),
+  ).toHaveAttribute("href", "/pt/apps/lyzer-collect");
+  await expect(
+    suite.getByRole("link", { name: "Conhecer Deliver", exact: true }),
+  ).toHaveAttribute("href", "/pt/apps/lyzer-deliver");
+  await page
+    .locator(".experience-preview")
+    .filter({ hasText: "Visagio" })
+    .click();
+  await expect(page).toHaveURL(/\/pt\/experiencias#visagio$/);
+  await expect(page.locator(".experience-record")).toHaveCount(11);
+  await expect(page.locator("#visagio")).toContainText(
+    "Configurei instâncias AWS EC2",
+  );
+  await expect(page.locator("#lyzer")).toContainText(
+    "aprovação obrigatória de um desenvolvedor",
+  );
+  await page.locator(".language-toggle").click();
+  await expect(page).toHaveURL(/\/experiencias#visagio$/);
+  await expect(page.locator("#human-robotics")).toContainText(
+    "integrated with a TensorFlow model",
+  );
+  await page.reload();
+  await expect(page.locator("#visagio")).toBeInViewport();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Experience by project and contribution.",
+  );
+  await page.goto("/pt/apps");
+  await expect(page.locator(".apps-catalog-page .app-store-tile")).toHaveCount(
+    4,
+  );
+  await page.goto("/pt/#clients");
+  await page
+    .getByRole("link", { name: "Ver minha atuação: Fullsix", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/pt\/experiencias#fullsix$/);
+  await expect(page.locator("#fullsix")).toContainText("API Python de OCR");
+});
+
 test("language and theme change immediately and persist after reload", async ({
   page,
 }) => {
@@ -185,6 +237,9 @@ test("FAB supports keyboard, outside dismiss and section navigation", async ({
   await page.getByRole("button", { name: "Clientes", exact: true }).click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.locator("#clients")).toBeInViewport();
+  await toggle.click();
+  await page.getByRole("button", { name: "Experiência", exact: true }).click();
+  await expect(page.locator("#experience")).toBeInViewport();
   await toggle.click();
   await page.locator(".fab-backdrop").click({ position: { x: 10, y: 120 } });
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
@@ -342,6 +397,7 @@ test("all primary pages have one main landmark and pass accessibility checks", a
     "/",
     "/apps",
     "/apps/van-cranenbroek",
+    "/experiencias",
     "/certificacoes",
     "/artigos/identidade-visual",
   ]) {
@@ -496,5 +552,8 @@ test("project and certificates remain readable with JavaScript disabled", async 
   await page.goto("http://127.0.0.1:4173/pt/certificacoes/");
   await expect(page.locator(".certificate-card")).toHaveCount(14);
   await expect(page.locator("main")).toContainText("Anthropic");
+  await page.goto("http://127.0.0.1:4173/pt/experiencias/");
+  await expect(page.locator(".experience-record")).toHaveCount(11);
+  await expect(page.locator("#fullsix")).toContainText("API Python de OCR");
   await context.close();
 });

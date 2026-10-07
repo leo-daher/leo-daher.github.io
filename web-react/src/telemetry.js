@@ -30,6 +30,7 @@ const SENTRY_LOG_EVENTS = new Set([
 const SECTIONS = new Set([
   "home",
   "apps",
+  "experience",
   "system",
   "clients",
   "articles",

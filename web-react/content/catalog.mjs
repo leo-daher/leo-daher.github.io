@@ -1,6 +1,12 @@
 import { readFile } from "node:fs/promises";
-import { APP_ITEMS, APP_CASES } from "../src/data/apps.js";
+import {
+  APP_ITEMS,
+  APP_CASES,
+  FEATURED_APPS,
+  LYZER_MINIMUM_DOWNLOADS,
+} from "../src/data/apps.js";
 import { APP_STORIES } from "../src/data/app-stories.js";
+import { EXPERIENCES, FEATURED_EXPERIENCES } from "../src/data/experiences.js";
 
 const webRoot = new URL("../", import.meta.url);
 const schemaContext = "https://schema.org";
@@ -219,10 +225,20 @@ function profileDocument(profile, locale, t, url, interpretation) {
     ),
     `## ${t("featuredAppsTitle")}`,
     t("featuredAppsSupportingText"),
-    APP_ITEMS.map(
+    FEATURED_APPS.map(
       (item) =>
         `- ${link(item.name, url(`${localPath(`/apps/${item.id}`, locale)}/`))}: ${t(item.summary)} ${t(item.metric)}`,
     ).join("\n"),
+    `## ${t("professionalExperienceTitle")}`,
+    t("professionalExperienceCopy"),
+    FEATURED_EXPERIENCES.map(
+      (item) =>
+        `- ${link(`${item.company}: ${item[locale].title}`, url(`${localPath("/experiencias", locale)}/#${item.id}`))}: ${item[locale].summary}`,
+    ).join("\n"),
+    link(
+      t("viewAllExperiences"),
+      url(`${localPath("/experiencias", locale)}/`),
+    ),
     `## ${t("certificationsEyebrow")}`,
     t("certificationsCopy"),
     link(
@@ -261,6 +277,57 @@ function profileDocument(profile, locale, t, url, interpretation) {
       description: `${t("mobileSupporting")} ${t("aiSupporting")}`,
       inLanguage: languageCode(locale),
       mainEntity: person,
+    },
+  });
+}
+
+function experiencesDocument(locale, t, url, person) {
+  const path = localPath("/experiencias", locale);
+  return documentRecord({
+    id: "experiences",
+    locale,
+    path,
+    title: `${t("allExperiencesTitle")} | Leone Daher`,
+    description: t("allExperiencesCopy"),
+    lines: [
+      `# ${t("allExperiencesTitle")}`,
+      t("allExperiencesCopy"),
+      ...EXPERIENCES.flatMap((item) => [
+        `## ${item.company}: ${item[locale].title}`,
+        item.consulting ? t("experienceViaConsulting") : item[locale].area,
+        item[locale].summary,
+        `### ${t("appContributionLabel")}`,
+        item[locale].contributions.map((line) => `- ${line}`).join("\n"),
+        `**${t("appStackLabel")}:** ${item.stack.join(" · ")}`,
+      ]),
+    ],
+    schema: {
+      "@context": schemaContext,
+      "@type": "ItemList",
+      "@id": url(`${path}/`),
+      name: t("allExperiencesTitle"),
+      description: t("allExperiencesCopy"),
+      url: url(`${path}/`),
+      inLanguage: languageCode(locale),
+      numberOfItems: EXPERIENCES.length,
+      itemListElement: EXPERIENCES.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "CreativeWork",
+          name: `${item.company}: ${item[locale].title}`,
+          description: item[locale].summary,
+          text: item[locale].contributions.join("\n"),
+          keywords: item.stack,
+          contributor: {
+            "@type": "Person",
+            "@id": person["@id"],
+            name: person.name,
+          },
+          about: { "@type": "Organization", name: item.company },
+          url: url(`${path}/#${item.id}`),
+        },
+      })),
     },
   });
 }
@@ -596,6 +663,7 @@ export async function loadPortfolioContent({
   const skills = [
     ...new Set([
       ...Object.values(APP_CASES).flatMap((app) => app.stack),
+      ...EXPERIENCES.flatMap((item) => item.stack),
       ...architectureSkills,
       ...storefrontSkills,
     ]),
@@ -663,6 +731,27 @@ export async function loadPortfolioContent({
           "src/data/en.json#proofMarketsValue",
         ],
       },
+      {
+        id: "lyzer-suite-store-summary",
+        value: LYZER_MINIMUM_DOWNLOADS,
+        display: {
+          pt: pt.lyzerSuiteStorefrontMetric,
+          en: en.lyzerSuiteStorefrontMetric,
+        },
+        checkedAt: "2026-07",
+        kind: "combined-google-play-download-minimum",
+        scope: "Lyzer Collect + Deliver",
+        components: APP_ITEMS.filter(
+          (item) => item.caseId === "lyzer-collect-deliver",
+        ).map((item) => ({ app: item.name, minimum: item.minimumDownloads })),
+        limits: {
+          pt: "Soma dos patamares registrados no Google Play em julho de 2026; não é uma contagem exata, atual ou de usuários únicos. Não inclui downloads da App Store.",
+          en: "Sum of Google Play thresholds recorded in July 2026; not an exact, current or unique-user count. Excludes App Store downloads.",
+        },
+        sources: APP_CASES["lyzer-collect-deliver"].stores
+          .filter((store) => store.store === "Google Play")
+          .map((store) => store.href),
+      },
       ...APP_ITEMS.map((item) => ({
         id: `${item.id}-store-summary`,
         display: { pt: pt[item.metric], en: en[item.metric] },
@@ -680,6 +769,7 @@ export async function loadPortfolioContent({
       "src/data/en.json",
       "src/data/apps.js",
       "src/data/app-stories.js",
+      "src/data/experiences.js",
       "src/context.jsx",
       "src/features/Articles.jsx",
       "public/assets/certificates/catalog.json",
@@ -701,6 +791,7 @@ export async function loadPortfolioContent({
     documents.push(
       profileDocument(profile, locale, t, url, interpretation),
       appsDocument(locale, t, url, applications, interpretation),
+      experiencesDocument(locale, t, url, person),
     );
     APP_ITEMS.forEach((item, index) =>
       documents.push(

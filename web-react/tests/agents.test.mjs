@@ -145,7 +145,23 @@ test("agent guide, sitemap and public data expose bounded facts and working disc
   for (const [, url] of map.matchAll(/<loc>(.*?)<\/loc>/g))
     assert.equal((await fetch(local(decode(url)))).status, 200, url);
   const json = await (await fetch(`${origin}${prefix}/portfolio.json`)).json();
-  assert.equal(json.documents.length, 16);
+  assert.equal(json.documents.length, 18);
+  const lyzerDownloads = json.profile.metrics.find(
+    (metric) => metric.id === "lyzer-suite-store-summary",
+  );
+  assert.equal(lyzerDownloads.value, 1100);
+  assert.equal(lyzerDownloads.sources.length, 2);
+  assert.ok(
+    lyzerDownloads.sources.every((url) =>
+      url.startsWith("https://play.google.com/"),
+    ),
+  );
+  const experiences = json.documents.find(
+    (doc) => doc.id === "experiences" && doc.locale === "pt",
+  );
+  assert.equal(experiences.schema.numberOfItems, 11);
+  assert.match(experiences.markdown, /AWS EC2/);
+  assert.match(experiences.markdown, /aprovação obrigatória/);
   assert.equal(
     json.profile.metrics.find((metric) => metric.id === "app-deliveries").value,
     14,
@@ -191,12 +207,12 @@ test("official MCP client discovers read-only tools and reads/searches source-ba
       arguments: { locale: "en" },
     });
     assert.equal(overview.structuredContent.profile.name, "Leone Daher");
-    assert.equal(overview.structuredContent.documents.length, 8);
+    assert.equal(overview.structuredContent.documents.length, 9);
     const defaults = await client.callTool({
       name: "get_portfolio_overview",
       arguments: {},
     });
-    assert.equal(defaults.structuredContent.documents.length, 8);
+    assert.equal(defaults.structuredContent.documents.length, 9);
     assert.ok(
       defaults.structuredContent.documents.every(
         (document) => document.locale === "en",
@@ -239,7 +255,7 @@ test("official MCP client discovers read-only tools and reads/searches source-ba
     });
     assert.match(full.structuredContent.markdown, /SERPRO/);
     const { resources } = await client.listResources();
-    assert.equal(resources.length, 16);
+    assert.equal(resources.length, 18);
     const certificate = resources.find(
       (resource) => resource.name === "en-certificates",
     );

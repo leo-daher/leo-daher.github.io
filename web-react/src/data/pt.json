@@ -84,7 +84,7 @@
   "productionAppsSemanticLabel": "Apps publicados em que Leone Daher atuou",
   "productionAppsTitle": "Apps em produção.",
   "featuredAppsTitle": "Apps em destaque",
-  "featuredAppsSupportingText": "Produtos publicados, lojas reais e detalhes selecionados da entrega.",
+  "featuredAppsSupportingText": "Produtos publicados, lojas reais e detalhes da minha contribuição. Downloads consultados em julho de 2026.",
   "viewAllApps": "Ver todos",
   "allAppsTitle": "Todos os apps",
   "allAppsSupportingText": "Explore os produtos mobile publicados e abra cada case para ver telas, stack e provas públicas nas lojas.",
@@ -193,5 +193,18 @@
   "contactScheduleCopy": "Calendly · 30 minutos",
   "magRecognitionTitle": "Autenticação e validação de identidade",
   "magRecognitionText": "A equipe do Venda Digital entregou autenticação e validação de identidade por reconhecimento facial utilizando a API do SERPRO disponível à época. A publicação abaixo registra essa entrega coletiva.",
-  "magRecognitionImageLabel": "Publicação de Luis Henrique Fontes Oliveira reconhecendo a equipe responsável pela entrega de reconhecimento facial no Venda Digital."
+  "magRecognitionImageLabel": "Publicação de Luis Henrique Fontes Oliveira reconhecendo a equipe responsável pela entrega de reconhecimento facial no Venda Digital.",
+  "professionalExperienceEyebrow": "EXPERIÊNCIAS PROFISSIONAIS",
+  "professionalExperienceTitle": "Engenharia além das telas.",
+  "professionalExperienceCopy": "IA aplicada à manutenção, otimização com Python, visão computacional e sistemas web. Conheça os problemas em que trabalhei e a minha contribuição em cada projeto.",
+  "viewAllExperiences": "Ver todas as experiências",
+  "allExperiencesTitle": "Experiências por projeto e contribuição.",
+  "allExperiencesCopy": "Trabalho profissional em diferentes empresas e clientes: do desenvolvimento mobile à integração de serviços, automação, dados e infraestrutura.",
+  "experienceViaConsulting": "Cliente via Latitudde / Conkord",
+  "experiencePublishedApps": "Explorar os cases de apps publicados",
+  "lyzerSuiteStorefrontMetric": "1,1 mil+ downloads · Flutter · Android · iOS",
+  "lyzerSuiteDownloadsScope": "Collect + Deliver · Google Play · julho de 2026",
+  "lyzerCollectDetails": "Conhecer Collect",
+  "lyzerDeliverDetails": "Conhecer Deliver",
+  "viewClientExperience": "Ver minha atuação"
 }

@@ -8,11 +8,16 @@ import {
 } from "./context.jsx";
 import pt from "./data/pt.json";
 import en from "./data/en.json";
+import { EXPERIENCES } from "./data/experiences.js";
 import { Header, FabMenu, ContactIcon } from "./components/Navigation.jsx";
 import { SectionHeading } from "./components/SectionHeading.jsx";
 import { Icon } from "./components/Icon.jsx";
 import { Hero, Opening } from "./features/Hero.jsx";
 import { AppsSection, AppsPage, AppDetailPage } from "./features/Apps.jsx";
+import {
+  ExperiencesSection,
+  ExperiencesPage,
+} from "./features/Experiences.jsx";
 import {
   CertificatesSection,
   CertificatesPage,
@@ -171,16 +176,34 @@ function Clients() {
             </span>
           </div>
           <div className="clients-grid">
-            {logos.map(([name, file, style = ""]) => (
-              <div className={`client-tile ${style}`} key={name}>
-                <img
-                  src={assetUrl("/assets/client_logos/" + file)}
-                  alt={name}
-                  loading="lazy"
-                />
-                {style === "code" && <span>Code 495</span>}
-              </div>
-            ))}
+            {logos.map(([name, file, style = ""]) => {
+              const experience = EXPERIENCES.find((item) => item.logo === file);
+              const path = experience
+                ? `/experiencias#${experience.id}`
+                : {
+                    "MAG Seguros": "/apps/mag-venda-digital",
+                    "Van Cranenbroek": "/apps/van-cranenbroek",
+                    Conkord: "/experiencias",
+                  }[name];
+              const Tile = path ? "a" : "div";
+              return (
+                <Tile
+                  className={`client-tile ${style}`}
+                  key={name}
+                  href={path ? routeHref(path, locale) : undefined}
+                  aria-label={
+                    path ? `${t("viewClientExperience")}: ${name}` : undefined
+                  }
+                >
+                  <img
+                    src={assetUrl("/assets/client_logos/" + file)}
+                    alt={name}
+                    loading="lazy"
+                  />
+                  {style === "code" && <span>Code 495</span>}
+                </Tile>
+              );
+            })}
           </div>
         </div>
       ))}
@@ -256,6 +279,7 @@ function Home({ active }) {
       <div className="home-apps" id="apps">
         <AppsSection />
       </div>
+      <ExperiencesSection />
       <Architecture />
       <Clients />
       <CertificatesSection />
@@ -636,6 +660,7 @@ export default function App({
   const home = isHome(path);
   let page;
   if (path === "/apps") page = <AppsPage />;
+  else if (path === "/experiencias") page = <ExperiencesPage />;
   else if (path.startsWith("/apps/"))
     page = <AppDetailPage id={path.split("/").pop()} />;
   else if (path === "/certificacoes") page = <CertificatesPage />;

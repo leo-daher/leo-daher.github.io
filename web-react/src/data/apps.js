@@ -11,6 +11,7 @@ export const APP_ITEMS = [
   },
   {
     id: "lyzer-collect",
+    minimumDownloads: 1000,
     name: "Lyzer Collect",
     caseId: "lyzer-collect-deliver",
     summary: "lyzerCollectStorefrontSummary",
@@ -20,6 +21,7 @@ export const APP_ITEMS = [
   },
   {
     id: "lyzer-deliver",
+    minimumDownloads: 100,
     name: "Lyzer Deliver",
     caseId: "lyzer-collect-deliver",
     summary: "lyzerDeliverStorefrontSummary",
@@ -36,6 +38,23 @@ export const APP_ITEMS = [
     icons: ["mag-venda-digital-icon.jpg"],
     accent: "#55B8FF",
   },
+];
+
+export const LYZER_MINIMUM_DOWNLOADS = APP_ITEMS.filter(
+  (item) => item.caseId === "lyzer-collect-deliver",
+).reduce((total, item) => total + item.minimumDownloads, 0);
+
+export const FEATURED_APPS = [
+  APP_ITEMS[0],
+  {
+    ...APP_ITEMS[1],
+    name: "Lyzer Collect + Deliver",
+    summary: "lyzerSummary",
+    metric: "lyzerSuiteStorefrontMetric",
+    icons: ["lyzer-collect-icon.png", "lyzer-deliver-icon.png"],
+    related: APP_ITEMS[2],
+  },
+  APP_ITEMS[3],
 ];
 
 export const APP_CASES = {

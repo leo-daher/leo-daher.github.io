@@ -1,0 +1,343 @@
+// Selected professional accounts, reused by the UI and public content exports.
+export const EXPERIENCES = [
+  {
+    id: "lyzer",
+    company: "Lyzer",
+    logo: "lyzer-official.svg",
+    consulting: true,
+    featured: true,
+    stack: [
+      "Claude Code",
+      "MCP",
+      "Sentry",
+      "Jira",
+      "Azure DevOps",
+      ".NET",
+      "GraphQL",
+      "Next.js",
+    ],
+    pt: {
+      area: "IA e integração",
+      title: "Da investigação de bugs à proposta de correção",
+      summary:
+        "Construí um fluxo que conecta logs, tarefas e código, com revisão humana, e atuei no backend e no backoffice da operação logística.",
+      contributions: [
+        "Conectei Claude Code aos MCPs de Sentry, Jira e Azure para investigar tendências de bugs, abrir cards e propor pull requests para correções simples, com aprovação obrigatória de um desenvolvedor.",
+        "Criei skills de geração de código dentro dos padrões do projeto e documentos de spec-driven development, além de construir e manter o pipeline.",
+        "Atuei em um BFF .NET que consulta microserviços via GraphQL e HTTP e compõe as respostas para o app; no backoffice, trabalhei em componentes reutilizáveis, interfaces responsivas e refatoração.",
+      ],
+    },
+    en: {
+      area: "AI and integration",
+      title: "From bug investigation to proposed fixes",
+      summary:
+        "I built a workflow connecting logs, tasks and code with human review, and worked on the logistics operation's backend and backoffice.",
+      contributions: [
+        "Connected Claude Code to Sentry, Jira and Azure MCP integrations to investigate bug trends, create tickets and propose pull requests for simple fixes, with mandatory developer approval.",
+        "Created code-generation skills following project conventions and spec-driven development documents, and built and maintained the pipeline.",
+        "Worked on a .NET BFF that queries microservices through GraphQL and HTTP and composes responses for the app; backoffice work included reusable components, responsive interfaces and refactoring.",
+      ],
+    },
+  },
+  {
+    id: "visagio",
+    company: "Visagio",
+    logo: "visagio.svg",
+    consulting: false,
+    featured: true,
+    stack: [
+      "Python",
+      "Django",
+      "React",
+      "OR-Tools",
+      "AWS EC2",
+      "Google Apps Script",
+    ],
+    pt: {
+      area: "Dados e otimização",
+      title: "Alocação escolar com Python e otimização linear",
+      summary:
+        "Desenvolvi um sistema para alocação em escolas públicas, conectando regras de negócio, dados e fluxos de uso.",
+      contributions: [
+        "Trabalhei no desenvolvimento full stack com Python, Django e React para o sistema de alocação escolar.",
+        "Configurei instâncias AWS EC2 para executar rotinas de otimização linear em Python com OR-Tools.",
+        "Automatizei processos em Google Sheets com Apps Script e comuniquei o andamento técnico em relatórios semanais aos stakeholders.",
+      ],
+    },
+    en: {
+      area: "Data and optimization",
+      title: "School allocation with Python and linear optimization",
+      summary:
+        "Developed a public-school allocation system connecting business rules, data and user workflows.",
+      contributions: [
+        "Worked on full-stack development with Python, Django and React for the school allocation system.",
+        "Configured AWS EC2 instances to run linear optimization routines in Python with OR-Tools.",
+        "Automated Google Sheets processes with Apps Script and communicated technical progress through weekly stakeholder reports.",
+      ],
+    },
+  },
+  {
+    id: "human-robotics",
+    company: "Human Robotics",
+    logo: "human_robotics.png",
+    consulting: false,
+    featured: true,
+    stack: ["Android", "Java", "Camera2", "TensorFlow", "MQTT"],
+    pt: {
+      area: "Visão computacional e IoT",
+      title: "Detecção de faces e máscaras no Robios",
+      summary:
+        "Integrei captura de câmera, inferência e comunicação entre dispositivos no contexto de um produto de robótica.",
+      contributions: [
+        "Desenvolvi recursos Android em Java para detecção de faces e classificação do uso de máscaras, integrados a um modelo TensorFlow.",
+        "Utilizei Camera2 para capturar as imagens consumidas pelo fluxo de visão computacional.",
+        "Trabalhei com comunicação MQTT em tempo real entre dispositivos e backend, em um contexto com sensores LiDAR, ultrassônicos e mini PCs NUC.",
+      ],
+    },
+    en: {
+      area: "Computer vision and IoT",
+      title: "Face and mask detection on Robios",
+      summary:
+        "Integrated camera capture, inference and device communication in a robotics product.",
+      contributions: [
+        "Developed Android features in Java for face detection and mask-use classification, integrated with a TensorFlow model.",
+        "Used Camera2 to capture the images consumed by the computer vision workflow.",
+        "Worked with real-time MQTT communication between devices and backend, in a setting with LiDAR and ultrasonic sensors and NUC mini PCs.",
+      ],
+    },
+  },
+  {
+    id: "iberdrola",
+    company: "Iberdrola",
+    logo: "iberdrola-official.svg",
+    consulting: true,
+    featured: true,
+    stack: ["PHP", "Laravel", "Vue.js", "PWA", "IPQualityScore API"],
+    pt: {
+      area: "Web e APIs",
+      title: "Experiência mobile e offline na venda de energia",
+      summary:
+        "Atuei em um sistema de vendas de energia renovável, com recursos PWA, integração antifraude e regras de formulários.",
+      contributions: [
+        "Desenvolvi recursos de Progressive Web App para a experiência mobile e o uso offline.",
+        "Integrei a API da IPQualityScore para apoiar a proteção contra fraude.",
+        "Implementei validações de formulários no cliente e filtros de busca com Laravel Query Builder.",
+      ],
+    },
+    en: {
+      area: "Web and APIs",
+      title: "Mobile and offline experience for energy sales",
+      summary:
+        "Worked on a renewable energy sales system with PWA capabilities, an anti-fraud integration and form rules.",
+      contributions: [
+        "Developed Progressive Web App capabilities for the mobile experience and offline use.",
+        "Integrated the IPQualityScore API to support fraud protection.",
+        "Implemented client-side form validation and search filters with Laravel Query Builder.",
+      ],
+    },
+  },
+  {
+    id: "ey",
+    company: "Ernst & Young",
+    logo: "ey-official.svg",
+    consulting: true,
+    featured: false,
+    stack: ["Flutter", "Dart", "BLoC", "Android", "iOS", "Firebase"],
+    pt: {
+      area: "Modernização mobile",
+      title: "Formulários complexos para gestão de advogados",
+      summary:
+        "Modernizei uma aplicação Flutter e trabalhei nos fluxos de cadastro, documentos e publicação Android/iOS.",
+      contributions: [
+        "Tratei mudanças de API e compatibilidade com atualizações do Flutter em uma aplicação existente.",
+        "Desenvolvi formulários dinâmicos para clientes, oportunidades e potenciais conflitos, com regras complexas e estado gerenciado por BLoC.",
+        "Implementei captura e envio de imagens e documentos e liderei a publicação nas lojas.",
+      ],
+    },
+    en: {
+      area: "Mobile modernization",
+      title: "Complex forms for legal practice management",
+      summary:
+        "Modernized a Flutter application and worked on registration, document and Android/iOS release workflows.",
+      contributions: [
+        "Handled API changes and compatibility with Flutter updates in an existing application.",
+        "Developed dynamic forms for clients, opportunities and potential conflicts, with complex rules and BLoC state management.",
+        "Implemented image and document capture and upload, and led store publication.",
+      ],
+    },
+  },
+  {
+    id: "ctt",
+    company: "CTT — Correios de Portugal",
+    logo: "ctt-official.svg",
+    consulting: true,
+    featured: false,
+    stack: ["Android", "Kotlin", "Gradle", "FCM", "Crashlytics"],
+    pt: {
+      area: "Operação de campo",
+      title: "Android para acompanhamento de entregas",
+      summary:
+        "Trabalhei na unificação de variantes, notificações e continuidade offline de um sistema de courier.",
+      contributions: [
+        "Unifiquei aplicativos de idioma único usando dimensões de flavors do Gradle.",
+        "Implementei notificações FCM que acionavam eventos dentro do app e melhorei a investigação de problemas com Crashlytics.",
+        "Viabilizei uso offline por entregadores com persistência local de dados.",
+      ],
+    },
+    en: {
+      area: "Field operations",
+      title: "Android for delivery tracking",
+      summary:
+        "Worked on variant consolidation, notifications and offline continuity in a courier system.",
+      contributions: [
+        "Unified single-language applications using Gradle flavor dimensions.",
+        "Implemented FCM notifications that triggered in-app events and improved issue investigation with Crashlytics.",
+        "Enabled offline use for couriers through local data persistence.",
+      ],
+    },
+  },
+  {
+    id: "monchique",
+    company: "Águas de Monchique",
+    logo: "agua-monchique-official.svg",
+    consulting: true,
+    featured: false,
+    stack: ["Docker", "Flutter Web"],
+    pt: {
+      area: "Ambientes e entrega",
+      title: "Frontend, backend e banco em containers",
+      summary:
+        "Estruturei um ambiente Docker e mantive o projeto; o conjunto de entregas ao cliente também inclui um dashboard Flutter Web.",
+      contributions: [
+        "Criei do zero a estrutura Docker para frontend, backend e banco de dados, padronizando a execução do sistema.",
+        "Atuei na manutenção e em pequenas evoluções do projeto após a estruturação inicial.",
+        "Realizei entregas Flutter para Android e de um dashboard web ao cliente.",
+      ],
+    },
+    en: {
+      area: "Environments and delivery",
+      title: "Frontend, backend and database in containers",
+      summary:
+        "Set up a Docker environment and maintained the project; the client delivery inventory also includes a Flutter Web dashboard.",
+      contributions: [
+        "Created the Docker setup for frontend, backend and database from scratch, standardizing system execution.",
+        "Worked on maintenance and small improvements following the initial setup.",
+        "Delivered a Flutter Android application and a web dashboard for the client.",
+      ],
+    },
+  },
+  {
+    id: "fullsix",
+    company: "Fullsix",
+    logo: "fullsix-black.png",
+    consulting: true,
+    featured: false,
+    stack: ["Python", "OCR API"],
+    pt: {
+      area: "Python e transferência de conhecimento",
+      title: "Análise de uma API de OCR e apoio à equipe .NET",
+      summary:
+        "Analisei uma API Python de OCR e ajudei desenvolvedores .NET a trabalhar com Python.",
+      contributions: [
+        "Analisei e expliquei o funcionamento da API de OCR no contexto do projeto.",
+        "Orientei desenvolvedores .NET em Python, dos fundamentos às estruturas de dados.",
+      ],
+    },
+    en: {
+      area: "Python and knowledge sharing",
+      title: "OCR API analysis and support for a .NET team",
+      summary:
+        "Analyzed a Python OCR API and helped .NET developers work with Python.",
+      contributions: [
+        "Analyzed and explained the OCR API's behavior in the project context.",
+        "Guided .NET developers through Python fundamentals and data structures.",
+      ],
+    },
+  },
+  {
+    id: "ascendi",
+    company: "Ascendi / SustIMS",
+    logo: "ascendi-official.png",
+    consulting: true,
+    featured: false,
+    stack: ["React Native", "Android", "iOS", "Sentry", "AI agents"],
+    pt: {
+      area: "Mobile e manutenção",
+      title: "Entrega mobile e reprodução de problemas",
+      summary:
+        "Atuei em entregas React Native para Android/iOS e reutilizei fluxos de agentes na manutenção do SustIMS.",
+      contributions: [
+        "Realizei uma entrega Android e uma iOS, registradas no inventário de entregas da Latitudde/Conkord.",
+        "Transformei eventos do Sentry em mocks para reproduzir erros e apoiar a investigação.",
+        "Preparei demonstrações com dados recentes não sensíveis usando os fluxos de manutenção.",
+      ],
+    },
+    en: {
+      area: "Mobile and maintenance",
+      title: "Mobile delivery and issue reproduction",
+      summary:
+        "Worked on React Native deliveries for Android/iOS and reused agent workflows for SustIMS maintenance.",
+      contributions: [
+        "Delivered Android and iOS builds recorded in the Latitudde/Conkord delivery inventory.",
+        "Turned Sentry events into mocks to reproduce errors and support investigation.",
+        "Prepared demonstrations using recent non-sensitive data through the maintenance workflows.",
+      ],
+    },
+  },
+  {
+    id: "aguas-de-portugal",
+    company: "Águas de Portugal",
+    logo: "adp-official.svg",
+    consulting: false,
+    featured: false,
+    stack: ["Requirements", "Business rules", "Flowcharts"],
+    pt: {
+      area: "Requisitos e produto",
+      title: "Necessidades de negócio traduzidas em escopo",
+      summary:
+        "Conduzi levantamento de requisitos, refinamento de escopo e mapeamento de regras de negócio.",
+      contributions: [
+        "Conduzi sessões para compreender as necessidades do cliente e alinhar o escopo do sistema.",
+        "Desenhei fluxogramas detalhados e mapeei regras de negócio para orientar a implementação.",
+      ],
+    },
+    en: {
+      area: "Requirements and product",
+      title: "Business needs translated into scope",
+      summary:
+        "Led requirements discovery, scope refinement and business rule mapping.",
+      contributions: [
+        "Led sessions to understand client needs and align system scope.",
+        "Created detailed flowcharts and mapped business rules to guide implementation.",
+      ],
+    },
+  },
+  {
+    id: "code-495",
+    company: "Code 495 / LineLinker Pro",
+    logo: "code-495-symbol.svg",
+    consulting: true,
+    featured: false,
+    stack: ["Flutter", "Android", "iOS"],
+    pt: {
+      area: "Entrega mobile",
+      title: "LineLinker Pro em Android e iOS",
+      summary:
+        "Entregas Flutter nas duas plataformas, registradas no inventário de projetos da Latitudde/Conkord.",
+      contributions: [
+        "Realizei uma entrega Android e uma iOS para o LineLinker Pro, sem somar atualizações de versão à contagem de apps.",
+      ],
+    },
+    en: {
+      area: "Mobile delivery",
+      title: "LineLinker Pro on Android and iOS",
+      summary:
+        "Flutter deliveries on both platforms, recorded in the Latitudde/Conkord project inventory.",
+      contributions: [
+        "Delivered Android and iOS builds for LineLinker Pro, excluding version updates from the app count.",
+      ],
+    },
+  },
+];
+
+export const FEATURED_EXPERIENCES = EXPERIENCES.filter((item) => item.featured);

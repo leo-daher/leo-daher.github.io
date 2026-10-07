@@ -4,7 +4,7 @@ import { SectionHeading } from "../components/SectionHeading.jsx";
 import { Icon } from "../components/Icon.jsx";
 import "./apps.css";
 
-import { APP_ITEMS, APP_CASES } from "../data/apps.js";
+import { APP_ITEMS, APP_CASES, FEATURED_APPS } from "../data/apps.js";
 import { APP_STORIES } from "../data/app-stories.js";
 
 function internalLink(event, path, navigate) {
@@ -43,10 +43,10 @@ function AppIcons({ images, catalog = false }) {
 function AppTile({ item }) {
   const { t, navigate, locale } = usePortfolio();
   const path = `/apps/${item.id}`;
-  return (
+  const tile = (
     <a
       href={routeHref(path, locale)}
-      className="app-store-tile"
+      className={item.related ? "app-store-tile-main" : "app-store-tile"}
       style={{ "--app-accent": item.accent }}
       aria-label={`${t("openAppDetails")}: ${item.name}`}
       onClick={(event) => internalLink(event, path, navigate)}
@@ -66,12 +66,30 @@ function AppTile({ item }) {
       <Icon name="chevron-right" size={22} className="app-store-tile-chevron" />
     </a>
   );
+  if (!item.related) return tile;
+  return (
+    <div
+      className="app-store-tile app-store-tile--suite"
+      style={{ "--app-accent": item.accent }}
+    >
+      {tile}
+      <div className="app-suite-links">
+        <span>{t("lyzerSuiteDownloadsScope")}</span>
+        <a href={routeHref(`/apps/${item.id}`, locale)}>
+          {t("lyzerCollectDetails")}
+        </a>
+        <a href={routeHref(`/apps/${item.related.id}`, locale)}>
+          {t("lyzerDeliverDetails")}
+        </a>
+      </div>
+    </div>
+  );
 }
 
-function AppGrid() {
+function AppGrid({ featured = false }) {
   return (
     <div className="app-store-grid">
-      {APP_ITEMS.map((item) => (
+      {(featured ? FEATURED_APPS : APP_ITEMS).map((item) => (
         <AppTile item={item} key={item.id} />
       ))}
     </div>
@@ -99,7 +117,7 @@ export function AppsSection() {
       <p className="apps-storefront-supporting">
         {t("featuredAppsSupportingText")}
       </p>
-      <AppGrid />
+      <AppGrid featured />
     </section>
   );
 }

@@ -176,6 +176,7 @@ export function Header({ home, onBack, visible = true }) {
 const fabDestinations = [
   ["home", "navHome", "home"],
   ["apps", "navApps", "apps"],
+  ["experience", "navExperience", "clients"],
   ["system", "navSystem", "system"],
   ["clients", "navClients", "clients"],
   ["contact", "navContact", "chat"],
@@ -216,7 +217,7 @@ export function FabMenu() {
         !e.shiftKey)
     ) {
       e.preventDefault();
-      items.current[(i + 1) % 5]?.focus();
+      items.current[(i + 1) % fabDestinations.length]?.focus();
     }
     if (e.key === "ArrowUp" || (e.key === "Tab" && e.shiftKey && i === 0)) {
       e.preventDefault();
