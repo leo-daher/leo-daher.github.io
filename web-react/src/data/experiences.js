@@ -318,20 +318,30 @@ export const EXPERIENCES = [
     logo: "code-495-symbol.svg",
     consulting: true,
     featured: false,
-    stack: ["Flutter", "Android", "iOS"],
+    stack: ["Flutter", "Dart", "Android", "iOS"],
     pt: {
-      area: "Entrega mobile",
-      title: "LineLinker Pro em Android e iOS",
-      summary: "Entregas Flutter para Android e iOS.",
+      area: "Liderança técnica e performance",
+      title: "LineLinker Pro: trabalho offline e mapas fluidos",
+      summary:
+        "Coordenei uma equipe de quatro pessoas entre backend e mobile e trabalhei no código de uma aplicação Flutter para operações em campo.",
       contributions: [
-        "Realizei uma entrega Android e uma iOS para o LineLinker Pro.",
+        "Alinhei semanalmente o projeto com stakeholders, coordenando a equipe e mantendo atuação direta no código.",
+        "Implementei uso offline com sincronização automática em segundo plano ao recuperar a conexão e resolução de conflitos entre versões com assistência ao usuário.",
+        "Apliquei clusterização de pontos no mapa, reduzindo o carregamento de cerca de dois minutos para menos de um segundo e elevando a renderização de cerca de 5 para 60 FPS ao mover o mapa.",
+        "Entreguei versões Android e iOS do LineLinker Pro.",
       ],
     },
     en: {
-      area: "Mobile delivery",
-      title: "LineLinker Pro on Android and iOS",
-      summary: "Flutter deliveries for Android and iOS.",
-      contributions: ["Delivered Android and iOS builds for LineLinker Pro."],
+      area: "Technical leadership and performance",
+      title: "LineLinker Pro: offline fieldwork and responsive maps",
+      summary:
+        "Coordinated a four-person team across backend and mobile and contributed to the code of a Flutter application for field operations.",
+      contributions: [
+        "Aligned the project weekly with stakeholders, coordinating the team while contributing directly to the code.",
+        "Implemented offline use with automatic background synchronization when connectivity returned and user-assisted resolution of conflicts between versions.",
+        "Applied map point clustering, reducing loading from around two minutes to under one second and improving rendering from around 5 to 60 FPS when moving the map.",
+        "Delivered Android and iOS versions of LineLinker Pro.",
+      ],
     },
   },
 ];

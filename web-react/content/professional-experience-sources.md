@@ -25,8 +25,14 @@ Sources in `Perfil Profissional/base/experiencias/`:
 - Águas de Portugal: the client's `experiencia.md`. The unconfirmed specific
   contractual relationship is omitted; the requirement-discovery contribution
   is retained.
-- Code 495: the client's `experiencia.md` and `base/delivery-inventory.json`.
-  Only the reported Flutter Android/iOS deliveries are described.
+- Code 495: the client's `experiencia.md`, `base/delivery-inventory.json` and
+  `base/evidencias/linelinker-pro-relatos-2026-10-07.md`. Leone's direct account
+  of October 7, 2026 establishes a four-person backend/mobile team, weekly
+  stakeholder alignment, hands-on development, offline use, automatic background
+  sync and user-assisted conflict resolution. Historical local resumes and the
+  September 8 Resume Studio export already report map clustering and performance
+  results for Code 495. Public wording uses around two minutes to under one
+  second and around 5 to 60 FPS; these are reported results, not new benchmarks.
 
 MAG and Van Cranenbroek keep their existing published app cases. Radix remains
 a client logo because the selected records do not establish a detailed case.
