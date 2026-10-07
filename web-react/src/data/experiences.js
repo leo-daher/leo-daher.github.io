@@ -145,7 +145,7 @@ export const EXPERIENCES = [
     stack: ["Flutter", "Dart", "BLoC", "Android", "iOS", "Firebase"],
     pt: {
       area: "Modernização mobile",
-      title: "Formulários complexos para gestão de advogados",
+      title: "Formulários dinâmicos para gestão de advogados",
       summary:
         "Modernizei uma aplicação Flutter e trabalhei nos fluxos de cadastro, documentos e publicação Android/iOS.",
       contributions: [
@@ -156,7 +156,7 @@ export const EXPERIENCES = [
     },
     en: {
       area: "Mobile modernization",
-      title: "Complex forms for legal practice management",
+      title: "Dynamic forms for legal practice management",
       summary:
         "Modernized a Flutter application and worked on registration, document and Android/iOS release workflows.",
       contributions: [
@@ -218,7 +218,7 @@ export const EXPERIENCES = [
       area: "Environments and delivery",
       title: "Frontend, backend and database in containers",
       summary:
-        "Set up a Docker environment and maintained the project; the client delivery inventory also includes a Flutter Web dashboard.",
+        "Set up a Docker environment and maintained the project; deliveries for the client also include a Flutter Web dashboard.",
       contributions: [
         "Created the Docker setup for frontend, backend and database from scratch, standardizing system execution.",
         "Worked on maintenance and small improvements following the initial setup.",
@@ -267,7 +267,7 @@ export const EXPERIENCES = [
       summary:
         "Atuei em entregas React Native para Android/iOS e reutilizei fluxos de agentes na manutenção do SustIMS.",
       contributions: [
-        "Realizei uma entrega Android e uma iOS, registradas no inventário de entregas da Latitudde/Conkord.",
+        "Realizei uma entrega Android e uma iOS.",
         "Transformei eventos do Sentry em mocks para reproduzir erros e apoiar a investigação.",
         "Preparei demonstrações com dados recentes não sensíveis usando os fluxos de manutenção.",
       ],
@@ -278,7 +278,7 @@ export const EXPERIENCES = [
       summary:
         "Worked on React Native deliveries for Android/iOS and reused agent workflows for SustIMS maintenance.",
       contributions: [
-        "Delivered Android and iOS builds recorded in the Latitudde/Conkord delivery inventory.",
+        "Delivered Android and iOS builds.",
         "Turned Sentry events into mocks to reproduce errors and support investigation.",
         "Prepared demonstrations using recent non-sensitive data through the maintenance workflows.",
       ],
@@ -322,20 +322,16 @@ export const EXPERIENCES = [
     pt: {
       area: "Entrega mobile",
       title: "LineLinker Pro em Android e iOS",
-      summary:
-        "Entregas Flutter nas duas plataformas, registradas no inventário de projetos da Latitudde/Conkord.",
+      summary: "Entregas Flutter para Android e iOS.",
       contributions: [
-        "Realizei uma entrega Android e uma iOS para o LineLinker Pro, sem somar atualizações de versão à contagem de apps.",
+        "Realizei uma entrega Android e uma iOS para o LineLinker Pro.",
       ],
     },
     en: {
       area: "Mobile delivery",
       title: "LineLinker Pro on Android and iOS",
-      summary:
-        "Flutter deliveries on both platforms, recorded in the Latitudde/Conkord project inventory.",
-      contributions: [
-        "Delivered Android and iOS builds for LineLinker Pro, excluding version updates from the app count.",
-      ],
+      summary: "Flutter deliveries for Android and iOS.",
+      contributions: ["Delivered Android and iOS builds for LineLinker Pro."],
     },
   },
 ];
