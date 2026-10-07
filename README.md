@@ -11,6 +11,15 @@ See [`web-react/README.md`](web-react/README.md) for the current application,
 Node server, read-only MCP endpoint, and validation. The original Flutter
 implementation remains in this repository.
 
+## Shared professional knowledge
+
+Professional facts and consultancy/client/project relationships are maintained
+in `/Users/leone/Documents/Perfil Profissional/base/conhecimento.json`.
+Its `ferramentas/conhecimento.py sync` command generates the selected experience
+and case-study JSON modules in `web-react/src/data/`. Edit facts and approved
+copy in the shared base, then validate and publish this repository. The shared
+base has its own Git history; it is not part of this public checkout.
+
 ## Brand
 
 The canonical LD identity, including strategy, geometry, color, motion, voice

@@ -1,7 +1,10 @@
 # Selected professional experience
 
-The public module `src/data/experiences.js` contains selected accounts from the
-shared professional base. It does not export the base, personal documents,
+The public module `src/data/experiences.js` loads a selected projection generated
+from `Perfil Profissional/base/conhecimento.json` by
+`Perfil Profissional/ferramentas/conhecimento.py sync`. The case-study module
+uses the same authority. Edit facts and approved copy in the structured base.
+These projections do not export the base, personal documents,
 client code, or private source files. Dates and quantitative impact are omitted
 where the records do not establish them.
 
