@@ -238,7 +238,10 @@ function Footer() {
             backgroundImage: `url("${assetUrl(`/assets/brand/ld-mark${theme === "dark" ? "-inverse" : ""}.svg`)}")`,
           }}
         />
-        <span>LEONE DAHER · 2026</span>
+        <div className="footer-details">
+          <span>LEONE DAHER · 2026</span>
+          <span>CNPJ 45.261.043/0001-69</span>
+        </div>
       </div>
     </footer>
   );
