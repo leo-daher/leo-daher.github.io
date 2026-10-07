@@ -2,6 +2,34 @@
   "schema_version": 1,
   "certificates": [
     {
+      "id": "udemy-uc-46b08eb2-381d-4fd1-a961-d6850f1680ba",
+      "credential_id": "UC-46b08eb2-381d-4fd1-a961-d6850f1680ba",
+      "provider": "udemy",
+      "issuer": "Udemy",
+      "title": "LangChain- Agentic AI Engineering with LangChain & LangGraph",
+      "holder": "Leone Crespo Daher de Souza",
+      "completed_on": "2026-10-07",
+      "verification_url": "https://www.udemy.com/certificate/UC-46b08eb2-381d-4fd1-a961-d6850f1680ba/",
+      "course_url": "https://www.udemy.com/course/langchain/",
+      "verified_on": "2026-10-07",
+      "verification_status": "verified",
+      "technologies": ["LangChain", "LangGraph", "RAG", "MCP", "AI", "Python"],
+      "artifacts": {
+        "pdf": {
+          "path": "assets/certificates/originals/udemy-langchain-agentic-ai-engineering.pdf",
+          "media_type": "application/pdf",
+          "bytes": 16457,
+          "sha256": "a8a59e0b26a330d537e8556aead501d6a4dce1392697fdadb778571cec0267ef"
+        },
+        "image": {
+          "path": "assets/certificates/originals/udemy-langchain-agentic-ai-engineering.jpg",
+          "media_type": "image/jpeg",
+          "bytes": 245266,
+          "sha256": "803191c2ece3e0412bdc0340c1dc29a865a1c67557d1dac4f1790e339b4a221f"
+        }
+      }
+    },
+    {
       "id": "skilljar-5fx3uazp9qpf",
       "credential_id": "5fx3uazp9qpf",
       "provider": "skilljar",

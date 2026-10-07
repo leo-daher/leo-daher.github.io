@@ -83,7 +83,7 @@ test("all localized pages expose real content, canonical metadata and matching M
       assert.match(body, /<h1[^>]*>.*Leone Daher.*<\/h1>/s);
     }
     if (doc.id === "certificates")
-      assert.equal((body.match(/class="certificate-card /g) || []).length, 13);
+      assert.equal((body.match(/class="certificate-card /g) || []).length, 14);
     if (!["profile"].includes(doc.id))
       assert.ok(!body.includes('id="home"'), doc.path);
     const markdown = await fetch(local(doc.markdownUrl));

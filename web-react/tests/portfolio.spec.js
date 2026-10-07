@@ -248,11 +248,16 @@ test("home scroll is restored after viewing an app and using back", async ({
     .poll(async () => Math.abs((await page.evaluate(() => scrollY)) - before))
     .toBeLessThan(8);
 });
-test("certificates retain 13 records, OR filters, official preview and focus restore", async ({
+test("certificates retain 14 records, OR filters, official preview and focus restore", async ({
   page,
 }) => {
+  await page.goto("/pt/");
+  await expect(page.locator(".certificate-highlight")).toHaveCount(3);
+  await expect(page.locator(".certificate-highlight").first()).toContainText(
+    "LangChain- Agentic AI Engineering with LangChain & LangGraph",
+  );
   await page.goto("/pt/certificacoes");
-  await expect(page.locator(".certificate-gallery-card")).toHaveCount(13);
+  await expect(page.locator(".certificate-gallery-card")).toHaveCount(14);
   const mobile = page.viewportSize().width < 621;
   if (mobile)
     await page
@@ -261,11 +266,11 @@ test("certificates retain 13 records, OR filters, official preview and focus res
   await page.getByRole("button", { name: "Flutter", exact: true }).click();
   await expect(page.locator(".certificate-gallery-card")).toHaveCount(1);
   await page.getByRole("button", { name: "AI", exact: true }).click();
-  await expect(page.locator(".certificate-gallery-card")).toHaveCount(11);
+  await expect(page.locator(".certificate-gallery-card")).toHaveCount(12);
   await page
     .getByRole("button", { name: "Limpar filtros", exact: true })
     .click();
-  await expect(page.locator(".certificate-gallery-card")).toHaveCount(13);
+  await expect(page.locator(".certificate-gallery-card")).toHaveCount(14);
   const card = page.locator(".certificate-gallery-card").first();
   await card.click();
   await expect(page.getByRole("dialog")).toBeVisible();
@@ -342,7 +347,7 @@ test("all primary pages have one main landmark and pass accessibility checks", a
   ]) {
     await page.goto("/pt" + path);
     if (path === "/certificacoes")
-      await expect(page.locator(".certificate-gallery-card")).toHaveCount(13);
+      await expect(page.locator(".certificate-gallery-card")).toHaveCount(14);
     await expect(page.getByRole("main")).toHaveCount(1);
     const result = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
@@ -489,7 +494,7 @@ test("project and certificates remain readable with JavaScript disabled", async 
   );
   await expect(page.locator("main")).toContainText("Flutter");
   await page.goto("http://127.0.0.1:4173/pt/certificacoes/");
-  await expect(page.locator(".certificate-card")).toHaveCount(13);
+  await expect(page.locator(".certificate-card")).toHaveCount(14);
   await expect(page.locator("main")).toContainText("Anthropic");
   await context.close();
 });

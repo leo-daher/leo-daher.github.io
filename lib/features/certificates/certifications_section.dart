@@ -120,6 +120,7 @@ List<CertificateRecord> _featuredCertificates(CertificateCatalog catalog) {
   final selected = <CertificateRecord>[];
 
   void addFirst(bool Function(CertificateRecord) matches) {
+    if (selected.length == 3) return;
     for (final certificate in catalog.certificates) {
       if (matches(certificate) && !selected.contains(certificate)) {
         selected.add(certificate);
@@ -128,6 +129,10 @@ List<CertificateRecord> _featuredCertificates(CertificateCatalog catalog) {
     }
   }
 
+  addFirst(
+    (certificate) =>
+        certificate.id == 'udemy-uc-46b08eb2-381d-4fd1-a961-d6850f1680ba',
+  );
   addFirst((certificate) => certificate.technologies.contains('Flutter'));
   addFirst(
     (certificate) => certificate.title.toLowerCase().contains('ai fluency'),

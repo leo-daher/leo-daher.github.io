@@ -225,10 +225,12 @@ export function CertificatesSection() {
     if (!certificates) return [];
     const records = [];
     for (const matches of [
+      (record) => record.id === "udemy-uc-46b08eb2-381d-4fd1-a961-d6850f1680ba",
       (record) => record.technologies.includes("Flutter"),
       (record) => record.title.toLowerCase().includes("ai fluency"),
       (record) => record.technologies.includes("MCP"),
     ]) {
+      if (records.length === 3) break;
       const first = certificates.find(
         (record) => matches(record) && !records.includes(record),
       );

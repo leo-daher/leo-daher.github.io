@@ -208,7 +208,7 @@ test("preferences, menu, scroll, contacts, store links and certificate actions r
     (await events(page, "generate_lead")).map((item) => item.contact_method),
   ).toEqual(["whatsapp", "calendly"]);
   await page.locator(".certificate-view-all").click();
-  await expect(page.locator(".certificate-gallery-card")).toHaveCount(13);
+  await expect(page.locator(".certificate-gallery-card")).toHaveCount(14);
   await page.locator(".certificate-gallery-card").first().click();
   await page.locator(".certificate-verify").evaluate((link) => link.click());
   const certificate = await events(page, "certificate_action");
