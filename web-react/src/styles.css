@@ -276,6 +276,35 @@ main {
   margin-left: 12px;
   white-space: nowrap;
 }
+.header-navigation {
+  display: none;
+}
+@media (min-width: 1280px) {
+  .header-navigation {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 0;
+    padding-inline: 16px;
+  }
+  .header-navigation a {
+    padding: 12px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--muted);
+    transition:
+      color 160ms ease,
+      background-color 160ms ease;
+  }
+  .header-navigation a:hover {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+  }
+}
 .header-actions {
   margin-left: auto;
   display: flex;
@@ -899,10 +928,18 @@ a.client-tile:focus-visible {
   align-items: flex-end;
   gap: 4px;
   margin-bottom: 8px;
+  max-height: calc(
+    100dvh - 160px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+  );
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding: 6px 0 6px 8px;
   pointer-events: none;
 }
 .fab-item {
   height: 56px;
+  flex-shrink: 0;
   display: flex;
   gap: 8px;
   align-items: center;
@@ -926,7 +963,7 @@ a.client-tile:focus-visible {
   opacity: 1;
   visibility: visible;
   transform: scaleX(1);
-  transition-delay: calc((4 - var(--index)) * 28ms);
+  transition-delay: calc((var(--item-count) - 1 - var(--index)) * 28ms);
   pointer-events: auto;
 }
 .fab-group.closing .fab-item {

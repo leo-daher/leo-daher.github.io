@@ -7,6 +7,7 @@ import {
 } from "../src/data/apps.js";
 import { APP_STORIES } from "../src/data/app-stories.js";
 import { EXPERIENCES, FEATURED_EXPERIENCES } from "../src/data/experiences.js";
+import { CAPABILITIES } from "../src/data/capabilities.js";
 
 const webRoot = new URL("../", import.meta.url);
 const schemaContext = "https://schema.org";
@@ -219,9 +220,9 @@ function profileDocument(profile, locale, t, url, interpretation) {
     `## ${words.overview}`,
     `- ${t("yearsBuildingSoftware")}\n- ${t("proofAppsValue")} ${inline(t("proofAppsLabel"))}\n- ${t("proofMarketsLabel")}: ${t("proofMarketsValue")}`,
     `## ${t("systemTitle")}`,
-    ...["Product", "Services", "Delivery", "Automation"].map(
-      (scope) =>
-        `### ${t(`architecture${scope}Title`)}\n\n${t(`architecture${scope}Detail`)}`,
+    ...CAPABILITIES.map(
+      ([scope, target]) =>
+        `### ${t(`architecture${scope}Title`)}\n\n${t(`architecture${scope}Copy`)}\n\n${t(`architecture${scope}Detail`)}\n\n${link(t(`architecture${scope}Link`), url(localPath(target, locale)))}`,
     ),
     `## ${t("featuredAppsTitle")}`,
     t("featuredAppsSupportingText"),

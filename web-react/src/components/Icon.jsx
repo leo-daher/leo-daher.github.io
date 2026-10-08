@@ -16,6 +16,8 @@ export function Icon({ name, size = 24, ...props }) {
     apps: "M3 3h7v7H3V3Zm11 0h7v7h-7V3ZM3 14h7v7H3v-7Zm11 0h7v7h-7v-7Z",
     system: "M4 3h16v6H4V3ZM4 15h16v6H4v-6ZM12 9v6M8 6h.01M8 18h.01",
     clients: "M8 21v-8h8v8M3 21h18M4 13V3h16v10M8 7h1m6 0h1M8 10h1m6 0h1",
+    certificate: "M4 3h16v14H4V3ZM8 7h8M8 10h5m-4 7-1 4 4-2 4 2-1-4",
+    article: "M5 3h14v18H5V3ZM8 7h8M8 11h8M8 15h5",
     check: "m5 12 4 4L19 6",
     download: "M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4",
     share: "M18 5 6 12l12 7",

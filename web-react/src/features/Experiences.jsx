@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import { assetUrl, routeHref, usePortfolio } from "../context.jsx";
 import { SectionHeading } from "../components/SectionHeading.jsx";
 import { Icon } from "../components/Icon.jsx";
 import { EXPERIENCES, FEATURED_EXPERIENCES } from "../data/experiences.js";
 import "./experiences.css";
 
-function ExperienceHeading({ item, level = 3 }) {
+function ExperienceHeading({ item, level = 3, preview = false }) {
   const { locale, t } = usePortfolio();
   const copy = item[locale];
   const Heading = level === 2 ? "h2" : "h3";
@@ -25,11 +24,15 @@ function ExperienceHeading({ item, level = 3 }) {
         <div>
           <p className="experience-company-name">{item.company}</p>
           <p className="experience-engagement">
-            {item.consulting ? t("experienceViaConsulting") : copy.area}
+            {item.consulting && !preview
+              ? t("experienceViaConsulting")
+              : copy.area}
           </p>
         </div>
       </div>
-      {item.consulting && <p className="experience-area">{copy.area}</p>}
+      {item.consulting && !preview && (
+        <p className="experience-area">{copy.area}</p>
+      )}
       <Heading>{copy.title}</Heading>
       <p className="experience-summary">{copy.summary}</p>
     </>
@@ -53,7 +56,7 @@ export function ExperiencesSection() {
             className="experience-preview"
             href={`${routeHref("/experiencias", locale)}#${item.id}`}
           >
-            <ExperienceHeading item={item} />
+            <ExperienceHeading item={item} preview />
             <span className="experience-preview-footer">
               <span>{item.stack.slice(0, 3).join(" · ")}</span>
               <Icon name="arrow-right" size={20} />
@@ -72,15 +75,7 @@ export function ExperiencesSection() {
 }
 
 export function ExperiencesPage() {
-  const { locale, t, staticRender } = usePortfolio();
-  useEffect(() => {
-    if (staticRender || !window.location.hash) return;
-    const item = EXPERIENCES.find(
-      (record) => `#${record.id}` === window.location.hash,
-    );
-    if (item)
-      document.getElementById(item.id)?.scrollIntoView({ block: "start" });
-  }, [staticRender]);
+  const { locale, t } = usePortfolio();
   return (
     <section className="section-frame experiences-page">
       <SectionHeading

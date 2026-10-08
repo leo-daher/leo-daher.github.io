@@ -5,6 +5,7 @@ import { Icon } from "../components/Icon.jsx";
 import "./certificates.css";
 
 let catalogRequest;
+let loadedCatalog;
 function loadCatalog() {
   if (!catalogRequest) {
     catalogRequest = fetch(assetUrl("assets/certificates/catalog.json"))
@@ -19,9 +20,10 @@ function loadCatalog() {
         ) {
           throw new Error("Unsupported certificate catalog.");
         }
-        return [...catalog.certificates].sort((a, b) =>
+        loadedCatalog = [...catalog.certificates].sort((a, b) =>
           b.completed_on.localeCompare(a.completed_on),
         );
+        return loadedCatalog;
       })
       .catch((error) => {
         catalogRequest = undefined;
@@ -33,12 +35,13 @@ function loadCatalog() {
 
 function useCertificates() {
   const { initialCertificates } = usePortfolio();
-  const hasSeed = Array.isArray(initialCertificates);
+  const seed = Array.isArray(initialCertificates)
+    ? initialCertificates
+    : loadedCatalog;
+  const hasSeed = Array.isArray(seed);
   const [certificates, setCertificates] = useState(() =>
     hasSeed
-      ? [...initialCertificates].sort((a, b) =>
-          b.completed_on.localeCompare(a.completed_on),
-        )
+      ? [...seed].sort((a, b) => b.completed_on.localeCompare(a.completed_on))
       : null,
   );
   const [failed, setFailed] = useState(false);
@@ -439,6 +442,7 @@ export function CertificatesPage() {
           </div>
           <div
             className="certificate-results"
+            data-route-scroll="certificates"
             key={selected.slice().sort().join("-") || "all"}
           >
             {groups.map(([year, records]) => (

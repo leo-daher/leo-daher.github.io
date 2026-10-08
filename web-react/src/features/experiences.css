@@ -57,9 +57,13 @@
   height: 100%;
   object-fit: contain;
 }
-.experience-logo--human-robotics,
 .experience-logo--visagio {
   background: #15141e;
+}
+.experience-logo--human-robotics img,
+.experience-logo--visagio img {
+  object-fit: cover;
+  object-position: left center;
 }
 .experience-company-name {
   margin: 0;

@@ -52,6 +52,7 @@
 }
 
 .app-store-tile {
+  --app-text-accent: var(--app-accent);
   display: flex;
   align-items: center;
   gap: 16px;
@@ -149,11 +150,12 @@
 }
 
 .app-store-tile-metric {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   margin-top: 8px;
-  color: var(--app-accent);
+  color: var(--app-text-accent);
   font-size: 11px;
   line-height: 1.25;
   font-weight: 600;
@@ -165,44 +167,12 @@
   color: var(--muted);
 }
 
-.app-store-tile--suite {
-  display: block;
+:root[data-theme="light"] [data-app-id^="lyzer-"] {
+  --app-text-accent: #a95800;
 }
-.app-store-tile-main {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  min-width: 0;
-  color: inherit;
-  text-decoration: none;
-}
-.app-suite-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 16px;
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--outline);
-  font-size: 11px;
-  line-height: 1.5;
-}
-.app-suite-links > span {
-  width: 100%;
-  color: var(--muted);
-}
-.app-suite-links a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  color: var(--ink);
-  text-underline-offset: 4px;
-}
-.app-store-tile-main:focus-visible,
-.app-suite-links a:focus-visible {
-  outline: 2px solid var(--violet);
-  outline-offset: 4px;
-  border-radius: 8px;
+
+:root[data-theme="light"] [data-app-id="mag-venda-digital"] {
+  --app-text-accent: #126baf;
 }
 
 .section-frame.apps-catalog-page {
@@ -227,6 +197,7 @@
 }
 
 .app-case {
+  --app-text-accent: var(--app-accent);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 20px;
@@ -236,7 +207,7 @@
 
 .app-case-context {
   margin: 0 0 7px;
-  color: var(--app-accent);
+  color: var(--app-text-accent);
   text-transform: uppercase;
   font-size: 10px;
   letter-spacing: 0.95px;
@@ -408,7 +379,7 @@
 
 .app-case-role {
   margin: 0 0 7px;
-  color: var(--app-accent);
+  color: var(--app-text-accent);
   font-size: 13.5px;
   line-height: 1.42;
   font-weight: 600;
@@ -490,7 +461,7 @@
 }
 
 .app-store-proof-product {
-  color: var(--app-accent);
+  color: var(--app-text-accent);
   text-transform: uppercase;
   letter-spacing: 0.65px;
 }

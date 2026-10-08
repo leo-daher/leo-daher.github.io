@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { usePortfolio, assetUrl, contactLinks, basePath } from "../context.jsx";
+import {
+  usePortfolio,
+  assetUrl,
+  contactLinks,
+  basePath,
+  routeHref,
+} from "../context.jsx";
 import { Icon } from "./Icon.jsx";
 import { LiquidGlass } from "./LiquidGlass.jsx";
 const destinations = [
@@ -8,6 +14,19 @@ const destinations = [
   ["linkedin", "contactLinkedIn", "linkedin-symbol.svg"],
   ["github", "contactGitHub", "github-symbol.svg"],
 ];
+const fabDestinations = [
+  ["home", "navHome", "home"],
+  ["apps", "navApps", "apps"],
+  ["experience", "navExperience", "clients"],
+  ["system", "navSystem", "system"],
+  ["clients", "navClients", "clients"],
+  ["certificacoes", "navCertificates", "certificate"],
+  ["artigos", "navArticles", "article"],
+  ["contact", "navContact", "chat"],
+];
+const headerDestinations = fabDestinations.filter(([id]) =>
+  ["apps", "experience", "system", "certificacoes", "artigos"].includes(id),
+);
 export function ContactIcon({ type, file }) {
   return file ? (
     <span
@@ -29,7 +48,7 @@ export function Header({ home, onBack, visible = true }) {
     items = useRef([]);
   function close(returnFocus = false) {
     setOpen(false);
-    if (returnFocus) trigger.current?.focus();
+    if (returnFocus) trigger.current?.focus({ preventScroll: true });
   }
   useEffect(() => {
     function dismiss(e) {
@@ -57,7 +76,7 @@ export function Header({ home, onBack, visible = true }) {
     if (e.key === "End") next = 3;
     if (next !== undefined) {
       e.preventDefault();
-      items.current[next]?.focus();
+      items.current[next]?.focus({ preventScroll: true });
     }
   }
   return (
@@ -92,6 +111,13 @@ export function Header({ home, onBack, visible = true }) {
           )}
         </button>
         <span className="brand-name">LEONE DAHER</span>
+        <nav className="header-navigation" aria-label={t("mainNavigation")}>
+          {headerDestinations.map(([id, label]) => (
+            <a key={id} href={`${routeHref("/", locale)}#${id}`}>
+              {t(label)}
+            </a>
+          ))}
+        </nav>
         <div className="header-actions">
           <button
             className="language-toggle"
@@ -126,7 +152,9 @@ export function Header({ home, onBack, visible = true }) {
                 if (open) close(true);
                 else {
                   setOpen(true);
-                  requestAnimationFrame(() => items.current[0]?.focus());
+                  requestAnimationFrame(() =>
+                    items.current[0]?.focus({ preventScroll: true }),
+                  );
                 }
               }}
               onKeyDown={(e) => {
@@ -134,7 +162,9 @@ export function Header({ home, onBack, visible = true }) {
                   e.preventDefault();
                   setOpen(true);
                   const target = e.key === "ArrowUp" ? 3 : 0;
-                  requestAnimationFrame(() => items.current[target]?.focus());
+                  requestAnimationFrame(() =>
+                    items.current[target]?.focus({ preventScroll: true }),
+                  );
                 }
               }}
             >
@@ -173,14 +203,6 @@ export function Header({ home, onBack, visible = true }) {
     </header>
   );
 }
-const fabDestinations = [
-  ["home", "navHome", "home"],
-  ["apps", "navApps", "apps"],
-  ["experience", "navExperience", "clients"],
-  ["system", "navSystem", "system"],
-  ["clients", "navClients", "clients"],
-  ["contact", "navContact", "chat"],
-];
 export function FabMenu() {
   const { t, navigate } = usePortfolio();
   const [open, setOpen] = useState(false),
@@ -192,8 +214,11 @@ export function FabMenu() {
     setOpen(false);
     setClosing(true);
     clearTimeout(timer.current);
-    timer.current = setTimeout(() => setClosing(false), 260);
-    if (focus) trigger.current?.focus();
+    timer.current = setTimeout(
+      () => setClosing(false),
+      260 + (fabDestinations.length - 1) * 14,
+    );
+    if (focus) trigger.current?.focus({ preventScroll: true });
   };
   useEffect(() => {
     function key(e) {
@@ -208,6 +233,18 @@ export function FabMenu() {
     };
   }, [open]);
   useEffect(() => () => clearTimeout(timer.current), []);
+  function focusItem(index) {
+    const item = items.current[index];
+    if (!item) return;
+    item.focus({ preventScroll: true });
+    const menu = item.parentElement;
+    const itemBounds = item.getBoundingClientRect();
+    const menuBounds = menu.getBoundingClientRect();
+    if (itemBounds.top < menuBounds.top)
+      menu.scrollTop -= menuBounds.top - itemBounds.top;
+    else if (itemBounds.bottom > menuBounds.bottom)
+      menu.scrollTop += itemBounds.bottom - menuBounds.bottom;
+  }
   function keys(e) {
     let i = items.current.indexOf(document.activeElement);
     if (
@@ -217,12 +254,12 @@ export function FabMenu() {
         !e.shiftKey)
     ) {
       e.preventDefault();
-      items.current[(i + 1) % fabDestinations.length]?.focus();
+      focusItem((i + 1) % fabDestinations.length);
     }
     if (e.key === "ArrowUp" || (e.key === "Tab" && e.shiftKey && i === 0)) {
       e.preventDefault();
-      if (i <= 0) trigger.current?.focus();
-      else items.current[i - 1]?.focus();
+      if (i <= 0) trigger.current?.focus({ preventScroll: true });
+      else focusItem(i - 1);
     }
   }
   return (
@@ -236,6 +273,7 @@ export function FabMenu() {
       />
       <nav
         className={`fab-group${open ? " expanded" : ""}${closing ? " closing" : ""}`}
+        style={{ "--item-count": fabDestinations.length }}
         aria-label={t("openNavigationMenu")}
         onKeyDown={keys}
       >

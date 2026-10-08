@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { assetUrl, routeHref, usePortfolio } from "../context.jsx";
 import { SectionHeading } from "../components/SectionHeading.jsx";
 import { Icon } from "../components/Icon.jsx";
@@ -43,10 +43,10 @@ function AppIcons({ images, catalog = false }) {
 function AppTile({ item }) {
   const { t, navigate, locale } = usePortfolio();
   const path = `/apps/${item.id}`;
-  const tile = (
+  return (
     <a
       href={routeHref(path, locale)}
-      className={item.related ? "app-store-tile-main" : "app-store-tile"}
+      className={`app-store-tile${item.related ? " app-store-tile--suite" : ""}`}
       style={{ "--app-accent": item.accent }}
       aria-label={`${t("openAppDetails")}: ${item.name}`}
       onClick={(event) => internalLink(event, path, navigate)}
@@ -65,24 +65,6 @@ function AppTile({ item }) {
       </span>
       <Icon name="chevron-right" size={22} className="app-store-tile-chevron" />
     </a>
-  );
-  if (!item.related) return tile;
-  return (
-    <div
-      className="app-store-tile app-store-tile--suite"
-      style={{ "--app-accent": item.accent }}
-    >
-      {tile}
-      <div className="app-suite-links">
-        <span>{t("lyzerSuiteDownloadsScope")}</span>
-        <a href={routeHref(`/apps/${item.id}`, locale)}>
-          {t("lyzerCollectDetails")}
-        </a>
-        <a href={routeHref(`/apps/${item.related.id}`, locale)}>
-          {t("lyzerDeliverDetails")}
-        </a>
-      </div>
-    </div>
   );
 }
 
@@ -169,7 +151,7 @@ function ScreenshotGallery({ app }) {
     compact: true,
   });
   const hasCaptions = app.screenshots.some((screenshot) => screenshot.caption);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const gallery = galleryRef.current;
     if (!gallery) return undefined;
     const resize = () => {
@@ -201,6 +183,7 @@ function ScreenshotGallery({ app }) {
     <div
       ref={galleryRef}
       className={`app-gallery ${hasCaptions ? "app-gallery--captions" : ""}`}
+      data-route-scroll="screenshots"
       role="region"
       aria-label={t("appScreenshotsLabel")}
       tabIndex={0}
@@ -409,6 +392,7 @@ export function AppDetailPage({ id }) {
       <article
         className="app-case"
         style={{ "--app-accent": app.accent }}
+        data-app-id={item?.id || id}
         aria-label={`${item?.name || app.name}. ${t(item?.summary || `${app.prefix}Summary`)}`}
       >
         <div className="app-case-mobile-heading">

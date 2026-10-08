@@ -1,0 +1,11 @@
+/* Keep page motion inside the viewport and prevent automatic scroll corrections. */
+#main {
+  overflow-x: clip;
+  overflow-anchor: none;
+}
+
+/* Route movement starts only after App has applied its final scroll position. */
+#main .route-page,
+#main .route-page .certificate-results {
+  animation: none;
+}

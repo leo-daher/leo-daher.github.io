@@ -119,12 +119,9 @@ test("professional experience links open localized contributions and keep both L
 }) => {
   await page.goto("/pt/");
   const suite = page.locator(".app-store-tile--suite");
-  await expect(
-    suite.getByRole("link", { name: "Conhecer Collect", exact: true }),
-  ).toHaveAttribute("href", "/pt/apps/lyzer-collect");
-  await expect(
-    suite.getByRole("link", { name: "Conhecer Deliver", exact: true }),
-  ).toHaveAttribute("href", "/pt/apps/lyzer-deliver");
+  await expect(suite.locator("a")).toHaveCount(0);
+  await expect(suite).toHaveAttribute("href", "/pt/apps/lyzer-collect");
+  await expect(suite).not.toContainText("Google Play");
   await page
     .locator(".experience-preview")
     .filter({ hasText: "Visagio" })

@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import "./navigation.css";
 import {
   PortfolioContext,
   assetUrl,
@@ -8,10 +15,11 @@ import {
 } from "./context.jsx";
 import pt from "./data/pt.json";
 import en from "./data/en.json";
-import { EXPERIENCES } from "./data/experiences.js";
 import { Header, FabMenu, ContactIcon } from "./components/Navigation.jsx";
 import { SectionHeading } from "./components/SectionHeading.jsx";
 import { Icon } from "./components/Icon.jsx";
+import { Capabilities } from "./features/Capabilities.jsx";
+import { Clients } from "./features/Clients.jsx";
 import { Hero, Opening } from "./features/Hero.jsx";
 import { AppsSection, AppsPage, AppDetailPage } from "./features/Apps.jsx";
 import {
@@ -62,6 +70,31 @@ function localizedPath(path, locale) {
   );
 }
 const isHome = (p) => p === "/" || p === "/ios";
+function newHistoryEntry(index = 0) {
+  return {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    index,
+  };
+}
+function fragmentId(hash) {
+  try {
+    return decodeURIComponent(hash.replace(/^#/, ""));
+  } catch {
+    return hash.replace(/^#/, "");
+  }
+}
+function scrollPosition(content) {
+  return {
+    scroll: window.scrollY,
+    regions: [...content.querySelectorAll("[data-route-scroll]")]
+      .filter((element) => element.getClientRects().length)
+      .map((element) => ({
+        name: element.dataset.routeScroll,
+        top: element.scrollTop,
+        left: element.scrollLeft,
+      })),
+  };
+}
 let metadataRequest;
 function loadPortfolioMetadata() {
   if (!metadataRequest) {
@@ -121,95 +154,6 @@ function Proof() {
 }
 // Shared sections keep the approved localized copy alongside its visual role.
 import { usePortfolio as useCurrent } from "./context.jsx";
-function Architecture() {
-  const { t } = useCurrent();
-  return (
-    <section id="system" className="section-frame architecture">
-      <SectionHeading title={t("systemTitle")} />
-      <div className="architecture-grid">
-        {["Product", "Services", "Delivery", "Automation"].map((name, i) => (
-          <div className="architecture-scope" key={name}>
-            <span>{String(i + 1).padStart(2, "0")}</span>
-            <div>
-              <h3>{t(`architecture${name}Title`)}</h3>
-              <p>{t(`architecture${name}Detail`)}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-const direct = [
-  ["MAG Seguros", "mag-official.svg"],
-  ["Human Robotics", "human_robotics.png", "outline"],
-  ["Visagio", "visagio.svg", "visagio"],
-  ["Radix", "radix.png"],
-  ["Conkord", "conkord-official.svg"],
-];
-const indirect = [
-  ["Van Cranenbroek", "van-cranenbroek-full.svg"],
-  ["Lyzer", "lyzer-official.svg", "outline"],
-  ["CTT", "ctt-official.svg"],
-  ["EY", "ey-official.svg", "outline"],
-  ["Iberdrola", "iberdrola-official.svg"],
-  ["Águas de Portugal", "adp-official.svg", "outline"],
-  ["Água Monchique", "agua-monchique-official.svg", "outline"],
-  ["Fullsix", "fullsix-black.png", "mono fullsix"],
-  ["Code 495", "code-495-symbol.svg", "code"],
-  ["Ascendi", "ascendi-official.png", "outline"],
-];
-function Clients() {
-  const { t, locale } = useCurrent();
-  return (
-    <section id="clients" className="section-frame clients">
-      <SectionHeading title={t("clientsTitle")} />
-      {[
-        ["directRoles", direct],
-        ["viaLatituddeConsulting", indirect],
-      ].map(([title, logos]) => (
-        <div className="client-group" key={title}>
-          <div className="client-group-label">
-            <h3>{t(title)}</h3>
-            <span>
-              {logos.length} {locale === "pt" ? "MARCAS" : "BRANDS"}
-            </span>
-          </div>
-          <div className="clients-grid">
-            {logos.map(([name, file, style = ""]) => {
-              const experience = EXPERIENCES.find((item) => item.logo === file);
-              const path = experience
-                ? `/experiencias#${experience.id}`
-                : {
-                    "MAG Seguros": "/apps/mag-venda-digital",
-                    "Van Cranenbroek": "/apps/van-cranenbroek",
-                    Conkord: "/experiencias",
-                  }[name];
-              const Tile = path ? "a" : "div";
-              return (
-                <Tile
-                  className={`client-tile ${style}`}
-                  key={name}
-                  href={path ? routeHref(path, locale) : undefined}
-                  aria-label={
-                    path ? `${t("viewClientExperience")}: ${name}` : undefined
-                  }
-                >
-                  <img
-                    src={assetUrl("/assets/client_logos/" + file)}
-                    alt={name}
-                    loading="lazy"
-                  />
-                  {style === "code" && <span>Code 495</span>}
-                </Tile>
-              );
-            })}
-          </div>
-        </div>
-      ))}
-    </section>
-  );
-}
 function Contact() {
   const { t } = useCurrent();
   return (
@@ -280,7 +224,7 @@ function Home({ active }) {
         <AppsSection />
       </div>
       <ExperiencesSection />
-      <Architecture />
+      <Capabilities />
       <Clients />
       <CertificatesSection />
       <ArticlesSection />
@@ -363,10 +307,28 @@ export default function App({
         isHome(path) &&
         !matchMedia("(prefers-reduced-motion: reduce)").matches,
     );
-  const homeScroll = useRef(0),
-    pathRef = useRef(path),
+  const pathRef = useRef(path),
     positions = useRef(new Map()),
-    routeFocus = useRef(false);
+    historyEntry = useRef(
+      inBrowser
+        ? window.history.state?.portfolioNavigation || newHistoryEntry()
+        : null,
+    ),
+    navigationSequence = useRef(0),
+    navigationContent = useRef(null),
+    routeAnimation = useRef(null);
+  const [navigation, setNavigation] = useState(() =>
+    inBrowser
+      ? {
+          id: 0,
+          hash: fragmentId(window.location.hash),
+          scroll: window.scrollY,
+          regions: [],
+          direction: null,
+          focus: false,
+        }
+      : null,
+  );
   const t = useCallback(
     (key, params = {}) => {
       let value = (locale === "pt" ? pt : en)[key] ?? key;
@@ -404,10 +366,10 @@ export default function App({
     }
   };
   const navigate = useCallback(
-    (to, { replace = false } = {}) => {
+    (to, { replace = false, direction = "forward" } = {}) => {
       const url = new URL(to, "https://portfolio.invalid/");
       const next = url.pathname;
-      const hash = url.hash.slice(1);
+      const hash = fragmentId(url.hash);
       if (hash) sectionSelected(hash);
       const dest = stripLocalePrefix(next || "/").replace(/\/$/, "") || "/";
       if (isHome(pathRef.current) && isHome(dest) && hash) {
@@ -417,24 +379,37 @@ export default function App({
         });
         return;
       }
-      positions.current.set(pathRef.current, window.scrollY);
-      if (isHome(pathRef.current)) homeScroll.current = window.scrollY;
+      const current = historyEntry.current;
+      const position = scrollPosition(navigationContent.current);
+      positions.current.set(current.id, position);
+      window.history.replaceState(
+        {
+          ...window.history.state,
+          portfolioNavigation: { ...current, ...position },
+        },
+        "",
+      );
+      const entry = newHistoryEntry(current.index + (replace ? 0 : 1));
       const target = localizedPath(dest, locale) + url.search + url.hash;
       window.history[replace ? "replaceState" : "pushState"](
-        { portfolio: true },
+        {
+          ...(replace ? window.history.state : {}),
+          portfolio: true,
+          portfolioNavigation: entry,
+        },
         "",
         target,
       );
+      historyEntry.current = entry;
       pathRef.current = dest;
       setPath(dest);
-      routeFocus.current = true;
-      requestAnimationFrame(() => {
-        if (hash)
-          document.getElementById(hash)?.scrollIntoView({
-            behavior: reduceMotion ? "instant" : "smooth",
-            block: "start",
-          });
-        else window.scrollTo(0, 0);
+      setNavigation({
+        id: ++navigationSequence.current,
+        hash,
+        scroll: 0,
+        regions: [],
+        direction,
+        focus: true,
       });
     },
     [locale, reduceMotion],
@@ -443,16 +418,29 @@ export default function App({
     if (!inBrowser) return;
     function pop() {
       const next = relativePath();
+      const previous = historyEntry.current;
+      positions.current.set(
+        previous.id,
+        scrollPosition(navigationContent.current),
+      );
+      const entry =
+        window.history.state?.portfolioNavigation ||
+        newHistoryEntry(previous.index - 1);
+      const position = positions.current.get(entry.id) ?? entry;
+      const restoredScroll = position.scroll;
+      const direction = entry.index < previous.index ? "back" : "forward";
+      historyEntry.current = entry;
       setLocaleState(routeLocale(browserPath()));
       pathRef.current = next;
       setPath(next);
-      routeFocus.current = true;
-      requestAnimationFrame(() =>
-        window.scrollTo(
-          0,
-          isHome(next) ? homeScroll.current : positions.current.get(next) || 0,
-        ),
-      );
+      setNavigation({
+        id: ++navigationSequence.current,
+        hash: restoredScroll == null ? fragmentId(window.location.hash) : "",
+        scroll: restoredScroll ?? 0,
+        regions: position.regions ?? [],
+        direction,
+        focus: true,
+      });
     }
     function links(e) {
       const a = e.target.closest("a");
@@ -485,6 +473,60 @@ export default function App({
       document.removeEventListener("click", links);
     };
   }, [inBrowser, navigate]);
+  useLayoutEffect(() => {
+    if (!inBrowser) return;
+    const previous = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    window.history.replaceState(
+      {
+        ...window.history.state,
+        portfolioNavigation: historyEntry.current,
+      },
+      "",
+    );
+    return () => {
+      window.history.scrollRestoration = previous;
+      routeAnimation.current?.cancel();
+    };
+  }, [inBrowser]);
+  useLayoutEffect(() => {
+    if (!inBrowser || !navigation || opening) return;
+    const content = navigationContent.current;
+    routeAnimation.current?.cancel();
+    const anchor = navigation.hash
+      ? document.getElementById(navigation.hash)
+      : null;
+    // Apply the destination before painting or starting the lateral motion.
+    if (anchor) anchor.scrollIntoView({ behavior: "instant", block: "start" });
+    else
+      window.scrollTo({ top: navigation.scroll, left: 0, behavior: "instant" });
+    for (const region of navigation.regions) {
+      content
+        .querySelector(`[data-route-scroll="${region.name}"]`)
+        ?.scrollTo({ top: region.top, left: region.left, behavior: "instant" });
+    }
+    if (navigation.focus) {
+      const heading = [
+        ...content.querySelectorAll(
+          `${isHome(pathRef.current) ? ".home" : ".route-page"} h1, ${isHome(pathRef.current) ? ".home" : ".route-page"} h2`,
+        ),
+      ].find((element) => element.getClientRects().length);
+      heading?.setAttribute("tabindex", "-1");
+      heading?.focus({ preventScroll: true });
+    }
+    if (navigation.direction && !reduceMotion) {
+      const animation = content.animate(
+        [
+          {
+            transform: `translateX(${navigation.direction === "back" ? "-" : ""}6%)`,
+          },
+          { transform: "translateX(0)" },
+        ],
+        { duration: 260, easing: "cubic-bezier(0.2, 0, 0, 1)" },
+      );
+      routeAnimation.current = animation;
+    }
+  }, [inBrowser, navigation, opening]);
   useEffect(() => {
     if (!inBrowser || !/^\/en(?:\/|$)/.test(browserPath())) return;
     const url = new URL(window.location.href);
@@ -502,16 +544,6 @@ export default function App({
     document
       .querySelector('meta[name="theme-color"]')
       ?.setAttribute("content", theme === "dark" ? "#08080D" : "#F7F7FB");
-    if (routeFocus.current) {
-      const heading = [
-        ...document.querySelectorAll(
-          `${isHome(path) ? ".home" : ".route-page"} h1, ${isHome(path) ? ".home" : ".route-page"} h2`,
-        ),
-      ].find((el) => el.getClientRects().length);
-      heading?.setAttribute("tabindex", "-1");
-      heading?.focus({ preventScroll: true });
-      routeFocus.current = false;
-    }
   }, [inBrowser, locale, theme, path]);
   useEffect(() => {
     if (!inBrowser) return;
@@ -607,7 +639,10 @@ export default function App({
     const mq = matchMedia("(prefers-reduced-motion: reduce)");
     function update() {
       setReduceMotion(mq.matches);
-      if (mq.matches) setOpening(false);
+      if (mq.matches) {
+        setOpening(false);
+        routeAnimation.current?.cancel();
+      }
     }
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
@@ -645,17 +680,6 @@ export default function App({
       if (frame !== undefined) cancelAnimationFrame(frame);
     };
   }, [inBrowser, path]);
-  useEffect(() => {
-    if (!inBrowser) return;
-    if (!opening && isHome(path) && location.hash) {
-      const id = decodeURIComponent(location.hash.slice(1));
-      requestAnimationFrame(() =>
-        document
-          .getElementById(id)
-          ?.scrollIntoView({ behavior: "instant", block: "start" }),
-      );
-    }
-  }, [inBrowser, opening, path]);
   const doneOpening = useCallback(() => setOpening(false), []);
   const home = isHome(path);
   let page;
@@ -672,7 +696,7 @@ export default function App({
   else if (!home) page = <ErrorPage />;
   const back = () => {
     if (history.state?.portfolio) history.back();
-    else navigate("/");
+    else navigate("/", { direction: "back" });
   };
   return (
     <PortfolioContext
@@ -694,16 +718,18 @@ export default function App({
         </a>
         <Header home={home} onBack={back} visible={!opening} />
         <main id="main" aria-hidden={opening || undefined} inert={opening}>
-          {(!staticRender || home) && (
-            <div hidden={!home}>
-              <Home active={home && !opening} />
-            </div>
-          )}
-          {!home && (
-            <div key={path} className="route-page">
-              {page}
-            </div>
-          )}
+          <div className="navigation-content" ref={navigationContent}>
+            {(!staticRender || home) && (
+              <div hidden={!home}>
+                <Home active={home && !opening} />
+              </div>
+            )}
+            {!home && (
+              <div key={path} className="route-page">
+                {page}
+              </div>
+            )}
+          </div>
         </main>
         {home && !opening && <FabMenu />}
         {opening && <Opening onDone={doneOpening} />}
