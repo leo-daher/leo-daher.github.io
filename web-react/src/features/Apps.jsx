@@ -4,7 +4,12 @@ import { SectionHeading } from "../components/SectionHeading.jsx";
 import { Icon } from "../components/Icon.jsx";
 import "./apps.css";
 
-import { APP_ITEMS, APP_CASES, FEATURED_APPS } from "../data/apps.js";
+import {
+  APP_ITEMS,
+  APP_DETAIL_ITEMS,
+  APP_CASES,
+  FEATURED_APPS,
+} from "../data/apps.js";
 import { APP_STORIES } from "../data/app-stories.js";
 
 function internalLink(event, path, navigate) {
@@ -370,7 +375,7 @@ function CaseStory({ id }) {
 
 export function AppDetailPage({ id }) {
   const { t, navigate, locale } = usePortfolio();
-  const item = APP_ITEMS.find((entry) => entry.id === id);
+  const item = APP_DETAIL_ITEMS.find((entry) => entry.id === id);
   const app = APP_CASES[item?.caseId || id];
   if (!app) {
     return (

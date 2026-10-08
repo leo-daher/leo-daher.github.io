@@ -120,8 +120,27 @@ test("professional experience links open localized contributions and keep both L
   await page.goto("/pt/");
   const suite = page.locator(".app-store-tile--suite");
   await expect(suite.locator("a")).toHaveCount(0);
-  await expect(suite).toHaveAttribute("href", "/pt/apps/lyzer-collect");
+  await expect(suite).toHaveAttribute("href", "/pt/apps/lyzer-collect-deliver");
   await expect(suite).not.toContainText("Google Play");
+  await suite.click();
+  await expect(page).toHaveURL(/\/pt\/apps\/lyzer-collect-deliver$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Lyzer Collect + Deliver",
+  );
+  const suiteIcons = page.locator(
+    ".app-case-title-row .app-icon-image:visible",
+  );
+  await expect(suiteIcons).toHaveCount(2);
+  await expect(suiteIcons.nth(0)).toHaveCSS(
+    "background-image",
+    /lyzer-collect-icon\.png/,
+  );
+  await expect(suiteIcons.nth(1)).toHaveCSS(
+    "background-image",
+    /lyzer-deliver-icon\.png/,
+  );
+  await expect(page.locator(".app-store-proof")).toHaveCount(4);
+  await page.goBack();
   await page
     .locator(".experience-preview")
     .filter({ hasText: "Visagio" })

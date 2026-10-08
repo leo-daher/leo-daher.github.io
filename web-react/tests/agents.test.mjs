@@ -97,6 +97,66 @@ test("all localized pages expose real content, canonical metadata and matching M
   }
 });
 
+test("the Lyzer suite opens both published apps without JavaScript and preserves their individual identities", async () => {
+  const screenshots = [
+    "lyzer-collect-01.png",
+    "lyzer-collect-02.png",
+    "lyzer-deliver-01.png",
+    "lyzer-deliver-02.png",
+  ];
+  const stores = [
+    "https://play.google.com/store/apps/details?id=tech.lyzer.collect",
+    "https://apps.apple.com/pt/app/lyzer-collect/id6738952338",
+    "https://play.google.com/store/apps/details?id=tech.lyzer.deliver",
+    "https://apps.apple.com/br/app/lyzer-deliver/id6748221787",
+  ];
+  for (const locale of ["en", "pt"]) {
+    const suite = catalog.documents.find(
+      (doc) => doc.id === "lyzer-collect-deliver" && doc.locale === locale,
+    );
+    assert.ok(suite, locale);
+    const response = await fetch(local(suite.url));
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    const body = html.slice(html.indexOf('<div id="root">'));
+    assert.match(body, /<h1[^>]*>Lyzer Collect \+ Deliver<\/h1>/);
+    assert.match(suite.markdown, /^# Lyzer Collect \+ Deliver\n/);
+    for (const screenshot of screenshots) {
+      assert.ok(body.includes(`/assets/apps/${screenshot}`), screenshot);
+      assert.ok(suite.markdown.includes(`/assets/apps/${screenshot}`));
+    }
+    for (const store of stores) {
+      assert.ok(body.includes(`href="${store}"`), store);
+      assert.ok(suite.markdown.includes(store));
+    }
+    assert.equal(suite.schema["@type"], "CreativeWork");
+    assert.equal(suite.schema.hasPart.length, 2);
+    assert.deepEqual(
+      suite.schema.hasPart.map((part) => part.name),
+      ["Lyzer Collect", "Lyzer Deliver"],
+    );
+    for (const part of suite.schema.hasPart) {
+      const individual = catalog.documents.find(
+        (doc) => doc.locale === locale && doc.schema["@id"] === part["@id"],
+      );
+      assert.ok(individual, part.name);
+      assert.equal(part["@type"], "SoftwareApplication");
+      assert.equal(individual.schema["@type"], "SoftwareApplication");
+      assert.deepEqual(part.installUrl, individual.schema.installUrl);
+    }
+    const apps = catalog.documents.find(
+      (doc) => doc.id === "apps" && doc.locale === locale,
+    );
+    assert.equal(apps.schema.numberOfItems, 4);
+    const home = catalog.documents.find(
+      (doc) => doc.id === "profile" && doc.locale === locale,
+    );
+    const homeHtml = await (await fetch(local(home.url))).text();
+    const suitePath = new URL(suite.url).pathname.replace(/\/$/, "");
+    assert.ok(homeHtml.includes(`href="${suitePath}"`));
+  }
+});
+
 test("legacy English routes redirect locally and retain campaign parameters", async () => {
   for (const path of [
     "/en/",
@@ -145,7 +205,7 @@ test("agent guide, sitemap and public data expose bounded facts and working disc
   for (const [, url] of map.matchAll(/<loc>(.*?)<\/loc>/g))
     assert.equal((await fetch(local(decode(url)))).status, 200, url);
   const json = await (await fetch(`${origin}${prefix}/portfolio.json`)).json();
-  assert.equal(json.documents.length, 18);
+  assert.equal(json.documents.length, 20);
   const lyzerDownloads = json.profile.metrics.find(
     (metric) => metric.id === "lyzer-suite-store-summary",
   );
@@ -207,12 +267,12 @@ test("official MCP client discovers read-only tools and reads/searches source-ba
       arguments: { locale: "en" },
     });
     assert.equal(overview.structuredContent.profile.name, "Leone Daher");
-    assert.equal(overview.structuredContent.documents.length, 9);
+    assert.equal(overview.structuredContent.documents.length, 10);
     const defaults = await client.callTool({
       name: "get_portfolio_overview",
       arguments: {},
     });
-    assert.equal(defaults.structuredContent.documents.length, 9);
+    assert.equal(defaults.structuredContent.documents.length, 10);
     assert.ok(
       defaults.structuredContent.documents.every(
         (document) => document.locale === "en",
@@ -255,7 +315,7 @@ test("official MCP client discovers read-only tools and reads/searches source-ba
     });
     assert.match(full.structuredContent.markdown, /SERPRO/);
     const { resources } = await client.listResources();
-    assert.equal(resources.length, 18);
+    assert.equal(resources.length, 20);
     const certificate = resources.find(
       (resource) => resource.name === "en-certificates",
     );

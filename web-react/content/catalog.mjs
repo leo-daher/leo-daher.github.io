@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import {
   APP_ITEMS,
+  APP_DETAIL_ITEMS,
   APP_CASES,
   FEATURED_APPS,
   LYZER_MINIMUM_DOWNLOADS,
@@ -405,7 +406,7 @@ function appDocument(
     t(`${app.prefix}Role`),
     `## ${t("appContributionLabel")}`,
     t(`${app.prefix}Contribution`),
-    ...APP_STORIES[locale][item.id].flatMap((section) => [
+    ...(APP_STORIES[locale][item.id] ?? []).flatMap((section) => [
       `## ${section.title}`,
       ...section.paragraphs,
     ]),
@@ -794,7 +795,30 @@ export async function loadPortfolioContent({
       appsDocument(locale, t, url, applications, interpretation),
       experiencesDocument(locale, t, url, person),
     );
-    APP_ITEMS.forEach((item, index) =>
+    APP_DETAIL_ITEMS.forEach((item) => {
+      const applicationIndex = APP_ITEMS.findIndex(
+        (application) => application.id === item.id,
+      );
+      const schema =
+        applicationIndex >= 0
+          ? applications[applicationIndex]
+          : {
+              "@type": "CreativeWork",
+              "@id": `${url(`${localPath(`/apps/${item.id}`, locale)}/`)}#case`,
+              name: item.name,
+              url: url(`${localPath(`/apps/${item.id}`, locale)}/`),
+              description: t(item.summary),
+              inLanguage: languageCode(locale),
+              contributor: {
+                "@type": "Person",
+                "@id": person["@id"],
+                name: person.name,
+                url: person.url,
+              },
+              hasPart: applications.filter(
+                (_, index) => APP_ITEMS[index].caseId === item.caseId,
+              ),
+            };
       documents.push(
         appDocument(
           item,
@@ -802,12 +826,12 @@ export async function loadPortfolioContent({
           locale,
           t,
           url,
-          applications[index],
+          schema,
           magEvidence,
           interpretation,
         ),
-      ),
-    );
+      );
+    });
     documents.push(
       certificateDocument(records, locale, t, url, interpretation),
       articleDocument(locale, t, url, person, publishedAt),

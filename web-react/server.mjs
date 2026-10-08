@@ -33,6 +33,7 @@ const validRoutes = new Set([
   "/apps/van-cranenbroek",
   "/apps/lyzer-collect",
   "/apps/lyzer-deliver",
+  "/apps/lyzer-collect-deliver",
   "/apps/mag-venda-digital",
   "/in",
   "/ig",

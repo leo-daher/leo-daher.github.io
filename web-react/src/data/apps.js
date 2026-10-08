@@ -48,6 +48,7 @@ export const FEATURED_APPS = [
   APP_ITEMS[0],
   {
     ...APP_ITEMS[1],
+    id: "lyzer-collect-deliver",
     name: "Lyzer Collect + Deliver",
     summary: "lyzerSummary",
     metric: "lyzerSuiteStorefrontMetric",
@@ -56,6 +57,8 @@ export const FEATURED_APPS = [
   },
   APP_ITEMS[3],
 ];
+
+export const APP_DETAIL_ITEMS = [...APP_ITEMS, FEATURED_APPS[1]];
 
 export const APP_CASES = {
   "van-cranenbroek": {
