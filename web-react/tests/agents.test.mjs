@@ -523,7 +523,7 @@ test("public migration preserves social previews, install icons and social redir
     assert.equal((await fetch(local(decode(image)))).status, 200);
   }
   for (const locale of ["", "/pt"]) {
-    for (const channel of ["in", "ig"]) {
+    for (const channel of ["in", "ig", "fb"]) {
       const html = await (
         await fetch(`${origin}${prefix}${locale}/${channel}/`)
       ).text();

@@ -104,11 +104,12 @@ collection is disabled.
 Short references and their meanings are registered in
 [`tracking/portfolio_ref_registry.csv`](tracking/portfolio_ref_registry.csv).
 CV links use `ref=cv-<UTC timestamp>` so each generated document can be
-identified. Social profiles use the clean short links `/ig` for Instagram and
-`/in` for LinkedIn; each entry point redirects to the home page with its stable
-reference so attribution remains intact. In GA4, inspect the
-`portfolio_attribution` event and its `attribution_ref` parameter. Register
-`attribution_ref` as an event-scoped custom dimension named `Portfolio ref` to
+identified. Social profiles use the clean short links `/ig` for Instagram,
+`/fb` for Facebook, and `/in` for LinkedIn; each entry point redirects to the
+home page with its stable reference so attribution remains intact. Social entry points also save the
+reference in the `portfolio_attribution_ref` cookie before redirecting. In GA4,
+inspect the `portfolio_attribution` event and its `attribution_ref` parameter.
+Register `attribution_ref` as an event-scoped custom dimension named `Portfolio ref` to
 use it in historical reports and Explorations. Sentry receives the same event
 as a structured log and breadcrumb, while GA4 remains the traffic-reporting
 source.

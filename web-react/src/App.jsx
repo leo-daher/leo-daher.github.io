@@ -117,7 +117,7 @@ function loadPortfolioMetadata() {
 }
 function metadataPath(path, locale) {
   let logicalPath = stripLocalePrefix(path).replace(/\/$/, "") || "/";
-  if (["/ios", "/in", "/ig"].includes(logicalPath)) logicalPath = "/";
+  if (["/ios", "/in", "/ig", "/fb"].includes(logicalPath)) logicalPath = "/";
   if (logicalPath === "/ios/artigos/identidade-visual")
     logicalPath = "/artigos/identidade-visual";
   return locale === "pt"
@@ -649,7 +649,9 @@ export default function App({
   }, [inBrowser]);
   useEffect(() => {
     if (!inBrowser) return;
-    const alias = path === "/in" || path === "/ig" ? path.slice(1) : undefined;
+    const alias = ["/in", "/ig", "/fb"].includes(path)
+      ? path.slice(1)
+      : undefined;
     captureAttribution(alias);
     if (alias) navigate("/", { replace: true });
     return installInteractions({

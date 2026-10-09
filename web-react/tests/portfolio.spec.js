@@ -528,6 +528,38 @@ test("attribution is captured and short ref is removed from the visible URL", as
     ),
   ).toBe("in");
 });
+for (const locale of ["", "/pt", "/en"]) {
+  test(`Facebook entry ${locale}/fb saves its cookie and redirects to home`, async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    await page.goto(`${locale}/fb?ref=legacy&utm_campaign=social#apps`);
+    const root = locale === "/pt" ? "/pt/" : "/";
+    await expect(page).toHaveURL(`${baseURL}${root}?utm_campaign=social#apps`);
+    const cookies = await context.cookies();
+    expect(
+      cookies.find((cookie) => cookie.name === "portfolio_attribution_ref"),
+    ).toMatchObject({ value: "fb", path: "/", sameSite: "Lax" });
+    expect(
+      await page.evaluate(() => ({
+        attribution: JSON.parse(
+          sessionStorage.getItem("portfolio_attribution"),
+        ),
+        ref: localStorage.getItem("portfolio_attribution_ref"),
+      })),
+    ).toEqual({
+      attribution: { ref: "fb", utm_campaign: "social" },
+      ref: "fb",
+    });
+    await page.goto(root + "apps");
+    expect(
+      (await context.cookies()).find(
+        (cookie) => cookie.name === "portfolio_attribution_ref",
+      )?.value,
+    ).toBe("fb");
+  });
+}
 test("all primary pages have one main landmark and pass accessibility checks", async ({
   page,
 }) => {

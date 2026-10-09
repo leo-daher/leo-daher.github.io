@@ -94,11 +94,11 @@ function redirectHtml(target, canonical, locale = "en", ref) {
 <meta http-equiv="refresh" content="0;url=${escape(target)}" />
 <link rel="canonical" href="${escape(canonical)}" />
 <title>Leone Daher — Portfolio</title>
-<script>const destination=new URL(${JSON.stringify(target).replaceAll("<", "\\u003c")},window.location.href);destination.search=window.location.search;${ref ? `destination.searchParams.set("ref",${JSON.stringify(ref)});` : ""}destination.hash=window.location.hash;window.location.replace(destination.pathname+destination.search+destination.hash);</script>
+<script>const destination=new URL(${JSON.stringify(target).replaceAll("<", "\\u003c")},window.location.href);destination.search=window.location.search;${ref ? `destination.searchParams.set("ref",${JSON.stringify(ref)});try{document.cookie="portfolio_attribution_ref="+${JSON.stringify(ref)}+"; Path=/; SameSite=Lax"+(window.location.protocol==="https:"?"; Secure":"");}catch{}` : ""}destination.hash=window.location.hash;window.location.replace(destination.pathname+destination.search+destination.hash);</script>
 </head><body><a href="${escape(target)}">${locale === "pt" ? "Continuar para o portfólio" : "Continue to the portfolio"}</a></body></html>`;
 }
 for (const locale of ["en", "pt"]) {
-  for (const channel of ["in", "ig"]) {
+  for (const channel of ["in", "ig", "fb"]) {
     const localizedRoot = locale === "pt" ? "pt/" : "";
     const route = `${localizedRoot}${channel}`;
     const target = `${basePath}${localizedRoot}?ref=${channel}`;
@@ -120,14 +120,20 @@ for (const document of catalog.documents.filter(
   );
   await writeFile(`dist/${route}/index.md`, document.markdown);
 }
-for (const alias of ["ios", "ios/artigos/identidade-visual", "in", "ig"]) {
+for (const alias of [
+  "ios",
+  "ios/artigos/identidade-visual",
+  "in",
+  "ig",
+  "fb",
+]) {
   await mkdir(`dist/en/${alias}`, { recursive: true });
   const canonical = catalog.documents.find(
     (item) =>
       item.locale === "en" &&
       item.id === (alias.includes("artigos") ? "visual-identity" : "profile"),
   ).url;
-  const channel = ["in", "ig"].includes(alias) ? alias : undefined;
+  const channel = ["in", "ig", "fb"].includes(alias) ? alias : undefined;
   const target = channel
     ? `${basePath}?ref=${channel}`
     : `${basePath}${alias}/`;

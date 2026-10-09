@@ -166,6 +166,22 @@ test("StrictMode captures ref once, persists legacy keys and sends bounded campa
   expect(await events(page, "portfolio_attribution")).toHaveLength(1);
 });
 
+test("Facebook client fallback records one attribution event and saves its cookie", async ({
+  page,
+  context,
+}) => {
+  await page.goto(origin + "/fb?ref=legacy");
+  await expect(page).toHaveURL(origin + "/");
+  expect(
+    (await context.cookies()).find(
+      (cookie) => cookie.name === "portfolio_attribution_ref",
+    ),
+  ).toMatchObject({ value: "fb", path: "/", sameSite: "Lax" });
+  expect(await events(page, "portfolio_attribution")).toEqual([
+    expect.objectContaining({ attribution_ref: "fb", page_path: "/fb" }),
+  ]);
+});
+
 test("preferences, menu, scroll, contacts, store links and certificate actions retain their event semantics", async ({
   page,
 }) => {

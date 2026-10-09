@@ -94,6 +94,7 @@ function safeRoute(pathname, base = "/") {
     "/ios",
     "/in",
     "/ig",
+    "/fb",
     "/apps",
     "/certificacoes",
     "/artigos/identidade-visual",
@@ -275,6 +276,15 @@ export function createPortfolioTelemetry(
         );
       } catch {
         /* Storage is optional. */
+      }
+      if (["in", "ig", "fb"].includes(attribution.ref)) {
+        try {
+          browser.document.cookie =
+            `portfolio_attribution_ref=${attribution.ref}; Path=/; SameSite=Lax` +
+            (browser.location.protocol === "https:" ? "; Secure" : "");
+        } catch {
+          /* Cookie persistence is optional. */
+        }
       }
       if (attribution.ref) {
         for (const storage of ["sessionStorage", "localStorage"]) {

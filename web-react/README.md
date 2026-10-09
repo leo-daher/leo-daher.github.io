@@ -56,7 +56,7 @@ Os testes de agentes iniciam um servidor isolado, consultam HTML sem JavaScript,
 - `public/assets`: cópia dos assets públicos selecionados do portfólio; certificados PDF continuam arquivados no projeto original.
 - `src/features`: telas e interações portadas da versão Flutter.
 - A contagem de 14 apps, contribuições profissionais e métricas das lojas seguem o conteúdo original. As consultas das lojas continuam datadas de julho de 2026.
-- A troca de idioma mantém as chaves `portfolio_locale` e `portfolio_theme`, mas o idioma exibido sempre acompanha a URL; somente o tema é restaurado como preferência. Referências `ref` são sanitizadas, registradas na sessão e removidas da URL visível.
+- A troca de idioma mantém as chaves `portfolio_locale` e `portfolio_theme`, mas o idioma exibido sempre acompanha a URL; somente o tema é restaurado como preferência. Referências `ref` são sanitizadas, registradas na sessão e removidas da URL visível. Os atalhos sociais `/in`, `/ig` e `/fb` também guardam a origem no cookie de sessão `portfolio_attribution_ref`, com `Path=/`, `SameSite=Lax` e `Secure` em HTTPS, antes de redirecionar para a home.
 - A publicação mantém as configurações existentes de GA4 e Sentry. As referências de aquisição são sanitizadas e removidas da URL visível; prévias locais não enviam telemetria por padrão.
 
 A implementação Flutter e a alternativa `web-astro` permanecem separadas. Alterações futuras no conteúdo original devem ser sincronizadas com este clone.
@@ -93,7 +93,7 @@ HTML, Markdown e dados estruturados ajudam leitores e buscadores independentemen
 
 O fluxo de publicação serve esta versão React na raiz do portfólio. Ele verifica e testa a aplicação antes de construir com `VITE_BASE_PATH=/`, a origem pública e as configurações existentes de GA4/Sentry. A implementação Flutter permanece no código-fonte.
 
-Ícones, compartilhamento social, atalhos `/in` e `/ig` com redirecionamento sem JavaScript e o worker de desativação do Flutter preservam a compatibilidade com a publicação anterior.
+Ícones, compartilhamento social, atalhos `/in`, `/ig` e `/fb` com redirecionamento sem JavaScript e o worker de desativação do Flutter preservam a compatibilidade com a publicação anterior.
 
 Para outro caminho de publicação:
 
@@ -102,6 +102,6 @@ VITE_BASE_PATH=/react/ npm run build
 npm start
 ```
 
-Todos os assets, links internos e pontos de entrada estáticos usam o caminho configurado. `/ios`, `/apps`, os quatro cases, `/experiencias`, `/certificacoes`, o artigo e os atalhos `/in` e `/ig` podem ser acessados diretamente ou recarregados.
+Todos os assets, links internos e pontos de entrada estáticos usam o caminho configurado. `/ios`, `/apps`, os quatro cases, `/experiencias`, `/certificacoes`, o artigo e os atalhos `/in`, `/ig` e `/fb` podem ser acessados diretamente ou recarregados.
 
 GitHub Pages hospeda os arquivos estáticos, incluindo HTML completo, Markdown e metadados. O endpoint MCP requer o processo Node em uma hospedagem de servidor; ele não é servido pelo GitHub Pages.

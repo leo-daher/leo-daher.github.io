@@ -37,6 +37,7 @@ const validRoutes = new Set([
   "/apps/mag-venda-digital",
   "/in",
   "/ig",
+  "/fb",
 ]);
 try {
   await stat(path.join(root, "index.html"));
