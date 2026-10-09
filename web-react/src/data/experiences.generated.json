@@ -15,6 +15,7 @@
       "GraphQL",
       "Next.js"
     ],
+    "projectIds": ["lyzer-engineering"],
     "pt": {
       "area": "IA e integração",
       "title": "Da investigação de bugs à proposta de correção",
@@ -50,6 +51,7 @@
       "AWS EC2",
       "Google Apps Script"
     ],
+    "projectIds": ["school-allocation"],
     "pt": {
       "area": "Dados e otimização",
       "title": "Alocação escolar com Python e otimização linear",
@@ -78,6 +80,7 @@
     "consulting": false,
     "featured": true,
     "stack": ["Android", "Java", "Camera2", "TensorFlow", "MQTT"],
+    "projectIds": ["robios-vision"],
     "pt": {
       "area": "Visão computacional e IoT",
       "title": "Detecção de faces e máscaras no Robios",
@@ -106,6 +109,7 @@
     "consulting": true,
     "featured": true,
     "stack": ["PHP", "Laravel", "Vue.js", "PWA", "IPQualityScore API"],
+    "projectIds": ["energy-sales"],
     "pt": {
       "area": "Web e APIs",
       "title": "Experiência mobile e offline na venda de energia",
@@ -134,6 +138,7 @@
     "consulting": true,
     "featured": false,
     "stack": ["Flutter", "Dart", "BLoC", "Android", "iOS", "Firebase"],
+    "projectIds": ["legal-management"],
     "pt": {
       "area": "Modernização mobile",
       "title": "Formulários dinâmicos para gestão de advogados",
@@ -162,6 +167,7 @@
     "consulting": true,
     "featured": false,
     "stack": ["Android", "Kotlin", "Gradle", "FCM", "Crashlytics"],
+    "projectIds": ["courier-tracking"],
     "pt": {
       "area": "Operação de campo",
       "title": "Android para acompanhamento de entregas",
@@ -190,6 +196,7 @@
     "consulting": true,
     "featured": false,
     "stack": ["Docker", "Flutter Web"],
+    "projectIds": ["monchique-system"],
     "pt": {
       "area": "Ambientes e entrega",
       "title": "Frontend, backend e banco em containers",
@@ -218,6 +225,7 @@
     "consulting": true,
     "featured": false,
     "stack": ["Python", "OCR API"],
+    "projectIds": ["ocr-knowledge-transfer"],
     "pt": {
       "area": "Python e transferência de conhecimento",
       "title": "Análise de uma API de OCR e apoio à equipe .NET",
@@ -244,6 +252,7 @@
     "consulting": true,
     "featured": false,
     "stack": ["React Native", "Android", "iOS", "Sentry", "AI agents"],
+    "projectIds": ["sustims"],
     "pt": {
       "area": "Mobile e manutenção",
       "title": "Entrega mobile e reprodução de problemas",
@@ -272,6 +281,7 @@
     "consulting": false,
     "featured": false,
     "stack": ["Requirements", "Business rules", "Flowcharts"],
+    "projectIds": ["adp-discovery"],
     "pt": {
       "area": "Requisitos e produto",
       "title": "Necessidades de negócio traduzidas em escopo",
@@ -298,6 +308,7 @@
     "consulting": true,
     "featured": false,
     "stack": ["Flutter", "Dart", "Android", "iOS"],
+    "projectIds": ["linelinker-pro"],
     "pt": {
       "area": "Liderança técnica e performance",
       "title": "LineLinker Pro: trabalho offline e mapas fluidos",
@@ -317,6 +328,67 @@
         "Implemented offline use with automatic background synchronization when connectivity returned and user-assisted resolution of conflicts between versions.",
         "Reduced map loading from around two minutes to under one second and increased rendering from around 5 to 60 FPS when moving the map, using point clustering."
       ]
+    }
+  },
+  {
+    "id": "conkord",
+    "company": "Conkord",
+    "logo": "conkord-official.svg",
+    "consulting": false,
+    "featured": false,
+    "stack": [],
+    "projectIds": [
+      "conkord-mobile-leadership",
+      "van-mobile",
+      "lyzer-collect",
+      "lyzer-deliver",
+      "lyzer-engineering",
+      "courier-tracking",
+      "legal-management",
+      "energy-sales",
+      "monchique-system",
+      "ocr-knowledge-transfer",
+      "linelinker-pro",
+      "sustims"
+    ],
+    "pt": {
+      "area": "Liderança mobile",
+      "title": "Liderança da área mobile",
+      "summary": "Lidero a área mobile da Conkord. Todos os projetos mobile passam por mim, seja na definição de arquitetura, na orientação da equipe ou na manutenção de aplicativos já em produção.",
+      "contributions": [
+        "Lidero a área mobile da Conkord.",
+        "Todos os projetos mobile passam por mim, seja na definição de arquitetura, na orientação da equipe ou na manutenção de aplicativos já em produção."
+      ]
+    },
+    "en": {
+      "area": "Mobile leadership",
+      "title": "Mobile leadership",
+      "summary": "I lead Conkord’s mobile practice. All mobile projects involve me, whether in defining architecture, guiding the team or maintaining applications already in production.",
+      "contributions": [
+        "I lead Conkord’s mobile practice.",
+        "All mobile projects involve me, whether in defining architecture, guiding the team or maintaining applications already in production."
+      ]
+    }
+  },
+  {
+    "id": "radix",
+    "company": "Radix",
+    "logo": "radix.png",
+    "consulting": false,
+    "featured": false,
+    "stack": [],
+    "projectIds": [],
+    "pt": {
+      "area": "Engenharia",
+      "title": "Estágio em engenharia",
+      "summary": "Agosto de 2015 a agosto de 2016.",
+      "contributions": []
+    },
+    "en": {
+      "area": "Engineering",
+      "title": "Engineering internship",
+      "summary": "August 2015 to August 2016.",
+      "contributions": []
     }
   }
 ]

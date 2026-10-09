@@ -19,6 +19,38 @@ let server,
 const local = (url) => origin + new URL(url).pathname;
 const decode = (value) =>
   value.replaceAll("&amp;", "&").replaceAll("&quot;", '"');
+const conkordProjects = [
+  ["/apps/van-cranenbroek", "Van Cranenbroek"],
+  ["/apps/lyzer-collect", "Lyzer"],
+  ["/apps/lyzer-deliver", "Lyzer"],
+  ["/experiencias#lyzer", "Lyzer"],
+  ["/experiencias#ctt", "CTT"],
+  ["/experiencias#ey", "EY"],
+  ["/experiencias#iberdrola", "Iberdrola"],
+  ["/experiencias#monchique", "Água Monchique"],
+  ["/experiencias#fullsix", "Fullsix"],
+  ["/experiencias#code-495", "Code 495"],
+  ["/experiencias#ascendi", "Ascendi"],
+];
+const conkordProjectPaths = conkordProjects.map(([path]) => path);
+const magRecognitionPostURL =
+  "https://www.linkedin.com/feed/update/urn:li:activity:6631633718349967360/";
+const routePath = (href) => {
+  const url = new URL(href, origin);
+  return url.pathname.replace(/\/$/, "") + url.hash;
+};
+const plainText = (html) =>
+  decode(html.replace(/<[^>]+>/g, " "))
+    .replaceAll("&#x27;", "'")
+    .replace(/\s+/g, " ")
+    .trim();
+const experienceArticle = (html, id) => {
+  const article = html.match(
+    new RegExp(`<article\\b[^>]*\\bid="${id}"[^>]*>([\\s\\S]*?)<\\/article>`),
+  )?.[1];
+  assert.ok(article, id);
+  return article;
+};
 
 before(async () => {
   const socket = createServer();
@@ -157,6 +189,140 @@ test("the Lyzer suite opens both published apps without JavaScript and preserves
   }
 });
 
+test("Conkord project logos and the bounded Radix internship agree in HTML, Markdown and structured data", async () => {
+  for (const locale of ["en", "pt"]) {
+    const localePrefix = `${prefix}${locale === "pt" ? "/pt" : ""}`;
+    const experiences = catalog.documents.find(
+      (doc) => doc.id === "experiences" && doc.locale === locale,
+    );
+    assert.equal(experiences.schema.numberOfItems, 13);
+    const html = await (await fetch(local(experiences.url))).text();
+    const conkordHTML = experienceArticle(html, "conkord");
+    const radixHTML = experienceArticle(html, "radix");
+    const entries = experiences.schema.itemListElement.map(({ item }) => item);
+    const conkord = entries.find(
+      (item) => new URL(item.url).hash === "#conkord",
+    );
+    const radix = entries.find((item) => new URL(item.url).hash === "#radix");
+    assert.ok(conkord);
+    assert.ok(radix);
+    const markdownRecords = experiences.markdown.split(/^## /m);
+    const conkordMarkdown = markdownRecords.find((record) =>
+      /^[^\n]*Conkord:/i.test(record),
+    );
+    const radixMarkdown = markdownRecords.find((record) =>
+      /^Radix:/i.test(record),
+    );
+    assert.ok(conkordMarkdown);
+    assert.ok(radixMarkdown);
+    assert.ok(plainText(conkordHTML).includes(conkord.description));
+    assert.ok(conkordMarkdown.includes(conkord.description));
+    assert.match(conkord.description, /mobile/i);
+    assert.match(
+      conkord.description,
+      locale === "pt" ? /lider|coordena/i : /lead|led|coordina/i,
+    );
+    assert.equal(conkord["@type"], "CreativeWork");
+    assert.equal(conkord.hasPart.length, 11);
+    assert.equal(new Set(conkord.hasPart.map((part) => part.name)).size, 11);
+    const expectedPaths = conkordProjectPaths
+      .map((path) => localePrefix + path)
+      .sort();
+    assert.deepEqual(
+      conkord.hasPart.map((part) => routePath(part.url)).sort(),
+      expectedPaths,
+    );
+    assert.deepEqual(
+      [...conkordHTML.matchAll(/href="([^"]+)"/g)]
+        .map(([, href]) => routePath(decode(href)))
+        .sort(),
+      expectedPaths,
+    );
+    const markdownPaths = [
+      ...conkordMarkdown.matchAll(/\]\((https?:\/\/[^)]+)\)/g),
+    ].map(([, href]) => routePath(href));
+    assert.deepEqual(markdownPaths.sort(), expectedPaths);
+    const logoLinks = [...conkordHTML.matchAll(/<a\b[^>]*>(.*?)<\/a>/gs)];
+    assert.equal(logoLinks.length, 11);
+    assert.ok(logoLinks.every(([, contents]) => /<img\b/.test(contents)));
+    assert.doesNotMatch(
+      conkordMarkdown,
+      /^### (?:Contribuição|Contribution)\n/m,
+    );
+    for (const part of conkord.hasPart) {
+      assert.equal(part["@type"], "CreativeWork");
+      assert.equal(part.about["@type"], "Organization");
+      const project = conkordProjects.find(
+        ([path]) => localePrefix + path === routePath(part.url),
+      );
+      assert.equal(part.about.name, project[1]);
+      assert.notEqual(part.about.name, "Águas de Portugal");
+      assert.ok(conkordMarkdown.includes(part.name), part.name);
+      const response = await fetch(local(part.url));
+      assert.equal(response.status, 200, part.url);
+      const hash = new URL(part.url).hash;
+      if (hash)
+        assert.ok((await response.text()).includes(`id="${hash.slice(1)}"`));
+    }
+    assert.ok(plainText(radixHTML).includes(radix.description));
+    assert.ok(radixMarkdown.includes(radix.description));
+    for (const text of [
+      plainText(radixHTML),
+      radixMarkdown,
+      `${radix.name} ${radix.description}`,
+    ]) {
+      assert.match(text, locale === "pt" ? /estágio/i : /internship/i);
+      assert.match(text, locale === "pt" ? /agosto de 2015/i : /August 2015/i);
+      assert.match(text, locale === "pt" ? /agosto de 2016/i : /August 2016/i);
+      assert.doesNotMatch(
+        text,
+        /pendente|a confirmar|pending|to be confirmed/i,
+      );
+    }
+    assert.doesNotMatch(radixHTML, /<ul\b|experience-stack|<h3\b/);
+    assert.doesNotMatch(radixMarkdown, /^### |\*\*Stack:/m);
+    assert.ok(!radix.text || radix.text === radix.description);
+    const home = catalog.documents.find(
+      (doc) => doc.id === "profile" && doc.locale === locale,
+    );
+    const homeHTML = await (await fetch(local(home.url))).text();
+    for (const id of ["conkord", "radix", "aguas-de-portugal"])
+      assert.ok(
+        homeHTML.includes(`href="${localePrefix}/experiencias#${id}"`),
+        id,
+      );
+    assert.ok(
+      entries.some((item) => new URL(item.url).hash === "#aguas-de-portugal"),
+    );
+  }
+});
+
+test("MAG recognition publishes the verified LinkedIn source in both languages while retaining its unknown date", async () => {
+  const evidence = await (
+    await fetch(
+      `${origin}${prefix}/assets/evidence/mag-venda-digital-reconhecimento-facial.json`,
+    )
+  ).json();
+  assert.equal(evidence.postUrl, magRecognitionPostURL);
+  assert.equal(evidence.author, "Luís Henrique Fontes de Oliveira");
+  assert.equal(evidence.postDate, null);
+  for (const locale of ["en", "pt"]) {
+    const doc = catalog.documents.find(
+      (item) => item.id === "mag-venda-digital" && item.locale === locale,
+    );
+    const html = await (await fetch(local(doc.url))).text();
+    assert.ok(html.includes(`href="${magRecognitionPostURL}"`));
+    assert.ok(doc.markdown.includes(magRecognitionPostURL));
+    assert.ok(doc.markdown.includes(evidence.author));
+    assert.match(
+      doc.markdown,
+      locale === "pt"
+        ? /Data do post: não informado/
+        : /Post date: not provided/,
+    );
+  }
+});
+
 test("legacy English routes redirect locally and retain campaign parameters", async () => {
   for (const path of [
     "/en/",
@@ -219,7 +385,7 @@ test("agent guide, sitemap and public data expose bounded facts and working disc
   const experiences = json.documents.find(
     (doc) => doc.id === "experiences" && doc.locale === "pt",
   );
-  assert.equal(experiences.schema.numberOfItems, 11);
+  assert.equal(experiences.schema.numberOfItems, 13);
   assert.match(experiences.markdown, /AWS EC2/);
   assert.match(experiences.markdown, /aprovação obrigatória/);
   assert.equal(

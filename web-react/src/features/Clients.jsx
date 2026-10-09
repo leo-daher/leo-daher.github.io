@@ -17,15 +17,14 @@ const indirect = [
   ["CTT", "ctt-official.svg"],
   ["EY", "ey-official.svg", "outline"],
   ["Iberdrola", "iberdrola-official.svg"],
-  ["Águas de Portugal", "adp-official.svg", "outline"],
   ["Água Monchique", "agua-monchique-official.svg", "outline"],
   ["Fullsix", "fullsix-black.png", "mono fullsix"],
   ["Code 495", "code-495-symbol.svg", "code"],
   ["Ascendi", "ascendi-official.png", "outline"],
 ];
+const other = [["Águas de Portugal", "adp-official.svg", "outline"]];
 
 function clientPath(name, file) {
-  if (name === "Radix" || name === "Conkord") return undefined;
   const experience = EXPERIENCES.find((item) => item.logo === file);
   if (experience) return `/experiencias#${experience.id}`;
   return {
@@ -36,18 +35,21 @@ function clientPath(name, file) {
 
 export function Clients() {
   const { t, locale } = usePortfolio();
+  const brandLabel = locale === "pt" ? "MARCA" : "BRAND";
   return (
     <section id="clients" className="section-frame clients">
       <SectionHeading title={t("clientsTitle")} />
       {[
         ["directRoles", direct],
         ["viaLatituddeConsulting", indirect],
+        ["otherExperiences", other],
       ].map(([title, logos]) => (
-        <div className="client-group" key={title}>
+        <div className={`client-group client-group--${title}`} key={title}>
           <div className="client-group-label">
             <h3>{t(title)}</h3>
             <span>
-              {logos.length} {locale === "pt" ? "MARCAS" : "BRANDS"}
+              {logos.length} {brandLabel}
+              {logos.length === 1 ? "" : "S"}
             </span>
           </div>
           <div className="clients-grid">

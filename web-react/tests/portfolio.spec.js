@@ -6,6 +6,22 @@ const apps = [
   "lyzer-deliver",
   "mag-venda-digital",
 ];
+const conkordProjects = [
+  ["/apps/van-cranenbroek", "Van Cranenbroek"],
+  ["/apps/lyzer-collect", "Lyzer"],
+  ["/apps/lyzer-deliver", "Lyzer"],
+  ["/experiencias#lyzer", "Lyzer"],
+  ["/experiencias#ctt", "CTT"],
+  ["/experiencias#ey", "EY"],
+  ["/experiencias#iberdrola", "Iberdrola"],
+  ["/experiencias#monchique", "Água Monchique"],
+  ["/experiencias#fullsix", "Fullsix"],
+  ["/experiencias#code-495", "Code 495"],
+  ["/experiencias#ascendi", "Ascendi"],
+];
+const conkordProjectPaths = conkordProjects.map(([path]) => path);
+const magRecognitionPostURL =
+  "https://www.linkedin.com/feed/update/urn:li:activity:6631633718349967360/";
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "dark" });
   await page.addInitScript(() => {
@@ -146,7 +162,7 @@ test("professional experience links open localized contributions and keep both L
     .filter({ hasText: "Visagio" })
     .click();
   await expect(page).toHaveURL(/\/pt\/experiencias#visagio$/);
-  await expect(page.locator(".experience-record")).toHaveCount(11);
+  await expect(page.locator(".experience-record")).toHaveCount(13);
   await expect(page.locator("#visagio")).toContainText(
     "Configurei instâncias AWS EC2",
   );
@@ -173,6 +189,101 @@ test("professional experience links open localized contributions and keep both L
     .click();
   await expect(page).toHaveURL(/\/pt\/experiencias#fullsix$/);
   await expect(page.locator("#fullsix")).toContainText("API Python de OCR");
+});
+
+test("home client logos open Conkord, Radix and the separate Águas de Portugal experience in both languages", async ({
+  page,
+}) => {
+  for (const locale of ["pt", "en"]) {
+    const prefix = locale === "pt" ? "/pt" : "";
+    const label =
+      locale === "pt" ? "Ver minha atuação" : "View my contribution";
+    for (const [name, id] of [
+      ["Conkord", "conkord"],
+      ["Radix", "radix"],
+      ["Águas de Portugal", "aguas-de-portugal"],
+    ]) {
+      await page.goto(`${prefix}/#clients`);
+      const logo = page.getByRole("link", {
+        name: `${label}: ${name}`,
+        exact: true,
+      });
+      await expect(logo).toHaveAttribute(
+        "href",
+        `${prefix}/experiencias#${id}`,
+      );
+      await logo.click();
+      await expect(page).toHaveURL(
+        `http://127.0.0.1:4173${prefix}/experiencias#${id}`,
+      );
+      await expect(page.locator(`.experience-record#${id}`)).toBeInViewport();
+    }
+  }
+});
+
+test("Conkord groups eleven working project links and Radix stays limited to its internship period", async ({
+  page,
+}) => {
+  for (const locale of ["pt", "en"]) {
+    const prefix = locale === "pt" ? "/pt" : "";
+    await page.goto(`${prefix}/experiencias#conkord`);
+    await expect(page.locator(".experience-record")).toHaveCount(13);
+    const conkord = page.locator(".experience-record#conkord");
+    await expect(conkord).toContainText(/mobile/i);
+    await expect(conkord).toContainText(
+      locale === "pt" ? /lider|coordena/i : /lead|led|coordina/i,
+    );
+    const recordBounds = await conkord.boundingBox();
+    const gridBounds = await page.locator(".experience-records").boundingBox();
+    expect(Math.abs(recordBounds.x - gridBounds.x)).toBeLessThan(1);
+    expect(Math.abs(recordBounds.width - gridBounds.width)).toBeLessThan(1);
+    const links = conkord.getByRole("link");
+    await expect(links).toHaveCount(11);
+    expect(
+      await links.evaluateAll((elements) =>
+        elements.map((element) => element.getAttribute("href")).sort(),
+      ),
+    ).toEqual(conkordProjectPaths.map((path) => `${prefix}${path}`).sort());
+    await expect(conkord.locator("a img")).toHaveCount(11);
+    await expect(
+      conkord.locator(".experience-contribution-label, .experience-stack"),
+    ).toHaveCount(0);
+    await expect(
+      conkord.locator('a[href$="#conkord"], a[href$="#aguas-de-portugal"]'),
+    ).toHaveCount(0);
+    for (const [path, company] of conkordProjects) {
+      const project = conkord.locator(`a[href="${prefix}${path}"]`);
+      await expect(project).toContainText(company);
+      await expect(project.locator("img")).toHaveAttribute("alt", company);
+      if (path === "/apps/lyzer-collect")
+        await expect(project).toContainText("Collect");
+      if (path === "/apps/lyzer-deliver")
+        await expect(project).toContainText("Deliver");
+      const target = new URL(`${prefix}${path}`, page.url());
+      const response = await page.request.get(target.pathname);
+      expect(response.status(), path).toBe(200);
+      if (target.hash)
+        expect(await response.text(), path).toContain(
+          `id="${target.hash.slice(1)}"`,
+        );
+    }
+    const radix = page.locator(".experience-record#radix");
+    await expect(radix).toContainText(
+      locale === "pt" ? /estágio/i : /internship/i,
+    );
+    await expect(radix).toContainText(
+      locale === "pt" ? /agosto de 2015/i : /August 2015/i,
+    );
+    await expect(radix).toContainText(
+      locale === "pt" ? /agosto de 2016/i : /August 2016/i,
+    );
+    await expect(
+      radix.locator("ul, .experience-stack, .experience-contribution-label"),
+    ).toHaveCount(0);
+    await expect(radix).not.toContainText(
+      /pendente|a confirmar|pending|to be confirmed/i,
+    );
+  }
 });
 
 test("language and theme change immediately and persist after reload", async ({
@@ -304,6 +415,17 @@ test("every app detail opens directly, retains screenshots, official links and e
   await expect
     .poll(() => evidence.evaluate((el) => el.complete && el.naturalWidth > 0))
     .toBe(true);
+  const post = page
+    .locator(".app-recognition")
+    .getByRole("link", { name: /LinkedIn/i });
+  await expect(post).toBeVisible();
+  await expect(post).toHaveAttribute("href", magRecognitionPostURL);
+  await expect(post).toContainText("Ver");
+  await page.locator(".language-toggle").click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(post).toBeVisible();
+  await expect(post).toHaveAttribute("href", magRecognitionPostURL);
+  await expect(post).toContainText("View");
 });
 test("home scroll is restored after viewing an app and using back", async ({
   page,
@@ -569,7 +691,7 @@ test("project and certificates remain readable with JavaScript disabled", async 
   await expect(page.locator(".certificate-card")).toHaveCount(14);
   await expect(page.locator("main")).toContainText("Anthropic");
   await page.goto("http://127.0.0.1:4173/pt/experiencias/");
-  await expect(page.locator(".experience-record")).toHaveCount(11);
+  await expect(page.locator(".experience-record")).toHaveCount(13);
   await expect(page.locator("#fullsix")).toContainText("API Python de OCR");
   await context.close();
 });

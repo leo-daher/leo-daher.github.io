@@ -37,8 +37,22 @@ Sources in `Perfil Profissional/base/experiencias/`:
   results for Code 495. Public wording uses around two minutes to under one
   second and around 5 to 60 FPS; these are reported results, not new benchmarks.
 
-MAG and Van Cranenbroek keep their existing published app cases. Radix remains
-a client logo because the selected records do not establish a detailed case.
+MAG and Van Cranenbroek keep their existing published app cases. MAG also links
+to the original LinkedIn post, verified on October 9, 2026; it recognizes the
+Venda Digital team collectively and mentions Leone. The exact publication date
+remains unknown, and individual implementation of facial recognition is not
+claimed.
+
+Conkord presents Leone's mobile leadership from his direct account of October 9,
+2026: architecture, team guidance and maintenance of production apps. Its
+project links use the confirmed consultancy relationships. Águas de Portugal
+remains outside this group because its specific consultancy relationship has
+not been confirmed.
+
+Radix presents only the engineering internship and the August 2015 to August
+2016 period shown on LinkedIn, verified on October 9, 2026. The earlier
+September account remains in the authority's source history; no detailed
+internship responsibilities are inferred.
 
 The shared Lyzer home highlight adds the Google Play download thresholds
 already recorded for July 2026: Collect 1,000+ and Deliver 100+ = 1,100+.

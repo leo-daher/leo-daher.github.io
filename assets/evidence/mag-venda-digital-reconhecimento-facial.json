@@ -2,19 +2,19 @@
   "id": "mag-venda-digital-reconhecimento-facial",
   "company": "MAG | Mongeral Aegon",
   "product": "Venda Digital",
-  "author": "Luis Henrique Fontes Oliveira",
-  "postUrl": null,
+  "author": "Luís Henrique Fontes de Oliveira",
+  "postUrl": "https://www.linkedin.com/feed/update/urn:li:activity:6631633718349967360/",
   "postDate": null,
   "portfolio": {
     "pt": {
       "title": "Autenticação e validação de identidade",
       "text": "A equipe do Venda Digital entregou autenticação e validação de identidade por reconhecimento facial utilizando a API do SERPRO disponível à época. A publicação abaixo registra essa entrega coletiva.",
-      "imageLabel": "Publicação de Luis Henrique Fontes Oliveira reconhecendo a equipe responsável pela entrega de reconhecimento facial no Venda Digital."
+      "imageLabel": "Publicação de Luís Henrique Fontes de Oliveira reconhecendo a equipe responsável pela entrega de reconhecimento facial no Venda Digital."
     },
     "en": {
       "title": "Authentication and identity verification",
       "text": "The Venda Digital team delivered facial-recognition authentication and identity verification using the SERPRO API available at the time. The post below documents this collective delivery.",
-      "imageLabel": "Post by Luis Henrique Fontes Oliveira recognizing the team behind the facial-recognition delivery in Venda Digital."
+      "imageLabel": "Post by Luís Henrique Fontes de Oliveira recognizing the team behind the facial-recognition delivery in Venda Digital."
     }
   }
 }

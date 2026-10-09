@@ -1,0 +1,106 @@
+// Public destinations for the projects selected in the shared knowledge base.
+export const PROJECT_LINKS = [
+  {
+    id: "van-mobile",
+    company: "Van Cranenbroek",
+    logo: "/assets/client_logos/van-cranenbroek-full.svg",
+    path: "/apps/van-cranenbroek",
+    pt: "Aplicativo de varejo",
+    en: "Retail application",
+  },
+  {
+    id: "lyzer-collect",
+    company: "Lyzer",
+    logo: "/assets/apps/lyzer-collect-icon.png",
+    style: "app",
+    path: "/apps/lyzer-collect",
+    pt: "Collect · preparação de pedidos",
+    en: "Collect · order preparation",
+  },
+  {
+    id: "lyzer-deliver",
+    company: "Lyzer",
+    logo: "/assets/apps/lyzer-deliver-icon.png",
+    style: "app",
+    path: "/apps/lyzer-deliver",
+    pt: "Deliver · operação em campo",
+    en: "Deliver · field operations",
+  },
+  {
+    id: "lyzer-engineering",
+    company: "Lyzer",
+    logo: "/assets/client_logos/lyzer-official.svg",
+    style: "outline",
+    path: "/experiencias#lyzer",
+    pt: "IA, backend e backoffice",
+    en: "AI, backend and backoffice",
+  },
+  {
+    id: "courier-tracking",
+    company: "CTT",
+    logo: "/assets/client_logos/ctt-official.svg",
+    path: "/experiencias#ctt",
+    pt: "Acompanhamento de entregas Android",
+    en: "Android delivery tracking",
+  },
+  {
+    id: "legal-management",
+    company: "EY",
+    logo: "/assets/client_logos/ey-official.svg",
+    style: "outline",
+    path: "/experiencias#ey",
+    pt: "Formulários para gestão de advogados",
+    en: "Forms for legal practice management",
+  },
+  {
+    id: "energy-sales",
+    company: "Iberdrola",
+    logo: "/assets/client_logos/iberdrola-official.svg",
+    path: "/experiencias#iberdrola",
+    pt: "Vendas de energia e PWA",
+    en: "Energy sales and PWA",
+  },
+  {
+    id: "monchique-system",
+    company: "Água Monchique",
+    logo: "/assets/client_logos/agua-monchique-official.svg",
+    style: "outline",
+    path: "/experiencias#monchique",
+    pt: "Sistema web e Android",
+    en: "Web system and Android",
+  },
+  {
+    id: "ocr-knowledge-transfer",
+    company: "Fullsix",
+    logo: "/assets/client_logos/fullsix-black.png",
+    style: "fullsix",
+    path: "/experiencias#fullsix",
+    pt: "Análise de API de OCR",
+    en: "OCR API analysis",
+  },
+  {
+    id: "linelinker-pro",
+    company: "Code 495",
+    logo: "/assets/client_logos/code-495-symbol.svg",
+    style: "code",
+    path: "/experiencias#code-495",
+    pt: "LineLinker Pro",
+    en: "LineLinker Pro",
+  },
+  {
+    id: "sustims",
+    company: "Ascendi",
+    logo: "/assets/client_logos/ascendi-official.png",
+    style: "outline",
+    path: "/experiencias#ascendi",
+    pt: "SustIMS",
+    en: "SustIMS",
+  },
+];
+
+export function experienceProjects(item) {
+  if (item.id !== "conkord") return [];
+  return PROJECT_LINKS.filter((project) =>
+    item.projectIds.includes(project.id),
+  );
+}

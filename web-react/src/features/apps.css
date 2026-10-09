@@ -557,10 +557,23 @@
   object-fit: contain;
 }
 
+.app-recognition-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-bottom: 14px;
+  color: var(--violet);
+  font-size: 14px;
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+
 .apps-view-all:focus-visible,
 .app-store-tile:focus-visible,
 .app-store-proof:focus-visible,
 .app-gallery:focus-visible,
+.app-recognition-source:focus-visible,
 .app-recognition summary:focus-visible {
   outline: 2px solid var(--violet);
   outline-offset: 4px;

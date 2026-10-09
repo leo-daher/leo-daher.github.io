@@ -24,6 +24,10 @@
 .client-tile--link:hover .client-tile-arrow {
   transform: translateX(2px);
 }
+.clients .client-group--otherExperiences .clients-grid {
+  max-width: 220px;
+  grid-template-columns: minmax(0, 1fr);
+}
 .clients .client-tile--brand {
   flex-direction: column;
   gap: 7px;

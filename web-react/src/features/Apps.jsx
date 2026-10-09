@@ -11,6 +11,7 @@ import {
   FEATURED_APPS,
 } from "../data/apps.js";
 import { APP_STORIES } from "../data/app-stories.js";
+import magEvidence from "../../public/assets/evidence/mag-venda-digital-reconhecimento-facial.json" with { type: "json" };
 
 function internalLink(event, path, navigate) {
   if (
@@ -336,6 +337,17 @@ function CaseDetails({ app }) {
           </summary>
           <div className="app-recognition-content">
             <p>{t("magRecognitionText")}</p>
+            {magEvidence.postUrl && (
+              <a
+                className="app-recognition-source"
+                href={magEvidence.postUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("magRecognitionSource")}
+                <Icon name="external" size={16} />
+              </a>
+            )}
             <img
               src={assetUrl(
                 "/assets/evidence/mag-venda-digital-reconhecimento-facial.png",

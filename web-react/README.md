@@ -48,7 +48,7 @@ Os testes de agentes iniciam um servidor isolado, consultam HTML sem JavaScript,
 
 - `src/data/pt.json` e `en.json`: textos exportados dos arquivos `lib/l10n/app_*.arb` originais.
 - `src/data/app-stories.js`: relatos completos dos quatro apps em português e inglês, selecionados a partir das experiências e evidências da base profissional. As páginas individuais e as exportações públicas em Markdown reutilizam o mesmo texto; os resumos da home permanecem compactos.
-- `src/data/experiences.js`: 11 relatos profissionais selecionados da base compartilhada, com quatro destaques na home e a página `/experiencias`. A fonte e os limites editoriais estão em `content/professional-experience-sources.md`.
+- `src/data/experiences.js`: 13 relatos profissionais selecionados da base compartilhada, com quatro destaques na home e a página `/experiencias`. A fonte e os limites editoriais estão em `content/professional-experience-sources.md`.
 - A home reúne Lyzer Collect e Deliver em um destaque com dois ícones e 1,1 mil+ downloads: soma dos patamares Google Play de julho de 2026 (1 mil+ e 100+). O cartão abre o case conjunto em `/apps/lyzer-collect-deliver`, com os dois produtos, telas e links das lojas. O catálogo de apps mantém os quatro produtos individuais e suas próprias aberturas; a soma não representa usuários únicos nem inclui App Store.
 - Os destaques de experiência mostram a área de atuação abaixo da marca. Os vínculos com consultorias permanecem nos relatos completos e na base compartilhada. A seção de competências combina descrições do trabalho, tecnologias e links para casos; o HTML e o Markdown reutilizam esse conteúdo.
 - A navegação do computador oferece atalhos na barra superior; o menu flutuante inclui certificações e artigos. Em telas baixas, a lista do menu rola dentro da área disponível e mantém o item em foco visível.
@@ -83,7 +83,7 @@ Ferramentas públicas, somente de leitura:
 - `search_portfolio`: busca com trechos e links das fontes.
 - `read_portfolio_document`: case, perfil, certificados ou artigo completo.
 
-As três aceitam `locale: "pt" | "en"`; quando omitido, usam inglês. Há também 18 recursos Markdown, um por documento/idioma. O servidor não envia mensagens, faz candidaturas, consulta arquivos privados ou executa ações externas.
+As três aceitam `locale: "pt" | "en"`; quando omitido, usam inglês. Há também 20 recursos Markdown, um por documento/idioma. O servidor não envia mensagens, faz candidaturas, consulta arquivos privados ou executa ações externas.
 
 `SITE_ORIGIN` define a origem canônica usada nos links, sem subpasta. `VITE_BASE_PATH` define a subpasta na construção. Consulte `.env.example`; as variáveis são fornecidas ao processo Node/construção. O servidor valida Host e Origin no MCP, limita o corpo a 64 KiB e usa `MCP_ALLOWED_HOSTS`/`MCP_ALLOWED_ORIGINS` para destinos adicionais explícitos. Conteúdo público não exige credenciais. Para acesso remoto, hospede Node atrás de HTTPS.
 

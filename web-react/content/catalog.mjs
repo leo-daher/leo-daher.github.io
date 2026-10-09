@@ -9,6 +9,7 @@ import {
 import { APP_STORIES } from "../src/data/app-stories.js";
 import { EXPERIENCES, FEATURED_EXPERIENCES } from "../src/data/experiences.js";
 import { CAPABILITIES } from "../src/data/capabilities.js";
+import { experienceProjects } from "../src/data/project-links.js";
 
 const webRoot = new URL("../", import.meta.url);
 const schemaContext = "https://schema.org";
@@ -296,11 +297,34 @@ function experiencesDocument(locale, t, url, person) {
       t("allExperiencesCopy"),
       ...EXPERIENCES.flatMap((item) => [
         `## ${item.company}: ${item[locale].title}`,
-        item.consulting ? t("experienceViaConsulting") : item[locale].area,
+        ...(item.id === "radix"
+          ? []
+          : [
+              item.consulting
+                ? t("experienceViaConsulting")
+                : item[locale].area,
+            ]),
         item[locale].summary,
-        `### ${t("appContributionLabel")}`,
-        item[locale].contributions.map((line) => `- ${line}`).join("\n"),
-        `**${t("appStackLabel")}:** ${item.stack.join(" · ")}`,
+        ...(item.id !== "conkord" && item[locale].contributions.length
+          ? [
+              `### ${t("appContributionLabel")}`,
+              item[locale].contributions.map((line) => `- ${line}`).join("\n"),
+            ]
+          : []),
+        ...(item.stack.length
+          ? [`**${t("appStackLabel")}:** ${item.stack.join(" · ")}`]
+          : []),
+        ...(experienceProjects(item).length
+          ? [
+              `### ${t("projects")}`,
+              experienceProjects(item)
+                .map(
+                  (project) =>
+                    `- ${link(`${project.company}: ${project[locale]}`, url(localPath(project.path, locale)))}`,
+                )
+                .join("\n"),
+            ]
+          : []),
       ]),
     ],
     schema: {
@@ -328,6 +352,16 @@ function experiencesDocument(locale, t, url, person) {
           },
           about: { "@type": "Organization", name: item.company },
           url: url(`${path}/#${item.id}`),
+          ...(experienceProjects(item).length
+            ? {
+                hasPart: experienceProjects(item).map((project) => ({
+                  "@type": "CreativeWork",
+                  name: `${project.company}: ${project[locale]}`,
+                  about: { "@type": "Organization", name: project.company },
+                  url: url(localPath(project.path, locale)),
+                })),
+              }
+            : {}),
         },
       })),
     },
@@ -426,6 +460,9 @@ function appDocument(
       ? [
           `## ${t("magRecognitionTitle")}`,
           t("magRecognitionText"),
+          ...(magEvidence.postUrl
+            ? [link(t("magRecognitionSource"), magEvidence.postUrl)]
+            : []),
           `![${label(t("magRecognitionImageLabel"))}](${url("/assets/evidence/mag-venda-digital-reconhecimento-facial.png")})`,
           `${locale === "pt" ? "Autor da publicação" : "Post author"}: ${magEvidence.author}. ${locale === "pt" ? "Data do post" : "Post date"}: ${magEvidence.postDate || words.unknown}. ${locale === "pt" ? "URL do post" : "Post URL"}: ${magEvidence.postUrl || words.unknown}.`,
           link(
