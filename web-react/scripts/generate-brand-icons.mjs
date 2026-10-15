@@ -9,7 +9,11 @@ const maskable = await readFile(
 );
 const variants = [
   [favicon, 16, ["favicon.png", "favicon-squircle-16.png"]],
-  [favicon, 32, ["favicon-32.png", "favicon-squircle-32.png"]],
+  [
+    favicon,
+    32,
+    ["favicon-dark-32.png", "favicon-32.png", "favicon-squircle-32.png"],
+  ],
   [favicon, 180, ["apple-touch-icon.png", "apple-touch-icon-squircle.png"]],
   [favicon, 192, ["icons/Icon-192.png", "icons/Icon-squircle-192.png"]],
   [favicon, 512, ["icons/Icon-512.png", "icons/Icon-squircle-512.png"]],
@@ -81,4 +85,4 @@ try {
 } finally {
   await browser.close();
 }
-console.log("Web icons regenerated with an opaque Canvas background.");
+console.log("Web icons regenerated with an opaque dark gradient background.");

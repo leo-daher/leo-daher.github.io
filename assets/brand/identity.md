@@ -148,11 +148,14 @@ dentro dos `80%` centrais.
 | `web/favicon-squircle.svg` | redução de navegador | uso próprio no favicon |
 | `web/icons/ld-maskable.svg` | PWA e ícone maskable | uso próprio da plataforma |
 
-Favicons, ícones de instalação, atalhos e imagens de compartilhamento usam o
-fundo Canvas `#08080D` opaco até os quatro cantos. Não aplicar um retângulo
-arredondado sobre branco nem exportar cantos transparentes nesses arquivos.
-O sistema que exibe o ícone pode aplicar sua própria máscara. Os SVGs do
-monograma usados dentro da página continuam sem fundo, acompanhando o tema.
+Favicons, ícones de instalação, atalhos e imagens de compartilhamento usam um
+degradê horizontal opaco de Canvas `#08080D` a D dark `#30313A`, preenchendo os
+quatro cantos. Essa variação escura evita a moldura branca observada no Safari
+26.6.2 com o fundo escuro uniforme. Não aplicar um retângulo arredondado sobre
+branco nem exportar cantos transparentes nesses arquivos. O favicon principal
+é um PNG de `32 × 32`, declarado com `rel="icon"`; o SVG permanece disponível
+como fonte e alias. O sistema pode aplicar sua própria máscara. Os SVGs do
+monograma dentro da página continuam sem fundo, acompanhando o tema.
 `web/favicon.svg` e `web/icons/ld-maskable.svg` geram os PNGs e seus aliases em
 `web/` e `web-react/public/` com `npm run generate:icons` no projeto React.
 
