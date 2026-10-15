@@ -95,6 +95,8 @@ O fluxo de publicação serve esta versão React na raiz do portfólio. Ele veri
 
 Ícones, compartilhamento social, atalhos `/in`, `/ig` e `/fb` com redirecionamento sem JavaScript e o worker de desativação do Flutter preservam a compatibilidade com a publicação anterior.
 
+Favicons, ícones de instalação e imagens de compartilhamento têm fundo Canvas opaco até os quatro cantos. Regenere os PNGs e os aliases de `web/` e `public/` a partir dos dois SVGs de `web/` com `npm run generate:icons` (aceita `PLAYWRIGHT_CHROME_PATH`). Os links de ícones, manifests e prévias usam a revisão `v=20261015` para renovar as imagens armazenadas anteriormente. Os SVGs do monograma dentro da página mantêm seu fundo transparente.
+
 Para outro caminho de publicação:
 
 ```sh

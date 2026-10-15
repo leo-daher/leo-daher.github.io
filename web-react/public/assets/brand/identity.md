@@ -148,6 +148,14 @@ dentro dos `80%` centrais.
 | `web/favicon-squircle.svg` | redução de navegador | uso próprio no favicon |
 | `web/icons/ld-maskable.svg` | PWA e ícone maskable | uso próprio da plataforma |
 
+Favicons, ícones de instalação, atalhos e imagens de compartilhamento usam o
+fundo Canvas `#08080D` opaco até os quatro cantos. Não aplicar um retângulo
+arredondado sobre branco nem exportar cantos transparentes nesses arquivos.
+O sistema que exibe o ícone pode aplicar sua própria máscara. Os SVGs do
+monograma usados dentro da página continuam sem fundo, acompanhando o tema.
+`web/favicon.svg` e `web/icons/ld-maskable.svg` geram os PNGs e seus aliases em
+`web/` e `web-react/public/` com `npm run generate:icons` no projeto React.
+
 O squircle da **marca estática** permanece sem ícone. Quando ele deixa de ser
 símbolo e se torna um controle real, deve receber affordance, tooltip, nome
 acessível e estado.

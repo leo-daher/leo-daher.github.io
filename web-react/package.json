@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5173",
+    "generate:icons": "node scripts/generate-brand-icons.mjs",
     "build": "vite build && vite build --ssr src/entry-server.jsx --outDir .prerender && node scripts/static-routes.mjs",
     "start": "node server.mjs",
     "preview": "node server.mjs",
