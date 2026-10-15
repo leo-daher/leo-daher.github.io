@@ -66,8 +66,16 @@ export function LdOutline({
     bottom = h - s / 2,
     o = Math.max(s * 1.55, r * 0.58),
     join = Math.max(l + lr + s, right - rx - s * 0.18);
-  const L = `M${l},${top + o}V${bottom - lr}A${lr},${lr} 0 0 0 ${l + lr},${bottom}H${join}`;
-  const D = `M${l + o},${top}H${right - r}A${r},${r} 0 0 1 ${right},${top + r}V${bottom - ry}A${rx},${ry} 0 0 1 ${right - rx},${bottom}H${join}`;
+  // Only the ends near the diagonal cut need a mask. Masking the complete
+  // outline creates a viewport-sized compositing surface during the opening.
+  const tailX = Math.max(l + lr, join - s * 2),
+    tailY = bottom - ry - s,
+    maskX = Math.min(tailX, right - rx, join) - s,
+    maskY = tailY - s,
+    maskWidth = right + s - maskX,
+    maskHeight = bottom + s - maskY;
+  const L = `M${l},${top + o}V${bottom - lr}A${lr},${lr} 0 0 0 ${l + lr},${bottom}H${tailX + 1}`;
+  const D = `M${l + o},${top}H${right - r}A${r},${r} 0 0 1 ${right},${top + r}V${tailY + 1}`;
   const b = clamp(r * 1.04, 22, 52),
     br = b * 0.35;
   return (
@@ -79,8 +87,21 @@ export function LdOutline({
       aria-hidden="true"
     >
       <defs>
-        <mask id={`cut-${id}`}>
-          <rect width={w} height={h} fill="white" />
+        <mask
+          id={`cut-${id}`}
+          maskUnits="userSpaceOnUse"
+          x={maskX}
+          y={maskY}
+          width={maskWidth}
+          height={maskHeight}
+        >
+          <rect
+            x={maskX}
+            y={maskY}
+            width={maskWidth}
+            height={maskHeight}
+            fill="white"
+          />
           <path
             d={`M${join - s * 0.29},${bottom + s * 0.57}L${join + s * 0.57},${bottom - s * 0.57}`}
             stroke="black"
@@ -89,14 +110,16 @@ export function LdOutline({
           />
         </mask>
       </defs>
-      <g
-        fill="none"
-        strokeWidth={s}
-        strokeLinejoin="round"
-        mask={`url(#cut-${id})`}
-      >
+      <g fill="none" strokeWidth={s} strokeLinejoin="round">
         <path d={L} stroke="var(--ld-l)" />
         <path d={D} stroke="var(--ld-d)" />
+        <g mask={`url(#cut-${id})`}>
+          <path d={`M${tailX},${bottom}H${join}`} stroke="var(--ld-l)" />
+          <path
+            d={`M${right},${tailY}V${bottom - ry}A${rx},${ry} 0 0 1 ${right - rx},${bottom}H${join}`}
+            stroke="var(--ld-d)"
+          />
+        </g>
         <circle
           cx={l}
           cy={top + o}
