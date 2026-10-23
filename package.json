@@ -1,0 +1,37 @@
+{
+  "name": "@leonedaher/signature",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reusable Leone Daher signature for web, React and Flutter.",
+  "type": "module",
+  "files": [
+    "packages/signature"
+  ],
+  "exports": {
+    ".": {
+      "types": "./packages/signature/web/index.d.ts",
+      "default": "./packages/signature/web/index.mjs"
+    },
+    "./react": {
+      "types": "./packages/signature/web/react.d.ts",
+      "default": "./packages/signature/web/react.mjs"
+    },
+    "./styles.css": "./packages/signature/web/styles.css"
+  },
+  "peerDependencies": {
+    "react": ">=18 <20"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "signature:build": "node packages/signature/scripts/prepare.mjs",
+    "test": "node --test packages/signature/tests/*.test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leo-daher/leo-daher.github.io.git"
+  }
+}

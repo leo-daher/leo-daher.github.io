@@ -1,0 +1,13 @@
+name: leone_signature
+description: The official Leone Daher signature for product footers and menus.
+version: 1.0.0
+publish_to: none
+environment:
+  sdk: '>=3.7.0 <4.0.0'
+  flutter: '>=3.29.0'
+dependencies:
+  flutter:
+    sdk: flutter
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

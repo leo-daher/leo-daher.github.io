@@ -31,6 +31,9 @@ jobs:
           cache: npm
           cache-dependency-path: web-react/package-lock.json
 
+      - name: Verify and build shared signature
+        run: npm ci && npm test && npm run signature:build
+
       - name: Install React portfolio dependencies
         working-directory: web-react
         run: npm ci

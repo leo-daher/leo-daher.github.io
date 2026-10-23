@@ -22,6 +22,13 @@ base has its own Git history; it is not part of this public checkout.
 
 ## Brand
 
+The reusable product signature lives in
+[`packages/signature/`](packages/signature/README.md), with static HTML, React
+and Flutter entry points. Install a fixed `signature-vX.Y.Z` Git tag to use it
+in another product. The component gallery is published at `/design-system/`.
+Run `npm run signature:build` and `npm test` from this repository root when
+updating the package or gallery.
+
 The canonical LD identity, including strategy, geometry, color, motion, voice
 and accessibility rules, lives in
 [`assets/brand/identity.md`](assets/brand/identity.md). React design tokens

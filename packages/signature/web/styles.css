@@ -1,0 +1,62 @@
+.ld-signature {
+  --ld-signature-ink: #171721;
+  --ld-signature-muted: #5d5d6b;
+  --ld-signature-line: #1717211f;
+  --ld-signature-hover: #17172106;
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 60px;
+  padding: 8px 14px 8px 10px;
+  border: 1px solid var(--ld-signature-line);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--ld-signature-ink);
+  font: 400 13px/1.4 system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 160ms, border-color 160ms;
+}
+.ld-signature[data-theme='dark'] {
+  --ld-signature-ink: #f3f6f5;
+  --ld-signature-muted: #b7b2c8;
+  --ld-signature-line: #f3f6f521;
+  --ld-signature-hover: #f3f6f508;
+}
+@media (prefers-color-scheme: dark) {
+  .ld-signature[data-theme='auto'] {
+    --ld-signature-ink: #f3f6f5;
+    --ld-signature-muted: #b7b2c8;
+    --ld-signature-line: #f3f6f521;
+    --ld-signature-hover: #f3f6f508;
+  }
+}
+.ld-signature:hover { background: var(--ld-signature-hover); border-color: var(--ld-signature-muted); color: var(--ld-signature-ink); text-decoration: none; }
+.ld-signature:focus-visible { outline: 2px solid #9a7bff; outline-offset: 4px; }
+.ld-signature .ld-signature__mark { display: block; flex: 0 0 40px; width: 40px; height: 40px; }
+.ld-signature .ld-signature__mark svg { display: block; width: 40px; height: 40px; max-width: none; }
+.ld-signature .ld-signature__mark .ld-mark--dark { display: none; }
+.ld-signature[data-theme='dark'] .ld-mark--light { display: none; }
+.ld-signature[data-theme='dark'] .ld-signature__mark .ld-mark--dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  .ld-signature[data-theme='auto'] .ld-mark--light { display: none; }
+  .ld-signature[data-theme='auto'] .ld-signature__mark .ld-mark--dark { display: block; }
+}
+.ld-signature .ld-signature__copy { display: flex; flex-direction: column; gap: 1px; margin: 0; padding: 0; }
+.ld-signature .ld-signature__label { display: block; color: var(--ld-signature-muted); font-size: 10px; font-weight: 400; line-height: 1.5; letter-spacing: .02em; }
+.ld-signature .ld-signature__name { display: block; color: var(--ld-signature-ink); font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: -.015em; }
+.ld-signature .ld-signature__arrow { display: block; flex: 0 0 16px; margin-left: 12px; color: var(--ld-signature-muted); }
+.ld-signature[data-variant='menu'] { width: 100%; }
+.ld-signature[data-variant='menu'] .ld-signature__arrow { margin-left: auto; }
+.ld-signature[data-variant='compact'] { padding: 8px; min-width: 58px; min-height: 58px; }
+.ld-signature[data-variant='compact'] .ld-signature__copy,
+.ld-signature[data-variant='compact'] .ld-signature__arrow { display: none; }
+@media (prefers-reduced-motion: reduce) { .ld-signature { transition: none; } }
+@media (forced-colors: active) { .ld-signature { border-color: LinkText; color: LinkText; } }
