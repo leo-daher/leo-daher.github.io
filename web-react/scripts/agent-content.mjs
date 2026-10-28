@@ -6,7 +6,7 @@ import {
   normalizeBasePath,
 } from "../content/catalog.mjs";
 
-const defaultOrigin = "https://leo-daher.github.io";
+const defaultOrigin = "https://leonedaher.com";
 const xmlEscape = (value) =>
   value
     .replaceAll("&", "&amp;")

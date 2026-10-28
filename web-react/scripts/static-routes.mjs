@@ -4,7 +4,7 @@ import { writeAgentContent, markdownPath } from "./agent-content.mjs";
 import { normalizeBasePath } from "../content/catalog.mjs";
 
 const basePath = normalizeBasePath(process.env.VITE_BASE_PATH || "/");
-const siteOrigin = process.env.SITE_ORIGIN || "https://leo-daher.github.io";
+const siteOrigin = process.env.SITE_ORIGIN || "https://leonedaher.com";
 const catalog = await writeAgentContent({ basePath, siteOrigin });
 const template = await readFile("dist/index.html", "utf8");
 const { certificates } = JSON.parse(
