@@ -15,6 +15,27 @@ import {
   newerSnapshot,
 } from "../src/data/recomp-metrics.js";
 
+test("deployment configuration is readable by the initial collector", () => {
+  const config = JSON.parse(
+    readFileSync(
+      new URL("../../services/recomp-metrics/wrangler.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  assert.ok(config.vars.CLOUDFLARE_ZONE_ID);
+  assert.ok(
+    config.d1_databases.find((database) => database.binding === "DB")
+      ?.database_id,
+  );
+  assert.deepEqual(
+    datesBetween(
+      config.vars.METRICS_START_DATE,
+      new Date("2026-10-01T12:00:00Z"),
+    ),
+    ["2026-10-01"],
+  );
+});
+
 function database() {
   const sqlite = new DatabaseSync(":memory:");
   sqlite.exec(

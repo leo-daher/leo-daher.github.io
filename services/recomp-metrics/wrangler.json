@@ -6,7 +6,7 @@
   "workers_dev": true,
   "vars": {
     "CLOUDFLARE_ZONE_ID": "e12d1fc4c5878d41d4a91c39745e11e7",
-    "METRICS_START_DATE": "2026-10-01",
+    "METRICS_START_DATE": "2026-10-01"
   },
   "triggers": { "crons": ["17 * * * *"] },
   "d1_databases": [
@@ -14,7 +14,7 @@
       "binding": "DB",
       "database_name": "recomp-portfolio-metrics",
       "database_id": "a1d4d39e-6f64-4aca-9795-86e544faa887",
-      "migrations_dir": "migrations",
-    },
-  ],
+      "migrations_dir": "migrations"
+    }
+  ]
 }

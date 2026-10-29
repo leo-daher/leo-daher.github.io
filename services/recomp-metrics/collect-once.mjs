@@ -8,7 +8,7 @@ const analyticsToken = process.env.ANALYTICS_API_TOKEN;
 if (!controlToken || !analyticsToken)
   throw new Error("CLOUDFLARE_API_TOKEN and ANALYTICS_API_TOKEN are required");
 const config = JSON.parse(
-  await readFile(new URL("./wrangler.jsonc", import.meta.url), "utf8"),
+  await readFile(new URL("./wrangler.json", import.meta.url), "utf8"),
 );
 const database = config.d1_databases.find((item) => item.binding === "DB");
 const endpoint = `https://api.cloudflare.com/client/v4/accounts/${config.account_id}/d1/database/${database.database_id}/query`;

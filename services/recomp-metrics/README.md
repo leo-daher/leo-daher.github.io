@@ -17,9 +17,9 @@ It does not label that observation as an automatic or current measurement.
 From the repository root:
 
 ```sh
-npx wrangler@4.155.0 d1 migrations apply recomp-portfolio-metrics --remote --config services/recomp-metrics/wrangler.jsonc
-npx wrangler@4.155.0 deploy --config services/recomp-metrics/wrangler.jsonc
-npx wrangler@4.155.0 secret put ANALYTICS_API_TOKEN --config services/recomp-metrics/wrangler.jsonc
+npx wrangler@4.155.0 d1 migrations apply recomp-portfolio-metrics --remote --config services/recomp-metrics/wrangler.json
+npx wrangler@4.155.0 deploy --config services/recomp-metrics/wrangler.json
+npx wrangler@4.155.0 secret put ANALYTICS_API_TOKEN --config services/recomp-metrics/wrangler.json
 ```
 
 Run `node services/recomp-metrics/collect-once.mjs` for initial collection or
