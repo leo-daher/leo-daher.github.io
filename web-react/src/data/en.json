@@ -219,5 +219,16 @@
   "architectureDeliveryCopy": "Improving products in use through version releases and faster loading and smoother interfaces.",
   "architectureDeliveryLink": "Explore LineLinker Pro",
   "architectureAutomationCopy": "AI-assisted bug investigation and proposed fixes, with mandatory developer review.",
-  "architectureAutomationLink": "Explore the investigation workflow"
+  "architectureAutomationLink": "Explore the investigation workflow",
+  "recompProjectLabel": "Featured project: Recomp Center",
+  "recompExploreCatalog": "Explore catalog",
+  "recompVisits": "visits",
+  "recompVisitsAccessible": "Approximately {count} visits",
+  "recompRequests": "≈ {count} requests to the site and catalog",
+  "recompMetricsLast30Days": "Last 30 days",
+  "recompMetricsSince": "Since {date}",
+  "recompMetricsChecked": "Checked on {date}",
+  "recompAboutMetrics": "About the numbers",
+  "recompMetricsLimits": "Cloudflare estimates, including automated traffic. Visits and requests do not represent unique users, installations or people online.",
+  "recompCumulativeLimits": "Cumulative since the stated start date, using daily totals without overlap. Estimates may be corrected by the source."
 }

@@ -16,7 +16,7 @@
     "check": "eslint . && tsc --project jsconfig.json --noEmit && prettier --check src content scripts tests *.mjs *.js index.html package.json jsconfig.json README.md",
     "validate": "npm run check && npm run build && npm run test:agents && npm test",
     "format": "prettier --write src content scripts tests *.mjs *.js index.html package.json jsconfig.json README.md",
-    "test:agents": "node --test tests/agents.test.mjs"
+    "test:agents": "node --test tests/agents.test.mjs tests/metrics.test.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/node": "2.1.0",

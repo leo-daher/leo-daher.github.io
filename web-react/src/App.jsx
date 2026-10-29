@@ -22,6 +22,7 @@ import { Capabilities } from "./features/Capabilities.jsx";
 import { Clients } from "./features/Clients.jsx";
 import { Hero, Opening } from "./features/Hero.jsx";
 import { AppsSection, AppsPage, AppDetailPage } from "./features/Apps.jsx";
+import { RecompProject } from "./features/RecompProject.jsx";
 import {
   ExperiencesSection,
   ExperiencesPage,
@@ -223,6 +224,7 @@ function Home({ active }) {
       <div className="home-apps" id="apps">
         <AppsSection />
       </div>
+      <RecompProject />
       <ExperiencesSection />
       <Capabilities />
       <Clients />

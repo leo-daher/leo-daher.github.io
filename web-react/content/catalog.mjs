@@ -10,6 +10,8 @@ import { APP_STORIES } from "../src/data/app-stories.js";
 import { EXPERIENCES, FEATURED_EXPERIENCES } from "../src/data/experiences.js";
 import { CAPABILITIES } from "../src/data/capabilities.js";
 import { experienceProjects } from "../src/data/project-links.js";
+import projectHighlights from "../src/data/project-highlights.generated.json" with { type: "json" };
+import recompSnapshot from "../src/data/recomp-metrics.snapshot.json" with { type: "json" };
 
 const webRoot = new URL("../", import.meta.url);
 const schemaContext = "https://schema.org";
@@ -232,6 +234,14 @@ function profileDocument(profile, locale, t, url, interpretation) {
       (item) =>
         `- ${link(item.name, url(`${localPath(`/apps/${item.id}`, locale)}/`))}: ${t(item.summary)} ${t(item.metric)}`,
     ).join("\n"),
+    ...projectHighlights.flatMap((project) => [
+      `## ${project.name}`,
+      project.description[locale],
+      link(project.name, project.href),
+      locale === "pt"
+        ? `Retrato da Cloudflare consultado em ${recompSnapshot.asOf}: aproximadamente ${new Intl.NumberFormat("pt-BR").format(recompSnapshot.metrics.visits)} visitas e ${new Intl.NumberFormat("pt-BR").format(recompSnapshot.metrics.requests)} requisições, na janela de 30 dias até a consulta. Inclui tráfego automatizado; não mede usuários únicos ou instalações.`
+        : `Cloudflare snapshot checked on ${recompSnapshot.asOf}: approximately ${new Intl.NumberFormat("en").format(recompSnapshot.metrics.visits)} visits and ${new Intl.NumberFormat("en").format(recompSnapshot.metrics.requests)} requests, in the 30-day window ending at the check. Includes automated traffic; does not measure unique users or installations.`,
+    ]),
     `## ${t("professionalExperienceTitle")}`,
     t("professionalExperienceCopy"),
     FEATURED_EXPERIENCES.map(
@@ -726,6 +736,7 @@ export async function loadPortfolioContent({
     ),
     contacts,
     sameAs: [contacts.linkedin, contacts.github],
+    featuredProjects: projectHighlights,
     skills,
     metrics: [
       {

@@ -1,0 +1,13 @@
+[
+  {
+    "id": "recomp-center",
+    "name": "Recomp Center",
+    "kind": "personal",
+    "href": "https://recomp.center/",
+    "factId": "recomp-center-catalog",
+    "description": {
+      "pt": "Catálogo de projetos de recompilação, descompilação e ports nativos de jogos.",
+      "en": "A catalog of game recompilation, decompilation and native port projects."
+    }
+  }
+]

@@ -406,7 +406,7 @@ test("every app detail opens directly, retains screenshots, official links and e
       ),
     ).toBe(true);
   }
-  await page.locator("summary").click();
+  await page.locator(".app-detail-page summary").click();
   await expect(
     page.getByText("A equipe do Venda Digital entregou", { exact: false }),
   ).toBeVisible();

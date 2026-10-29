@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "project": "recomp-center",
+  "source": "Cloudflare Analytics",
+  "approximate": true,
+  "includesAutomatedTraffic": true,
+  "coverageComplete": true,
+  "collection": "manual",
+  "asOf": "2026-10-28",
+  "period": { "kind": "rolling", "days": 30 },
+  "metrics": { "visits": 2460, "requests": 44330 }
+}
