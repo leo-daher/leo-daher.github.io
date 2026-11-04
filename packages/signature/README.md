@@ -4,12 +4,15 @@ Componente compartilhado da identidade LD para rodapés e menus. A marca do
 produto continua principal; a assinatura identifica a autoria e abre o
 portfólio. Não depende da disponibilidade do portfólio para renderizar.
 
+A versão 1.0.1 usa “Criado por”, “Created by” e “Creado por” para reconhecer a
+origem do projeto e permitir o reconhecimento de futuros colaboradores.
+
 ## Instalação web
 
 Use uma revisão fixa do repositório, nunca uma branch móvel em produção:
 
 ```sh
-npm install github:leo-daher/leo-daher.github.io#signature-v1.0.0
+npm install github:leo-daher/leo-daher.github.io#signature-v1.0.1
 ```
 
 ```jsx
@@ -44,7 +47,7 @@ dependencies:
   leone_signature:
     git:
       url: https://github.com/leo-daher/leo-daher.github.io.git
-      ref: signature-v1.0.0
+      ref: signature-v1.0.1
       path: packages/signature/flutter
 ```
 

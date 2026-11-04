@@ -1,6 +1,6 @@
 {
   "name": "@leonedaher/signature",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Reusable Leone Daher signature for web, React and Flutter.",
   "type": "module",

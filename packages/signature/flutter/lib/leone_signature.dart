@@ -32,9 +32,9 @@ class LeoneSignature extends StatelessWidget {
     final ink = dark ? const Color(0xFFF3F6F5) : const Color(0xFF171721);
     final muted = dark ? const Color(0xFFB7B2C8) : const Color(0xFF5D5D6B);
     final label = switch (locale.languageCode) {
-      'pt' => 'Desenvolvido por',
-      'es' => 'Desarrollado por',
-      _ => 'Developed by',
+      'pt' => 'Criado por',
+      'es' => 'Creado por',
+      _ => 'Created by',
     };
     final accessibleLabel = switch (locale.languageCode) {
       'pt' => 'Conheça o portfólio de Leone Daher',

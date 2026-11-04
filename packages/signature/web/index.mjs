@@ -1,11 +1,11 @@
 import { marks } from './marks.mjs';
 export { signatureStyles } from './styles.mjs';
 
-export const signatureVersion = '1.0.0';
+export const signatureVersion = '1.0.1';
 const copy = {
-  pt: ['Desenvolvido por', 'Conheça o portfólio de Leone Daher (abre em nova aba)'],
-  en: ['Developed by', 'Visit Leone Daher’s portfolio (opens in a new tab)'],
-  es: ['Desarrollado por', 'Visita el portafolio de Leone Daher (se abre en otra pestaña)'],
+  pt: ['Criado por', 'Conheça o portfólio de Leone Daher (abre em nova aba)'],
+  en: ['Created by', 'Visit Leone Daher’s portfolio (opens in a new tab)'],
+  es: ['Creado por', 'Visita el portafolio de Leone Daher (se abre en otra pestaña)'],
 };
 const escape = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 

@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {renderSignature, signatureContent, signatureStyles} from '../web/index.mjs';
 
 test('localized static signatures work without a browser, scripts, fonts or remote assets', () => {
-  for (const [locale,label,path] of [['pt-BR','Desenvolvido por','/pt/'],['en','Developed by','/'],['es','Desarrollado por','/']]) {
+  for (const [locale,label,path] of [['pt-BR','Criado por','/pt/'],['en','Created by','/'],['es','Creado por','/']]) {
     const html=renderSignature({locale,id:`example-${locale}`});
     assert.ok(html.includes(label));
     assert.ok(html.includes(`href="https://leo-daher.github.io${path}"`));
