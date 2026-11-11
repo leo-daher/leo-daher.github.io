@@ -1,7 +1,7 @@
 import { marks } from './marks.mjs';
 export { signatureStyles } from './styles.mjs';
 
-export const signatureVersion = '1.0.1';
+export const signatureVersion = '1.0.2';
 const copy = {
   pt: ['Criado por', 'Conheça o portfólio de Leone Daher (abre em nova aba)'],
   en: ['Created by', 'Visit Leone Daher’s portfolio (opens in a new tab)'],
@@ -15,7 +15,7 @@ export function signatureContent({ locale = 'en', variant = 'footer', theme = 'a
   if (!['footer', 'menu', 'compact'].includes(variant)) throw new TypeError('Unknown signature variant');
   if (!['auto', 'dark', 'light'].includes(theme)) throw new TypeError('Unknown signature theme');
   if (!/^[a-zA-Z][a-zA-Z0-9_-]*$/.test(id)) throw new TypeError('A unique HTML-safe signature id is required');
-  const href = language === 'pt' ? 'https://leo-daher.github.io/pt/' : 'https://leo-daher.github.io/';
+  const href = language === 'pt' ? 'https://leonedaher.com/pt/' : 'https://leonedaher.com/';
   const mark = tone => marks[tone].replaceAll('__LD_MASK__', `${id}-${tone}`);
   return {
     href, label, accessibleLabel, variant, theme,

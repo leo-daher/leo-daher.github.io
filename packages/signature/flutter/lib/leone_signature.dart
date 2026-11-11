@@ -21,8 +21,8 @@ class LeoneSignature extends StatelessWidget {
 
   static Uri portfolioUri(Locale locale) => Uri.parse(
     locale.languageCode == 'pt'
-        ? 'https://leo-daher.github.io/pt/'
-        : 'https://leo-daher.github.io/',
+        ? 'https://leonedaher.com/pt/'
+        : 'https://leonedaher.com/',
   );
 
   @override

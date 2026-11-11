@@ -12,7 +12,7 @@ origem do projeto e permitir o reconhecimento de futuros colaboradores.
 Use uma revisão fixa do repositório, nunca uma branch móvel em produção:
 
 ```sh
-npm install github:leo-daher/leo-daher.github.io#signature-v1.0.1
+npm install github:leo-daher/leo-daher.github.io#signature-v1.0.2
 ```
 
 ```jsx
@@ -47,7 +47,7 @@ dependencies:
   leone_signature:
     git:
       url: https://github.com/leo-daher/leo-daher.github.io.git
-      ref: signature-v1.0.1
+      ref: signature-v1.0.2
       path: packages/signature/flutter
 ```
 

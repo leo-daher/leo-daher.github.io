@@ -38,7 +38,13 @@ void main() {
     );
   }
   test('portfolio destination follows the supported portfolio locales', () {
-    expect(LeoneSignature.portfolioUri(const Locale('pt')).path, '/pt/');
-    expect(LeoneSignature.portfolioUri(const Locale('es')).path, '/');
+    expect(
+      LeoneSignature.portfolioUri(const Locale('pt')),
+      Uri.parse('https://leonedaher.com/pt/'),
+    );
+    expect(
+      LeoneSignature.portfolioUri(const Locale('es')),
+      Uri.parse('https://leonedaher.com/'),
+    );
   });
 }

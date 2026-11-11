@@ -7,7 +7,7 @@ test('localized static signatures work without a browser, scripts, fonts or remo
   for (const [locale,label,path] of [['pt-BR','Criado por','/pt/'],['en','Created by','/'],['es','Creado por','/']]) {
     const html=renderSignature({locale,id:`example-${locale}`});
     assert.ok(html.includes(label));
-    assert.ok(html.includes(`href="https://leo-daher.github.io${path}"`));
+    assert.ok(html.includes(`href="https://leonedaher.com${path}"`));
     assert.match(html,/rel="noopener noreferrer"/);
     assert.doesNotMatch(html,/<script|<img|<style|on[a-z]+=/i);
     assert.equal((html.match(/aria-hidden="true"/g)||[]).length,4);
@@ -24,7 +24,7 @@ test('untrusted options cannot introduce markup or arbitrary destinations', () =
   assert.throws(()=>renderSignature({id:'x" onload="alert(1)'}),TypeError);
   assert.throws(()=>renderSignature({variant:'<script>'}),TypeError);
   assert.throws(()=>renderSignature({theme:'bad'}),TypeError);
-  assert.equal(signatureContent({locale:'<script>'}).href,'https://leo-daher.github.io/');
+  assert.equal(signatureContent({locale:'<script>'}).href,'https://leonedaher.com/');
 });
 test('packaged SVG assets and generated CSS match the canonical sources', async () => {
   for(const name of ['ld-mark.svg','ld-mark-inverse.svg']) {
