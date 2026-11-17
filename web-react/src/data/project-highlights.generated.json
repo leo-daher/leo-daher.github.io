@@ -1,5 +1,17 @@
 [
   {
+    "id": "radar-ofertas",
+    "name": "Promosaico",
+    "kind": "personal",
+    "href": "https://promosaico.com.br/",
+    "factId": "promosaico-product",
+    "appStoreHref": "https://apps.apple.com/br/app/promosaico/id6831456134",
+    "description": {
+      "pt": "Busca e comparação de ofertas de lojas online, com produtos salvos, site e app para iPhone e iPad publicado na App Store.",
+      "en": "Online-store offer search and comparison, with saved products, a website and an iPhone and iPad app published on the App Store."
+    }
+  },
+  {
     "id": "recomp-center",
     "name": "Recomp Center",
     "kind": "personal",

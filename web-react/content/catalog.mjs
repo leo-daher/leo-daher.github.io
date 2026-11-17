@@ -236,11 +236,19 @@ function profileDocument(profile, locale, t, url, interpretation) {
     ).join("\n"),
     ...projectHighlights.flatMap((project) => [
       `## ${project.name}`,
+      t("personalProject"),
       project.description[locale],
       link(project.name, project.href),
-      locale === "pt"
-        ? `Retrato da Cloudflare consultado em ${recompSnapshot.asOf}: aproximadamente ${new Intl.NumberFormat("pt-BR").format(recompSnapshot.metrics.visits)} visitas e ${new Intl.NumberFormat("pt-BR").format(recompSnapshot.metrics.requests)} requisições, na janela de 30 dias até a consulta. Inclui tráfego automatizado; não mede usuários únicos ou instalações.`
-        : `Cloudflare snapshot checked on ${recompSnapshot.asOf}: approximately ${new Intl.NumberFormat("en").format(recompSnapshot.metrics.visits)} visits and ${new Intl.NumberFormat("en").format(recompSnapshot.metrics.requests)} requests, in the 30-day window ending at the check. Includes automated traffic; does not measure unique users or installations.`,
+      ...(project.appStoreHref
+        ? [link("App Store", project.appStoreHref)]
+        : []),
+      ...(project.id === "recomp-center"
+        ? [
+            locale === "pt"
+              ? `Retrato da Cloudflare consultado em ${recompSnapshot.asOf}: aproximadamente ${new Intl.NumberFormat("pt-BR").format(recompSnapshot.metrics.visits)} visitas e ${new Intl.NumberFormat("pt-BR").format(recompSnapshot.metrics.requests)} requisições, na janela de 30 dias até a consulta. Inclui tráfego automatizado; não mede usuários únicos ou instalações.`
+              : `Cloudflare snapshot checked on ${recompSnapshot.asOf}: approximately ${new Intl.NumberFormat("en").format(recompSnapshot.metrics.visits)} visits and ${new Intl.NumberFormat("en").format(recompSnapshot.metrics.requests)} requests, in the 30-day window ending at the check. Includes automated traffic; does not measure unique users or installations.`,
+          ]
+        : []),
     ]),
     `## ${t("professionalExperienceTitle")}`,
     t("professionalExperienceCopy"),
@@ -290,6 +298,22 @@ function profileDocument(profile, locale, t, url, interpretation) {
       description: `${t("mobileSupporting")} ${t("aiSupporting")}`,
       inLanguage: languageCode(locale),
       mainEntity: person,
+      hasPart: projectHighlights.map((project) => ({
+        "@type": "CreativeWork",
+        name: project.name,
+        url: project.href,
+        genre: t("personalProject"),
+        description: project.description[locale],
+        ...(project.appStoreHref
+          ? {
+              hasPart: {
+                "@type": "SoftwareApplication",
+                name: project.name,
+                installUrl: project.appStoreHref,
+              },
+            }
+          : {}),
+      })),
     },
   });
 }

@@ -1,0 +1,61 @@
+.promosaico-highlight {
+  margin-block: 20px 56px;
+}
+.promosaico-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px 40px;
+  padding: 30px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 78%, var(--canvas));
+  border: 1px solid var(--outline);
+  border-radius: 24px;
+}
+.promosaico-project-copy .eyebrow {
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+.promosaico-project-copy h2 {
+  margin-bottom: 10px;
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.8px;
+}
+.promosaico-project-copy > p:not(.eyebrow) {
+  max-width: 560px;
+  color: var(--muted);
+}
+.promosaico-project-links {
+  display: grid;
+  gap: 12px;
+}
+.promosaico-project-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  padding: 11px 18px;
+  border: 1px solid var(--outline);
+  border-radius: 14px;
+  font-weight: 650;
+}
+.promosaico-project-links a:hover {
+  background: var(--raised);
+}
+.promosaico-project-links .promosaico-app-link {
+  color: #231d36;
+  background: #e1d5ff;
+  border-color: transparent;
+}
+.promosaico-project-links .promosaico-app-link:hover {
+  background: #d6c5fb;
+}
+@media (max-width: 640px) {
+  .promosaico-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 24px;
+  }
+}

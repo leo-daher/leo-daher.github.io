@@ -23,6 +23,7 @@ import { Clients } from "./features/Clients.jsx";
 import { Hero, Opening } from "./features/Hero.jsx";
 import { AppsSection, AppsPage, AppDetailPage } from "./features/Apps.jsx";
 import { RecompProject } from "./features/RecompProject.jsx";
+import { PromosaicoProject } from "./features/PromosaicoProject.jsx";
 import {
   ExperiencesSection,
   ExperiencesPage,
@@ -225,6 +226,7 @@ function Home({ active }) {
         <AppsSection />
       </div>
       <RecompProject />
+      <PromosaicoProject />
       <ExperiencesSection />
       <Capabilities />
       <Clients />

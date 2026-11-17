@@ -118,7 +118,7 @@ export function RecompProject() {
     >
       <div className="recomp-card">
         <div className="recomp-project-copy">
-          <p className="eyebrow">RECOMP.CENTER</p>
+          <p className="eyebrow">{t("personalProject")}</p>
           <h2>{project.name}</h2>
           <p>{project.description[locale]}</p>
           <a href={project.href} target="_blank" rel="noreferrer">

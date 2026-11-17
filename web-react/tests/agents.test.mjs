@@ -129,6 +129,50 @@ test("all localized pages expose real content, canonical metadata and matching M
   }
 });
 
+test("personal projects expose their official links without inheriting each other's metrics", async () => {
+  const promosaico = catalog.profile.featuredProjects.find(
+    (project) => project.id === "radar-ofertas",
+  );
+  assert.equal(promosaico.kind, "personal");
+  assert.equal(promosaico.href, "https://promosaico.com.br/");
+  assert.equal(
+    promosaico.appStoreHref,
+    "https://apps.apple.com/br/app/promosaico/id6831456134",
+  );
+  for (const locale of ["en", "pt"]) {
+    const doc = catalog.documents.find(
+      (item) => item.id === "profile" && item.locale === locale,
+    );
+    const html = await (await fetch(local(doc.url))).text();
+    const section = html.match(
+      /<section\b[^>]*\bid="promosaico"[^>]*>([\s\S]*?)<\/section>/,
+    )?.[1];
+    assert.ok(section);
+    const personal = locale === "pt" ? "Projeto pessoal" : "Personal project";
+    assert.ok(plainText(section).includes(personal));
+    for (const href of [promosaico.href, promosaico.appStoreHref]) {
+      assert.ok(section.includes(`href="${href}"`));
+      assert.ok(doc.markdown.includes(href));
+    }
+    const blocks = doc.markdown.split(/^## /m);
+    const promosaicoBlock = blocks.find((block) =>
+      block.startsWith("Promosaico\n"),
+    );
+    const recompBlock = blocks.find((block) =>
+      block.startsWith("Recomp Center\n"),
+    );
+    assert.ok(promosaicoBlock.includes(personal));
+    assert.ok(recompBlock.includes(personal));
+    assert.doesNotMatch(promosaicoBlock, /Cloudflare|2[.,]46|44[.,]33/);
+    assert.match(recompBlock, /Cloudflare/);
+    const projectSchema = doc.schema.hasPart.find(
+      (project) => project.name === "Promosaico",
+    );
+    assert.equal(projectSchema.genre, personal);
+    assert.equal(projectSchema.hasPart.installUrl, promosaico.appStoreHref);
+  }
+});
+
 test("the Lyzer suite opens both published apps without JavaScript and preserves their individual identities", async () => {
   const screenshots = [
     "lyzer-collect-01.png",
