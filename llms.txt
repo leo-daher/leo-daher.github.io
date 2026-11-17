@@ -1,0 +1,50 @@
+# Leone Daher
+
+> Public portfolio covering mobile engineering, connected systems, AI automation, selected published apps, verified course records, and an article about the LD visual identity. English is the default at the root; Portuguese documents are available under /pt/.
+
+The Markdown versions mirror the public portfolio copy and selected public evidence. Cases describe contribution within teams; store listings are product evidence. The contact section gives the public professional channels.
+
+The 14-app count belongs to the Latitudde/Conkord inventory of Android and iOS deliveries. MAG Venda Digital is excluded; the count does not mean 14 individually authored products.
+
+Case studies describe Leone's role and contribution within teams. A store listing supports the existence of a published product, but does not establish sole authorship or responsibility for the entire product.
+
+Store metrics are snapshots checked in July 2026. Values with + and rounded summaries such as 11.5K+ are not exact counts or current measurements; ratings, downloads, and availability may change.
+
+Certificates document completion of the listed courses. They do not, on their own, establish professional experience, technology mastery, or current language fluency.
+
+The MAG evidence records a collective delivery. The post URL and date are reproduced when present in the selected public record; missing fields remain unknown.
+
+Português: os documentos abaixo reproduzem o conteúdo público do portfólio. Os 14 apps pertencem ao inventário Latitudde/Conkord, sem somar MAG. Métricas de loja foram consultadas em julho de 2026; cursos não substituem experiência profissional.
+
+## English
+
+- [Leone Daher — Software Engineer](https://leonedaher.com/index.md): Mobile products powered by smart, connected systems. Python, agents and automation built around real work.
+- [Published apps — Leone Daher](https://leonedaher.com/apps/index.md): Browse the published mobile products and open each case for screens, stack, and public store proof.
+- [Experience by project and contribution. | Leone Daher](https://leonedaher.com/experiencias/index.md): Professional work across companies and clients: from mobile development to service integration, automation, data and infrastructure.
+- [Van Cranenbroek — App case study | Leone Daher](https://leonedaher.com/apps/van-cranenbroek/index.md): Offers, catalogues, stores, and customer communication in a multiplatform product.
+- [Lyzer Collect — App case study | Leone Daher](https://leonedaher.com/apps/lyzer-collect/index.md): Collection and order preparation built for connected field operations.
+- [Lyzer Deliver — App case study | Leone Daher](https://leonedaher.com/apps/lyzer-deliver/index.md): Routes, offline execution, and proof of delivery for field teams.
+- [MAG Venda Digital — App case study | Leone Daher](https://leonedaher.com/apps/mag-venda-digital/index.md): A digital sales tool for brokers to follow products and proposals.
+- [Lyzer Collect + Deliver — App case study | Leone Daher](https://leonedaher.com/apps/lyzer-collect-deliver/index.md): An operational suite connecting collection, order preparation, routes, and delivery.
+- [Certifications — Leone Daher](https://leonedaher.com/certificacoes/index.md): Browse credentials by year and select one to view the official record and verification options.
+- [Visual identity: the LD logo — Leone Daher](https://leonedaher.com/artigos/identidade-visual/index.md): The process behind the LD symbol, its visual language, and the idea of turning the brand itself into an interface.
+
+## Português
+
+- [Leone Daher — Engenheiro de Software](https://leonedaher.com/pt/index.md): Produtos mobile movidos por sistemas inteligentes e conectados. Python, agentes e automação construídos para o trabalho real.
+- [Apps publicados — Leone Daher](https://leonedaher.com/pt/apps/index.md): Explore os produtos mobile publicados e abra cada case para ver telas, stack e provas públicas nas lojas.
+- [Experiências por projeto e contribuição. | Leone Daher](https://leonedaher.com/pt/experiencias/index.md): Trabalho profissional em diferentes empresas e clientes: do desenvolvimento mobile à integração de serviços, automação, dados e infraestrutura.
+- [Van Cranenbroek — Case de app | Leone Daher](https://leonedaher.com/pt/apps/van-cranenbroek/index.md): Ofertas, folhetos, lojas e comunicação com clientes em um produto multiplataforma.
+- [Lyzer Collect — Case de app | Leone Daher](https://leonedaher.com/pt/apps/lyzer-collect/index.md): Coleta e preparação de pedidos para operações de campo conectadas.
+- [Lyzer Deliver — Case de app | Leone Daher](https://leonedaher.com/pt/apps/lyzer-deliver/index.md): Rotas, operação offline e comprovação de entrega para equipes em campo.
+- [MAG Venda Digital — Case de app | Leone Daher](https://leonedaher.com/pt/apps/mag-venda-digital/index.md): Ferramenta de venda digital para corretores acompanharem produtos e propostas.
+- [Lyzer Collect + Deliver — Case de app | Leone Daher](https://leonedaher.com/pt/apps/lyzer-collect-deliver/index.md): Suite operacional que conecta coleta, preparação de pedidos, rotas e entrega.
+- [Certificações — Leone Daher](https://leonedaher.com/pt/certificacoes/index.md): Navegue pelas credenciais por ano e selecione uma para ver o registro oficial e as opções de validação.
+- [Identidade visual: a logo LD — Leone Daher](https://leonedaher.com/pt/artigos/identidade-visual/index.md): O processo por trás do símbolo LD, da linguagem visual e da ideia de transformar a própria marca em interface.
+
+## Optional
+
+- [Full public content](https://leonedaher.com/llms-full.txt): All Portuguese and English Markdown documents with their source-page links.
+- [Public content catalog](https://leonedaher.com/portfolio.json): Profile, bounded metrics, document metadata, Markdown, and Schema.org JSON-LD. This is a site-specific JSON export.
+- [Certificate source records](https://leonedaher.com/assets/certificates/catalog.json): The existing public catalog, verification dates, issuers, tags, and official validation URLs.
+- [MAG collective-delivery evidence](https://leonedaher.com/assets/evidence/mag-venda-digital-reconhecimento-facial.json): The selected public record of a team delivery; original post metadata is included only when published.

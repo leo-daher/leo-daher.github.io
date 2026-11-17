@@ -1,0 +1,2099 @@
+# Leone Daher — full public portfolio
+
+> Portuguese and English content generated from the same public interface copy, selected app catalog, public credential records, and selected MAG evidence.
+
+## EN · profile
+
+Source page: https://leonedaher.com/
+
+Markdown: https://leonedaher.com/index.md
+
+# Leone Daher
+
+> Software Engineer · AI Automation Engineer
+
+Mobile products powered by smart, connected systems.
+
+Python, agents and automation built around real work.
+
+## Profile and role
+
+- 7+ YEARS BUILDING SOFTWARE
+- 14 apps delivered Android and iOS
+- INTERNATIONAL EXPERIENCE: Latin America · USA · Europe
+
+## Areas of expertise.
+
+### Applications and mobile
+
+Android and iOS applications, native capabilities and workflows for everyday use and field operations.
+
+Flutter · Kotlin · Swift · React Native
+
+[Explore the Van Cranenbroek app](https://leonedaher.com/apps/van-cranenbroek)
+
+### Backend and integrations
+
+Services that connect systems and organize the data applications need.
+
+.NET · Python · GraphQL · HTTP
+
+[Explore Lyzer’s backend](https://leonedaher.com/experiencias#lyzer)
+
+### Delivery and performance
+
+Improving products in use through version releases and faster loading and smoother interfaces.
+
+CI/CD · releases · performance
+
+[Explore LineLinker Pro](https://leonedaher.com/experiencias#code-495)
+
+### AI for maintenance
+
+AI-assisted bug investigation and proposed fixes, with mandatory developer review.
+
+Claude Code · MCP · Sentry · Jira
+
+[Explore the investigation workflow](https://leonedaher.com/experiencias#lyzer)
+
+## Featured apps
+
+Published products, official stores and details of my contribution. Downloads checked in July 2026.
+
+- [Van Cranenbroek](https://leonedaher.com/apps/van-cranenbroek/): Offers, catalogues, stores, and customer communication in a multiplatform product. 11.5K+ downloads · Flutter · Kotlin · Swift
+- [Lyzer Collect + Deliver](https://leonedaher.com/apps/lyzer-collect-deliver/): An operational suite connecting collection, order preparation, routes, and delivery. 1.1K+ downloads · Flutter · Android · iOS
+- [MAG Venda Digital](https://leonedaher.com/apps/mag-venda-digital/): A digital sales tool for brokers to follow products and proposals. 1K+ downloads · Android · Kotlin
+
+## Promosaico
+
+Personal project
+
+Online-store offer search and comparison, with saved products, a website and an iPhone and iPad app published on the App Store.
+
+[Promosaico](https://promosaico.com.br/)
+
+[App Store](https://apps.apple.com/br/app/promosaico/id6831456134)
+
+## Recomp Center
+
+Personal project
+
+A catalog of game recompilation, decompilation and native port projects.
+
+[Recomp Center](https://recomp.center/)
+
+Cloudflare snapshot checked on 2026-10-28: approximately 2,460 visits and 44,330 requests, in the 30-day window ending at the check. Includes automated traffic; does not measure unique users or installations.
+
+## Engineering beyond the screens.
+
+AI for software maintenance, Python optimization, computer vision and web systems. Explore the problems I worked on and my contribution to each project.
+
+- [Lyzer: From bug investigation to proposed fixes](https://leonedaher.com/experiencias/#lyzer): I built a workflow connecting logs, tasks and code with human review, and worked on the logistics operation's backend and backoffice.
+- [Visagio: School allocation with Python and linear optimization](https://leonedaher.com/experiencias/#visagio): Developed a public-school allocation system connecting business rules, data and user workflows.
+- [Human Robotics: Face and mask detection on Robios](https://leonedaher.com/experiencias/#human-robotics): Integrated camera capture, inference and device communication in a robotics product.
+- [Iberdrola: Mobile and offline experience for energy sales](https://leonedaher.com/experiencias/#iberdrola): Worked on a renewable energy sales system with PWA capabilities, an anti-fraud integration and form rules.
+
+[View all experience](https://leonedaher.com/experiencias/)
+
+## CERTIFICATIONS
+
+Official course records available for consultation, with source verification and archived certificates.
+
+[Certificate register](https://leonedaher.com/certificacoes/)
+
+## ARTICLES
+
+A place to share processes, technical knowledge, and what I learn while building real products.
+
+[How I designed this portfolio's logo and visual identity](https://leonedaher.com/artigos/identidade-visual/): The process behind the LD symbol, its visual language, and the idea of turning the brand itself into an interface.
+
+## Contact
+
+For opportunities, projects, or a technical conversation, choose the most convenient channel.
+
+- [LinkedIn](https://www.linkedin.com/in/leonedaher/)
+- [WhatsApp](https://wa.me/5521999997667)
+- [GitHub](https://github.com/leo-daher)
+- [Schedule a conversation](https://calendly.com/leonedaher/30min)
+
+## Provenance and limits
+
+- The 14-app count belongs to the Latitudde/Conkord inventory of Android and iOS deliveries. MAG Venda Digital is excluded; the count does not mean 14 individually authored products.
+- Case studies describe Leone's role and contribution within teams. A store listing supports the existence of a published product, but does not establish sole authorship or responsibility for the entire product.
+- Store metrics are snapshots checked in July 2026. Values with + and rounded summaries such as 11.5K+ are not exact counts or current measurements; ratings, downloads, and availability may change.
+- Certificates document completion of the listed courses. They do not, on their own, establish professional experience, technology mastery, or current language fluency.
+- The MAG evidence records a collective delivery. The post URL and date are reproduced when present in the selected public record; missing fields remain unknown.
+
+## Public sources
+
+[Portfolio page](https://leonedaher.com/)
+
+---
+
+## EN · apps
+
+Source page: https://leonedaher.com/apps/
+
+Markdown: https://leonedaher.com/apps/index.md
+
+# All apps
+
+Browse the published mobile products and open each case for screens, stack, and public store proof.
+
+## [Van Cranenbroek](https://leonedaher.com/apps/van-cranenbroek/)
+
+Offers, catalogues, stores, and customer communication in a multiplatform product.
+
+**Published summary:** 11.5K+ downloads · Flutter · Kotlin · Swift
+
+Checked in July 2026.
+
+## [Lyzer Collect](https://leonedaher.com/apps/lyzer-collect/)
+
+Collection and order preparation built for connected field operations.
+
+**Published summary:** 1K+ downloads · Flutter · Android · iOS
+
+Checked in July 2026.
+
+## [Lyzer Deliver](https://leonedaher.com/apps/lyzer-deliver/)
+
+Routes, offline execution, and proof of delivery for field teams.
+
+**Published summary:** 100+ downloads · Flutter · Android · iOS
+
+Checked in July 2026.
+
+## [MAG Venda Digital](https://leonedaher.com/apps/mag-venda-digital/)
+
+A digital sales tool for brokers to follow products and proposals.
+
+**Published summary:** 1K+ downloads · Android · Kotlin
+
+Checked in July 2026.
+
+## Provenance and limits
+
+- The 14-app count belongs to the Latitudde/Conkord inventory of Android and iOS deliveries. MAG Venda Digital is excluded; the count does not mean 14 individually authored products.
+- Case studies describe Leone's role and contribution within teams. A store listing supports the existence of a published product, but does not establish sole authorship or responsibility for the entire product.
+- Store metrics are snapshots checked in July 2026. Values with + and rounded summaries such as 11.5K+ are not exact counts or current measurements; ratings, downloads, and availability may change.
+
+## Public sources
+
+[Portfolio page](https://leonedaher.com/apps/)
+
+---
+
+## EN · experiences
+
+Source page: https://leonedaher.com/experiencias/
+
+Markdown: https://leonedaher.com/experiencias/index.md
+
+# Experience by project and contribution.
+
+Professional work across companies and clients: from mobile development to service integration, automation, data and infrastructure.
+
+## Lyzer: From bug investigation to proposed fixes
+
+Client through Latitudde / Conkord
+
+I built a workflow connecting logs, tasks and code with human review, and worked on the logistics operation's backend and backoffice.
+
+### Contribution
+
+- Connected Claude Code to Sentry, Jira and Azure MCP integrations to investigate bug trends, create tickets and propose pull requests for simple fixes, with mandatory developer approval.
+- Created code-generation skills following project conventions and spec-driven development documents, and built and maintained the pipeline.
+- Worked on a .NET BFF that queries microservices through GraphQL and HTTP and composes responses for the app; backoffice work included reusable components, responsive interfaces and refactoring.
+
+**Stack:** Claude Code · MCP · Sentry · Jira · Azure DevOps · .NET · GraphQL · Next.js
+
+## Visagio: School allocation with Python and linear optimization
+
+Data and optimization
+
+Developed a public-school allocation system connecting business rules, data and user workflows.
+
+### Contribution
+
+- Worked on full-stack development with Python, Django and React for the school allocation system.
+- Configured AWS EC2 instances to run linear optimization routines in Python with OR-Tools.
+- Automated Google Sheets processes with Apps Script and communicated technical progress through weekly stakeholder reports.
+
+**Stack:** Python · Django · React · OR-Tools · AWS EC2 · Google Apps Script
+
+## Human Robotics: Face and mask detection on Robios
+
+Computer vision and IoT
+
+Integrated camera capture, inference and device communication in a robotics product.
+
+### Contribution
+
+- Developed Android features in Java for face detection and mask-use classification, integrated with a TensorFlow model.
+- Used Camera2 to capture the images consumed by the computer vision workflow.
+- Worked with real-time MQTT communication between devices and backend, in a setting with LiDAR and ultrasonic sensors and NUC mini PCs.
+
+**Stack:** Android · Java · Camera2 · TensorFlow · MQTT
+
+## Iberdrola: Mobile and offline experience for energy sales
+
+Client through Latitudde / Conkord
+
+Worked on a renewable energy sales system with PWA capabilities, an anti-fraud integration and form rules.
+
+### Contribution
+
+- Developed Progressive Web App capabilities for the mobile experience and offline use.
+- Integrated the IPQualityScore API to support fraud protection.
+- Implemented client-side form validation and search filters with Laravel Query Builder.
+
+**Stack:** PHP · Laravel · Vue.js · PWA · IPQualityScore API
+
+## Ernst & Young: Dynamic forms for legal practice management
+
+Client through Latitudde / Conkord
+
+Modernized a Flutter application and worked on registration, document and Android/iOS release workflows.
+
+### Contribution
+
+- Handled API changes and compatibility with Flutter updates in an existing application.
+- Developed dynamic forms for clients, opportunities and potential conflicts, with complex rules and BLoC state management.
+- Implemented image and document capture and upload, and led store publication.
+
+**Stack:** Flutter · Dart · BLoC · Android · iOS · Firebase
+
+## CTT — Correios de Portugal: Android for delivery tracking
+
+Client through Latitudde / Conkord
+
+Worked on variant consolidation, notifications and offline continuity in a courier system.
+
+### Contribution
+
+- Unified single-language applications using Gradle flavor dimensions.
+- Implemented FCM notifications that triggered in-app events and improved issue investigation with Crashlytics.
+- Enabled offline use for couriers through local data persistence.
+
+**Stack:** Android · Kotlin · Gradle · FCM · Crashlytics
+
+## Águas de Monchique: Frontend, backend and database in containers
+
+Client through Latitudde / Conkord
+
+Set up a Docker environment and maintained the project; deliveries for the client also include a Flutter Web dashboard.
+
+### Contribution
+
+- Created the Docker setup for frontend, backend and database from scratch, standardizing system execution.
+- Worked on maintenance and small improvements following the initial setup.
+- Delivered a Flutter Android application and a web dashboard for the client.
+
+**Stack:** Docker · Flutter Web
+
+## Fullsix: OCR API analysis and support for a .NET team
+
+Client through Latitudde / Conkord
+
+Analyzed a Python OCR API and helped .NET developers work with Python.
+
+### Contribution
+
+- Analyzed and explained the OCR API's behavior in the project context.
+- Guided .NET developers through Python fundamentals and data structures.
+
+**Stack:** Python · OCR API
+
+## Ascendi / SustIMS: Mobile delivery and issue reproduction
+
+Client through Latitudde / Conkord
+
+Worked on React Native deliveries for Android/iOS and reused agent workflows for SustIMS maintenance.
+
+### Contribution
+
+- Delivered Android and iOS builds.
+- Turned Sentry events into mocks to reproduce errors and support investigation.
+- Prepared demonstrations using recent non-sensitive data through the maintenance workflows.
+
+**Stack:** React Native · Android · iOS · Sentry · AI agents
+
+## Águas de Portugal: Business needs translated into scope
+
+Requirements and product
+
+Led requirements discovery, scope refinement and business rule mapping.
+
+### Contribution
+
+- Led sessions to understand client needs and align system scope.
+- Created detailed flowcharts and mapped business rules to guide implementation.
+
+**Stack:** Requirements · Business rules · Flowcharts
+
+## Code 495 / LineLinker Pro: LineLinker Pro: offline fieldwork and responsive maps
+
+Client through Latitudde / Conkord
+
+Coordinated a four-person team across backend and mobile and contributed to the code of a Flutter application for field operations.
+
+### Contribution
+
+- Coordinated a four-person team across backend and mobile and aligned the project weekly with stakeholders while contributing directly to the code.
+- Implemented offline use with automatic background synchronization when connectivity returned and user-assisted resolution of conflicts between versions.
+- Reduced map loading from around two minutes to under one second and increased rendering from around 5 to 60 FPS when moving the map, using point clustering.
+
+**Stack:** Flutter · Dart · Android · iOS
+
+## Conkord: Mobile leadership
+
+Mobile leadership
+
+I lead Conkord’s mobile practice. All mobile projects involve me, whether in defining architecture, guiding the team or maintaining applications already in production.
+
+### Projects
+
+- [Van Cranenbroek: Retail application](https://leonedaher.com/apps/van-cranenbroek)
+- [Lyzer: Collect · order preparation](https://leonedaher.com/apps/lyzer-collect)
+- [Lyzer: Deliver · field operations](https://leonedaher.com/apps/lyzer-deliver)
+- [Lyzer: AI, backend and backoffice](https://leonedaher.com/experiencias#lyzer)
+- [CTT: Android delivery tracking](https://leonedaher.com/experiencias#ctt)
+- [EY: Forms for legal practice management](https://leonedaher.com/experiencias#ey)
+- [Iberdrola: Energy sales and PWA](https://leonedaher.com/experiencias#iberdrola)
+- [Água Monchique: Web system and Android](https://leonedaher.com/experiencias#monchique)
+- [Fullsix: OCR API analysis](https://leonedaher.com/experiencias#fullsix)
+- [Code 495: LineLinker Pro](https://leonedaher.com/experiencias#code-495)
+- [Ascendi: SustIMS](https://leonedaher.com/experiencias#ascendi)
+
+## Radix: Engineering internship
+
+August 2015 to August 2016.
+
+---
+
+## EN · van-cranenbroek
+
+Source page: https://leonedaher.com/apps/van-cranenbroek/
+
+Markdown: https://leonedaher.com/apps/van-cranenbroek/index.md
+
+# Van Cranenbroek
+
+Offers, catalogues, stores, and customer communication in a multiplatform product.
+
+**Published summary:** 11.5K+ downloads · Flutter · Kotlin · Swift
+
+Checked in July 2026.
+
+## Context
+
+Retail · Netherlands · Android and iOS
+
+## My role
+
+Mobile engineering in collaboration with the Latitudde team.
+
+## Contribution
+
+Work across Flutter with GetX, GetIt/Injectable, and Provider, Firebase/Firestore, deep links, interactive maps and SVGs, GitLab CI/CD and Fastlane, and Python Cloud Functions.
+
+## Connecting customers with the store
+
+Van Cranenbroek is a retail project in the Netherlands, with a Flutter application for Android and iOS that brings together offers, catalogues, store information and customer communication. The product connects browsing on a phone with visiting a store: customers can follow the company's content, find information to plan a visit and open directions to the location.
+
+My work through Latitudde covered mobile development, native platform integrations and backend services. I also led development and held weekly meetings directly with the client to align requirements, scope and costs. Those conversations were part of building the product, making it possible to discuss what needed to be delivered and how each request fitted into the solution.
+
+## Flutter and native platform capabilities
+
+The application uses Flutter to share its interface across Android and iOS. I worked with GetX and GetIt, as well as Firebase and Firestore integrations. State management, access to services and data presentation form the foundation supporting the application's different flows.
+
+I also defined the hybrid Flutter/Kotlin architecture and worked on Android/Kotlin and iOS/Swift integrations. A concrete iOS example is a MethodChannel between Dart and Swift that passes store data to a native map-app selector. It connects an action initiated in Flutter with a platform-specific experience, using the navigation options available on the device.
+
+## Maps, locations and navigation
+
+One part of the work was store navigation through deep links carrying queries and coordinates. Beyond displaying an address, the application connects store information with the customer's map application. The recorded Android flow uses a Flutter integration to open the map; on iOS, selecting a map application includes native communication with Swift.
+
+The project also included an interactive SVG map with pins positioned using relative coordinates. This approach associates points of interest with the visual map while keeping their positions tied to the drawing. It required work on both interaction and the relationship between location data and the elements displayed on screen.
+
+## Python services behind the mobile experience
+
+I developed Python Google Cloud Functions for communication features. One handled support requests by email and newsletter registration. Another integrated the Facebook API to provide a custom feed in the application, including company posts, follower counts and actions to follow the page.
+
+The Facebook integration included a backend caching strategy. The service decided when to fetch updated content and when to return existing data, sharing the result across application requests. This removed the need for each phone to query the external API directly and reduced unnecessary calls, without requiring a separate implementation in each mobile client.
+
+## Communication, delivery and the client relationship
+
+I configured Firebase Cloud Messaging and Firestore for notifications and data management, along with automated CI/CD processes. The work covered the experience inside the application, the services supplying its content and the process of preparing new Android and iOS versions.
+
+Van Cranenbroek was Latitudde's first project in the Netherlands. The client evaluated the product very positively, and it helped open doors for the company in the Dutch market. The links and screenshots above show the published application; the displayed store metrics retain their July 2026 observation date. This case brings together my product, mobile and backend contributions within the team's work.
+
+## Stack
+
+Flutter · GetX · GetIt · Injectable · Provider · Firebase · Firestore · Python · CI/CD
+
+## Public proof
+
+- [Google Play](https://play.google.com/store/apps/details?id=nl.vancranenbroek): 4.6 ★ · 179 ratings · 5K+ — Checked in July 2026.
+
+- [App Store](https://apps.apple.com/nl/app/van-cranenbroek/id6462761167): 4.7 ★ · 143 ratings · 6,511 first-time downloads — Checked in July 2026.
+
+## Official store images
+
+![Van Cranenbroek · Screens published in the store 1](https://leonedaher.com/assets/apps/van-cranenbroek-01.png)
+
+![Van Cranenbroek · Screens published in the store 2](https://leonedaher.com/assets/apps/van-cranenbroek-02.png)
+
+![Van Cranenbroek · Screens published in the store 3](https://leonedaher.com/assets/apps/van-cranenbroek-03.png)
+
+## Provenance and limits
+
+- The 14-app count belongs to the Latitudde/Conkord inventory of Android and iOS deliveries. MAG Venda Digital is excluded; the count does not mean 14 individually authored products.
+- Case studies describe Leone's role and contribution within teams. A store listing supports the existence of a published product, but does not establish sole authorship or responsibility for the entire product.
+- Store metrics are snapshots checked in July 2026. Values with + and rounded summaries such as 11.5K+ are not exact counts or current measurements; ratings, downloads, and availability may change.
+
+## Public sources
+
+[Portfolio page](https://leonedaher.com/apps/van-cranenbroek/)
+
+---
+
+## EN · lyzer-collect
+
+Source page: https://leonedaher.com/apps/lyzer-collect/
+
+Markdown: https://leonedaher.com/apps/lyzer-collect/index.md
+
+# Lyzer Collect
+
+Collection and order preparation built for connected field operations.
+
+**Published summary:** 1K+ downloads · Flutter · Android · iOS
+
+Checked in July 2026.
+
+## Shared case study: Lyzer Collect + Deliver
+
+An operational suite connecting collection, order preparation, routes, and delivery.
+
+## Context
+
+Logistics · Portugal · Flutter · Android and iOS
+
+## My role
+
+Flutter engineering across the Lyzer suite's Android and iOS operational flows.
+
+## Contribution
+
+Picking and delivery flows built on a proprietary GetX-based engine, with barcode scanning, offline synchronization, and integrations designed for field operations.
+
+## Order preparation within the logistics operation
+
+Lyzer Collect belongs to a suite connecting order management, preparation, routes and delivery for retail and e-commerce operations. It focuses on collection and order preparation, where the operator's work needs to be reflected in the operation's state. The mobile application is one interface in that process, alongside backend services and the logistics backoffice.
+
+My role included Flutter engineering across the suite's Android and iOS operational flows. Collect and Deliver are related products with different roles in the journey: Collect supports preparation, while Deliver supports delivery execution in the field. The experience across both products also involves integrations with the systems supporting that operation.
+
+## Camera and barcode scanning: the first version
+
+I implemented V1 of the camera-based barcode reader for Collect's picking flows. This experience connects capture on a phone with order preparation: the operator points the camera at a product, and the recognized code enters the flow that identifies the item and tracks its collection.
+
+The Flutter scanning implementation uses the camera package to control the camera and supply images, alongside google_mlkit_barcode_scanning to recognize codes with Google ML Kit. The scanner is organized as a service and a widget in the shared engine, separating capture and detection from Collect's order-preparation logic.
+
+Within the picking flow, scanning feeds code validation, product lookup in the order and handling of situations such as an already collected item or a code that does not belong to that order. This connection between camera and operation makes scanning a step in the operator's journey, with a result that the interface needs to explain and handle.
+
+## Engine and design system in two private Flutter packages
+
+Collect and Deliver share two private Flutter packages, maintained in their own repositories: engine and design_system. I worked with this common foundation when developing application flows. The separation supports reuse of infrastructure and visual components across products with different journeys, while maintaining shared conventions for the Lyzer suite.
+
+The proprietary engine builds on GetX and goes beyond state management: it includes base controller classes, navigation, services, data access and reusable capabilities such as the scanner. The design system concentrates themes, colors, typography and interface components, organized according to Atomic Design. Each package has a distinct responsibility in building the applications.
+
+The applications consume both packages as private Git dependencies. In practice, this connects Collect-specific flows with infrastructure shared with Deliver, while the interface uses the same visual foundations and components. My work on these flows needed to account for both order-preparation rules and the conventions of that shared foundation.
+
+## Offline operation and synchronization
+
+The suite includes offline operation and data synchronization to support field work. In this setting, the interface needs to represent both the user's action and the state of the data available on the device. Continuity of the flow and its subsequent integration with services are part of the engineering problem, alongside barcode scanning and the other preparation steps.
+
+This work connects the mobile experience with the logistics operation. Preparing an order does not end on the operator's screen: it belongs to a journey followed by other parts of the product. Application flows therefore need to be understood together with the backend and backoffice.
+
+## Backend and backoffice in the same product context
+
+Beyond mobile, I worked on related logistics backoffice efforts, including reusable components, responsive interfaces and refactoring for maintainability and performance. That context included order management, preparation and delivery tracking, in collaboration with other parts of the team.
+
+Another area was a .NET Backend for Frontend. It received Android/mobile application requests, queried the required microservices through GraphQL and HTTP, and composed a response for the client. Data composition was centralized in that layer, reducing complexity that would otherwise have to be handled by the application. These are related Lyzer experiences spanning more than one product in the suite.
+
+## Error investigation and application evolution
+
+The engineering work also included Flutter Agent Skills and Claude connected to Sentry through MCP to support Collect and Deliver investigations. It involved scheduled investigations and preparing Jira cards and pull requests with explanations, sources and tests for review. These tools formed part of application maintenance and development.
+
+The screenshots and official links on this page provide access to the published products. Download figures retain their original observation date of July 2026. My contribution brings together mobile development, service integration and problem investigation, connecting flow development with monitoring the application in use.
+
+## Stack
+
+Flutter · Android · iOS · Proprietary GetX engine · Private Flutter design system · Offline-first · Barcode · .NET BFF · GraphQL
+
+## Public proof
+
+- [Lyzer Collect · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.collect): 1K+ downloads — Updated Jul 6, 2026 · Checked in July 2026.
+
+- [Lyzer Collect · App Store](https://apps.apple.com/pt/app/lyzer-collect/id6738952338)
+
+- [Lyzer Deliver · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.deliver): 100+ downloads — Updated Jul 14, 2026 · Checked in July 2026.
+
+- [Lyzer Deliver · App Store](https://apps.apple.com/br/app/lyzer-deliver/id6748221787)
+
+## Official store images
+
+![Lyzer Collect · Screens published in the store 1](https://leonedaher.com/assets/apps/lyzer-collect-01.png)
+
+![Lyzer Collect · Screens published in the store 2](https://leonedaher.com/assets/apps/lyzer-collect-02.png)
+
+![Lyzer Deliver · Screens published in the store 1](https://leonedaher.com/assets/apps/lyzer-deliver-01.png)
+
+![Lyzer Deliver · Screens published in the store 2](https://leonedaher.com/assets/apps/lyzer-deliver-02.png)
+
+## Provenance and limits
+
+- The 14-app count belongs to the Latitudde/Conkord inventory of Android and iOS deliveries. MAG Venda Digital is excluded; the count does not mean 14 individually authored products.
+- Case studies describe Leone's role and contribution within teams. A store listing supports the existence of a published product, but does not establish sole authorship or responsibility for the entire product.
+- Store metrics are snapshots checked in July 2026. Values with + and rounded summaries such as 11.5K+ are not exact counts or current measurements; ratings, downloads, and availability may change.
+
+## Public sources
+
+[Portfolio page](https://leonedaher.com/apps/lyzer-collect/)
+
+---
+
+## EN · lyzer-deliver
+
+Source page: https://leonedaher.com/apps/lyzer-deliver/
+
+Markdown: https://leonedaher.com/apps/lyzer-deliver/index.md
+
+# Lyzer Deliver
+
+Routes, offline execution, and proof of delivery for field teams.
+
+**Published summary:** 100+ downloads · Flutter · Android · iOS
+
+Checked in July 2026.
+
+## Shared case study: Lyzer Collect + Deliver
+
+An operational suite connecting collection, order preparation, routes, and delivery.
+
+## Context
+
+Logistics · Portugal · Flutter · Android and iOS
+
+## My role
+
+Flutter engineering across the Lyzer suite's Android and iOS operational flows.
+
+## Contribution
+
+Picking and delivery flows built on a proprietary GetX-based engine, with barcode scanning, offline synchronization, and integrations designed for field operations.
+
+## Delivery on the field operator's phone
+
+Lyzer Deliver is the Lyzer suite's application for routes, field operation and proof of delivery. It connects with a logistics operation that also includes order management and preparation. While Collect supports preparation, Deliver follows the stage when an order travels to its destination and execution needs to be recorded by the operator.
+
+I worked on Flutter engineering for the suite's Android and iOS operational flows. Work on Deliver connects with the experience of using the application during an operation, representing delivery state and integrating with product services. The interface and data need to make sense throughout a sequence of actions, beyond any individual screen.
+
+## Engine and design system shared across the apps
+
+Deliver and Collect share two private Flutter packages: engine and design_system, consumed as Git dependencies from their own repositories. I worked on building and evolving flows within this structure, connecting the interface with data and delivery-operation rules.
+
+The proprietary engine is based on GetX and brings together state management, controllers, navigation, services and reusable capabilities. The design system provides themes and visual components organized using Atomic Design. This division keeps infrastructure and visual language shared while each application implements its own operational journey.
+
+Working across both products provided a view of the path from preparation to delivery and of how information moves between applications and services. That experience involves developing flows on a common foundation, considering how shared conventions affect the suite's consistency and maintainability.
+
+## Operational continuity with offline data
+
+Field operations include situations where connectivity is unavailable. Work on offline flows and synchronization accounts for that reality: the application needs to handle data on the device and its integration with services. In Deliver, this context belongs to the product's route, execution and proof-of-delivery experience.
+
+The challenge includes making the operation's state understandable to the person using the phone. The action performed in the application and the information reaching other systems belong to the same process. This relationship between the mobile experience and data was one dimension of my work on the suite's flows.
+
+## Service integration and logistics tracking
+
+My Lyzer experience also included a .NET Backend for Frontend. That layer received Android/mobile application requests, queried microservices through GraphQL and HTTP, and assembled the data into a response. Centralizing composition in the backend helped keep this logic outside the mobile client.
+
+In related backoffice work, I developed reusable components, responsive interfaces and refactoring for performance and maintainability. The backoffice supported order management, preparation and delivery tracking. This work complemented my Flutter experience and broadened my view of the relationships between the application, services and operational tracking.
+
+## Maintenance supported by investigation and review
+
+To support Deliver and Collect development, I used Flutter Agent Skills and Claude with Sentry access through MCP in investigation workflows. The experience included scheduled investigations and preparing Jira cards and pull requests with explanations, sources and tests for review. The aim was to turn information about problems into engineering work the team could examine.
+
+Deliver has public Android and iOS versions accessible through the official links above. The screenshots show the product and distinguish it from Collect. Download evidence is the snapshot checked in July 2026; this page explains my development and maintenance contribution within a collective effort.
+
+## Stack
+
+Flutter · Android · iOS · Proprietary GetX engine · Private Flutter design system · Offline-first · Barcode · .NET BFF · GraphQL
+
+## Public proof
+
+- [Lyzer Collect · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.collect): 1K+ downloads — Updated Jul 6, 2026 · Checked in July 2026.
+
+- [Lyzer Collect · App Store](https://apps.apple.com/pt/app/lyzer-collect/id6738952338)
+
+- [Lyzer Deliver · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.deliver): 100+ downloads — Updated Jul 14, 2026 · Checked in July 2026.
+
+- [Lyzer Deliver · App Store](https://apps.apple.com/br/app/lyzer-deliver/id6748221787)
+
+## Official store images
+
+![Lyzer Collect · Screens published in the store 1](https://leonedaher.com/assets/apps/lyzer-collect-01.png)
+
+![Lyzer Collect · Screens published in the store 2](https://leonedaher.com/assets/apps/lyzer-collect-02.png)
+
+![Lyzer Deliver · Screens published in the store 1](https://leonedaher.com/assets/apps/lyzer-deliver-01.png)
+
+![Lyzer Deliver · Screens published in the store 2](https://leonedaher.com/assets/apps/lyzer-deliver-02.png)
+
+## Provenance and limits
+
+- The 14-app count belongs to the Latitudde/Conkord inventory of Android and iOS deliveries. MAG Venda Digital is excluded; the count does not mean 14 individually authored products.
+- Case studies describe Leone's role and contribution within teams. A store listing supports the existence of a published product, but does not establish sole authorship or responsibility for the entire product.
+- Store metrics are snapshots checked in July 2026. Values with + and rounded summaries such as 11.5K+ are not exact counts or current measurements; ratings, downloads, and availability may change.
+
+## Public sources
+
+[Portfolio page](https://leonedaher.com/apps/lyzer-deliver/)
+
+---
+
+## EN · mag-venda-digital
+
+Source page: https://leonedaher.com/apps/mag-venda-digital/
+
+Markdown: https://leonedaher.com/apps/mag-venda-digital/index.md
+
+# MAG Venda Digital
+
+A digital sales tool for brokers to follow products and proposals.
+
+**Published summary:** 1K+ downloads · Android · Kotlin
+
+Checked in July 2026.
+
+## Context
+
+Insurance · Brazil · Android
+
+## My role
+
+Android engineering on the digital sales product.
+
+## Contribution
+
+Product evolution in Java/Kotlin, offline data with Realm, Gradle flavors, Firebase/Crashlytics, and an Azure pipeline.
+
+## An Android product for insurance sales
+
+MAG Venda Digital is a tool for brokers to follow insurance products and proposals. I worked at MAG / Mongeral Aegon as an Android developer between August 2019 and February 2021, in the context of sales applications. The work involved evolving a product used in daily operations and supporting maintenance and new version releases.
+
+I developed in Kotlin and Java, working on application flows and the capabilities supporting their use. Local data, distribution configuration, error monitoring and integration with the delivery process were all part of that experience. I worked within the product team, contributing to the areas described in this case.
+
+## Information available without a connection
+
+One area was enabling offline use with Realm, providing continued access to important information in the application. For a sales tool, keeping data available on the device supports the user's work when connectivity is unavailable. Local persistence formed part of the technical foundation addressing that need.
+
+Working with offline data adds considerations when implementing flows: the interface needs to use the available information and reflect the application's state. This local-storage experience complemented Android development and work on a production product.
+
+## Application variants and version delivery
+
+I worked with Gradle flavors for white-label variants. This configuration supports preparing application versions from a shared codebase, with the intended differences for each variant. The work required considering those configurations during development and release preparation.
+
+I also supported Azure CI/CD processes and mobile releases. Delivering a change involved its implementation, building the application and following the released version. This connection between development and publication formed part of my experience on the project.
+
+## Maintenance, tests and code organization
+
+I used Firebase and Crashlytics for incident monitoring and application maintenance, and worked on resolving production issues. These tools connected development with errors observed during product use, supporting investigation of application behavior and guiding fixes.
+
+I also gained experience with JUnit tests and dependency injection in an Android project using Dagger 2. Tests provide a way to check code behavior, while dependency injection helps organize relationships with other components. These practices complemented work on local data, integrations and application maintenance.
+
+## Recognition for a team delivery
+
+During my time on the Venda Digital team, the team delivered facial-recognition authentication and identity verification using the SERPRO API available at the time. The recognition post reproduced on this page names the team and me. It records a collective product delivery.
+
+I was part of the team responsible for that delivery, but did not personally implement the facial-recognition feature. My project contribution covered the Android areas described above. This context presents both individual work and the recognition received by the team accurately.
+
+## Stack
+
+Android · Java · Kotlin · Realm · Firebase · Azure · SERPRO API
+
+## Public proof
+
+- [Google Play](https://play.google.com/store/apps/details?id=com.mongeralaegon.vendadigital): 1K+ downloads — Updated Jul 16, 2026 · Checked in July 2026.
+
+## Official store images
+
+![MAG Venda Digital · Screens published in the store 1](https://leonedaher.com/assets/apps/mag-venda-digital-01.jpg)
+
+![MAG Venda Digital · Screens published in the store 2](https://leonedaher.com/assets/apps/mag-venda-digital-02.jpg)
+
+![MAG Venda Digital · Screens published in the store 3](https://leonedaher.com/assets/apps/mag-venda-digital-03.jpg)
+
+## Authentication and identity verification
+
+The Venda Digital team delivered facial-recognition authentication and identity verification using the SERPRO API available at the time. The post below documents this collective delivery.
+
+[View post on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:6631633718349967360/)
+
+![Post by Luís Henrique Fontes de Oliveira recognizing the team behind the facial-recognition delivery in Venda Digital.](https://leonedaher.com/assets/evidence/mag-venda-digital-reconhecimento-facial.png)
+
+Post author: Luís Henrique Fontes de Oliveira. Post date: not provided. Post URL: https://www.linkedin.com/feed/update/urn:li:activity:6631633718349967360/.
+
+[Public record of the collective delivery](https://leonedaher.com/assets/evidence/mag-venda-digital-reconhecimento-facial.json)
+
+## Provenance and limits
+
+- The 14-app count belongs to the Latitudde/Conkord inventory of Android and iOS deliveries. MAG Venda Digital is excluded; the count does not mean 14 individually authored products.
+- Case studies describe Leone's role and contribution within teams. A store listing supports the existence of a published product, but does not establish sole authorship or responsibility for the entire product.
+- Store metrics are snapshots checked in July 2026. Values with + and rounded summaries such as 11.5K+ are not exact counts or current measurements; ratings, downloads, and availability may change.
+- The MAG evidence records a collective delivery. The post URL and date are reproduced when present in the selected public record; missing fields remain unknown.
+
+## Public sources
+
+[Portfolio page](https://leonedaher.com/apps/mag-venda-digital/)
+
+---
+
+## EN · lyzer-collect-deliver
+
+Source page: https://leonedaher.com/apps/lyzer-collect-deliver/
+
+Markdown: https://leonedaher.com/apps/lyzer-collect-deliver/index.md
+
+# Lyzer Collect + Deliver
+
+An operational suite connecting collection, order preparation, routes, and delivery.
+
+**Published summary:** 1.1K+ downloads · Flutter · Android · iOS
+
+Checked in July 2026.
+
+## Context
+
+Logistics · Portugal · Flutter · Android and iOS
+
+## My role
+
+Flutter engineering across the Lyzer suite's Android and iOS operational flows.
+
+## Contribution
+
+Picking and delivery flows built on a proprietary GetX-based engine, with barcode scanning, offline synchronization, and integrations designed for field operations.
+
+## Stack
+
+Flutter · Android · iOS · Proprietary GetX engine · Private Flutter design system · Offline-first · Barcode · .NET BFF · GraphQL
+
+## Public proof
+
+- [Lyzer Collect · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.collect): 1K+ downloads — Updated Jul 6, 2026 · Checked in July 2026.
+
+- [Lyzer Collect · App Store](https://apps.apple.com/pt/app/lyzer-collect/id6738952338)
+
+- [Lyzer Deliver · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.deliver): 100+ downloads — Updated Jul 14, 2026 · Checked in July 2026.
+
+- [Lyzer Deliver · App Store](https://apps.apple.com/br/app/lyzer-deliver/id6748221787)
+
+## Official store images
+
+![Lyzer Collect · Screens published in the store 1](https://leonedaher.com/assets/apps/lyzer-collect-01.png)
+
+![Lyzer Collect · Screens published in the store 2](https://leonedaher.com/assets/apps/lyzer-collect-02.png)
+
+![Lyzer Deliver · Screens published in the store 1](https://leonedaher.com/assets/apps/lyzer-deliver-01.png)
+
+![Lyzer Deliver · Screens published in the store 2](https://leonedaher.com/assets/apps/lyzer-deliver-02.png)
+
+## Provenance and limits
+
+- The 14-app count belongs to the Latitudde/Conkord inventory of Android and iOS deliveries. MAG Venda Digital is excluded; the count does not mean 14 individually authored products.
+- Case studies describe Leone's role and contribution within teams. A store listing supports the existence of a published product, but does not establish sole authorship or responsibility for the entire product.
+- Store metrics are snapshots checked in July 2026. Values with + and rounded summaries such as 11.5K+ are not exact counts or current measurements; ratings, downloads, and availability may change.
+
+## Public sources
+
+[Portfolio page](https://leonedaher.com/apps/lyzer-collect-deliver/)
+
+---
+
+## EN · certificates
+
+Source page: https://leonedaher.com/certificacoes/
+
+Markdown: https://leonedaher.com/certificacoes/index.md
+
+# Certificate register
+
+Browse credentials by year and select one to view the official record and verification options.
+
+Official course records available for consultation, with source verification and archived certificates.
+
+## Provenance and limits
+
+Certificates document completion of the listed courses. They do not, on their own, establish professional experience, technology mastery, or current language fluency.
+
+## 2026
+
+### LangChain- Agentic AI Engineering with LangChain & LangGraph
+
+- Issued by Udemy
+- Holder: Leone Crespo Daher de Souza
+- Completed: 2026-10-07
+- Technologies: LangChain · LangGraph · RAG · MCP · AI · Python
+- Recorded verification: 2026-10-07 (verified)
+
+[Verify credential](https://www.udemy.com/certificate/UC-46b08eb2-381d-4fd1-a961-d6850f1680ba/) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/udemy-langchain-agentic-ai-engineering.jpg)
+
+### AI Fluency: AI Capabilities & Limitations
+
+- Issued by Anthropic Education
+- Holder: Leone Souza
+- Completed: 2026-07-17
+- Technologies: AI
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://verify.skilljar.com/c/5fx3uazp9qpf) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/anthropic-ai-capabilities-and-limitations.jpg)
+
+### AI Fluency: Framework & Foundations
+
+- Issued by Anthropic Education
+- Holder: Leone Souza
+- Completed: 2026-07-17
+- Technologies: AI
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://verify.skilljar.com/c/kezahcopgjcy) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/anthropic-ai-fluency-framework-and-foundations.jpg)
+
+### Model Context Protocol: Advanced Topics
+
+- Issued by Anthropic Education
+- Holder: Leone Souza
+- Completed: 2026-07-17
+- Technologies: MCP · AI
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://verify.skilljar.com/c/s8rd6t4thg8p) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/anthropic-model-context-protocol-advanced-topics.jpg)
+
+### Introduction to agent skills
+
+- Issued by Anthropic Education
+- Holder: Leone Souza
+- Completed: 2026-07-14
+- Technologies: AI · Agents
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://verify.skilljar.com/c/bveedbetxnv7) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/anthropic-introduction-to-agent-skills.jpg)
+
+### Introduction to subagents
+
+- Issued by Anthropic Education
+- Holder: Leone Souza
+- Completed: 2026-07-14
+- Technologies: AI · Agents
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://verify.skilljar.com/c/26g2xmzeywkg) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/anthropic-introduction-to-subagents.jpg)
+
+### Introduction to Model Context Protocol
+
+- Issued by Anthropic Education
+- Holder: Leone Souza
+- Completed: 2026-07-13
+- Technologies: MCP · AI
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://verify.skilljar.com/c/d2xnzgugngpc) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/anthropic-introduction-to-model-context-protocol.jpg)
+
+### Claude 101
+
+- Issued by Anthropic Education
+- Holder: Leone Souza
+- Completed: 2026-07-10
+- Technologies: AI
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://verify.skilljar.com/c/9zf6f7vtsx9j) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/anthropic-claude-101.jpg)
+
+### Claude Code 101
+
+- Issued by Anthropic Education
+- Holder: Leone Souza
+- Completed: 2026-07-10
+- Technologies: AI · Agents · Claude Code
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://verify.skilljar.com/c/tb2qahncsuan) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/anthropic-claude-code-101.jpg)
+
+### Claude Code in Action
+
+- Issued by Anthropic Education
+- Holder: Leone Souza
+- Completed: 2026-07-10
+- Technologies: AI · Agents · Claude Code
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://verify.skilljar.com/c/vm5rupmsy2pq) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/anthropic-claude-code-in-action.jpg)
+
+### Claude Platform 101
+
+- Issued by Anthropic Education
+- Holder: Leone Souza
+- Completed: 2026-07-10
+- Technologies: AI
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://verify.skilljar.com/c/qsjkyuvascj5) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/anthropic-claude-platform-101.jpg)
+
+## 2024
+
+### Build ASP.NET Core Web API - Scratch To Finish (.NET8 API)
+
+- Issued by Udemy
+- Holder: Leone Crespo Daher de Souza
+- Completed: 2024-04-18
+- Technologies: C# / .NET · REST APIs
+- Recorded verification: 2026-07-22 (verified)
+
+[Verify credential](https://www.udemy.com/certificate/UC-736004e1-63bd-4360-a1ed-9ee75a55bbad/) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/udemy-build-asp-net-core-web-api-scratch-to-finish-net8-api.jpg)
+
+## 2021
+
+### The Complete 2021 Flutter Development Bootcamp with Dart
+
+- Issued by Udemy
+- Holder: Leone Crespo Daher de Souza
+- Completed: 2021-08-16
+- Technologies: Flutter · Dart
+- Recorded verification: 2026-07-20 (verified)
+
+[Verify credential](https://www.udemy.com/certificate/UC-2ac4d6a7-6027-434f-a726-61c068daabc2/) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/udemy-complete-flutter-development-bootcamp-with-dart.jpg)
+
+## 2015
+
+### Laboratório de Conversação e Leitura acadêmica em inglês através de textos literários. - Intermediário, nível B2
+
+- Issued by Universidade Federal do Rio de Janeiro
+- Holder: LEONE CRESPO DAHER DE SOUZA
+- Completed: 2015-02-28
+- Technologies: English
+- Recorded verification: 2026-09-14 (verified)
+
+[Verify credential](https://isfaluno.mec.gov.br/validador) · [Official certificate image](https://leonedaher.com/assets/certificates/originals/ufrj-idiomas-sem-fronteiras-ingles-2015.jpg)
+
+## Public sources
+
+[Public certificate catalog](https://leonedaher.com/assets/certificates/catalog.json)
+
+[Portfolio page](https://leonedaher.com/certificacoes/)
+
+---
+
+## EN · visual-identity
+
+Source page: https://leonedaher.com/artigos/identidade-visual/
+
+Markdown: https://leonedaher.com/artigos/identidade-visual/index.md
+
+# How I designed this portfolio's logo and visual identity
+
+> The process behind the LD symbol, its visual language, and the idea of turning the brand itself into an interface.
+
+Published Sep 15, 2026 · 10:38 AM BRT
+
+![LD logo formed by the letters L and D, the outline of a screen, and an orange dot in the bottom-right corner.](https://leonedaher.com/assets/brand/ld-mark.svg)
+
+The complete mark brings together the initials, the frame, and the action dot.
+
+The logo combines my initials — L.D. — with the outline of a screen. I wanted to connect the symbol to mobile development without literally drawing a phone. The monogram therefore works both as a signature and as an interface frame.
+
+## The initials and the frame
+
+The L forms the left edge and the base. The D completes the top and the curved right side, creating the outline of a screen. At the lower junction, a small diagonal cut prevents both strokes from reading as a single line and preserves the visual separation between the L and the D.
+
+Exploded view of the L, the D, the diagonal cut, and the orange dot. Exploded view of the logo with the L separated on the left, the D separated on the right, the diagonal cut highlighted at the base, and the orange dot moved away from the frame.
+
+- L · structure
+- D · screen frame
+- Diagonal cut · separation
+- Dot · L.D. and action
+
+## The dot that becomes a button
+
+The coral dot — a vibrant orange — serves two purposes. In the signature, it is the dot in L.D. Inside the screen formed by the letters, it occupies the position of a floating action button (FAB), one of Material Design 3's most recognizable components.
+
+The relationship is not merely visual. When the site finishes opening, this same element becomes the button that provides access to navigation. Orange is reserved for action and transformation; the other vibrant colors appear as interface accents.
+
+From the signature dot to the functional FAB in the bottom-right corner. Comparison between the orange dot inside the logo and the functional FAB with a menu icon.
+
+## When the logo becomes the page
+
+When the site opens, the logo appears centered. The application measures the viewport — the area available within the screen or window — and reconstructs the frame to match its proportions. The four edges extend toward the four sides while the dot travels to the bottom-right corner.
+
+The frame briefly matches the viewport and then moves beyond its bounds. At that point, the interface already positioned behind it is revealed, and the dot assumes the form and function of the FAB. The effect is direct: the visitor enters the logo, and the brand becomes the surface of the site.
+
+Opening sequence: centered logo, expansion, viewport, and interface with the FAB. Four stages of the site opening: centered logo, expanding frame, frame matching the viewport, and interface revealed with the FAB in the bottom-right corner.
+
+1. Logo
+2. Expansion
+3. Viewport
+4. Interface
+
+The construction can be summarized in three functions: the L provides structure, the D forms the surface, and the dot concentrates the action. The result is a symbol that works as a signature when static and as an interface when the page opens.
+
+## Public sources
+
+[Portfolio page](https://leonedaher.com/artigos/identidade-visual/)
+
+---
+
+## PT · profile
+
+Source page: https://leonedaher.com/pt/
+
+Markdown: https://leonedaher.com/pt/index.md
+
+# Leone Daher
+
+> Engenheiro de Software · Engenheiro de Automação com IA
+
+Produtos mobile movidos por sistemas inteligentes e conectados.
+
+Python, agentes e automação construídos para o trabalho real.
+
+## Perfil e atuação
+
+- 7+ ANOS CONSTRUINDO SOFTWARE
+- 14 apps entregues Android e iOS
+- EXPERIÊNCIA INTERNACIONAL: América Latina · EUA · Europa
+
+## Áreas de atuação.
+
+### Aplicações e mobile
+
+Aplicações Android e iOS, recursos nativos e jornadas para uso cotidiano e operações em campo.
+
+Flutter · Kotlin · Swift · React Native
+
+[Ver o app Van Cranenbroek](https://leonedaher.com/pt/apps/van-cranenbroek)
+
+### Backend e integrações
+
+Serviços que conectam sistemas e organizam os dados necessários para os aplicativos.
+
+.NET · Python · GraphQL · HTTP
+
+[Ver o backend da Lyzer](https://leonedaher.com/pt/experiencias#lyzer)
+
+### Entrega e desempenho
+
+Evolução de produtos em uso, com publicação de versões e melhorias no carregamento e na fluidez da interface.
+
+CI/CD · publicação · performance
+
+[Ver o LineLinker Pro](https://leonedaher.com/pt/experiencias#code-495)
+
+### IA aplicada à manutenção
+
+Investigação de bugs e propostas de correção apoiadas por IA, com revisão obrigatória de um desenvolvedor.
+
+Claude Code · MCP · Sentry · Jira
+
+[Ver o fluxo de investigação](https://leonedaher.com/pt/experiencias#lyzer)
+
+## Apps em destaque
+
+Produtos publicados, lojas reais e detalhes da minha contribuição. Downloads consultados em julho de 2026.
+
+- [Van Cranenbroek](https://leonedaher.com/pt/apps/van-cranenbroek/): Ofertas, folhetos, lojas e comunicação com clientes em um produto multiplataforma. 11,5 mil+ downloads · Flutter · Kotlin · Swift
+- [Lyzer Collect + Deliver](https://leonedaher.com/pt/apps/lyzer-collect-deliver/): Suite operacional que conecta coleta, preparação de pedidos, rotas e entrega. 1,1 mil+ downloads · Flutter · Android · iOS
+- [MAG Venda Digital](https://leonedaher.com/pt/apps/mag-venda-digital/): Ferramenta de venda digital para corretores acompanharem produtos e propostas. 1 mil+ downloads · Android · Kotlin
+
+## Promosaico
+
+Projeto pessoal
+
+Busca e comparação de ofertas de lojas online, com produtos salvos, site e app para iPhone e iPad publicado na App Store.
+
+[Promosaico](https://promosaico.com.br/)
+
+[App Store](https://apps.apple.com/br/app/promosaico/id6831456134)
+
+## Recomp Center
+
+Projeto pessoal
+
+Catálogo de projetos de recompilação, descompilação e ports nativos de jogos.
+
+[Recomp Center](https://recomp.center/)
+
+Retrato da Cloudflare consultado em 2026-10-28: aproximadamente 2.460 visitas e 44.330 requisições, na janela de 30 dias até a consulta. Inclui tráfego automatizado; não mede usuários únicos ou instalações.
+
+## Engenharia além das telas.
+
+IA aplicada à manutenção, otimização com Python, visão computacional e sistemas web. Conheça os problemas em que trabalhei e a minha contribuição em cada projeto.
+
+- [Lyzer: Da investigação de bugs à proposta de correção](https://leonedaher.com/pt/experiencias/#lyzer): Construí um fluxo que conecta logs, tarefas e código, com revisão humana, e atuei no backend e no backoffice da operação logística.
+- [Visagio: Alocação escolar com Python e otimização linear](https://leonedaher.com/pt/experiencias/#visagio): Desenvolvi um sistema para alocação em escolas públicas, conectando regras de negócio, dados e fluxos de uso.
+- [Human Robotics: Detecção de faces e máscaras no Robios](https://leonedaher.com/pt/experiencias/#human-robotics): Integrei captura de câmera, inferência e comunicação entre dispositivos no contexto de um produto de robótica.
+- [Iberdrola: Experiência mobile e offline na venda de energia](https://leonedaher.com/pt/experiencias/#iberdrola): Atuei em um sistema de vendas de energia renovável, com recursos PWA, integração antifraude e regras de formulários.
+
+[Ver todas as experiências](https://leonedaher.com/pt/experiencias/)
+
+## CERTIFICAÇÕES
+
+Registros oficiais de cursos disponíveis para consulta, com validação na fonte e certificados arquivados.
+
+[Registro de certificações](https://leonedaher.com/pt/certificacoes/)
+
+## ARTIGOS
+
+Um espaço para compartilhar processos, conhecimento técnico e o que aprendo construindo produtos reais.
+
+[Como desenvolvi a logo e a identidade visual deste portfólio](https://leonedaher.com/pt/artigos/identidade-visual/): O processo por trás do símbolo LD, da linguagem visual e da ideia de transformar a própria marca em interface.
+
+## Contato
+
+Para oportunidades, projetos ou uma troca técnica, escolha o canal mais conveniente.
+
+- [LinkedIn](https://www.linkedin.com/in/leonedaher/)
+- [WhatsApp](https://wa.me/5521999997667)
+- [GitHub](https://github.com/leo-daher)
+- [Agendar conversa](https://calendly.com/leonedaher/30min)
+
+## Proveniência e limites
+
+- A contagem de 14 apps corresponde ao inventário de entregas Android e iOS da Latitudde/Conkord. MAG Venda Digital não é somado a essa contagem; ela não representa 14 produtos de autoria individual.
+- Os cases registram a atuação e a contribuição de Leone em equipes. A existência de um app na loja comprova o produto publicado, mas não estabelece autoria exclusiva ou responsabilidade por todo o produto.
+- As métricas de loja são retratos consultados em julho de 2026. Valores com + e resumos arredondados, como 11,5 mil+, não são contagens exatas nem medidas atuais; avaliações, downloads e disponibilidade podem mudar.
+- Certificados comprovam a conclusão dos cursos descritos. Não equivalem, por si só, a experiência profissional, domínio de uma tecnologia ou fluência atual.
+- A evidência MAG registra uma entrega coletiva. URL e data do post são reproduzidas quando estão presentes no registro público selecionado; campos ausentes permanecem desconhecidos.
+
+## Fontes públicas
+
+[Página do portfólio](https://leonedaher.com/pt/)
+
+---
+
+## PT · apps
+
+Source page: https://leonedaher.com/pt/apps/
+
+Markdown: https://leonedaher.com/pt/apps/index.md
+
+# Todos os apps
+
+Explore os produtos mobile publicados e abra cada case para ver telas, stack e provas públicas nas lojas.
+
+## [Van Cranenbroek](https://leonedaher.com/pt/apps/van-cranenbroek/)
+
+Ofertas, folhetos, lojas e comunicação com clientes em um produto multiplataforma.
+
+**Resumo publicado:** 11,5 mil+ downloads · Flutter · Kotlin · Swift
+
+Consultado em julho de 2026.
+
+## [Lyzer Collect](https://leonedaher.com/pt/apps/lyzer-collect/)
+
+Coleta e preparação de pedidos para operações de campo conectadas.
+
+**Resumo publicado:** 1 mil+ downloads · Flutter · Android · iOS
+
+Consultado em julho de 2026.
+
+## [Lyzer Deliver](https://leonedaher.com/pt/apps/lyzer-deliver/)
+
+Rotas, operação offline e comprovação de entrega para equipes em campo.
+
+**Resumo publicado:** 100+ downloads · Flutter · Android · iOS
+
+Consultado em julho de 2026.
+
+## [MAG Venda Digital](https://leonedaher.com/pt/apps/mag-venda-digital/)
+
+Ferramenta de venda digital para corretores acompanharem produtos e propostas.
+
+**Resumo publicado:** 1 mil+ downloads · Android · Kotlin
+
+Consultado em julho de 2026.
+
+## Proveniência e limites
+
+- A contagem de 14 apps corresponde ao inventário de entregas Android e iOS da Latitudde/Conkord. MAG Venda Digital não é somado a essa contagem; ela não representa 14 produtos de autoria individual.
+- Os cases registram a atuação e a contribuição de Leone em equipes. A existência de um app na loja comprova o produto publicado, mas não estabelece autoria exclusiva ou responsabilidade por todo o produto.
+- As métricas de loja são retratos consultados em julho de 2026. Valores com + e resumos arredondados, como 11,5 mil+, não são contagens exatas nem medidas atuais; avaliações, downloads e disponibilidade podem mudar.
+
+## Fontes públicas
+
+[Página do portfólio](https://leonedaher.com/pt/apps/)
+
+---
+
+## PT · experiences
+
+Source page: https://leonedaher.com/pt/experiencias/
+
+Markdown: https://leonedaher.com/pt/experiencias/index.md
+
+# Experiências por projeto e contribuição.
+
+Trabalho profissional em diferentes empresas e clientes: do desenvolvimento mobile à integração de serviços, automação, dados e infraestrutura.
+
+## Lyzer: Da investigação de bugs à proposta de correção
+
+Cliente via Latitudde / Conkord
+
+Construí um fluxo que conecta logs, tarefas e código, com revisão humana, e atuei no backend e no backoffice da operação logística.
+
+### Contribuição
+
+- Conectei Claude Code aos MCPs de Sentry, Jira e Azure para investigar tendências de bugs, abrir cards e propor pull requests para correções simples, com aprovação obrigatória de um desenvolvedor.
+- Criei skills de geração de código dentro dos padrões do projeto e documentos de spec-driven development, além de construir e manter o pipeline.
+- Atuei em um BFF .NET que consulta microserviços via GraphQL e HTTP e compõe as respostas para o app; no backoffice, trabalhei em componentes reutilizáveis, interfaces responsivas e refatoração.
+
+**Stack:** Claude Code · MCP · Sentry · Jira · Azure DevOps · .NET · GraphQL · Next.js
+
+## Visagio: Alocação escolar com Python e otimização linear
+
+Dados e otimização
+
+Desenvolvi um sistema para alocação em escolas públicas, conectando regras de negócio, dados e fluxos de uso.
+
+### Contribuição
+
+- Trabalhei no desenvolvimento full stack com Python, Django e React para o sistema de alocação escolar.
+- Configurei instâncias AWS EC2 para executar rotinas de otimização linear em Python com OR-Tools.
+- Automatizei processos em Google Sheets com Apps Script e comuniquei o andamento técnico em relatórios semanais aos stakeholders.
+
+**Stack:** Python · Django · React · OR-Tools · AWS EC2 · Google Apps Script
+
+## Human Robotics: Detecção de faces e máscaras no Robios
+
+Visão computacional e IoT
+
+Integrei captura de câmera, inferência e comunicação entre dispositivos no contexto de um produto de robótica.
+
+### Contribuição
+
+- Desenvolvi recursos Android em Java para detecção de faces e classificação do uso de máscaras, integrados a um modelo TensorFlow.
+- Utilizei Camera2 para capturar as imagens consumidas pelo fluxo de visão computacional.
+- Trabalhei com comunicação MQTT em tempo real entre dispositivos e backend, em um contexto com sensores LiDAR, ultrassônicos e mini PCs NUC.
+
+**Stack:** Android · Java · Camera2 · TensorFlow · MQTT
+
+## Iberdrola: Experiência mobile e offline na venda de energia
+
+Cliente via Latitudde / Conkord
+
+Atuei em um sistema de vendas de energia renovável, com recursos PWA, integração antifraude e regras de formulários.
+
+### Contribuição
+
+- Desenvolvi recursos de Progressive Web App para a experiência mobile e o uso offline.
+- Integrei a API da IPQualityScore para apoiar a proteção contra fraude.
+- Implementei validações de formulários no cliente e filtros de busca com Laravel Query Builder.
+
+**Stack:** PHP · Laravel · Vue.js · PWA · IPQualityScore API
+
+## Ernst & Young: Formulários dinâmicos para gestão de advogados
+
+Cliente via Latitudde / Conkord
+
+Modernizei uma aplicação Flutter e trabalhei nos fluxos de cadastro, documentos e publicação Android/iOS.
+
+### Contribuição
+
+- Tratei mudanças de API e compatibilidade com atualizações do Flutter em uma aplicação existente.
+- Desenvolvi formulários dinâmicos para clientes, oportunidades e potenciais conflitos, com regras complexas e estado gerenciado por BLoC.
+- Implementei captura e envio de imagens e documentos e liderei a publicação nas lojas.
+
+**Stack:** Flutter · Dart · BLoC · Android · iOS · Firebase
+
+## CTT — Correios de Portugal: Android para acompanhamento de entregas
+
+Cliente via Latitudde / Conkord
+
+Trabalhei na unificação de variantes, notificações e continuidade offline de um sistema de courier.
+
+### Contribuição
+
+- Unifiquei aplicativos de idioma único usando dimensões de flavors do Gradle.
+- Implementei notificações FCM que acionavam eventos dentro do app e melhorei a investigação de problemas com Crashlytics.
+- Viabilizei uso offline por entregadores com persistência local de dados.
+
+**Stack:** Android · Kotlin · Gradle · FCM · Crashlytics
+
+## Águas de Monchique: Frontend, backend e banco em containers
+
+Cliente via Latitudde / Conkord
+
+Estruturei um ambiente Docker e mantive o projeto; o conjunto de entregas ao cliente também inclui um dashboard Flutter Web.
+
+### Contribuição
+
+- Criei do zero a estrutura Docker para frontend, backend e banco de dados, padronizando a execução do sistema.
+- Atuei na manutenção e em pequenas evoluções do projeto após a estruturação inicial.
+- Realizei entregas Flutter para Android e de um dashboard web ao cliente.
+
+**Stack:** Docker · Flutter Web
+
+## Fullsix: Análise de uma API de OCR e apoio à equipe .NET
+
+Cliente via Latitudde / Conkord
+
+Analisei uma API Python de OCR e ajudei desenvolvedores .NET a trabalhar com Python.
+
+### Contribuição
+
+- Analisei e expliquei o funcionamento da API de OCR no contexto do projeto.
+- Orientei desenvolvedores .NET em Python, dos fundamentos às estruturas de dados.
+
+**Stack:** Python · OCR API
+
+## Ascendi / SustIMS: Entrega mobile e reprodução de problemas
+
+Cliente via Latitudde / Conkord
+
+Atuei em entregas React Native para Android/iOS e reutilizei fluxos de agentes na manutenção do SustIMS.
+
+### Contribuição
+
+- Realizei uma entrega Android e uma iOS.
+- Transformei eventos do Sentry em mocks para reproduzir erros e apoiar a investigação.
+- Preparei demonstrações com dados recentes não sensíveis usando os fluxos de manutenção.
+
+**Stack:** React Native · Android · iOS · Sentry · AI agents
+
+## Águas de Portugal: Necessidades de negócio traduzidas em escopo
+
+Requisitos e produto
+
+Conduzi levantamento de requisitos, refinamento de escopo e mapeamento de regras de negócio.
+
+### Contribuição
+
+- Conduzi sessões para compreender as necessidades do cliente e alinhar o escopo do sistema.
+- Desenhei fluxogramas detalhados e mapeei regras de negócio para orientar a implementação.
+
+**Stack:** Requirements · Business rules · Flowcharts
+
+## Code 495 / LineLinker Pro: LineLinker Pro: trabalho offline e mapas fluidos
+
+Cliente via Latitudde / Conkord
+
+Coordenei uma equipe de quatro pessoas entre backend e mobile e trabalhei no código de uma aplicação Flutter para operações em campo.
+
+### Contribuição
+
+- Coordenei uma equipe de quatro pessoas entre backend e mobile e alinhei semanalmente o projeto com stakeholders, mantendo atuação direta no código.
+- Implementei uso offline com sincronização automática em segundo plano ao recuperar a conexão e resolução de conflitos entre versões com assistência ao usuário.
+- Reduzi o carregamento de mapas de cerca de dois minutos para menos de um segundo e aumentei a renderização de cerca de 5 para 60 FPS ao mover o mapa, usando clusterização de pontos.
+
+**Stack:** Flutter · Dart · Android · iOS
+
+## Conkord: Liderança da área mobile
+
+Liderança mobile
+
+Lidero a área mobile da Conkord. Todos os projetos mobile passam por mim, seja na definição de arquitetura, na orientação da equipe ou na manutenção de aplicativos já em produção.
+
+### Projetos
+
+- [Van Cranenbroek: Aplicativo de varejo](https://leonedaher.com/pt/apps/van-cranenbroek)
+- [Lyzer: Collect · preparação de pedidos](https://leonedaher.com/pt/apps/lyzer-collect)
+- [Lyzer: Deliver · operação em campo](https://leonedaher.com/pt/apps/lyzer-deliver)
+- [Lyzer: IA, backend e backoffice](https://leonedaher.com/pt/experiencias#lyzer)
+- [CTT: Acompanhamento de entregas Android](https://leonedaher.com/pt/experiencias#ctt)
+- [EY: Formulários para gestão de advogados](https://leonedaher.com/pt/experiencias#ey)
+- [Iberdrola: Vendas de energia e PWA](https://leonedaher.com/pt/experiencias#iberdrola)
+- [Água Monchique: Sistema web e Android](https://leonedaher.com/pt/experiencias#monchique)
+- [Fullsix: Análise de API de OCR](https://leonedaher.com/pt/experiencias#fullsix)
+- [Code 495: LineLinker Pro](https://leonedaher.com/pt/experiencias#code-495)
+- [Ascendi: SustIMS](https://leonedaher.com/pt/experiencias#ascendi)
+
+## Radix: Estágio em engenharia
+
+Agosto de 2015 a agosto de 2016.
+
+---
+
+## PT · van-cranenbroek
+
+Source page: https://leonedaher.com/pt/apps/van-cranenbroek/
+
+Markdown: https://leonedaher.com/pt/apps/van-cranenbroek/index.md
+
+# Van Cranenbroek
+
+Ofertas, folhetos, lojas e comunicação com clientes em um produto multiplataforma.
+
+**Resumo publicado:** 11,5 mil+ downloads · Flutter · Kotlin · Swift
+
+Consultado em julho de 2026.
+
+## Contexto
+
+Varejo · Países Baixos · Android e iOS
+
+## Minha atuação
+
+Engenharia mobile em colaboração com a equipe da Latitudde.
+
+## Contribuição
+
+Atuação em Flutter com GetX, GetIt/Injectable e Provider, Firebase/Firestore, deep links, mapas e SVGs interativos, GitLab CI/CD e Fastlane, além de Cloud Functions em Python.
+
+## Um aplicativo que aproxima o cliente da loja
+
+A Van Cranenbroek é um projeto de varejo nos Países Baixos, com um aplicativo Flutter para Android e iOS que reúne ofertas, folhetos, informações sobre lojas e canais de comunicação com os clientes. O produto conecta a consulta pelo celular à visita à loja: além de acompanhar o conteúdo da empresa, o usuário encontra informações que ajudam a planejar sua ida e a navegar até o estabelecimento.
+
+Meu trabalho pela Latitudde envolveu o desenvolvimento do produto mobile, integrações com recursos nativos e serviços de backend. Também liderei o desenvolvimento e conduzi reuniões semanais diretamente com o cliente para alinhar requisitos, escopo e custos. Esse contato fazia parte da construção do produto, permitindo discutir o que precisava ser entregue e como cada pedido se encaixava na solução.
+
+## Flutter e os recursos de cada plataforma
+
+A aplicação utiliza Flutter para compartilhar a interface entre Android e iOS. Na implementação, trabalhei com GetX e GetIt, além das integrações com Firebase e Firestore. Gerenciamento de estado, acesso a serviços e apresentação de dados fazem parte dessa base que sustenta os diferentes fluxos do aplicativo.
+
+Também defini a arquitetura híbrida Flutter/Kotlin e trabalhei com integrações Android/Kotlin e iOS/Swift. Um exemplo concreto no iOS é um MethodChannel entre Dart e Swift que envia os dados da loja para um seletor nativo de aplicativos de mapas. Essa integração liga uma ação iniciada no Flutter a uma experiência própria da plataforma, respeitando as opções de navegação disponíveis no dispositivo.
+
+## Mapas, localização e navegação
+
+Uma das partes do trabalho foi a navegação para as lojas por meio de deep links com consultas e coordenadas. Em vez de mostrar apenas um endereço, o aplicativo oferece uma ligação entre a informação da loja e o recurso de mapas usado pelo cliente. O fluxo Android registrado utiliza uma integração Flutter para abrir o mapa; no iOS, o seletor de aplicativos inclui a comunicação nativa com Swift.
+
+O projeto também incluiu um mapa SVG interativo com pins posicionados por coordenadas relativas. Essa abordagem permite associar pontos de interesse à representação visual do mapa, mantendo sua posição vinculada ao desenho. Foi uma frente de interface que exigiu trabalhar tanto a interação quanto a correspondência entre os dados de localização e os elementos exibidos.
+
+## Serviços Python por trás da experiência mobile
+
+Desenvolvi Google Cloud Functions em Python para funcionalidades de comunicação. Uma delas atendia ao envio de pedidos de suporte por email e ao cadastro na newsletter. Outra integrava a Facebook API para alimentar um feed personalizado no aplicativo, com publicações da empresa, total de seguidores e ações para acompanhar a página.
+
+A integração com o Facebook incluía uma estratégia de cache no backend. O serviço decidia quando buscar conteúdo atualizado e quando responder com os dados já disponíveis, compartilhando esse resultado entre as requisições dos aplicativos. Isso evitava que cada celular precisasse consultar diretamente a API externa e reduzia chamadas desnecessárias, sem depender de uma implementação separada em cada cliente mobile.
+
+## Comunicação, entrega e relação com o cliente
+
+Configurei Firebase Cloud Messaging e Firestore para notificações e gestão de dados, além de processos automatizados de CI/CD. O trabalho, portanto, abrangia tanto a experiência dentro do aplicativo quanto os serviços que forneciam conteúdo e o processo de preparar novas versões para Android e iOS.
+
+A Van Cranenbroek foi o primeiro projeto da Latitudde na Holanda. O produto recebeu uma avaliação muito positiva do cliente e ajudou a abrir portas para a empresa nos Países Baixos. Os links e as telas acima mostram o aplicativo publicado; as métricas exibidas preservam a consulta registrada em julho de 2026. O case reúne minha atuação em produto, mobile e backend dentro desse trabalho com a equipe.
+
+## Stack
+
+Flutter · GetX · GetIt · Injectable · Provider · Firebase · Firestore · Python · CI/CD
+
+## Prova pública
+
+- [Google Play](https://play.google.com/store/apps/details?id=nl.vancranenbroek): 4,6 ★ · 179 avaliações · 5 mil+ — Consultado em julho de 2026.
+
+- [App Store](https://apps.apple.com/nl/app/van-cranenbroek/id6462761167): 4,7 ★ · 143 avaliações · 6,5 mil+ — Consultado em julho de 2026.
+
+## Imagens oficiais da loja
+
+![Van Cranenbroek · Telas publicadas na loja 1](https://leonedaher.com/assets/apps/van-cranenbroek-01.png)
+
+![Van Cranenbroek · Telas publicadas na loja 2](https://leonedaher.com/assets/apps/van-cranenbroek-02.png)
+
+![Van Cranenbroek · Telas publicadas na loja 3](https://leonedaher.com/assets/apps/van-cranenbroek-03.png)
+
+## Proveniência e limites
+
+- A contagem de 14 apps corresponde ao inventário de entregas Android e iOS da Latitudde/Conkord. MAG Venda Digital não é somado a essa contagem; ela não representa 14 produtos de autoria individual.
+- Os cases registram a atuação e a contribuição de Leone em equipes. A existência de um app na loja comprova o produto publicado, mas não estabelece autoria exclusiva ou responsabilidade por todo o produto.
+- As métricas de loja são retratos consultados em julho de 2026. Valores com + e resumos arredondados, como 11,5 mil+, não são contagens exatas nem medidas atuais; avaliações, downloads e disponibilidade podem mudar.
+
+## Fontes públicas
+
+[Página do portfólio](https://leonedaher.com/pt/apps/van-cranenbroek/)
+
+---
+
+## PT · lyzer-collect
+
+Source page: https://leonedaher.com/pt/apps/lyzer-collect/
+
+Markdown: https://leonedaher.com/pt/apps/lyzer-collect/index.md
+
+# Lyzer Collect
+
+Coleta e preparação de pedidos para operações de campo conectadas.
+
+**Resumo publicado:** 1 mil+ downloads · Flutter · Android · iOS
+
+Consultado em julho de 2026.
+
+## Case compartilhado: Lyzer Collect + Deliver
+
+Suite operacional que conecta coleta, preparação de pedidos, rotas e entrega.
+
+## Contexto
+
+Logística · Portugal · Flutter · Android e iOS
+
+## Minha atuação
+
+Engenharia Flutter nos fluxos operacionais Android e iOS da suite Lyzer.
+
+## Contribuição
+
+Fluxos de picking e entrega construídos sobre uma engine proprietária baseada em GetX, com leitura de códigos de barras, sincronização offline e integrações para operação em campo.
+
+## Preparação de pedidos como parte da operação logística
+
+O Lyzer Collect faz parte de uma suíte que conecta gestão de pedidos, preparação, rotas e entrega para operações de varejo e e-commerce. Seu foco está na coleta e preparação dos pedidos, uma etapa em que o trabalho realizado pelo operador precisa se refletir no estado da operação. O aplicativo mobile é uma das interfaces desse processo, ao lado dos serviços e do backoffice logístico.
+
+Minha atuação incluiu engenharia Flutter nos fluxos operacionais da suíte para Android e iOS. Collect e Deliver são produtos relacionados, mas representam momentos diferentes da jornada: o Collect atende à preparação, enquanto o Deliver acompanha a execução da entrega em campo. A experiência compartilhada entre eles também envolve integrações com os sistemas que sustentam essa operação.
+
+## Câmera e leitura de códigos de barras: a primeira versão
+
+Implementei a V1 da câmera para leitura de códigos de barras nos fluxos de picking do Collect. Essa experiência conecta a captura pelo celular à preparação do pedido: o operador aponta a câmera para o produto, e o código reconhecido segue para o fluxo que identifica o item e acompanha sua coleta.
+
+A implementação Flutter da leitura utiliza o pacote camera para controlar a câmera e fornecer as imagens, junto com google_mlkit_barcode_scanning para reconhecer os códigos com Google ML Kit. O scanner é organizado em um serviço e um widget dentro da engine compartilhada, separando a captura e a detecção da lógica específica de preparação de pedidos no Collect.
+
+No fluxo de picking, a leitura alimenta a validação do código, a busca do produto no pedido e o tratamento de situações como um item já coletado ou um código que não pertence àquele pedido. Essa ligação entre câmera e operação transforma a leitura em uma etapa da jornada do operador, com um resultado que precisa ser compreendido e tratado pela interface.
+
+## Engine e design system em dois pacotes Flutter privados
+
+Collect e Deliver compartilham dois pacotes Flutter privados, mantidos em repositórios próprios: engine e design_system. Trabalhei com essa base comum no desenvolvimento dos fluxos dos aplicativos. A separação permite reutilizar infraestrutura e componentes visuais entre produtos que têm jornadas diferentes, mantendo padrões comuns para a suíte Lyzer.
+
+A engine proprietária se apoia em GetX e reúne mais do que gerenciamento de estado: inclui classes base de controllers, navegação, serviços, acesso a dados e funcionalidades reutilizáveis, como o scanner. Já o design system concentra temas, cores, tipografia e componentes de interface, organizados segundo Atomic Design. Cada pacote tem uma responsabilidade própria na construção dos apps.
+
+Os aplicativos consomem os dois pacotes como dependências Git privadas. Na prática, isso conecta os fluxos específicos do Collect a uma infraestrutura compartilhada com o Deliver, enquanto a interface utiliza os mesmos fundamentos visuais e componentes. Minha atuação nesses fluxos precisava considerar tanto as regras da preparação de pedidos quanto as convenções dessa base comum.
+
+## Operação offline e sincronização
+
+A suíte inclui operação offline e sincronização de dados para apoiar o trabalho em campo. Nesse contexto, a interface precisa representar tanto a ação do usuário quanto o estado dos dados disponíveis no dispositivo. A continuidade do fluxo e sua posterior integração com os serviços fazem parte do problema de engenharia, junto com a leitura de códigos de barras e os demais passos da preparação.
+
+Esse trabalho conecta a experiência mobile à operação logística. A preparação de um pedido não termina na tela do operador: ela faz parte de uma jornada que também será acompanhada por outros componentes do produto. Por isso, os fluxos do aplicativo precisam ser compreendidos em conjunto com o backend e o backoffice.
+
+## Backend e backoffice no mesmo contexto de produto
+
+Além do mobile, trabalhei em frentes relacionadas ao backoffice logístico, com componentes reutilizáveis, interface responsiva e refatorações voltadas à manutenção e ao desempenho. Esse contexto incluía gestão de pedidos, preparação e acompanhamento de entregas, em colaboração com outras áreas da equipe.
+
+Outra frente foi um Backend for Frontend em .NET. Ele recebia requisições do aplicativo Android/mobile, consultava os microserviços necessários por GraphQL e HTTP e compunha uma resposta para o cliente. A composição de dados ficava centralizada nessa camada, reduzindo a complexidade que precisaria ser tratada pelo aplicativo. Essas são experiências relacionadas à Lyzer, com responsabilidades que atravessam mais de um produto da suíte.
+
+## Investigação de erros e evolução do aplicativo
+
+O trabalho de engenharia também incluiu Flutter Agent Skills e Claude conectado ao Sentry por MCP para apoiar investigações de Collect e Deliver. Foram utilizados fluxos de investigação agendados e preparação de cards Jira e pull requests com explicações, fontes e testes para revisão. Esse uso de ferramentas fazia parte do acompanhamento e da evolução dos aplicativos.
+
+As telas e os links oficiais desta página permitem consultar os produtos publicados. Os números de downloads mantêm a data da consulta original, em julho de 2026. Minha contribuição combina desenvolvimento mobile, integração com serviços e investigação de problemas, conectando a evolução dos fluxos ao acompanhamento do aplicativo em uso.
+
+## Stack
+
+Flutter · Android · iOS · Proprietary GetX engine · Private Flutter design system · Offline-first · Barcode · .NET BFF · GraphQL
+
+## Prova pública
+
+- [Lyzer Collect · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.collect): 1 mil+ downloads — Atualizado em 6 jul. 2026 · Consultado em julho de 2026.
+
+- [Lyzer Collect · App Store](https://apps.apple.com/pt/app/lyzer-collect/id6738952338)
+
+- [Lyzer Deliver · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.deliver): 100+ downloads — Atualizado em 14 jul. 2026 · Consultado em julho de 2026.
+
+- [Lyzer Deliver · App Store](https://apps.apple.com/br/app/lyzer-deliver/id6748221787)
+
+## Imagens oficiais da loja
+
+![Lyzer Collect · Telas publicadas na loja 1](https://leonedaher.com/assets/apps/lyzer-collect-01.png)
+
+![Lyzer Collect · Telas publicadas na loja 2](https://leonedaher.com/assets/apps/lyzer-collect-02.png)
+
+![Lyzer Deliver · Telas publicadas na loja 1](https://leonedaher.com/assets/apps/lyzer-deliver-01.png)
+
+![Lyzer Deliver · Telas publicadas na loja 2](https://leonedaher.com/assets/apps/lyzer-deliver-02.png)
+
+## Proveniência e limites
+
+- A contagem de 14 apps corresponde ao inventário de entregas Android e iOS da Latitudde/Conkord. MAG Venda Digital não é somado a essa contagem; ela não representa 14 produtos de autoria individual.
+- Os cases registram a atuação e a contribuição de Leone em equipes. A existência de um app na loja comprova o produto publicado, mas não estabelece autoria exclusiva ou responsabilidade por todo o produto.
+- As métricas de loja são retratos consultados em julho de 2026. Valores com + e resumos arredondados, como 11,5 mil+, não são contagens exatas nem medidas atuais; avaliações, downloads e disponibilidade podem mudar.
+
+## Fontes públicas
+
+[Página do portfólio](https://leonedaher.com/pt/apps/lyzer-collect/)
+
+---
+
+## PT · lyzer-deliver
+
+Source page: https://leonedaher.com/pt/apps/lyzer-deliver/
+
+Markdown: https://leonedaher.com/pt/apps/lyzer-deliver/index.md
+
+# Lyzer Deliver
+
+Rotas, operação offline e comprovação de entrega para equipes em campo.
+
+**Resumo publicado:** 100+ downloads · Flutter · Android · iOS
+
+Consultado em julho de 2026.
+
+## Case compartilhado: Lyzer Collect + Deliver
+
+Suite operacional que conecta coleta, preparação de pedidos, rotas e entrega.
+
+## Contexto
+
+Logística · Portugal · Flutter · Android e iOS
+
+## Minha atuação
+
+Engenharia Flutter nos fluxos operacionais Android e iOS da suite Lyzer.
+
+## Contribuição
+
+Fluxos de picking e entrega construídos sobre uma engine proprietária baseada em GetX, com leitura de códigos de barras, sincronização offline e integrações para operação em campo.
+
+## A etapa da entrega no celular de quem está em campo
+
+O Lyzer Deliver é o aplicativo da suíte Lyzer voltado às rotas, à operação em campo e à comprovação de entrega. Ele se conecta a uma operação logística que também inclui gestão e preparação de pedidos. Enquanto o Collect atende à etapa de preparação, o Deliver acompanha o momento em que o pedido segue para o destino e a execução precisa ser registrada pelo operador.
+
+Atuei na engenharia Flutter dos fluxos operacionais Android e iOS dessa suíte. O trabalho no Deliver está ligado à experiência de quem usa o aplicativo durante a operação, à representação do estado da entrega e à integração com os serviços do produto. É um contexto em que interface e dados precisam fazer sentido ao longo de uma sequência de ações, e não apenas em uma tela isolada.
+
+## Engine e design system compartilhados entre os apps
+
+O Deliver e o Collect compartilham dois pacotes Flutter privados: engine e design_system, consumidos como dependências Git a partir de repositórios próprios. Trabalhei na construção e evolução dos fluxos dentro dessa estrutura, conectando a interface aos dados e às regras da operação de entrega.
+
+A engine proprietária é baseada em GetX e reúne gerenciamento de estado, controllers, navegação, serviços e funcionalidades reutilizáveis. O design system fornece os temas e componentes visuais, com uma organização baseada em Atomic Design. Essa divisão mantém a infraestrutura e a linguagem visual compartilhadas, ao mesmo tempo que cada aplicativo implementa sua própria jornada operacional.
+
+Trabalhar nos dois produtos trouxe uma visão do caminho entre preparação e entrega e de como as informações circulam entre os aplicativos e os serviços. Essa experiência envolve utilizar e evoluir fluxos sobre uma base comum, considerando também o efeito que os padrões compartilhados têm na consistência e na manutenção da suíte.
+
+## Continuidade da operação com dados offline
+
+A operação em campo inclui situações em que a conectividade não está disponível. O trabalho com fluxos offline e sincronização considera essa realidade: o aplicativo precisa lidar com dados no dispositivo e com sua integração aos serviços. No Deliver, esse contexto faz parte da experiência de rotas, execução e comprovação de entrega apresentada pelo produto.
+
+O desafio envolve acompanhar o estado da operação de forma compreensível para quem está usando o celular. A ação realizada no aplicativo e a informação que chega aos demais sistemas fazem parte do mesmo processo. Essa relação entre experiência mobile e dados foi uma das dimensões da minha atuação nos fluxos da suíte.
+
+## Integração com serviços e acompanhamento logístico
+
+Minha experiência na Lyzer também abrangeu um Backend for Frontend em .NET. Essa camada recebia solicitações do aplicativo Android/mobile, consultava microserviços por GraphQL e HTTP e reunia os dados em uma resposta. Centralizar a composição no backend ajudava a manter essa lógica fora do cliente mobile.
+
+Em frentes relacionadas ao backoffice, trabalhei com componentes reutilizáveis, interface responsiva e refatorações para desempenho e manutenção. O backoffice apoiava a gestão de pedidos, a preparação e o acompanhamento de entregas. Esse trabalho complementou minha experiência com Flutter e ampliou minha visão das relações entre o aplicativo, os serviços e o acompanhamento da operação.
+
+## Manutenção apoiada por investigação e revisão
+
+Para a evolução de Deliver e Collect, utilizei Flutter Agent Skills e Claude com acesso ao Sentry por MCP em fluxos de investigação. A experiência incluiu investigações agendadas e preparação de cards Jira e pull requests com explicações, fontes e testes para revisão. O objetivo era transformar informações sobre os problemas em trabalho de engenharia que pudesse ser analisado pela equipe.
+
+O Deliver tem versões públicas para Android e iOS, acessíveis pelos links oficiais acima. As telas ajudam a visualizar o produto e a diferenciá-lo do Collect. A evidência de downloads é o retrato consultado em julho de 2026; o relato desta página explica minha contribuição no desenvolvimento e na manutenção, dentro de um trabalho coletivo.
+
+## Stack
+
+Flutter · Android · iOS · Proprietary GetX engine · Private Flutter design system · Offline-first · Barcode · .NET BFF · GraphQL
+
+## Prova pública
+
+- [Lyzer Collect · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.collect): 1 mil+ downloads — Atualizado em 6 jul. 2026 · Consultado em julho de 2026.
+
+- [Lyzer Collect · App Store](https://apps.apple.com/pt/app/lyzer-collect/id6738952338)
+
+- [Lyzer Deliver · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.deliver): 100+ downloads — Atualizado em 14 jul. 2026 · Consultado em julho de 2026.
+
+- [Lyzer Deliver · App Store](https://apps.apple.com/br/app/lyzer-deliver/id6748221787)
+
+## Imagens oficiais da loja
+
+![Lyzer Collect · Telas publicadas na loja 1](https://leonedaher.com/assets/apps/lyzer-collect-01.png)
+
+![Lyzer Collect · Telas publicadas na loja 2](https://leonedaher.com/assets/apps/lyzer-collect-02.png)
+
+![Lyzer Deliver · Telas publicadas na loja 1](https://leonedaher.com/assets/apps/lyzer-deliver-01.png)
+
+![Lyzer Deliver · Telas publicadas na loja 2](https://leonedaher.com/assets/apps/lyzer-deliver-02.png)
+
+## Proveniência e limites
+
+- A contagem de 14 apps corresponde ao inventário de entregas Android e iOS da Latitudde/Conkord. MAG Venda Digital não é somado a essa contagem; ela não representa 14 produtos de autoria individual.
+- Os cases registram a atuação e a contribuição de Leone em equipes. A existência de um app na loja comprova o produto publicado, mas não estabelece autoria exclusiva ou responsabilidade por todo o produto.
+- As métricas de loja são retratos consultados em julho de 2026. Valores com + e resumos arredondados, como 11,5 mil+, não são contagens exatas nem medidas atuais; avaliações, downloads e disponibilidade podem mudar.
+
+## Fontes públicas
+
+[Página do portfólio](https://leonedaher.com/pt/apps/lyzer-deliver/)
+
+---
+
+## PT · mag-venda-digital
+
+Source page: https://leonedaher.com/pt/apps/mag-venda-digital/
+
+Markdown: https://leonedaher.com/pt/apps/mag-venda-digital/index.md
+
+# MAG Venda Digital
+
+Ferramenta de venda digital para corretores acompanharem produtos e propostas.
+
+**Resumo publicado:** 1 mil+ downloads · Android · Kotlin
+
+Consultado em julho de 2026.
+
+## Contexto
+
+Seguros · Brasil · Android
+
+## Minha atuação
+
+Engenharia Android no produto de venda digital.
+
+## Contribuição
+
+Evolução em Java/Kotlin, dados offline com Realm, flavors Gradle, Firebase/Crashlytics e pipeline no Azure.
+
+## Um produto Android para a venda de seguros
+
+O MAG Venda Digital é uma ferramenta para corretores acompanharem produtos e propostas de seguros. Minha atuação na MAG / Mongeral Aegon ocorreu como desenvolvedor Android, entre agosto de 2019 e fevereiro de 2021, em um contexto de aplicativos de vendas. O trabalho envolvia evoluir um produto utilizado na operação e acompanhar as necessidades de manutenção e publicação de novas versões.
+
+Desenvolvi em Kotlin e Java, trabalhando tanto nos fluxos do aplicativo quanto nos recursos que sustentavam seu uso. Dados locais, configurações de distribuição, acompanhamento de erros e integração ao processo de entrega faziam parte dessa experiência. Era uma atuação dentro da equipe do produto, com responsabilidade sobre as contribuições desenvolvidas nesse contexto.
+
+## Informações disponíveis mesmo sem conexão
+
+Uma das frentes foi habilitar o uso offline com Realm, permitindo acesso contínuo a informações importantes no aplicativo. Para uma ferramenta de vendas, manter dados disponíveis no dispositivo ajuda a sustentar o trabalho do usuário em situações sem conexão. A persistência local fazia parte da base técnica utilizada para atender a essa necessidade.
+
+O trabalho com dados offline amplia o cuidado necessário na implementação dos fluxos: a interface precisa utilizar as informações disponíveis e refletir o estado da aplicação. Essa experiência com armazenamento local complementou o desenvolvimento Android e o acompanhamento de um produto em produção.
+
+## Variantes do aplicativo e entrega de versões
+
+Trabalhei com flavors Gradle para variantes white-label. Essa configuração permite preparar versões do aplicativo a partir de uma base de código compartilhada, com as diferenças previstas para cada variante. O trabalho exigia considerar essas configurações durante o desenvolvimento e a preparação das versões.
+
+Também prestei suporte ao processo de CI/CD no Azure e aos releases mobile. A entrega de uma mudança envolvia sua implementação, a construção do aplicativo e o acompanhamento da versão disponibilizada. Essa ligação entre desenvolvimento e publicação foi parte da minha experiência no projeto.
+
+## Manutenção, testes e organização do código
+
+Utilizei Firebase e Crashlytics no acompanhamento de incidentes e na manutenção do aplicativo, além de atuar na resolução de problemas em produção. Essas ferramentas ajudavam a conectar o desenvolvimento aos erros observados durante o uso do produto, permitindo investigar o comportamento da aplicação e orientar as correções.
+
+Também tive experiência com testes JUnit e injeção de dependências em um projeto Android com Dagger 2. Os testes oferecem uma forma de verificar comportamentos do código, enquanto a injeção de dependências ajuda a organizar suas relações com outros componentes. Essas práticas complementavam o trabalho com dados locais, integrações e manutenção do aplicativo.
+
+## Reconhecimento por uma entrega da equipe
+
+Durante minha participação na equipe Venda Digital, o time entregou autenticação e validação de identidade por reconhecimento facial usando a API do SERPRO disponível à época. A publicação de reconhecimento reproduzida nesta página cita a equipe e meu nome. Ela registra uma entrega coletiva do produto.
+
+Participei da equipe responsável por essa entrega, mas não implementei pessoalmente a funcionalidade de reconhecimento facial. Minha contribuição no projeto está nas frentes Android descritas acima. Esse contexto permite apresentar tanto o trabalho individual quanto o reconhecimento recebido pela equipe com precisão.
+
+## Stack
+
+Android · Java · Kotlin · Realm · Firebase · Azure · SERPRO API
+
+## Prova pública
+
+- [Google Play](https://play.google.com/store/apps/details?id=com.mongeralaegon.vendadigital): 1 mil+ downloads — Atualizado em 16 jul. 2026 · Consultado em julho de 2026.
+
+## Imagens oficiais da loja
+
+![MAG Venda Digital · Telas publicadas na loja 1](https://leonedaher.com/assets/apps/mag-venda-digital-01.jpg)
+
+![MAG Venda Digital · Telas publicadas na loja 2](https://leonedaher.com/assets/apps/mag-venda-digital-02.jpg)
+
+![MAG Venda Digital · Telas publicadas na loja 3](https://leonedaher.com/assets/apps/mag-venda-digital-03.jpg)
+
+## Autenticação e validação de identidade
+
+A equipe do Venda Digital entregou autenticação e validação de identidade por reconhecimento facial utilizando a API do SERPRO disponível à época. A publicação abaixo registra essa entrega coletiva.
+
+[Ver publicação no LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:6631633718349967360/)
+
+![Publicação de Luís Henrique Fontes de Oliveira reconhecendo a equipe responsável pela entrega de reconhecimento facial no Venda Digital.](https://leonedaher.com/assets/evidence/mag-venda-digital-reconhecimento-facial.png)
+
+Autor da publicação: Luís Henrique Fontes de Oliveira. Data do post: não informado. URL do post: https://www.linkedin.com/feed/update/urn:li:activity:6631633718349967360/.
+
+[Registro público da entrega coletiva](https://leonedaher.com/assets/evidence/mag-venda-digital-reconhecimento-facial.json)
+
+## Proveniência e limites
+
+- A contagem de 14 apps corresponde ao inventário de entregas Android e iOS da Latitudde/Conkord. MAG Venda Digital não é somado a essa contagem; ela não representa 14 produtos de autoria individual.
+- Os cases registram a atuação e a contribuição de Leone em equipes. A existência de um app na loja comprova o produto publicado, mas não estabelece autoria exclusiva ou responsabilidade por todo o produto.
+- As métricas de loja são retratos consultados em julho de 2026. Valores com + e resumos arredondados, como 11,5 mil+, não são contagens exatas nem medidas atuais; avaliações, downloads e disponibilidade podem mudar.
+- A evidência MAG registra uma entrega coletiva. URL e data do post são reproduzidas quando estão presentes no registro público selecionado; campos ausentes permanecem desconhecidos.
+
+## Fontes públicas
+
+[Página do portfólio](https://leonedaher.com/pt/apps/mag-venda-digital/)
+
+---
+
+## PT · lyzer-collect-deliver
+
+Source page: https://leonedaher.com/pt/apps/lyzer-collect-deliver/
+
+Markdown: https://leonedaher.com/pt/apps/lyzer-collect-deliver/index.md
+
+# Lyzer Collect + Deliver
+
+Suite operacional que conecta coleta, preparação de pedidos, rotas e entrega.
+
+**Resumo publicado:** 1,1 mil+ downloads · Flutter · Android · iOS
+
+Consultado em julho de 2026.
+
+## Contexto
+
+Logística · Portugal · Flutter · Android e iOS
+
+## Minha atuação
+
+Engenharia Flutter nos fluxos operacionais Android e iOS da suite Lyzer.
+
+## Contribuição
+
+Fluxos de picking e entrega construídos sobre uma engine proprietária baseada em GetX, com leitura de códigos de barras, sincronização offline e integrações para operação em campo.
+
+## Stack
+
+Flutter · Android · iOS · Proprietary GetX engine · Private Flutter design system · Offline-first · Barcode · .NET BFF · GraphQL
+
+## Prova pública
+
+- [Lyzer Collect · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.collect): 1 mil+ downloads — Atualizado em 6 jul. 2026 · Consultado em julho de 2026.
+
+- [Lyzer Collect · App Store](https://apps.apple.com/pt/app/lyzer-collect/id6738952338)
+
+- [Lyzer Deliver · Google Play](https://play.google.com/store/apps/details?id=tech.lyzer.deliver): 100+ downloads — Atualizado em 14 jul. 2026 · Consultado em julho de 2026.
+
+- [Lyzer Deliver · App Store](https://apps.apple.com/br/app/lyzer-deliver/id6748221787)
+
+## Imagens oficiais da loja
+
+![Lyzer Collect · Telas publicadas na loja 1](https://leonedaher.com/assets/apps/lyzer-collect-01.png)
+
+![Lyzer Collect · Telas publicadas na loja 2](https://leonedaher.com/assets/apps/lyzer-collect-02.png)
+
+![Lyzer Deliver · Telas publicadas na loja 1](https://leonedaher.com/assets/apps/lyzer-deliver-01.png)
+
+![Lyzer Deliver · Telas publicadas na loja 2](https://leonedaher.com/assets/apps/lyzer-deliver-02.png)
+
+## Proveniência e limites
+
+- A contagem de 14 apps corresponde ao inventário de entregas Android e iOS da Latitudde/Conkord. MAG Venda Digital não é somado a essa contagem; ela não representa 14 produtos de autoria individual.
+- Os cases registram a atuação e a contribuição de Leone em equipes. A existência de um app na loja comprova o produto publicado, mas não estabelece autoria exclusiva ou responsabilidade por todo o produto.
+- As métricas de loja são retratos consultados em julho de 2026. Valores com + e resumos arredondados, como 11,5 mil+, não são contagens exatas nem medidas atuais; avaliações, downloads e disponibilidade podem mudar.
+
+## Fontes públicas
+
+[Página do portfólio](https://leonedaher.com/pt/apps/lyzer-collect-deliver/)
+
+---
+
+## PT · certificates
+
+Source page: https://leonedaher.com/pt/certificacoes/
+
+Markdown: https://leonedaher.com/pt/certificacoes/index.md
+
+# Registro de certificações
+
+Navegue pelas credenciais por ano e selecione uma para ver o registro oficial e as opções de validação.
+
+Registros oficiais de cursos disponíveis para consulta, com validação na fonte e certificados arquivados.
+
+## Proveniência e limites
+
+Certificados comprovam a conclusão dos cursos descritos. Não equivalem, por si só, a experiência profissional, domínio de uma tecnologia ou fluência atual.
+
+## 2026
+
+### LangChain- Agentic AI Engineering with LangChain & LangGraph
+
+- Emitido por Udemy
+- Titular: Leone Crespo Daher de Souza
+- Conclusão: 2026-10-07
+- Tecnologias: LangChain · LangGraph · RAG · MCP · AI · Python
+- Verificação registrada: 2026-10-07 (verified)
+
+[Validar credencial](https://www.udemy.com/certificate/UC-46b08eb2-381d-4fd1-a961-d6850f1680ba/) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/udemy-langchain-agentic-ai-engineering.jpg)
+
+### AI Fluency: AI Capabilities & Limitations
+
+- Emitido por Anthropic Education
+- Titular: Leone Souza
+- Conclusão: 2026-07-17
+- Tecnologias: AI
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://verify.skilljar.com/c/5fx3uazp9qpf) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/anthropic-ai-capabilities-and-limitations.jpg)
+
+### AI Fluency: Framework & Foundations
+
+- Emitido por Anthropic Education
+- Titular: Leone Souza
+- Conclusão: 2026-07-17
+- Tecnologias: AI
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://verify.skilljar.com/c/kezahcopgjcy) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/anthropic-ai-fluency-framework-and-foundations.jpg)
+
+### Model Context Protocol: Advanced Topics
+
+- Emitido por Anthropic Education
+- Titular: Leone Souza
+- Conclusão: 2026-07-17
+- Tecnologias: MCP · AI
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://verify.skilljar.com/c/s8rd6t4thg8p) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/anthropic-model-context-protocol-advanced-topics.jpg)
+
+### Introduction to agent skills
+
+- Emitido por Anthropic Education
+- Titular: Leone Souza
+- Conclusão: 2026-07-14
+- Tecnologias: AI · Agents
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://verify.skilljar.com/c/bveedbetxnv7) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/anthropic-introduction-to-agent-skills.jpg)
+
+### Introduction to subagents
+
+- Emitido por Anthropic Education
+- Titular: Leone Souza
+- Conclusão: 2026-07-14
+- Tecnologias: AI · Agents
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://verify.skilljar.com/c/26g2xmzeywkg) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/anthropic-introduction-to-subagents.jpg)
+
+### Introduction to Model Context Protocol
+
+- Emitido por Anthropic Education
+- Titular: Leone Souza
+- Conclusão: 2026-07-13
+- Tecnologias: MCP · AI
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://verify.skilljar.com/c/d2xnzgugngpc) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/anthropic-introduction-to-model-context-protocol.jpg)
+
+### Claude 101
+
+- Emitido por Anthropic Education
+- Titular: Leone Souza
+- Conclusão: 2026-07-10
+- Tecnologias: AI
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://verify.skilljar.com/c/9zf6f7vtsx9j) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/anthropic-claude-101.jpg)
+
+### Claude Code 101
+
+- Emitido por Anthropic Education
+- Titular: Leone Souza
+- Conclusão: 2026-07-10
+- Tecnologias: AI · Agents · Claude Code
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://verify.skilljar.com/c/tb2qahncsuan) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/anthropic-claude-code-101.jpg)
+
+### Claude Code in Action
+
+- Emitido por Anthropic Education
+- Titular: Leone Souza
+- Conclusão: 2026-07-10
+- Tecnologias: AI · Agents · Claude Code
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://verify.skilljar.com/c/vm5rupmsy2pq) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/anthropic-claude-code-in-action.jpg)
+
+### Claude Platform 101
+
+- Emitido por Anthropic Education
+- Titular: Leone Souza
+- Conclusão: 2026-07-10
+- Tecnologias: AI
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://verify.skilljar.com/c/qsjkyuvascj5) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/anthropic-claude-platform-101.jpg)
+
+## 2024
+
+### Build ASP.NET Core Web API - Scratch To Finish (.NET8 API)
+
+- Emitido por Udemy
+- Titular: Leone Crespo Daher de Souza
+- Conclusão: 2024-04-18
+- Tecnologias: C# / .NET · REST APIs
+- Verificação registrada: 2026-07-22 (verified)
+
+[Validar credencial](https://www.udemy.com/certificate/UC-736004e1-63bd-4360-a1ed-9ee75a55bbad/) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/udemy-build-asp-net-core-web-api-scratch-to-finish-net8-api.jpg)
+
+## 2021
+
+### The Complete 2021 Flutter Development Bootcamp with Dart
+
+- Emitido por Udemy
+- Titular: Leone Crespo Daher de Souza
+- Conclusão: 2021-08-16
+- Tecnologias: Flutter · Dart
+- Verificação registrada: 2026-07-20 (verified)
+
+[Validar credencial](https://www.udemy.com/certificate/UC-2ac4d6a7-6027-434f-a726-61c068daabc2/) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/udemy-complete-flutter-development-bootcamp-with-dart.jpg)
+
+## 2015
+
+### Laboratório de Conversação e Leitura acadêmica em inglês através de textos literários. - Intermediário, nível B2
+
+- Emitido por Universidade Federal do Rio de Janeiro
+- Titular: LEONE CRESPO DAHER DE SOUZA
+- Conclusão: 2015-02-28
+- Tecnologias: English
+- Verificação registrada: 2026-09-14 (verified)
+
+[Validar credencial](https://isfaluno.mec.gov.br/validador) · [Imagem oficial do certificado](https://leonedaher.com/assets/certificates/originals/ufrj-idiomas-sem-fronteiras-ingles-2015.jpg)
+
+## Fontes públicas
+
+[Catálogo público de certificações](https://leonedaher.com/assets/certificates/catalog.json)
+
+[Página do portfólio](https://leonedaher.com/pt/certificacoes/)
+
+---
+
+## PT · visual-identity
+
+Source page: https://leonedaher.com/pt/artigos/identidade-visual/
+
+Markdown: https://leonedaher.com/pt/artigos/identidade-visual/index.md
+
+# Como desenvolvi a logo e a identidade visual deste portfólio
+
+> O processo por trás do símbolo LD, da linguagem visual e da ideia de transformar a própria marca em interface.
+
+Publicado em 15 de set. de 2026 · 10:38 BRT
+
+![Logo LD formada pelas letras L e D, pelo contorno de uma tela e por um ponto laranja no canto inferior direito.](https://leonedaher.com/assets/brand/ld-mark.svg)
+
+A forma completa reúne as iniciais, o frame e o ponto de ação.
+
+A logo combina as minhas iniciais — L.D. — com o contorno de uma tela. Eu queria ligar o símbolo ao desenvolvimento mobile sem desenhar um telefone de forma literal. Por isso, o monograma funciona ao mesmo tempo como assinatura e como frame de interface.
+
+## As iniciais e o frame
+
+O L forma a lateral esquerda e a base. O D completa o topo e a curva direita, criando a leitura de uma tela. Na junção inferior, um pequeno corte diagonal impede que os dois traços pareçam uma única linha e mantém a separação visual entre L e D.
+
+Vista explodida do L, do D, do microcorte e do ponto laranja. Vista explodida da logo com o L separado à esquerda, o D separado à direita, o microcorte diagonal destacado na base e o ponto laranja afastado do frame.
+
+- L · estrutura
+- D · frame da tela
+- Microcorte · separação
+- Ponto · L.D. e ação
+
+## O ponto que vira ação
+
+O ponto coral — um laranja vibrante — cumpre duas funções. Na assinatura, ele representa o ponto de L.D. Dentro da tela formada pelas letras, ocupa a posição de um botão de ação flutuante (FAB), um dos componentes mais reconhecíveis do Material Design 3.
+
+A relação não é apenas visual. Quando o site termina de abrir, esse mesmo elemento se torna o botão que dá acesso à navegação. O laranja fica reservado à ação e à transformação; as outras cores vibrantes aparecem como destaques da interface.
+
+Do ponto da assinatura ao FAB funcional no canto inferior direito. Comparação entre o ponto laranja dentro da logo e o FAB funcional com ícone de menu.
+
+## Quando a logo se torna a página
+
+Na abertura, a logo aparece centralizada. A aplicação mede a viewport — a área disponível da tela ou da janela — e reconstrói o frame para essa proporção. Cada borda avança em direção ao lado correspondente enquanto o ponto percorre o caminho até o canto inferior direito.
+
+O frame coincide por um instante com a viewport e depois ultrapassa seus limites. Nesse momento, a interface que já está posicionada atrás dele é revelada e o ponto assume a forma e a função do FAB. O efeito é direto: o visitante entra na logo, e a marca passa a ser a superfície do site.
+
+Sequência da abertura: logo centralizada, expansão, viewport e interface com o FAB. Quatro etapas da abertura do site: logo centralizada, frame em expansão, frame coincidindo com a viewport e interface revelada com o FAB no canto inferior direito.
+
+1. Logo
+2. Expansão
+3. Viewport
+4. Interface
+
+A construção se resume a três funções: o L dá estrutura, o D forma a superfície e o ponto concentra a ação. O resultado é um símbolo que funciona como assinatura no estado estático e como interface na abertura da página.
+
+## Fontes públicas
+
+[Página do portfólio](https://leonedaher.com/pt/artigos/identidade-visual/)

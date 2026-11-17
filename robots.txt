@@ -1,0 +1,4 @@
+# Crawl rules apply when this file is served at the origin root.
+User-agent: *
+Allow: /
+Sitemap: https://leonedaher.com/sitemap.xml
